@@ -30,7 +30,7 @@
 		<div class="divInput" style="margin-top:40px;">
 			<input type="text" id="userName" placeholder="请输入用户名"/>
 		</div>
-		<div class="divInput" style="margin-top:40px;">
+		<div class="divInput">
 			<input type="text" id="userPhone" placeholder="请输入手机号"/>
 		</div>
 		<div class="divInput">
