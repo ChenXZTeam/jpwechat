@@ -73,7 +73,7 @@ function chex(){
 }
 
 //检查手机号码格式
-function chexPhone(){
+/* function chexPhone(){
 	var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
 	if(!phone.test($("#iPhone").val())){
 		alert("请输入正确的手机号码");
@@ -82,7 +82,7 @@ function chexPhone(){
 	}else{
 		return true;
 	}
-}
+} */
 
 //登录按钮事件
 $(".logoBtn a").click(function(){
@@ -94,9 +94,9 @@ $(".logoBtn a").click(function(){
 	}
 	
 	//判断手机格式
-	if(!chexPhone()){
+	/* if(!chexPhone()){
 		return false;
-	}
+	} */
 	
 	//检测用户协议按钮是否打开
 	if(!chex()){
