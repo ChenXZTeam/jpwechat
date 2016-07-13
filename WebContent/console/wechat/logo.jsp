@@ -36,7 +36,7 @@
 		<div class="padAndMar"></div>
 		<div class="userPass">
 			<div>
-				<input type="text" class="inputStyle" id="iPhone" name="username" placeholder="请输入手机号"/>
+				<input type="text" class="inputStyle" id="iPhone" name="username" placeholder="使用用户名/手机号进行登录"/>
 			</div>
 			<div>
 				<input type="password" class="inputStyle" id="password" style="border:none;" name="padss" placeholder="请输入1~16位密码"/>
@@ -86,28 +86,60 @@ function chex(){
 
 //登录按钮事件
 $(".logoBtn a").click(function(){
+	var fale=true; //防止用户重复登录
 	var iPhone=$("#iPhone").val();
 	var pass=$("#password").val();
 	if(iPhone==""||pass==""){
 		alert("账号或密码不能为空");
+		fale=false;
 		return false;
+	}else{
+		fale=true;
 	}
 	
 	//判断手机格式
-	/* if(!chexPhone()){
+/* 	if(!chexPhone()){
 		return false;
+		fale=false;
+	}else{
+		fale=true;
 	} */
 	
 	//检测用户协议按钮是否打开
 	if(!chex()){
 		return false;
+		fale=false;
+	}else{
+		fale=true;
 	}
 	
-	$(this).css("background-color","#dddddd");
-	$(this).css("color","#666666");
-	$(this).css("border","#cccccc solid 1px");
-	$(this).html("");
-	$(this).html("加载中...");
+	if(fale==true){
+		//上面的条件正确时候改变按钮格式
+		$(this).css("background-color","#dddddd");
+		$(this).css("color","#666666");
+		$(this).css("border","#cccccc solid 1px");
+		$(this).html("");
+		$(this).html("加载中...");
+		$.ajax({
+				url: "<%=basePath %>wechatController/wechat/login.action",
+				type: "POST",
+				data: {
+						"userName":iPhone, "PassWord":pass
+				},
+				dataType: "json",
+				success: function(result) {
+					alert("数据返回成功");
+					if(result.msg==1){
+						if(result.url)window.location.href=result.url;//跳转到指定界面
+					}else{
+						alert("登录错误");
+					}							
+				},
+				error: function() {
+					alert("登录失败");
+				}
+		});
+	}
 });
 </script>
 </body>

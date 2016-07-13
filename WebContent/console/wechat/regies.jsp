@@ -117,7 +117,6 @@
 								alert("发送成功");
 								//能否获取到后台传回来的code
 								code = res; 
-								alert("code: "+code);
 							} 
 						},error:function(){								
 						}
@@ -177,7 +176,6 @@
 					alert("请输入正确的手机号码");
 					$("#userPhone").focus();
 					fale=false;
-					alert("请输入正确的手机号码："+fale);
 					return false;
 				}	
 			
@@ -185,14 +183,12 @@
 				if(password==""||passwordAgr==""||aoqing==""){
 					alert("信息填写未完成");
 					fale=false;
-					alert("信息填写未完成："+fale);
 					return false;
 				}
 				
 				//验证验证码是否正确
 				if(checkCode() == false){
 					fale=false;
-					alert("验证码不正确:"+fale);
 					return false;
 				}	
 			
@@ -200,7 +196,6 @@
 				if(password!=passwordAgr){
 					alert("密码不一致");
 					fale=false;
-					alert("密码不一致:"+fale);
 					return false;
 				}
 				
@@ -217,7 +212,6 @@
 							$("#spanMsg").text("");
 							$("#spanMsg").text("用户名已存在");
 							fale=false;
-							alert("用户名是否被注册:"+fale);
 							return false;
 						}
 					},error:function(){
@@ -237,14 +231,12 @@
 							$("#spanMsg").text("");
 							$("#spanMsg").text("手机号码已存在");
 							fale=false;
-							alert("手机是否被注册:"+fale);
 							return false;
 						}
 					},error:function(){
 					}
 				});
 								
-				alert(fale);
 				if(fale==true){
 					//上面的条件正确时候改变按钮格式
 					$(this).css("background-color","#dddddd");
