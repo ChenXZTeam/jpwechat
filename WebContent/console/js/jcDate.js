@@ -242,6 +242,12 @@
 				var Sy = $year.text(),
 				    Sm = $month.text(),
 					Sd = $HiddenText.val();
+				if(Sm<10){
+					Sm="0"+Sm;
+				}
+				if(Sd<10){
+					Sd="0"+Sd;
+				}
 				NowDateArr = new Array(Sy,Sm,Sd);
 				dateInfo =NowDateArr.join(options.format);
 				if($hh.val() != "00" || $mm.val() != "00" ){
@@ -267,14 +273,13 @@
 				}else if((Sy-todateY)==0&&(Sm-todateM)==0&&(Sd-todateD)==2){
 					$(".jisuanDay").text("后天");
 				}else{
-					$(".jisuanDay").text("");	
+					$(".jisuanDay").text("");
 				}
 			};
 			$dateInput.die().live(options.Event,function(e){
 						  $(".goTimeDiv>span").removeClass("jisuanDay");
 						  $(this).siblings("span").addClass("jisuanDay");
 						  $(this).addClass("dateVisited");
-						  //$jcDate.css({ "left" : e.pageX+(options.Left),"top" : e.pageY+(options.Top) });
 						  var iof = $(this).offset();
 						  $jcDate.css({ "left" : (iof.left+options.Left)-100,"top" : (iof.top+options.Top)-10 });
 					      $jcDate.show(options.Speed);
@@ -291,5 +296,5 @@
 				$jcDate.hide(options.Speed);
 			};
 		});
-	};/* 代码整理：懒人之家 www.lanrenzhijia.com */
+	};
 })(jQuery)
