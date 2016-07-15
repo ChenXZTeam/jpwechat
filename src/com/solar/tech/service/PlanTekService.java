@@ -27,7 +27,7 @@ public class PlanTekService {
 	public List<FlightInfo> findHB(String chufCity,String daodCity,String cangW, String dateTime){
 		//SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		//String startDate = fmt.format(new Date());
-		List<FlightInfo> list = new OptimizeECUtils().query("CAN", "PEK", dateTime, ""); // 传入出发城市、到达城市、日期及航空公司代码		
+		List<FlightInfo> list = new OptimizeECUtils().query("CAN", "PEK", dateTime, "CZ"); // 传入出发城市、到达城市、日期及航空公司代码		
 		return list;
 	}
 }

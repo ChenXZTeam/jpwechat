@@ -81,8 +81,22 @@ $(function(){
 					console.log(data.listDate);
 					var getDate=data.listDate;
 					for(var i=0;i<getDate.length;i++){
-						var notTjList = '<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+getDate[i].depTime+'</div><div class="EndTime lineHeight">'+getDate[i].arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">二等座436张</div></div><div style="clear:both;"></div></li>';
-						$("#TicketList").append(notTjList);
+						for(var j=0;j<getDate[i].seatList.length;j++){
+							var basicCabin = getDate[i].seatList[j].basicCabin;
+							if(basicCabin=="C"){
+								basicCabin="公务舱";
+							}else if(basicCabin=="F"){
+								basicCabin="头等舱";
+							}else if(basicCabin=="Y"){
+								basicCabin="经济舱";
+							}
+							
+							if(basicCabin==cangW){						
+								var notTjList = '<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+getDate[i].depTime+'</div><div class="EndTime lineHeight">'+getDate[i].arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">'+basicCabin+'436张</div></div><div style="clear:both;"></div></li>';
+								$("#TicketList").append(notTjList);								
+							}
+							
+						}
 					}
 				}else if(data.msg==0){
 					alert("没有查找到该航班的信息");

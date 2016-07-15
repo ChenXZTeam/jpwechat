@@ -30,17 +30,39 @@ public class PlanTekController {
 		List<FlightInfo> tempFlil = new ArrayList<FlightInfo>();
 		//SeatInfo info=new SeatInfo();
 		if(fliL != null && fliL.size() > 0){
+			int i=0;
 			for(FlightInfo f : fliL){
-				//System.out.println("-------->航班号：" + f.getFlightNo() + "， 出发城市：" + f.getOrgCity() + " ( 起飞时间：" + f.getDepTime() + " ) " + "， 到达城市: " + f.getDstCity() + " ( 到达时间：" + f.getArrTime() + " ) ，机型：" + f.getPlaneStyle()+"<----------------------------------------");				
-				for(SeatInfo info : f.getSeatList()){
+				if(f.getSeatList().size()!=0){
+					System.out.println(i+". 航班号：" + f.getFlightNo() + "， 出发城市：" + f.getOrgCity() + " ( 起飞时间：" + f.getDepTime() + " ) " + "， 到达城市: " + f.getDstCity() + " ( 到达时间：" + f.getArrTime() + " ) ，机型：" + f.getPlaneStyle());				
+					tempFlil.add(f);
+					//int j=0;
+					int SumTecikNum=0;
+					for(SeatInfo info : f.getSeatList()){	
+						if(SeatUtils.getSeatType(info.getBasicCabin()).equals(cangW)){
+							//System.out.println("座位类型："+info.getCangwei() + " (" + SeatUtils.getSeatType(info.getBasicCabin()) + ")" + "， 剩余座位: " + SeatUtils.getSeatNum(info.getCangwei_data()) +"， 单程: " + info.getOnewayPrice() + "元\t\t 往返: " + info.getRoundtripPrice()+"元");
+							//System.out.println(j+". 剩余的票数：" + " (" + SeatUtils.getSeatType(info.getBasicCabin()) + ") " +SeatUtils.getSeatNum(info.getCangwei_data()));							
+							int TecikNum=SeatUtils.getSeatNum(info.getCangwei_data());
+							SumTecikNum+=TecikNum;
+							//System.out.println();
+							//j++;
+						}
+					}
+					System.out.println("剩余的票数：" + SumTecikNum);
+
+				}
+				/*for(SeatInfo info : f.getSeatList()){					
+					//int j=0;
+					//System.out.println("座位类型："+info.getCangwei() + " (" + SeatUtils.getSeatType(cangW) + ")" + "， 剩余座位: " + SeatUtils.getSeatNum(info.getCangwei_data()) +"， 单程: " + info.getOnewayPrice() + "元\t\t 往返: " + info.getRoundtripPrice()+"元");
 					if(f.getSeatList().size()!=0 && SeatUtils.getSeatType(info.getBasicCabin()).equals(cangW)){
+						System.out.println("座位类型："+info.getCangwei() + " (" + SeatUtils.getSeatType(info.getBasicCabin()) + ")" + "， 剩余座位: " + SeatUtils.getSeatNum(info.getCangwei_data()) +"， 单程: " + info.getOnewayPrice() + "元\t\t 往返: " + info.getRoundtripPrice()+"元");
 						tempFlil.add(f);
 					}
-					//System.out.println("座位类型："+info.getCangwei() + " (" + SeatUtils.getSeatType(cangW) + ")" + "， 剩余座位: " + SeatUtils.getSeatNum(info.getCangwei_data()) +"， 单程: " + info.getOnewayPrice() + "元\t\t 往返: " + info.getRoundtripPrice()+"元");
-				}
-				
+					//j++;
+				}*/
+				i++;
 			}
 		}
+		System.out.println("列表的长度："+fliL.size());
 		System.out.println("列表的长度："+tempFlil.size());
 		
 		if(tempFlil.size()==0){
