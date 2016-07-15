@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>
-
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -16,9 +15,10 @@
 <link href="<%=basePath %>console/css/cityChoose.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script><%-- 
 <script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
+ --%>
+ <script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
 <style>
 	body{margin:0px; padding:0px;}
 	.product .ziDiv{width:100%; margin-left:auto; margin-right:auto; border-bottom:#cccccc solid 1px;}
@@ -77,13 +77,13 @@
        <div class="ziDiv mudiplace">
 	   		<div class="shi">
 				<span id="shi01">国内/国际出发城市</span>
-				<span id="shi001" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
+				<span id="shi001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
 				<span id="shi0001">宝安机场T3</span>
 			</div>
-			<div class="to dancheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wang.gif" width="35"></div>
+			<div class="to dancheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wang.gif" width="35"/></div>
 			<div class="zhong">
 				<span id="zhong01">国内/国际到达城市</span>
-				<span id="zhong001" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
+				<span id="zhong001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
 				<span id="zhong0001">首都机场T3</span>			
 			</div>
 			<div style="clear:both;"></div>
@@ -96,7 +96,7 @@
 	   </div>
 	   <!--舱位-->
 	   <div class="ziDiv seatChoose">
-	   		<div class="zuoweiFloat"><img src="<%=basePath %>console/images/zuowei.gif" width="45"></div>
+	   		<div class="zuoweiFloat"><img src="<%=basePath %>console/images/zuowei.gif" width="45"/></div>
 			<div class="cangwei">
 				<div class="cang on" style="border-radius:7px 0 0 7px;">经济舱</div>
 				<div class="cang">头等舱</div>
@@ -115,13 +115,13 @@
        <div class="ziDiv mudiplace">
 	   		<div class="shi">
 				<span>国内/国际出发城市</span>
-				<span id="shif02" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
+				<span id="shif02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
 				<span id="shif03">宝安机场T3</span>
 			</div>
 			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wangfan.gif" width="35"></div>
 			<div class="zhong">
 				<span>国内/国际到达城市</span>
-				<span id="zhongf02" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
+				<span id="zhongf02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
 				<span id="zhongf03">首都机场T3</span>			
 			</div>
 			<div style="clear:both;"></div>
@@ -134,7 +134,7 @@
 	   </div>
 	   <!--舱位-->
 	   <div class="ziDiv seatChoose">
-	   		<div class="zuoweiFloat"><img src="<%=basePath%>console/images/zuowei.gif" width="45"></div>
+	   		<div class="zuoweiFloat"><img src="<%=basePath%>console/images/zuowei.gif" width="45"/></div>
 			<div class="cangwei">
 				<div class="cang1 on" style="border-radius:7px 0 0 7px;">经济舱</div>
 				<div class="cang1">头等舱</div>
@@ -151,71 +151,18 @@
 </div>
 
 <!--省份-->
-<div class="cityContent">
-		<div class="priv">
-			<div class="smallPriv">省份</div>
-			<div class="smallKong"></div>
-			<div style="clear:both;"></div>
-		</div>
-		<div class="A_G">
-			<div class="zm">A-G</div>
-			<ul>
-				<li class="on">安徽省</li>
-				<li>北京市</li>
-				<li>重庆市</li>
-				<li>福建省</li>
-				<li>甘肃省</li>
-				<li>广东省</li>
-				<li>广西壮族自治区</li>
-				<li>贵州省</li>
-			</ul>
-			<div style="clear:both;"></div>
-		</div>
-		
-		<div class="A_G">
-			<div class="zm">H-K</div>
-			<ul>
-				<li>海南省</li>
-				<li>河北省</li>
-				<li>黑龙江省</li>
-				<li>河南省</li>
-				<li>湖北省</li>
-				<li>湖南省</li>
-				<li>江苏省</li>
-				<li>江西省</li>
-				<li>吉林省</li>
-			</ul>
-			<div style="clear:both;"></div>
-		</div>
-		<div class="A_G">
-			<div class="zm">H-K</div>
-			<ul>
-				<li>辽宁省</li>
-				<li>内蒙古</li>
-				<li>宁夏回族自治区</li>
-				<li>青海省</li>
-				<li>山东省</li>
-				<li>上海市</li>
-				<li>山西省</li>
-				<li>陕西省</li>
-				<li>四川省</li>
-			</ul>
-			<div style="clear:both;"></div>
-		</div>
-		<div class="A_G" style="border:none;">
-			<div class="zm">H-K</div>
-			<ul>
-				<li>天津市</li>
-				<li>新疆</li>
-				<li>西藏自治区</li>
-				<li>云南省</li>
-				<li>浙江省</li>
-			</ul>
-			<div style="clear:both;"></div>
-		</div>
+<div id="cityContent">
+	<div class="cityName">
+		<ul>
+			<li>海口</li>
+			<li>三亚</li>
+			<li>北京</li>
+		</ul>
+	</div>
 </div>
 </body>
 <script>
+	var gofind=true;
 	$(function(){
 		//目的地和出发地切换功能(单程)
 		$(".dancheng").click(function(){
@@ -256,14 +203,70 @@
 			format : "-",
 			Timeout : 100
 		});
+		
+		//城市选择
+		$(".CityChoose").click(function(){	
+			$(this).addClass("CityC");
+			$("#cityContent").css("display","block");
+		});
+		
+		//城市子类信息选择
+		$(".cityName>ul>li").click(function(){
+			$(".CityC").text($(this).text());
+			$(".CityChoose").removeClass("CityC");
+			$("#cityContent").css("display","none");
+		});
 	});
 	
 	function aa(){
-		alert($(".jcD01 ").val());
+		var chufCity = $("#shi001").text();
+		var daodCity = $("#zhong001").text();
+		var cangW = $(".cang.on").text();
+		if(cangW=="经济舱"){
+			cangW="Y";
+		}else if(cangW=="头等舱"){
+			cangW="F";
+		}else if(cangW=="商务舱"){
+			cangW="C";
+		}
+		var dateTime = $(".jcD01").val();
+		if(dateTime==""){
+			alert("请选择出发日期");
+			gofind=false;
+			return false;
+		}else{
+			gofind=true;
+		}
+		if(gofind==true){
+			window.location.href="mudiPlace.jsp?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime;
+			<%-- $.ajax({
+				url:"<%=basePath%>/wechatController/find/planTek.action",
+				type:"POST",
+				data:{"chufCity":chufCity,"daodCity":daodCity,"cangW":cangW,"dateTime":dateTime},
+				dataType:"json",
+				success:function(data){
+					console.log(data.listDate);
+					var getDate=data.listDate;
+					alert(getDate.length);
+					alert(getDate[0].airCode);
+					alert(getDate[0].seatList[0].basicCabin);
+					alert("能行");
+				},error:function(){
+					alert("不行");
+				}
+			});		 --%>
+		}
 	}
 	
 	function bb(){
-		alert($(".jcD02").val());
+		alert("返程出发城市:"+$("#shif02").text());
+		alert("返程到达城市:"+$("#zhongf02").text());
+		alert("舱位："+$(".cang1.on").text());
+		if($(".jcD02").val()==""){
+			alert("请选择返程日期");
+		}else{
+			alert("日期："+$(".jcD02").val());			
+		}
 	}
 </script>
 </html>
