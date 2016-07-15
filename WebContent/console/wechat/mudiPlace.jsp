@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>深圳-->北京</title>
-<link rel="stylesheet" type="text/css  href="<%=basePath%>console/css/bannerPlanTek.css" />
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/bannerPlanTek.css" />
 <style type="text/css">
 	*{padding:0px;margin:0px;}
 	body{text-align:center; font-size:14px; font:normal Helvetica, Arial, sans-serif; background-color:#ffffff; font-family:Microsoft JhengHei;}
@@ -58,13 +58,13 @@ $(function(){
 	
 	var tjTicket=1;//推荐的机票
 	if(tjTicket==1){
-		var tjList='<li class="tjTicket"><div class="tuijianImg tuijianLan"><img src="images/tuijianImg.jpg" /></div><div class="hanban tuijianLan"><div class="hanbanName"><span style="line-height:40px;">深圳-->北京</span></div><div class="hanbanCompany"><span style="line-height:20px;">HU7710 海南航空</span></div></div><div class="money tuijianLan"><div class="moneyPay"><span style="line-height:35px; color:#FF8201;">￥806起</span></div><div class="zhekouPay"><span style="line-height:20px; font-size:12px;">4.5折</span></div></div><div style="clear:both;"></div></li>';
+		var tjList='<li class="tjTicket"><div class="tuijianImg tuijianLan"><img src="<%=basePath %>console/images/tuijianImg.jpg" /></div><div class="hanban tuijianLan"><div class="hanbanName"><span style="line-height:40px;">深圳-->北京</span></div><div class="hanbanCompany"><span style="line-height:20px;">HU7710 海南航空</span></div></div><div class="money tuijianLan"><div class="moneyPay"><span style="line-height:35px; color:#FF8201;">￥806起</span></div><div class="zhekouPay"><span style="line-height:20px; font-size:12px;">4.5折</span></div></div><div style="clear:both;"></div></li>';
 		$("#TicketList").append(tjList);
 	}
 	
 	//航班列表
 	for(var i=0;i<4;i++){
-		var notTjList='<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">07:25</div><div class="EndTime lineHeight">10:30</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 A323</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">二等座436张</div></div><div style="clear:both;"></div></li>';
+		var notTjList='<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">07:25</div><div class="EndTime lineHeight">10:30</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 A323</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">二等座436张</div></div><div style="clear:both;"></div></li>';
 		$("#TicketList").append(notTjList);
 	}
 	
@@ -90,7 +90,7 @@ $(function(){
 //重新加载指定js文件
 function loadjs(){
 	var jsElem = document.createElement('script');
-	jsElem.src='<%=basePath%>js/bannerPlanTek.js';
+	jsElem.src='<%=basePath%>console/js/bannerPlanTek.js';
 	document.getElementsByTagName('head')[0].appendChild(jsElem);
 }
 </script>
