@@ -3,10 +3,16 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+<%
+	String chufCity=new String(request.getParameter("chufCity").getBytes("ISO-8859-1"),"utf-8");
+	String daodCity=new String(request.getParameter("daodCity").getBytes("ISO-8859-1"),"utf-8");
+	String cangW=new String(request.getParameter("cangW").getBytes("ISO-8859-1"),"utf-8");
+	String dateTime=request.getParameter("dateTime");
+ %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>深圳-->北京</title>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/bannerPlanTek.css" />
@@ -55,17 +61,47 @@
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script>
 $(function(){ 
+	var chufCity="<%=chufCity %>";
+	var daodCity="<%=daodCity %>";
+	var cangW="<%=cangW %>";
+	var dateTime="<%=dateTime %>";
+	alert(chufCity);
+	alert(daodCity);
+	alert(cangW);
+	alert(dateTime);
+	
+	//开始通过传递过来的几个参数进行后台查询之后加载查询结果
+	$.ajax({
+			url:"<%=basePath%>/wechatController/find/planTek.action",
+			type:"POST",
+			data:{"chufCity":chufCity,"daodCity":daodCity,"cangW":cangW,"dateTime":dateTime},
+			dataType:"json",
+			success:function(data){
+				if(data.msg==1){
+					console.log(data.listDate);
+					var getDate=data.listDate;
+					for(var i=0;i<getDate.length;i++){
+						var notTjList = '<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+getDate[i].depTime+'</div><div class="EndTime lineHeight">'+getDate[i].arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">二等座436张</div></div><div style="clear:both;"></div></li>';
+						$("#TicketList").append(notTjList);
+					}
+				}else if(data.msg==0){
+					alert("没有查找到该航班的信息");
+				}else{
+					alert("查找数据错误");
+				}
+				/* alert(getDate.length);
+				alert(getDate[0].airCode);
+				alert(getDate[0].seatList[0].basicCabin);
+				alert("能行"); */
+			},error:function(){
+				alert("不行");
+			}
+	});
 	
 	var tjTicket=1;//推荐的机票
 	if(tjTicket==1){
 		var tjList='<li class="tjTicket"><div class="tuijianImg tuijianLan"><img src="<%=basePath %>console/images/tuijianImg.jpg" /></div><div class="hanban tuijianLan"><div class="hanbanName"><span style="line-height:40px;">深圳-->北京</span></div><div class="hanbanCompany"><span style="line-height:20px;">HU7710 海南航空</span></div></div><div class="money tuijianLan"><div class="moneyPay"><span style="line-height:35px; color:#FF8201;">￥806起</span></div><div class="zhekouPay"><span style="line-height:20px; font-size:12px;">4.5折</span></div></div><div style="clear:both;"></div></li>';
 		$("#TicketList").append(tjList);
-	}
-	
-	//航班列表
-	for(var i=0;i<4;i++){
-		var notTjList='<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">07:25</div><div class="EndTime lineHeight">10:30</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 A323</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">二等座436张</div></div><div style="clear:both;"></div></li>';
-		$("#TicketList").append(notTjList);
 	}
 	
 	//推荐的机票点击时执行

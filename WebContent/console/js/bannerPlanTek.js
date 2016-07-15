@@ -107,7 +107,7 @@ $(function(){
 	
 	//鼠标移动到右切换图标上时
 	$(".bar-right").mouseover(function(){
-		$(this).css("background","url(images/arr-bg.png)");
+		$(this).css("background","url(../images/arr-bg.png)");
 		$(this).find("em").addClass("emcss");
 		}).mouseleave(function(){
 		$(this).css("background","none");

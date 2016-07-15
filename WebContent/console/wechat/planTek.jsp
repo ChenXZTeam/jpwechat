@@ -100,7 +100,7 @@
 			<div class="cangwei">
 				<div class="cang on" style="border-radius:7px 0 0 7px;">经济舱</div>
 				<div class="cang">头等舱</div>
-				<div class="cang" style="border-right:#CCCCCC solid 1px; border-radius:0 7px 7px 0;">商务舱</div>
+				<div class="cang" style="border-right:#CCCCCC solid 1px; border-radius:0 7px 7px 0;">公务舱</div>
 			</div>
 			<div style="clear:both;"></div>
 	   </div>
@@ -138,7 +138,7 @@
 			<div class="cangwei">
 				<div class="cang1 on" style="border-radius:7px 0 0 7px;">经济舱</div>
 				<div class="cang1">头等舱</div>
-				<div class="cang1" style="border-right:#CCCCCC solid 1px; border-radius:0 7px 7px 0;">商务舱</div>
+				<div class="cang1" style="border-right:#CCCCCC solid 1px; border-radius:0 7px 7px 0;">公务舱</div>
 			</div>
 			<div style="clear:both;"></div>
 	   </div>
@@ -222,13 +222,6 @@
 		var chufCity = $("#shi001").text();
 		var daodCity = $("#zhong001").text();
 		var cangW = $(".cang.on").text();
-		if(cangW=="经济舱"){
-			cangW="Y";
-		}else if(cangW=="头等舱"){
-			cangW="F";
-		}else if(cangW=="商务舱"){
-			cangW="C";
-		}
 		var dateTime = $(".jcD01").val();
 		if(dateTime==""){
 			alert("请选择出发日期");
