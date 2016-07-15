@@ -56,6 +56,37 @@ public class RDwechatUserService {
 	}
 	
 	/**
+	 * @Title: loginService(用于登录验证) 
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	public boolean  loginService(String userName,String password){
+		String hql="from RD_wechatUser u where (u.UserName='"+userName+"' OR u.PhoneNum='"+userName+"') AND u.PassWord='"+password+"'";
+		List list=gDao.find(hql);
+		if(list.size()>0){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @title IsExistServ(检查用户名和手机是否被注册过)
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	
+	public boolean  IsExistServ(String userName){
+		String hql="from RD_wechatUser u where u.UserName='"+userName+"' OR u.PhoneNum='"+userName+"'";
+		List list=gDao.find(hql);
+		if(list.size()>0){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * 
 	 * @Title: findbyOpenids 
 	 * @Description: 查询绑定对象

@@ -1,11 +1,10 @@
 /* ³ÇÊÐÑ¡ÔñÆ÷*/
 
-.cityContent{width:250px; height:370px; border:#cccccc solid 1px; margin-top:5px; z-index:1000; position:absolute; background-color:#ffffff; display:none;}
-.cityContent .priv{background-color:#F0F0F0;}
-.cityContent .priv .smallPriv{width:40%; float:left; padding-bottom:10px; padding-top:10px; background-color:#FFFFFF; text-align:center; border-right:#CCCCCC solid 1px; color:#46A4FF; font-size:14px;}
-.cityContent .priv .smallKong{width:59%; float:left; padding-bottom:18px; padding-top:17px; border-bottom:#cccccc solid 1px;}
-.cityContent .A_G{padding:0px; padding-top:5px; padding-bottom:5px; border-bottom:#CCCCCC solid 1px;}
-.cityContent .A_G .zm{width:20%; text-align:center; float:left; padding-top:3px; font-size:14px;}
-.cityContent .A_G ul{width:80%; list-style-type:none; padding:0px; margin:0px; float:left;}
-.cityContent .A_G ul>li{padding:5px 10px; font-size:12px; float:left;}
-.onCity{border:1px solid #46A4FF; background-color:#46A4FF; border-radius:2px; color:#FFFFFF; height:12px;}	
+#cityContent{width:100%; height:1000px; border:#ff0000 solid 1px; top:0px; z-index:1000; position:absolute; background-color:#ffffff; display:none;}
+#cityContent .cityName{width:100%; height:100px; border:#ff0000 solid 1px; background-color:#ff0000; display:block;}
+#cityContent .cityName ul{margin:0px; padding:0px; list-style-type:none; border:1px solid #ff0000;}
+#cityContent .cityName ul li{border:1px solid #ff0000; float:left; cursor:pointer;}
+
+
+
+
