@@ -54,7 +54,7 @@
 </style>
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script>
-$(function(){
+$(function(){ 
 	
 	var tjTicket=1;//推荐的机票
 	if(tjTicket==1){
