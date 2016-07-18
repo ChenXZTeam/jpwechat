@@ -15,9 +15,9 @@ public class OptimizeECUtils {
 
 	// 复合查询，返回完整的航班信息
 	public List<FlightInfo> query(String org, String dst, String date, String airCode){
-		List<SkSegment> skList = new ECUtils().sk(org, dst, date, null, "true", null); // 查询飞行周期
-		List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null); // 查询运价
-		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, null, null, null, null, null); // 查询座位可用
+		List<SkSegment> skList = new ECUtils().sk(org, dst, date, airCode, "true", null); // 查询飞行周期
+		List<FDItem> fdList = new ECUtils().fd(org, dst, date, airCode, null, null, null); // 查询运价
+		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, airCode, null, null, null, null); // 查询座位可用
 		
 		List<FlightInfo> list = new ArrayList<FlightInfo>(); // 整合数据结果
 		
