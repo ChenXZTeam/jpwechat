@@ -65,10 +65,10 @@ $(function(){
 	var daodCity="<%=daodCity %>";
 	var cangW="<%=cangW %>";
 	var dateTime="<%=dateTime %>";
-	alert(chufCity);
+/* 	alert(chufCity);
 	alert(daodCity);
 	alert(cangW);
-	alert(dateTime);
+	alert(dateTime); */
 	
 	//开始通过传递过来的几个参数进行后台查询之后加载查询结果
 	$.ajax({
@@ -81,8 +81,11 @@ $(function(){
 					console.log(data.listDate);
 					var getDate=data.listDate;
 					for(var i=0;i<getDate.length;i++){
+						var basicCabin="";	//舱位的类型（如：经济舱、头等舱、公务舱）
+						var onewayPrice=""; //单程需要的价格
+						var sum=0;
 						for(var j=0;j<getDate[i].seatList.length;j++){
-							var basicCabin = getDate[i].seatList[j].basicCabin;
+							basicCabin = getDate[i].seatList[j].basicCabin;
 							if(basicCabin=="C"){
 								basicCabin="公务舱";
 							}else if(basicCabin=="F"){
@@ -90,13 +93,14 @@ $(function(){
 							}else if(basicCabin=="Y"){
 								basicCabin="经济舱";
 							}
-							
-							if(basicCabin==cangW){						
-								var notTjList = '<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+getDate[i].depTime+'</div><div class="EndTime lineHeight">'+getDate[i].arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥953</div><div class="zuowei lineHeight" style="font-size:12px;">'+basicCabin+'436张</div></div><div style="clear:both;"></div></li>';
-								$("#TicketList").append(notTjList);								
-							}
-							
+							if(basicCabin==cangW){								
+								var cangwei_data = parseInt(tekNum(getDate[i].seatList[j].cangwei_data));
+								sum+=cangwei_data;//剩余的票数
+								onewayPrice = getDate[i].seatList[j].onewayPrice;//价钱
+							}						
 						}
+						var notTjList = '<li class="notTjTicket"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+getDate[i].depTime+'</div><div class="EndTime lineHeight">'+getDate[i].arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 3时05分</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥'+onewayPrice+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cangW+''+sum+'张</div></div><div style="clear:both;"></div></li>';
+						$("#TicketList").append(notTjList);	
 					}
 				}else if(data.msg==0){
 					alert("没有查找到该航班的信息");
@@ -124,8 +128,7 @@ $(function(){
 		$(this).siblings().remove('.banner');
 		$(this).after(tekInform);
 		loadjs();
-	});
-	
+	});	
 	
 	//选中航班时执行
 	$(".notTjTicket").click(function(){
@@ -136,6 +139,18 @@ $(function(){
 	});
 	
 });
+
+//计算剩余票价张数的方法
+function tekNum(date){
+	if(date=="A"){
+		date=9;
+	}else if(date=="L"||date=="Q"||date=="S"||date=="C"||date=="X"||date=="Z"){
+		date="";
+	}else if(date!=""){
+		date=date;
+	}
+	return date;
+}
 
 //重新加载指定js文件
 function loadjs(){
