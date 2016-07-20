@@ -114,12 +114,6 @@ $(".logoBtn a").click(function(){
 	}
 	
 	if(fale==true){
-		//上面的条件正确时候改变按钮格式
-		$(this).css("background-color","#dddddd");
-		$(this).css("color","#666666");
-		$(this).css("border","#cccccc solid 1px");
-		$(this).html("");
-		$(this).html("加载中...");
 		$.ajax({
 				url: "<%=basePath %>wechatController/wechat/login.action",
 				type: "POST",
@@ -128,8 +122,13 @@ $(".logoBtn a").click(function(){
 				},
 				dataType: "json",
 				success: function(result) {
-					alert("数据返回成功");
-					if(result.msg==1){
+					if(result.msg==1){						
+						//上面的条件正确时候改变按钮格式
+						$(".logoBtn a").css("background-color","#dddddd");
+						$(".logoBtn a").css("color","#666666");
+						$(".logoBtn a").css("border","#cccccc solid 1px");
+						$(".logoBtn a").html("");
+						$(".logoBtn a").html("加载中...");
 						if(result.url)window.location.href=result.url;//跳转到指定界面
 					}else{
 						alert("登录错误");
