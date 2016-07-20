@@ -114,11 +114,12 @@ public class RDwechatUserController {
 	   
 	@RequestMapping({"/wechat/login.action"})
 	@ResponseBody
-	public Map<String, Object> wechatLogo(String userName,String PassWord,HttpServletRequest httpReq){
+	public Map<String, Object> wechatLogo(String userName,String PassWord,HttpServletRequest httpReq, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String PassWords=Current.md5(PassWord);
 		boolean YesOrNo = RDUserService.loginService(userName,PassWords);  
 		if(YesOrNo==true){
+			session.setAttribute("userName", userName);
 			String path = httpReq.getContextPath();
 		    String basePath = httpReq.getScheme() + "://" + httpReq.getServerName() + ":" + httpReq.getServerPort() + path + "/";
 		    map.put("url", basePath+"wechatController/page/index.action");//传递地址到前台，实现页面的跳转

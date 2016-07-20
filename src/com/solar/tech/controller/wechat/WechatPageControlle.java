@@ -35,4 +35,13 @@ public class WechatPageControlle {
 	public String resultMine() {
 		return "wechat/orderList";
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/YDticket.action")
+	public String yudiTek() {
+		return "wechat/waritInfo";
+	}
 }
