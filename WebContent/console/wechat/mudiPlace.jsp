@@ -15,7 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>深圳-->北京</title>
-<%-- <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/bannerPlanTek.css" /> --%>
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <style type="text/css">
 	*{padding:0px;margin:0px;}
 	body{text-align:center; font-size:14px; font:normal Helvetica, Arial, sans-serif; background-color:#ffffff; font-family:Microsoft JhengHei;}
@@ -75,6 +75,10 @@ $(function(){
 			type:"POST",
 			data:{"chufCity":chufCity,"daodCity":daodCity,"cangW":cangW,"dateTime":dateTime},
 			dataType:"json",
+			beforeSend:function(){
+				$("#loading").css("display","block");
+			},
+			complete:function(){$("#loading").css("display","none");},
 			success:function(data){
 				if(data.msg==1){
 					console.log(data.listDate);
@@ -209,5 +213,18 @@ function loadjs(){
 	<!--机票列表--> 
 	
 </ul>
+
+<!-- 加载等待界面 -->
+<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="first_object"></div>
+				<div class="object" id="second_object"></div>
+				<div class="object" id="third_object"></div>
+				<div class="object" id="forth_object"></div>
+			</div>
+			<div style="color:#ffffff; position:absolute; left:37%; top:58%;">数据加载中...</div>
+		</div>
+	</div>
 </body>
 </html>
