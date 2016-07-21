@@ -2,33 +2,59 @@
 
 #CityCH{text-align:left; position:absolute; top:0px; left:0px; background:#ffffff; width:100%; z-index:999; display:none;}
 
-#CityCH >#cityFind{overflow:hidden; text-align:center; padding:5px; padding-top:15px;}
-#CityCH >#cityFind>input{ outline:none; border:#dddddd solid 1px; height:25px; width:73%; float:left; font-size:13px; color:#999999; padding-left:10px;}
-#CityCH >#cityFind>button{ outline:none; border:#dddddd solid 1px; height:29px; width:20%; float:right; background:none;}
+#CityCH #cityFind{overflow:hidden; text-align:center; padding:5px; padding-top:15px;}
+#CityCH #cityFind>input{ outline:none; border:#dddddd solid 1px; height:25px; width:73%; float:left; font-size:13px; color:#999999; padding-left:10px;}
+#CityCH #cityFind>button{ outline:none; border:#dddddd solid 1px; height:29px; width:20%; float:right; background:none;}
 
-#CityCH >#remenCity{overflow:hidden; height:auto; padding:10px 5px;}
-#CityCH >#remenCity>#remenTitle{margin-left:1%; border-bottom:#dddddd solid 1px; margin-bottom:4px; padding-bottom:5px;}
-#CityCH >#remenCity>#remenTitle>span{font-size:13px; color:#666666;}
-#CityCH >#remenCity>ul{list-style-type:none; padding:0px; margin:0px; overflow:hidden;}
-#CityCH >#remenCity>ul>li{width:19.2222%; font-size:13px; display:block; float:left; margin-top:5px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);/* margin-left:2%;  padding:2px 5px;*/ text-align:center;}
-#CityCH >#remenCity>ul>li>.remenLi{width:50px; height:20px; line-height:22px; overflow:hidden; border-radius:3px; border:#dddddd solid 1px; margin-left:auto; margin-right:auto;}
+#CityCH #remenCity{overflow:hidden; height:auto; padding:10px 5px;}
+#CityCH #remenCity>#remenTitle{margin-left:1%; border-bottom:#dddddd solid 1px; margin-bottom:4px; padding-bottom:5px;}
+#CityCH #remenCity>#remenTitle>span{font-size:13px; color:#666666;}
+#CityCH #remenCity>ul{list-style-type:none; padding:0px; margin:0px; overflow:hidden;}
+#CityCH #remenCity>ul>li{width:19.2222%; font-size:13px; display:block; float:left; margin-top:5px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);/* margin-left:2%;  padding:2px 5px;*/ text-align:center;}
+#CityCH #remenCity>ul>li>.remenLi{width:50px; height:20px; line-height:22px; overflow:hidden; border-radius:3px; border:#dddddd solid 1px; margin-left:auto; margin-right:auto;}
 
-#CityCH >#CityList{}
-#CityCH >#CityList>.zimuResult{}
-#CityCH >#CityList>.zimuResult>.zimuTitle{background:#eeeeee; padding:3px 0px 3px 10px; /*border-bottom:#CCCCCC solid 1px;*/}
-#CityCH >#CityList>.zimuResult>.zimuTitle>span{ font-size:12px; color:#999999;}
-#CityCH >#CityList>.zimuResult>.cityUL{ padding:0px; margin:0px; list-style-type:none;}
-#CityCH >#CityList>.zimuResult>.cityUL>li{color:#999999; font-size:13px; padding:10px 5px 0px 10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);}
-#CityCH >#CityList>.zimuResult>.cityUL>li>.planeName{display:none;}
-#CityCH >#CityList>.zimuResult>.cityUL>li>.airportCode{display:none;}
+#CityCH #CityList{}
+#CityCH #CityList>.zimuResult{}
+#CityCH #CityList>.zimuResult>.zimuTitle{background:#eeeeee; padding:3px 0px 3px 10px; /*border-bottom:#CCCCCC solid 1px;*/}
+#CityCH #CityList>.zimuResult>.zimuTitle>span{ font-size:12px; color:#999999;}
+#CityCH #CityList>.zimuResult>.cityUL{ padding:0px; margin:0px; list-style-type:none;}
+#CityCH #CityList>.zimuResult>.cityUL>li{color:#999999; font-size:13px; padding:10px 5px 0px 10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);}
+#CityCH #CityList>.zimuResult>.cityUL>li>.planeName{display:none;}
+#CityCH #CityList>.zimuResult>.cityUL>li>.airportCode{display:none;}
 
 
-#CityCH >#zimuList{border:#dddddd solid 1px; width:15px; position:fixed; background-color:#FFFFFF; top:69px; right:0px; text-align:center; font-size:12px; z-index:99;}
-#CityCH >#zimuList>.zimuOne{margin-top:2px;}
-#CityCH >#zimuList>.zimuOne>a{ text-decoration:none; color:#999999;}
+#CityCH #zimuList{border:#dddddd solid 1px; width:15px; position:fixed; background-color:#FFFFFF; top:69px; right:0px; text-align:center; font-size:12px; z-index:99;}
+#CityCH #zimuList>.zimuOne{margin-top:2px;}
+#CityCH #zimuList>.zimuOne>a{ text-decoration:none; color:#999999;}
 
 
 /*
-#CityCH ul{list-style-type:none; padding:0px; display:none;}
-#CityCH ul li{color:#0000FF; margin-top:10px; border:#FF0000 solid 1px; cursor:pointer;}
+城市选择中的tab切换css
 */
+.fl{display:inline;float:left}
+.fr1{display:inline;float:left}
+.cf1:after{content:"";clear:both;display:block;height:0;overflow:hidden}
+.cf1{zoom:1}
+.pb10{padding-bottom:10px}
+.mt10{margin-top:10px}
+
+.CityTab{width:100%;margin:0px 0px; background:#fff; padding:0px; padding-top:10px; /* background-color:#F9F9F9; */}
+.CityTab .titleTab{height:20px; border-bottom:2px solid #e7e7e7; padding-bottom:10px; margin-left:0px;}
+.CityTab .titleTab h2{ font-size: 20px;font-family: "microsoft yahei";}
+.CityTab .titleTab-list{width:100%; position: relative; top: 6px;}
+.CityTab .titleTab-list li{width:50%; line-height: 20px; text-align:center; float: left; display:inline; -webkit-tap-highlight-color:rgba(255,255,255,0); cursor:pointer;}
+.CityTab .titleTab-list li.onCountry{color:#007AFF; font-weight: bold;}
+.CityTab .titleTab-list p{position:absolute;top:24px;left:0px;width:50%;height:7px;border-top:2px solid #007AFF; overflow: hidden; text-align: center;}
+
+.product1{position: relative; overflow: hidden; display: none; margin-top:10px;}
+/*.product1 ul{ position: absolute; left: 0px;}*/
+.product-wrap1 .show{ display: block;}
+/*.product-wrap1 .product1{text-align:center;}
+.product-wrap1 .product1 li{ float: left; display: inline; margin-left: 13px;background: #f3f3f3;border: 2px solid #fafafa; transition:0.4s;-webkit-transition:0.4s;-moz-transition: 0.4s;-o-transition: 0.4s;-ms-transition: 0.4s;}
+.product-wrap1 .product1 li.ml0{margin-left:0px;}
+.product-wrap1 .product1 li a.imgwrap{ display: block; width: 226px; height: 200px; background: #fff; text-align:center;}
+.product-wrap1 .product1 li p{padding-left: 15px;color: #666666;line-height: 22px;}
+.product-wrap1 .product1 li p a{ color: #666666; text-decoration: none;}
+.product-wrap1 .product1 li p a:hover{ color: #ff6600; text-decoration: none;}
+*/
+

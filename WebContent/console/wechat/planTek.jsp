@@ -15,9 +15,8 @@
 <link href="<%=basePath %>console/css/cityChoose.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script><%-- 
+<script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
 <script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js"></script>
- --%>
  <script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
 <style>
 	body{margin:0px; padding:0px;}
@@ -118,7 +117,7 @@
 				<span id="shif02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
 				<span id="shif03">宝安机场T3</span>
 			</div>
-			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wangfan.gif" width="35"></div>
+			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wangfan.gif" width="35"/></div>
 			<div class="zhong">
 				<span>国内/国际到达城市</span>
 				<span id="zhongf02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
@@ -151,6 +150,8 @@
 </div>
 
 <!--省份-->
+
+
 <div id="CityCH">
 	<!--输入框搜索部分-->
 	<div id="cityFind"><input type="text" class="citySearch" placeholder="城市查找"/><button>搜索</button></div>
@@ -173,377 +174,766 @@
 		</ul>
 		<div style="clear:both;"></div>
 	</div>
-	<!---城市详细列表部分---->
-	<div id="CityList">
-		<div id="A-a" class="zimuResult">
-			<div class="zimuTitle"><span>A</span></div>
-			<ul class="cityUL">
-				<li><span class="cityName">安纳巴</span><span class="planeName">安纳巴机场</span><span class="airportCode">AAE</span></li>
-				<li><span class="cityName">阿帕拉契科拉</span><span class="planeName">阿帕拉契科拉地区机场</span><span class="airportCode">AAF</span></li>
-				<li><span class="cityName">奥尔堡</span><span class="planeName">奥尔堡机场</span><span class="airportCode">AAL</span></li>
-				<li><span class="cityName">艾因</span><span class="planeName">艾因国际机场</span><span class="airportCode">AAN</span></li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="B-b" class="zimuResult">
-			<div class="zimuTitle"><span>B</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>			
-		</div>
-		<div id="C-c" class="zimuResult">
-			<div class="zimuTitle"><span>C</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="S-d" class="zimuResult">
-			<div class="zimuTitle"><span>D</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="E-e" class="zimuResult">
-			<div class="zimuTitle"><span>E</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="F-f" class="zimuResult">
-			<div class="zimuTitle"><span>F</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="G-g" class="zimuResult">
-			<div class="zimuTitle"><span>G</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="H-h" class="zimuResult">
-			<div class="zimuTitle"><span>H</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="I-i" class="zimuResult">
-			<div class="zimuTitle"><span>I</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="J-j" class="zimuResult">
-			<div class="zimuTitle"><span>J</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="K-k" class="zimuResult">
-			<div class="zimuTitle"><span>K</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="L-l" class="zimuResult">
-			<div class="zimuTitle"><span>L</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="M-m" class="zimuResult">
-			<div class="zimuTitle"><span>M</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="N-n" class="zimuResult">
-			<div class="zimuTitle"><span>N</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="O-o" class="zimuResult">
-			<div class="zimuTitle"><span>O</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="P-p" class="zimuResult">
-			<div class="zimuTitle"><span>P</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="Q-q" class="zimuResult">
-			<div class="zimuTitle"><span>Q</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="R-r" class="zimuResult">
-			<div class="zimuTitle"><span>R</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="S-s" class="zimuResult">
-			<div class="zimuTitle"><span>S</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="T-t" class="zimuResult">
-			<div class="zimuTitle"><span>T</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="U-u" class="zimuResult">
-			<div class="zimuTitle"><span>U</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="V-v" class="zimuResult">
-			<div class="zimuTitle"><span>V</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="W-w" class="zimuResult">
-			<div class="zimuTitle"><span>W</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="X-x" class="zimuResult">
-			<div class="zimuTitle"><span>X</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="Y-y" class="zimuResult">
-			<div class="zimuTitle"><span>Y</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-		<div id="Z-z" class="zimuResult">
-			<div class="zimuTitle"><span>Z</span></div>
-			<ul class="cityUL">
-				<li>啊是大富科技</li>
-				<li>阿舍</li>
-				<li>阿的防守打法</li>
-				<li>阿的份儿</li>
-				<li>阿水电费</li>
-				<li>阿非的个人头</li>
-				<li>阿要人头</li>
-				<li style="padding-bottom:10px;">阿的风格让他</li>
-			</ul>
-		</div>
-	</div>
-	<!---右边字母查找部分--->
-	<div id="zimuList">
-		<div class="zimuOne"><a href="#A-a">A</a></div>
-		<div class="zimuOne"><a href="#B-b">B</a></div>
-		<div class="zimuOne"><a href="#C-c">C</a></div>
-		<div class="zimuOne"><a href="#D-d">D</a></div>
-		<div class="zimuOne"><a href="#E-e">E</a></div>
-		<div class="zimuOne"><a href="#F-f">F</a></div>
-		<div class="zimuOne"><a href="#G-g">G</a></div>
-		<div class="zimuOne"><a href="#H-h">H</a></div>
-		<div class="zimuOne"><a href="#I-i">I</a></div>
-		<div class="zimuOne"><a href="#J-j">J</a></div>
-		<div class="zimuOne"><a href="#K-k">K</a></div>
-		<div class="zimuOne"><a href="#L-l">L</a></div>
-		<div class="zimuOne"><a href="#M-m">M</a></div>
-		<div class="zimuOne"><a href="#N-n">N</a></div>
-		<div class="zimuOne"><a href="#O-o">O</a></div>
-		<div class="zimuOne"><a href="#P-p">P</a></div>
-		<div class="zimuOne"><a href="#Q-q">Q</a></div>
-		<div class="zimuOne"><a href="#R-r">R</a></div>
-		<div class="zimuOne"><a href="#S-s">S</a></div>
-		<div class="zimuOne"><a href="#T-t">T</a></div>
-		<div class="zimuOne"><a href="#U-u">U</a></div>
-		<div class="zimuOne"><a href="#V-v">V</a></div>
-		<div class="zimuOne"><a href="#W-w">W</a></div>
-		<div class="zimuOne"><a href="#X-x">X</a></div>
-		<div class="zimuOne"><a href="#Y-y">Y</a></div>
-		<div class="zimuOne"><a href="#Z-z">Z</a></div>
-	</div>
+	
+	<div class="CityTab">
+	  <div class="titleTab cf1">
+	    <ul class="titleTab-list fr1 cf1 ">
+	      <li class="onCountry">国内</li>
+	      <li>国际</li>
+	      <p><b></b></p>
+	    </ul>
+	  </div>
+	  
+	  <div class="product-wrap1">
+	    <!--案例1：国内-->
+	    <div class="product1 show">
+	    	<!---城市详细列表部分---->
+			<div id="CityList">
+				<div id="A-a" class="zimuResult">
+					<div class="zimuTitle"><span>A</span></div>
+					<ul class="cityUL">
+						<li><span class="cityName">安纳巴</span><span class="planeName">安纳巴机场</span><span class="airportCode">AAE</span></li>
+						<li><span class="cityName">阿帕拉契科拉</span><span class="planeName">阿帕拉契科拉地区机场</span><span class="airportCode">AAF</span></li>
+						<li><span class="cityName">奥尔堡</span><span class="planeName">奥尔堡机场</span><span class="airportCode">AAL</span></li>
+						<li><span class="cityName">艾因</span><span class="planeName">艾因国际机场</span><span class="airportCode">AAN</span></li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="B-b" class="zimuResult">
+					<div class="zimuTitle"><span>B</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>			
+				</div>
+				<div id="C-c" class="zimuResult">
+					<div class="zimuTitle"><span>C</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="D-d" class="zimuResult">
+					<div class="zimuTitle"><span>D</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="E-e" class="zimuResult">
+					<div class="zimuTitle"><span>E</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="F-f" class="zimuResult">
+					<div class="zimuTitle"><span>F</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="G-g" class="zimuResult">
+					<div class="zimuTitle"><span>G</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="H-h" class="zimuResult">
+					<div class="zimuTitle"><span>H</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="I-i" class="zimuResult">
+					<div class="zimuTitle"><span>I</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="J-j" class="zimuResult">
+					<div class="zimuTitle"><span>J</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="K-k" class="zimuResult">
+					<div class="zimuTitle"><span>K</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="L-l" class="zimuResult">
+					<div class="zimuTitle"><span>L</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="M-m" class="zimuResult">
+					<div class="zimuTitle"><span>M</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="N-n" class="zimuResult">
+					<div class="zimuTitle"><span>N</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="O-o" class="zimuResult">
+					<div class="zimuTitle"><span>O</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="P-p" class="zimuResult">
+					<div class="zimuTitle"><span>P</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="Q-q" class="zimuResult">
+					<div class="zimuTitle"><span>Q</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="R-r" class="zimuResult">
+					<div class="zimuTitle"><span>R</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="S-s" class="zimuResult">
+					<div class="zimuTitle"><span>S</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="T-t" class="zimuResult">
+					<div class="zimuTitle"><span>T</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="U-u" class="zimuResult">
+					<div class="zimuTitle"><span>U</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="V-v" class="zimuResult">
+					<div class="zimuTitle"><span>V</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="W-w" class="zimuResult">
+					<div class="zimuTitle"><span>W</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="X-x" class="zimuResult">
+					<div class="zimuTitle"><span>X</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="Y-y" class="zimuResult">
+					<div class="zimuTitle"><span>Y</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="Z-z" class="zimuResult">
+					<div class="zimuTitle"><span>Z</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+			</div>
+			<!---右边字母查找部分--->
+			<div id="zimuList">
+				<div class="zimuOne"><a href="#A-a">A</a></div>
+				<div class="zimuOne"><a href="#B-b">B</a></div>
+				<div class="zimuOne"><a href="#C-c">C</a></div>
+				<div class="zimuOne"><a href="#D-d">D</a></div>
+				<div class="zimuOne"><a href="#E-e">E</a></div>
+				<div class="zimuOne"><a href="#F-f">F</a></div>
+				<div class="zimuOne"><a href="#G-g">G</a></div>
+				<div class="zimuOne"><a href="#H-h">H</a></div>
+				<div class="zimuOne"><a href="#I-i">I</a></div>
+				<div class="zimuOne"><a href="#J-j">J</a></div>
+				<div class="zimuOne"><a href="#K-k">K</a></div>
+				<div class="zimuOne"><a href="#L-l">L</a></div>
+				<div class="zimuOne"><a href="#M-m">M</a></div>
+				<div class="zimuOne"><a href="#N-n">N</a></div>
+				<div class="zimuOne"><a href="#O-o">O</a></div>
+				<div class="zimuOne"><a href="#P-p">P</a></div>
+				<div class="zimuOne"><a href="#Q-q">Q</a></div>
+				<div class="zimuOne"><a href="#R-r">R</a></div>
+				<div class="zimuOne"><a href="#S-s">S</a></div>
+				<div class="zimuOne"><a href="#T-t">T</a></div>
+				<div class="zimuOne"><a href="#U-u">U</a></div>
+				<div class="zimuOne"><a href="#V-v">V</a></div>
+				<div class="zimuOne"><a href="#W-w">W</a></div>
+				<div class="zimuOne"><a href="#X-x">X</a></div>
+				<div class="zimuOne"><a href="#Y-y">Y</a></div>
+				<div class="zimuOne"><a href="#Z-z">Z</a></div>
+			</div>
+	    </div>
+	    <!--案例2：国际-->
+	    <div class="product1">
+	    	<div id="CityList">
+				<div id="a-A" class="zimuResult">
+					<div class="zimuTitle"><span>A</span></div>
+					<ul class="cityUL">
+						<li><span class="cityName">安纳巴</span><span class="planeName">安纳巴机场</span><span class="airportCode">AAE</span></li>
+						<li><span class="cityName">阿帕拉契科拉</span><span class="planeName">阿帕拉契科拉地区机场</span><span class="airportCode">AAF</span></li>
+						<li><span class="cityName">奥尔堡</span><span class="planeName">奥尔堡机场</span><span class="airportCode">AAL</span></li>
+						<li><span class="cityName">艾因</span><span class="planeName">艾因国际机场</span><span class="airportCode">AAN</span></li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="b-B" class="zimuResult">
+					<div class="zimuTitle"><span>B</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>			
+				</div>
+				<div id="c-C" class="zimuResult">
+					<div class="zimuTitle"><span>C</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="d-D" class="zimuResult">
+					<div class="zimuTitle"><span>D</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="e-E" class="zimuResult">
+					<div class="zimuTitle"><span>E</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="f-F" class="zimuResult">
+					<div class="zimuTitle"><span>F</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="g-G" class="zimuResult">
+					<div class="zimuTitle"><span>G</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="h-H" class="zimuResult">
+					<div class="zimuTitle"><span>H</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="i-I" class="zimuResult">
+					<div class="zimuTitle"><span>I</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="j-J" class="zimuResult">
+					<div class="zimuTitle"><span>J</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="k-K" class="zimuResult">
+					<div class="zimuTitle"><span>K</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="l-L" class="zimuResult">
+					<div class="zimuTitle"><span>L</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="m-M" class="zimuResult">
+					<div class="zimuTitle"><span>M</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="n-N" class="zimuResult">
+					<div class="zimuTitle"><span>N</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="o-O" class="zimuResult">
+					<div class="zimuTitle"><span>O</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="p-P" class="zimuResult">
+					<div class="zimuTitle"><span>P</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="q-Q" class="zimuResult">
+					<div class="zimuTitle"><span>Q</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="r-R" class="zimuResult">
+					<div class="zimuTitle"><span>R</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="s-S" class="zimuResult">
+					<div class="zimuTitle"><span>S</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="t-T" class="zimuResult">
+					<div class="zimuTitle"><span>T</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="u-U" class="zimuResult">
+					<div class="zimuTitle"><span>U</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="v-V" class="zimuResult">
+					<div class="zimuTitle"><span>V</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="w-W" class="zimuResult">
+					<div class="zimuTitle"><span>W</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="x-X" class="zimuResult">
+					<div class="zimuTitle"><span>X</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="y-Y" class="zimuResult">
+					<div class="zimuTitle"><span>Y</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+				<div id="z-Z" class="zimuResult">
+					<div class="zimuTitle"><span>Z</span></div>
+					<ul class="cityUL">
+						<li>啊是大富科技</li>
+						<li>阿舍</li>
+						<li>阿的防守打法</li>
+						<li>阿的份儿</li>
+						<li>阿水电费</li>
+						<li>阿非的个人头</li>
+						<li>阿要人头</li>
+						<li style="padding-bottom:10px;">阿的风格让他</li>
+					</ul>
+				</div>
+			</div>
+			<!---右边字母查找部分--->
+			<div id="zimuList">
+				<div class="zimuOne"><a href="#a-A">A</a></div>
+				<div class="zimuOne"><a href="#b-B">B</a></div>
+				<div class="zimuOne"><a href="#c-C">C</a></div>
+				<div class="zimuOne"><a href="#d-D">D</a></div>
+				<div class="zimuOne"><a href="#e-E">E</a></div>
+				<div class="zimuOne"><a href="#f-F">F</a></div>
+				<div class="zimuOne"><a href="#g-G">G</a></div>
+				<div class="zimuOne"><a href="#h-H">H</a></div>
+				<div class="zimuOne"><a href="#i-I">I</a></div>
+				<div class="zimuOne"><a href="#j-J">J</a></div>
+				<div class="zimuOne"><a href="#k-K">K</a></div>
+				<div class="zimuOne"><a href="#l-L">L</a></div>
+				<div class="zimuOne"><a href="#m-M">M</a></div>
+				<div class="zimuOne"><a href="#n-N">N</a></div>
+				<div class="zimuOne"><a href="#o-O">O</a></div>
+				<div class="zimuOne"><a href="#p-P">P</a></div>
+				<div class="zimuOne"><a href="#q-Q">Q</a></div>
+				<div class="zimuOne"><a href="#r-R">R</a></div>
+				<div class="zimuOne"><a href="#s-S">S</a></div>
+				<div class="zimuOne"><a href="#t-T">T</a></div>
+				<div class="zimuOne"><a href="#u-U">U</a></div>
+				<div class="zimuOne"><a href="#v-V">V</a></div>
+				<div class="zimuOne"><a href="#w-W">W</a></div>
+				<div class="zimuOne"><a href="#x-X">X</a></div>
+				<div class="zimuOne"><a href="#y-Y">Y</a></div>
+				<div class="zimuOne"><a href="#z-Z">Z</a></div>
+			</div>
+	    </div>
+	   </div>
+	</div>	
 </div>
 </body>
 <script>
@@ -605,7 +995,7 @@
 		});
 		
 		//城市子类信息选择(城市链表)
-		$("#CityCH >#CityList>.zimuResult>.cityUL>li").click(function(){
+		$("#CityCH #CityList>.zimuResult>.cityUL>li").click(function(){
 			$(".CityC").text($(this).children(".cityName").text());
 			$(".CityC").next().text($(this).children(".planeName").text());
 			//alert($(this).children(".airportCode").text());
@@ -629,22 +1019,6 @@
 		}
 		if(gofind==true){
 			window.location.href="mudiPlace.jsp?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime;
-			<%-- $.ajax({
-				url:"<%=basePath%>/wechatController/find/planTek.action",
-				type:"POST",
-				data:{"chufCity":chufCity,"daodCity":daodCity,"cangW":cangW,"dateTime":dateTime},
-				dataType:"json",
-				success:function(data){
-					console.log(data.listDate);
-					var getDate=data.listDate;
-					alert(getDate.length);
-					alert(getDate[0].airCode);
-					alert(getDate[0].seatList[0].basicCabin);
-					alert("能行");
-				},error:function(){
-					alert("不行");
-				}
-			});		 --%>
 		}
 	}
 	

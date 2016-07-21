@@ -1,8 +1,8 @@
-// 城市选择器
+// 锟斤拷锟斤拷选锟斤拷锟斤拷
 $(function(){
-	//定义一个标签用户标识出发地和目的地
+	//锟斤拷锟斤拷一锟斤拷锟斤拷签锟矫伙拷锟斤拷识锟斤拷锟斤拷锟截猴拷目锟侥碉拷
 	var num;	
-	//单程的出发地
+	//锟斤拷锟教的筹拷锟斤拷锟斤拷
 	$("#shi001").click(function(e){
 		var X = $('#shi001').offset().top; 
 		var Y = $('#shi001').offset().left;
@@ -11,7 +11,7 @@ $(function(){
 		$(".cityContent").show();
 		num=0;
 	});
-	//单程的目的地
+	//锟斤拷锟教碉拷目锟侥碉拷
 	$("#zhong001").click(function(e){
 		var X = $('#zhong001').offset().top; 
 		var Y = $('#zhong001').offset().left;
@@ -21,7 +21,7 @@ $(function(){
 		num=1;
 	});
 	
-	//返程的出发地
+	//锟斤拷锟教的筹拷锟斤拷锟斤拷
 	$("#shif02").click(function(e){
 		var X = $('#shif02').offset().top; 
 		var Y = $('#shif02').offset().left;
@@ -30,7 +30,7 @@ $(function(){
 		$(".cityContent").show();
 		num=2;
 	});
-	//返程的目的地
+	//锟斤拷锟教碉拷目锟侥碉拷
 	$("#zhongf02").click(function(e){
 		var X = $('#zhongf02').offset().top; 
 		var Y = $('#zhongf02').offset().left;
@@ -40,7 +40,7 @@ $(function(){
 		num=3;
 	});
 	
-	//城市选择背景的方法
+	//锟斤拷锟斤拷选锟今背撅拷锟侥凤拷锟斤拷
 	$(".A_G ul>li").click(function(){
 		$(".A_G").find("li").removeClass('onCity');	
 		$(this).addClass('onCity').siblings().removeClass('onCity');
@@ -58,5 +58,13 @@ $(function(){
 		}
 		$(".cityContent").hide();
 	});	
-
+	
+	//璁捐妗堜緥鍒囨崲
+	$('.titleTab-list li').click(function(){
+		var liindex = $('.titleTab-list li').index(this);
+		$(this).addClass('onCountry').siblings().removeClass('onCountry');
+		$('.product-wrap1 div.product1').eq(liindex).fadeIn(10).siblings('div.product1').hide();
+		var liWidth = $('.titleTab-list li').width();
+		$('.CityTab .titleTab-list p').stop(false,true).animate({'left' : liindex * liWidth + 'px'},0);
+	});
 });
