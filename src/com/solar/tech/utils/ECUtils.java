@@ -351,38 +351,38 @@ public class ECUtils {
 		return null;
 	}
 	
-	// ��ƱԤ��
+	// 机票预订
 	public PnrResponse booking(BookContact bookContact, SegmentInfo[] segmentInfos, PassengerInfo[] passengerInfos, String ticketLimit,
 			SSRInfo[] ssrInfos, OSIInfo[] osiInfos, RMKInfo[] rmkInfos, Boolean team, String teamName, Integer teamPsgNum){
 		
-		BookingInfoRequest request = new BookingInfoRequest(); // �½�һ���������
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		BookingInfoRequest request = new BookingInfoRequest(); // 新建一个请求对象
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setContact(bookContact); // ������ϵ��
-		request.setSegments(segmentInfos); // ���ú�����Ϣ
-		request.setPassengers(passengerInfos); // �ÿ���Ϣ
-		request.setTicketLimit(ticketLimit); // ���ó�Ʊʱ��
+		request.setContact(bookContact); // 设置联系组
+		request.setSegments(segmentInfos); // 设置航段信息
+		request.setPassengers(passengerInfos); // 旅客信息
+		request.setTicketLimit(ticketLimit); // 设置出票时限
 		if(ssrInfos != null){
-			request.setSsrs(ssrInfos); // ���� SSR��
+			request.setSsrs(ssrInfos); // 设置 SSR组
 		}
-		request.setOsis(osiInfos); // ����OSI��
+		request.setOsis(osiInfos); // 设置OSI组
 		if(rmkInfos != null){
-			request.setRmks(rmkInfos); // ����RMK��
+			request.setRmks(rmkInfos); // 设置RMK组
 		}
 		if(team != null){
-			request.setTeam(team); // �Ŷӱ�־
+			request.setTeam(team); // 团队标志־
 		}else{
 			request.setTeam(false);
 		}
-		request.setTeamName(teamName); // �Ŷ���
-		request.setTeamPsgNum(teamPsgNum); // �Ŷ�����
+		request.setTeamName(teamName); // 团队名
+		request.setTeamPsgNum(teamPsgNum); // 团队人数
 		
-		CreatePnrClient client = new CreatePnrClient(); // �½�һ���ͻ��˶���
+		CreatePnrClient client = new CreatePnrClient(); // 新建一个客户端对象
 		try {
-			PnrResponse response =client.createPnr(request); // // �½�һ����Ӧ����
+			PnrResponse response =client.createPnr(request); // // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
-				return response; // ������Ӧ����
+				return response; // 返回响应对象
 			}
 		} catch (ObeException e) {
 			e.printStackTrace();
@@ -390,19 +390,19 @@ public class ECUtils {
 		return null;
 	}
 	
-	// ��ȡPNR
+	// 提取PNR
 	public RTResponse rt(String pnrNo){
-		PNRRequest request = new PNRRequest(); // �½�һ��������� 
+		PNRRequest request = new PNRRequest(); // 新建一个请求对象 
 
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token);  // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����pnr����
+		request.setPnrNo(pnrNo); // 设置pnr号码
 		try{
-			RtPnrClient rtClient = new RtPnrClient(); // �½�һ���ͻ��˶���
-			RTResponse response=rtClient.rt(request); // �½�һ����Ӧ����
+			RtPnrClient rtClient = new RtPnrClient(); // 新建一个客户端对象
+			RTResponse response=rtClient.rt(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
-				return response; // ������ȡ��PNR
+				return response; // 返回提取的PNR
 			}
 		}catch (ObeException e) {
 			e.printStackTrace();
@@ -410,21 +410,21 @@ public class ECUtils {
 		return null;
 	}
 	
-	// �޸ĳ�Ʊʱ��(ʱ�ޱ����ڷɻ����ʱ����ǰ)
+	// 修改出票时限(时限必须在飞机起飞时间以前)
 	public boolean tktl(String pnrNo, String tktl){ 
-		PNRTKTLRequest request = new PNRTKTLRequest(); // �½�һ��������� 
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		PNRTKTLRequest request = new PNRTKTLRequest(); // 新建一个请求对象 
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����Pnr����
-		request.setTktl(tktl);  // �����µĳ�Ʊʱ��
+		request.setPnrNo(pnrNo); // 设置Pnr号码
+		request.setTktl(tktl);  // 设置新的出票时限
 		
-		PNRManageClient client =new PNRManageClient(); // �½�һ���ͻ��˶���
+		PNRManageClient client =new PNRManageClient(); // 新建一个客户端对象
 		try{
-			OBECommonResponse response = client.tktl(request); // �½�һ����Ӧ����
+			OBECommonResponse response = client.tktl(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
 				if("OK".equals(response.getResultMsg())){
-					return true; // �����޸Ľ��
+					return true; // 返回修改结果
 				}
 			}
 		}catch (ObeException e) {
@@ -433,20 +433,20 @@ public class ECUtils {
 		return false;
 	}
 	
-	// ���ڳ�Ʊ
+	// 国内出票
 	public List<PsgInfo> drawer(String pnrNo){
-		DrawDomesticTicketRequest request = new DrawDomesticTicketRequest(); // �½�һ��������� 
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		DrawDomesticTicketRequest request = new DrawDomesticTicketRequest(); // 新建一个请求对象 
+		request.setOfficeNo(OFFICENO);// 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����Pnr�� 
-		request.setPrinterNo("1"); // ���ô�Ʊ���
+		request.setPnrNo(pnrNo); // 设置Pnr号 
+		request.setPrinterNo("1"); // 设置打票机号
 		
-		DrawDomesticTicketClient client = new DrawDomesticTicketClient(); // �½��ͻ��˶���
+		DrawDomesticTicketClient client = new DrawDomesticTicketClient(); // 新建客户端对象
 		try {
-			DrawDomesticTicketResponse response = client.drawDomesticTicket(request); // �½�һ����Ӧ����
+			DrawDomesticTicketResponse response = client.drawDomesticTicket(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
-				return response.getPassengerInfos(); // �������е��ÿͳ�Ʊ��Ϣ
+				return response.getPassengerInfos(); // 返回所有的旅客出票信息
 			}
 		} catch (ObeException e) {
 			// TODO Auto-generated catch block
@@ -502,22 +502,23 @@ public class ECUtils {
 		return false;
 	}
 	
-	// ɾ��PNR
+	// 删除PNR
 	public boolean cancelPnr(String pnrNo){
-		PNRCancelRequest request = new PNRCancelRequest(); // �½�һ��������� 
+		PNRCancelRequest request = new PNRCancelRequest(); // 新建一个请求对象 
 		
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����PNR��
+		request.setPnrNo(pnrNo); // 设置PNR号
 		
-		// �½��ͻ��˶���
+		// 新建客户端对象
 		PNRManageClient client = new PNRManageClient(); 
 		try {
-			OBECommonResponse response = client.cancelPnr(request);// �½�һ����Ӧ���� 
+			OBECommonResponse response = client.cancelPnr(request);// 新建一个响应对象 
 			if(response != null && response.getResultCode() == 0){
 				if("OK".equals(response.getResultMsg())){
-					return true; // ����ɾ����
+					System.out.print("删除成功");
+					return true; // 返回删除结果
 				}
 			}
 		} catch (ObeException e) {
@@ -526,7 +527,7 @@ public class ECUtils {
 		return false;
 	}
 	
-	// ͬ�ո���
+	// 同舱改期
 	public boolean changeTKTAirSegment(String pnrNo, String fltNoOld, String fltDateOld, String fltNoNew, String fltDateNew) { 
 		PNRTKTAirSegmentRequest request = new PNRTKTAirSegmentRequest(); // �½�һ���������
 		request.setOfficeNo(OFFICENO); // ����Office�� 

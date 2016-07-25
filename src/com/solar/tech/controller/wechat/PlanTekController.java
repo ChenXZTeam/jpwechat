@@ -25,6 +25,10 @@ public class PlanTekController {
 	@ResponseBody
 	public Map<String, Object> FindPlanTek(String chufCity,String daodCity,String cangW,String dateTime){
 		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println(chufCity);
+		System.out.println(daodCity);
+		System.out.println(cangW);
+		System.out.println(dateTime);
 		//PlanTekServ.findHB(chufCity, daodCity, cangW, dateTime);
 		List<FlightInfo> fliL = PlanTekServ.findHB(chufCity, daodCity, cangW, dateTime);
 		List<FlightInfo> tempFlil=removeRepeat(fliL);

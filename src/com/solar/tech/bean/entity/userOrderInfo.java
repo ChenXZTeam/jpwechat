@@ -32,6 +32,10 @@ public class userOrderInfo {
 	@Column(name = "UserName", length=100)
 	private String UserName;
 	
+	//订单预约编号
+	@Column(name="orderNum",length=100)
+	private String orderNum;
+	
 	//出发日期
 	@Column(name="chufDate",length=25)
 	private String chufDate;
@@ -147,6 +151,14 @@ public class userOrderInfo {
 
 	public void setChufTime(String chufTime) {
 		this.chufTime = chufTime;
+	}	
+
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
 	}
 
 	public String getDaodTime() {
