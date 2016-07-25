@@ -76,14 +76,16 @@
        <div class="ziDiv mudiplace">
 	   		<div class="shi">
 				<span id="shi01">国内/国际出发城市</span>
-				<span id="shi001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
-				<span id="shi0001">宝安机场T3</span>
+				<span id="shi001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">广州</span>
+				<span id="shi0001">广州新白云国际机场</span>
+				<span id="shi00001" style="display:none">CAN</span>
 			</div>
 			<div class="to dancheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wang.gif" width="35"/></div>
 			<div class="zhong">
 				<span id="zhong01">国内/国际到达城市</span>
 				<span id="zhong001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
-				<span id="zhong0001">首都机场T3</span>			
+				<span id="zhong0001">北京首都国际机场</span>
+				<span id="zhong00001" style="display:none">PEK</span>			
 			</div>
 			<div style="clear:both;"></div>
 	   </div>
@@ -116,12 +118,14 @@
 				<span>国内/国际出发城市</span>
 				<span id="shif02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
 				<span id="shif03">宝安机场T3</span>
+				<span id="shif04" style="display:none;"></span>
 			</div>
 			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wangfan.gif" width="35"/></div>
 			<div class="zhong">
 				<span>国内/国际到达城市</span>
 				<span id="zhongf02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
-				<span id="zhongf03">首都机场T3</span>			
+				<span id="zhongf03">首都机场T3</span>
+				<span id="zhongf04" style="display:none;"></span>			
 			</div>
 			<div style="clear:both;"></div>
 	   </div>
@@ -196,8 +200,8 @@
 						<li><span class="cityName">阿帕拉契科拉</span><span class="planeName">阿帕拉契科拉地区机场</span><span class="airportCode">AAF</span></li>
 						<li><span class="cityName">奥尔堡</span><span class="planeName">奥尔堡机场</span><span class="airportCode">AAL</span></li>
 						<li><span class="cityName">艾因</span><span class="planeName">艾因国际机场</span><span class="airportCode">AAN</span></li>
-						<li>阿的份儿</li>
-						<li>阿水电费</li>
+						<li><span class="cityName">北京</span><span class="planeName">北京首都国际机场</span><span class="airportCode">PEK</span></li>
+						<li><span class="cityName">广州</span><span class="planeName">广州新白云国际机场</span><span class="airportCode">	CAN</span></li>
 						<li>阿非的个人头</li>
 						<li>阿要人头</li>
 						<li style="padding-bottom:10px;">阿的风格让他</li>
@@ -943,12 +947,16 @@
 		$(".dancheng").click(function(){
 			var shi001=$("#shi001").text();
 			var shi0001=$("#shi0001").text();
+			var shi00001=$("#shi00001").text();
 			$("#shi001").text("");
 			$("#shi0001").text("");
+			$("#shi00001").text("");
 			$("#shi001").text($("#zhong001").text());
 			$("#shi0001").text($("#zhong0001").text());
+			$("#shi00001").text($("#zhong00001").text());
 			$("#zhong001").text(shi001);
 			$("#zhong0001").text(shi0001);
+			$("#zhong00001").text(shi00001);
 		});
 		//目的地和出发地切换功能(返程)
 		$(".fangcheng").click(function(){
@@ -998,6 +1006,7 @@
 		$("#CityCH #CityList>.zimuResult>.cityUL>li").click(function(){
 			$(".CityC").text($(this).children(".cityName").text());
 			$(".CityC").next().text($(this).children(".planeName").text());
+			$(".CityC").next().next().text($(this).children(".airportCode").text());//获取点击选择城市之后隐藏于其中的机场代码
 			//alert($(this).children(".airportCode").text());
 			$(".CityChoose").removeClass("CityC");
 			$(document).attr("title","机票查询");
@@ -1006,8 +1015,8 @@
 	});
 	
 	function aa(){
-		var chufCity = $("#shi001").text();
-		var daodCity = $("#zhong001").text();
+		var chufCity = $("#shi00001").text();
+		var daodCity = $("#zhong00001").text();
 		var cangW = $(".cang.on").text();
 		var dateTime = $(".jcD01").val();
 		if(dateTime==""){

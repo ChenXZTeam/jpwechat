@@ -195,6 +195,7 @@ $(function(){
 					dataType:"json",
 					success:function(result){
 						alert("订单提交成功");
+						console.log(result.planMsg);						
 						fals=false;
 					},
 					error:function(result){
