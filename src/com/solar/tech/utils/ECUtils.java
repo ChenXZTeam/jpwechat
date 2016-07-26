@@ -517,7 +517,7 @@ public class ECUtils {
 			OBECommonResponse response = client.cancelPnr(request);// 新建一个响应对象 
 			if(response != null && response.getResultCode() == 0){
 				if("OK".equals(response.getResultMsg())){
-					System.out.print("删除成功");
+					System.out.println("删除成功");
 					return true; // 返回删除结果
 				}
 			}

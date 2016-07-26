@@ -23,7 +23,7 @@ public class userOrderInfo {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	@Column(name = "ID", length=100)
 	private String ID;
-		
+	
 	//用户对应的openid
 	@Column(name="openID",length=100)
 	private String openID;
@@ -112,7 +112,21 @@ public class userOrderInfo {
 	@Column(name="takePlane",length=6)
 	private String takePlane;
 	
+	//@GeneratedValue(generator = "uuid")
+
+	//<generator class="increment"/>
+	@GenericGenerator(name = "intNum", strategy = "increment")
+	@Column(name = "intNum", length=100)
+	private int intNum;
 	
+	public int getIntNum() {
+		return intNum;
+	}
+
+	public void setIntNum(int intNum) {
+		this.intNum = intNum;
+	}
+
 	public String getID() {
 		return ID;
 	}
