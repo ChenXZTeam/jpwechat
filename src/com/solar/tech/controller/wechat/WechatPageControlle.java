@@ -37,11 +37,101 @@ public class WechatPageControlle {
 	}
 	
 	/**
-	 * 
+	 * @title 订票时跳转到信息填写和确认界面
 	 * @return
 	 */
 	@RequestMapping("/YDticket.action")
 	public String yudiTek() {
 		return "wechat/waritInfo";
+	}
+	
+	/**
+	 * @title 机票查找拦截
+	 * @return
+	 */
+	@RequestMapping("/planTek.action")
+	public String planTek() {
+		return "wechat/planTek";
+	}
+	
+	/**
+	 * @title 机票查找结果界面
+	 * @return
+	 */
+	@RequestMapping("/mudiPlace.action")
+	public String mudiPlace() {
+		return "wechat/mudiPlace";
+	}
+	
+	/**
+	 * @title 邀请用户界面跳转
+	 * @return
+	 */
+	@RequestMapping("/yqUser.action")
+	public String yqUser() {
+		return "wechat/yqUser";
+	}
+	
+	/**
+	 * @title 签证界面跳转
+	 * @return
+	 */
+	@RequestMapping("/visaMessage.action")
+	public String visaMessage() {
+		return "wechat/visaMessage";
+	}
+	
+	/**
+	 * @title 汇率查询界面跳转
+	 * @return
+	 */
+	@RequestMapping("/huilvSearch.action")
+	public String huilvSearch() {
+		return "wechat/huilvSearch";
+	}
+	
+	/**
+	 * @title 我的订单界面跳转
+	 * @return
+	 */
+	@RequestMapping("/myPlaneTickek.action")
+	public String myPlaneTickek() {
+		return "wechat/myPlaneTickek";
+	}
+	
+	/**
+	 * @title 天气界面跳转
+	 * @return
+	 */
+	@RequestMapping("/dayWeath.action")
+	public String dayWeath() {
+		return "wechat/dayWeath";
+	}
+	
+	/**
+	 * @title 飞机模型界面跳转
+	 * @return
+	 */
+	@RequestMapping("/fjModel.action")
+	public String fjModel() {
+		return "wechat/fjModel";
+	}
+	
+	/**
+	 * @title 行李须知界面跳转
+	 * @return
+	 */
+	@RequestMapping("/travelCost.action")
+	public String travelCost() {
+		return "wechat/travelCost";
+	}
+	
+	/**
+	 * @title 行李须知界面跳转
+	 * @return
+	 */
+	@RequestMapping("/callKeFu.action")
+	public String callKeFu() {
+		return "wechat/callKeFu";
 	}
 }

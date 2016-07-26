@@ -1027,7 +1027,7 @@
 			gofind=true;
 		}
 		if(gofind==true){
-			window.location.href="mudiPlace.jsp?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime;
+			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime;
 		}
 	}
 	
