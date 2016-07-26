@@ -1,6 +1,8 @@
 package com.solar.tech.controller.wechat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -49,11 +51,11 @@ public class userOrderController {
 		oderInfo.setIDcaseType(iDcaseType);
 		oderInfo.setYiwaiBX(YiwaiBX);
 		oderInfo.setYanwuBX(YanwuBX);
-		String OrderNum=null;
-		OrderNum = OrderService.createOrderNum("RDOD", 8);
-		oderInfo.setOrderNum(OrderNum);
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
+		String maxOrderNum = OrderService.fingMaxOrderNum();
+		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+		oderInfo.setOrderNum(orderNum);
 		
 		//联系组实体类
 		BookContact bookContact = new BookContact();
@@ -98,19 +100,35 @@ public class userOrderController {
 		rmk.setRmkInfo("rmk 内容");//RMK内容
 		RMKInfo[] rmks = new RMKInfo[]{rmk};
 		
-		//PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
-		
-		//System.out.println("预定的编号："+response.getPnrNo());
+		PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
+		System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
+		System.out.println("预定的编号："+response.getPnrNo());
+		System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
+		System.out.println("到达城市："+response.getSegList().get(0).getArrival());
+		System.out.println("航班号："+response.getSegList().get(0).getFlightNo());
+		System.out.println("舱位级别："+response.getSegList().get(0).getCabin());
+		System.out.println("起飞日期："+response.getSegList().get(0).getDepartureDate());
+		System.out.println("起飞时间："+response.getSegList().get(0).getDepartureTime());
+		System.out.println("到达日期："+response.getSegList().get(0).getArrivalDate());
+		System.out.println("到达时间："+response.getSegList().get(0).getArrivalTime());
+		System.out.println("行动代码："+response.getSegList().get(0).getActionCode());
+		System.out.println("航线类型："+response.getSegList().get(0).getType());
+		System.out.println("-----------------------到这信息全部返回成功-------------------");
 		//System.out.println(response.toJson());//返回的json数据
-		int num=OrderService.addOrder(oderInfo);//保存信息到数据库
+		//这个if是只有在中航信系统生成预定编号之后才能存到我们的数据库中。不然不能存
+		int num=0;
+		if(response.getPnrNo()==""||response.getPnrNo().equals("")||response.getPnrNo()==null){
+			num=OrderService.addOrder(oderInfo);//保存信息到数据库			
+		}
 		if(num==1){
 			System.out.println("数据插入成功");
-			//map.put("planMsg", response.toJson());
+			map.put("planMsg", response.toJson());
 		}else if(num==0){
 			System.out.println("数据插入失败");
 		}else{
 			System.out.println("数据错误");
 		}
+		new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
 		return map;
 	}
 }
