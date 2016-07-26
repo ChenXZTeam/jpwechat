@@ -11,7 +11,8 @@
 	String shiPlace=new String(request.getParameter("shiPlace").getBytes("ISO-8859-1"),"utf-8");
 	String zhongPlace=new String(request.getParameter("zhongPlace").getBytes("ISO-8859-1"),"utf-8");
 	String cost=new String(request.getParameter("cost").getBytes("ISO-8859-1"),"utf-8");
-	String TekNum=new String(request.getParameter("TekNum").getBytes("ISO-8859-1"),"utf-8");
+	String zhekou=new String(request.getParameter("zhekou").getBytes("ISO-8859-1"),"utf-8");
+	String cangweiType=new String(request.getParameter("cangweiType").getBytes("ISO-8859-1"),"utf-8");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -57,6 +58,8 @@ $(function(){
 	<div><input type="text" id="costPay" value="<%=cost %>"/></div>
 	<div><input type="text" id="isDengJi" value="no"/></div>
 	<div><input type="text" id="payCost" value="no"/></div>
+	<div><input type="text" id="zhekou" value="<%=zhekou %>"/></div>
+	<div><input type="text" id="cangweiType" value="<%=cangweiType %>"/></div>
 -------个人填写的信息-----------
 	<div><input type="text" id="linkName" value="李向前"/></div>
 	<div><input type="radio" name="sex" value="男" checked="checked"/>男 <input type="radio" name="sex" value="女"/>女</div>

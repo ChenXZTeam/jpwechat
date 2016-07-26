@@ -100,7 +100,8 @@ public class userOrderController {
 		rmk.setRmkInfo("rmk 内容");//RMK内容
 		RMKInfo[] rmks = new RMKInfo[]{rmk};
 		
-		PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
+		//以下代码在开发的过程中请不要取消注释掉，因为会产生真实的订票系统。需要付款的
+		/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
 		System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 		System.out.println("预定的编号："+response.getPnrNo());
 		System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -113,22 +114,22 @@ public class userOrderController {
 		System.out.println("到达时间："+response.getSegList().get(0).getArrivalTime());
 		System.out.println("行动代码："+response.getSegList().get(0).getActionCode());
 		System.out.println("航线类型："+response.getSegList().get(0).getType());
-		System.out.println("-----------------------到这信息全部返回成功-------------------");
+		System.out.println("-----------------------到这信息全部返回成功-------------------");*/
 		//System.out.println(response.toJson());//返回的json数据
 		//这个if是只有在中航信系统生成预定编号之后才能存到我们的数据库中。不然不能存
 		int num=0;
-		if(response.getPnrNo()==""||response.getPnrNo().equals("")||response.getPnrNo()==null){
+		//if(response.getPnrNo()==""||response.getPnrNo().equals("")||response.getPnrNo()==null){
 			num=OrderService.addOrder(oderInfo);//保存信息到数据库			
-		}
+		//}
 		if(num==1){
 			System.out.println("数据插入成功");
-			map.put("planMsg", response.toJson());
+			//map.put("planMsg", response.toJson());
 		}else if(num==0){
 			System.out.println("数据插入失败");
 		}else{
 			System.out.println("数据错误");
 		}
-		new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
+		//new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
 		return map;
 	}
 }

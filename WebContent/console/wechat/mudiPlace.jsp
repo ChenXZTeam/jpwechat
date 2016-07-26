@@ -49,7 +49,7 @@
 	.hangbanImform .neiImform{width:85%; border:#007AFF solid 1px; margin-left:auto; margin-right:auto; border-radius:5px; background-color:#ffffff; padding:5px 10px;}
 	.hangbanImform .neiImform .firstDiv{overflow:hidden; text-align:center;}
 	.hangbanImform .neiImform .firstDiv .jjc{float:left; padding:5px;}
-	.hangbanImform .neiImform .firstDiv .aYuding{float:right; padding:5px 10px; border:#FF8204 solid 1px; color:#FFFFFF; background-color:#FF8204; border-radius:5px;}
+	.hangbanImform .neiImform .firstDiv .aYuding,.hangbanImform .neiImform .firstDiv .anotherCW{float:right; padding:5px 10px; border:#FF8204 solid 1px; color:#FFFFFF; background-color:#FF8204; border-radius:5px;}
 	.hangbanImform .neiImform .firstDiv .money{color:#FF8204;}
 	.hangbanImform .neiImform .firstDiv .zhe{color:#0079FE;}
 	.hangbanImform .neiImform .firstDiv .Eimg{float:left; border:1px solid #0079FE; border-radius:10px; padding:0px 5px; background-color:#0079FE; color:#FFFFFF;}
@@ -60,6 +60,7 @@
 	.hangbanImform .neiImform .firstDiv  .jiantou{float:left; color:#ffffff; background-color:#FF8204; border:1px solid #FF8204; font-size:10px; border-radius:10px; margin-left:5px; padding-left:3px; padding-right:2px; padding-bottom:1px;}
 	.hangbanImform .neiImform .firstDiv  .piaojia{float:right; color:#FF8204; font-size:15px; font-family:Arial, Helvetica, sans-serif; line-height:22px;}
 	.banner{ display:none;}
+	.cangweiClass{ display:none;}
 </style>
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script>
@@ -99,14 +100,33 @@ $(function(){
 							}else if(basicCabin=="Y"){
 								basicCabin="经济舱";
 							}
-							if(basicCabin==cangW){								
+							if(basicCabin==cangW){																
 								var cangwei_data = parseInt(tekNum(getDate[i].seatList[j].cangwei_data));
+								var cangwei_type = getDate[i].seatList[j].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
+								//console.log(i+"/"+j+"/"+cangwei_type);
 								sum+=cangwei_data;//剩余的票数
 								onewayPrice = getDate[i].seatList[j].onewayPrice;//价钱
 							}						
 						}
-						var notTjList = '<li class="notTjTicket"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+depTime+'</div><div class="EndTime lineHeight">'+arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 '+cuntNumTime+'</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥'+onewayPrice+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cangW+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangW+'</span><a class="aYuding">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+onewayPrice+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">E</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></li>';
+						var notTjList = '<li class="notTjTicket"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+depTime+'</div><div class="EndTime lineHeight">'+arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.jpg" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.jpg" style="float:left;"><span style="float:left;">首都机场 '+cuntNumTime+'</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥'+onewayPrice+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cangW+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangW+'</span><a class="aYuding">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+onewayPrice+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
 						$("#TicketList").append(notTjList);	
+						//动态加载针对该航班的其他舱位的信息
+						for(var j=0;j<(getDate[i].seatList.length)-1;j++){
+							basicCabin = getDate[i].seatList[j].basicCabin;
+							if(basicCabin=="C"){
+								basicCabin="公务舱";
+							}else if(basicCabin=="F"){
+								basicCabin="头等舱";
+							}else if(basicCabin=="Y"){
+								basicCabin="经济舱";
+							}
+							if(basicCabin==cangW){
+								var cangwei_type = getDate[i].seatList[j].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
+								onewayPrice = getDate[i].seatList[j].onewayPrice;//价钱
+								var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangW+'</span><a class="anotherCW">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+onewayPrice+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span></div><div style="clear:both;"></div></div></div></div></div></div>';
+								$(".notTjTicket:eq("+i+") .cangweiClass").append(listDiv);
+							}						
+						}
 					}					
 					loadjs();//加载js外部文件
 				}else if(data.msg==0){
