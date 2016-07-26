@@ -87,11 +87,10 @@
     </mvc:message-converters>
 </mvc:annotation-driven>
 
-	<!-- 拦截器配置 -->
-	<!-- 
+	<!-- 拦截器配置自定义界面中的地址 -->
  	<mvc:interceptors>
          <bean class="com.solar.tech.interceptor.LoginInterceptor"/>
-    </mvc:interceptors>	 -->
+    </mvc:interceptors>
 	
 	
 </beans>

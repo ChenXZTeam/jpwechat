@@ -255,7 +255,7 @@
 						success: function(result) {
 							if(result.msg==1){
 								alert("注册成功");
-								window.location.href="http://2a4ba0d.ngrok.natapp.cn/BookTicketsys/console/wechat/logo.jsp";
+								window.location.href="<%=basePath%>console/wechat/logo.jsp";
 							}else{
 								alert("注册错误");
 							}							

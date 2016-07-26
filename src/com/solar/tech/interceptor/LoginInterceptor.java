@@ -41,36 +41,41 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		String root = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + root + "/";
 
-		if (pageurl.equals("/wechatController/page/regies.action")
-				|| pageurl.equals("/wechatController/page/mine.action")) {
+		if (pageurl.equals("/wechatController/page/planTek.action")) {  //拦截机票查询的界面
 			HttpSession session = request.getSession();
 			String newCode = request.getParameter("code");
-			String number = (String) session.getAttribute("number");
+			//String number = (String) session.getAttribute("number");
 			String openId = (String) session.getAttribute("openId");
-			System.out.println("啥都看见哈萨克的");
-			if (newCode == null && "".equals(newCode)) {
-				response.sendRedirect(basePath + "console/wechat/business/bindAccount.jsp");
+			System.out.println("newCode的值："+newCode);
+			
+			//先不强制注册
+			/*if (newCode == null && "".equals(newCode)) {
+				response.sendRedirect(basePath + "console/wechat/regies.jsp");
 				return false;
-			}
+			}*/
 			System.out.println("start...55");
-			if (number == null || openId == null) {
+			if (/*number == null || */openId == null) {
 				System.out.println("start...57");
 				openId = wxMpService.getWxUser(newCode);
+				session.setAttribute("openId", openId);//<----------取消注释下面的if(openId !=null)的时候记得注释掉这个
+				System.out.println("(LoginInterceptor类中)openId的值："+openId);
+				//先不强制注册
+				/*
 				if (openId != null) {
 					session.setAttribute("openId", openId);
 
 					boolean exist = RDUserService.findbyOpenid(openId);
 					if (!exist) {
-						response.sendRedirect(basePath + "console/wechat/business/bindAccount.jsp");
+						response.sendRedirect(basePath + "console/wechat/regies.jsp");
 						return false;
 					} else {
 						RD_wechatUser yHopenID = RDUserService.findbyOpenids(openId);
 						number = yHopenID.getPhoneNum();
 						session.setAttribute("number", number);
 					}
-				}
+				}*/
 			} else {
-				System.out.println("pageurl:" + pageurl +"number:" + number + " " + "openId:" + openId);
+				System.out.println("pageurl:" + pageurl +" openId:" + openId);
 			}
 
 		}
