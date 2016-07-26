@@ -39,6 +39,8 @@ public class userOrderController {
 		oderInfo.setChufCity(ChufCity);
 		oderInfo.setDaodCity(DaodCity);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
+		System.out.println((String) session.getAttribute("openId"));
+		oderInfo.setOpenID((String) session.getAttribute("openId"));
 		oderInfo.setQishiPlane(QishiPlan);
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
