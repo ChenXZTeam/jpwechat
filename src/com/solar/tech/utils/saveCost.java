@@ -10,14 +10,16 @@ import com.solar.tech.service.PlanTekService;
 public class saveCost {
 	public String getpay(String chufCity, String daodCity, String dateTime, String airCode, String filgNo, String cabin,String paycost){
 		PlanTekService PlanTekServ = new PlanTekService();
-		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, dateTime, airCode, filgNo); // 传入出发城市、到达城市、日期及航空公司代码及航班号
+		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, dateTime, "CZ", filgNo); // 传入出发城市、到达城市、日期及航空公司代码及航班号
 		List<FlightInfo> newList = PlanTekServ.removeRepeat(list);
 		for(int i = 0; i<newList.size(); i++){
 			if((newList.get(i).getFlightNo()).equals(filgNo)){
 				for(SeatInfo info : newList.get(i).getSeatList()){
 					System.out.println("CZ3107航班的信息：舱位="+info.getCangwei()+" 单程对应的价格="+info.getOnewayPrice());	
-					paycost=info.getOnewayPrice();//将查询出来的结果金额放在变量中
-					if(info.getCangwei().equals(cabin)&&info.getOnewayPrice().equals(paycost+".00")){
+					//paycost=info.getOnewayPrice();//将查询出来的结果金额放在变量中
+					if(info.getCangwei().equals(cabin)&&info.getOnewayPrice().equals(paycost)){						
+						System.out.println("进来了吧？");
+					}else{
 						paycost=info.getOnewayPrice();
 					}
 				}			

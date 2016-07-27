@@ -66,15 +66,9 @@ $(function(){
 	<div>
 		<input type="text" id="IDcase" value="460003199305323545"/>
 		<select id="IDcaseType">  
-			<option value="身份证" selected="selected">身份证</option>  
-			<option value="护照">护照</option>  
-			<option value="台胞证">台胞证</option>  
-			<option value="回乡证">回乡证</option>  
-			<option value="军人证">军人证</option>  
-			<option value="港澳通行证">港澳通行证</option>  
-			<option value="户口薄">户口薄</option>  
-			<option value="出生证明">出生证明</option>
-			<option value="其他">其他</option>
+			<option value="NI" selected="selected">身份证</option>  
+			<option value="PP">护照</option>
+			<option value="ID">其他</option>
 		</select> 
 	</div>
 	<div><input type="text" id="phoneNum" value="15799024022"/></div>
@@ -163,7 +157,8 @@ $(function(){
 			var arr1 = DaodPlan.split(" ");
 				DaodPlan=arr1[0];
 			var lishiTime=arr1[1];
-			var CostPay=$("#CostPay").text();//该付金额
+			var CostPay=$("#CostPay").text().substr(1,$("#CostPay").text().length);//该付金额
+			alert(CostPay);
 			var LinkName=$("#LinkName").text();//乘机人
 			var Sex=$("#Sex").text();//性别
 			var iDcaseType=$("#iDcaseType").text();//证件类型
@@ -171,6 +166,7 @@ $(function(){
 			var PhoneNum=$("#PhoneNum").text();//手机号码
 			var YiwaiBX=$("#YiwaiBX").text();//意外保险
 			var YanwuBX=$("#YanwuBX").text();//延误险
+			var cangweiType=$("#cangweiType").val();
 			var date={
 				"ChufDate":ChufDate,
 				"ChufTime":ChufTime,
@@ -188,7 +184,8 @@ $(function(){
 				"iDcase":iDcase,
 				"PhoneNum":PhoneNum,
 				"YiwaiBX":YiwaiBX,
-				"YanwuBX":YanwuBX
+				"YanwuBX":YanwuBX,
+				"cabin":cangweiType
 			};
 			if(fals==true){
 				$.ajax({
