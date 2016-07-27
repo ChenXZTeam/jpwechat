@@ -60,6 +60,10 @@ public class userOrderInfo {
 	@Column(name="hangbanNum",length=25)
 	private String hangbanNum;
 	
+	//航空公司的code
+	@Column(name="airCode",length=10)
+	private String airCode;
+
 	//历时多少时间
 	@Column(name="cuntTime",length=25)
 	private String cuntTime;
@@ -72,6 +76,14 @@ public class userOrderInfo {
 	@Column(name="daodCity",length=100)
 	private String daodCity;
 	
+	//行动代码
+	@Column(name="actionCode",length=10)
+	private String actionCode;
+
+	//舱位
+	@Column(name="cabin",length=10)
+	private String cabin;
+
 	//订单人姓名
 	@Column(name="linkName",length=50)
 	private String linkName;
@@ -91,6 +103,18 @@ public class userOrderInfo {
 	//证件类型
 	@Column(name="IDcaseType",length=20)
 	private String IDcaseType;
+	
+	//出生日期
+	@Column(name="birthday",length=15)
+	private String birthday;
+	
+	//年龄
+	@Column(name="age",length=10)
+	private int age;
+
+	//旅客的类型（旅客类型 ADT 成人,CHD 儿童, UM 无人陪伴儿童）
+	@Column(name="psgType",length=5)
+	private String psgType;
 	
 	//是否购买意外险
 	@Column(name="yiwaiBX",length=6)
@@ -112,19 +136,77 @@ public class userOrderInfo {
 	@Column(name="takePlane",length=6)
 	private String takePlane;
 	
-	//@GeneratedValue(generator = "uuid")
-
-	//<generator class="increment"/>
+	//用于预约编号识别最大的
 	@GenericGenerator(name = "intNum", strategy = "increment")
 	@Column(name = "intNum", length=100)
 	private int intNum;
 	
+	//中航信预定成功之后的编号
+	@Column(name="PNR",length=25)
+	private String PNR;
+	
+	//出票时间
+	@Column(name="getTeickTime",length=25)
+	private String getTeickTime;
+	
+	//用户删除
+	@Column(name="AdminDel",length=5)
+	private String AdminDel;
+
+	public String getGetTeickTime() {
+		return getTeickTime;
+	}
+
+	public void setGetTeickTime(String getTeickTime) {
+		this.getTeickTime = getTeickTime;
+	}
+
+	public String getPNR() {
+		return PNR;
+	}
+
+	public void setPNR(String pNR) {
+		PNR = pNR;
+	}
+
 	public int getIntNum() {
 		return intNum;
 	}
 
 	public void setIntNum(int intNum) {
 		this.intNum = intNum;
+	}	
+	
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getActionCode() {
+		return actionCode;
+	}
+
+	public void setActionCode(String actionCode) {
+		this.actionCode = actionCode;
+	}	
+	
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	public String getCabin() {
+		return cabin;
+	}
+
+	public void setCabin(String cabin) {
+		this.cabin = cabin;
 	}
 
 	public String getID() {
@@ -141,6 +223,22 @@ public class userOrderInfo {
 
 	public void setOpenID(String openID) {
 		this.openID = openID;
+	}
+	
+	public String getAirCode() {
+		return airCode;
+	}
+
+	public void setAirCode(String airCode) {
+		this.airCode = airCode;
+	}
+
+	public String getPsgType() {
+		return psgType;
+	}
+
+	public void setPsgType(String psgType) {
+		this.psgType = psgType;
 	}
 
 	public String getUserName() {
@@ -309,6 +407,14 @@ public class userOrderInfo {
 
 	public void setTakePlane(String takePlane) {
 		this.takePlane = takePlane;
+	}
+	
+	public String getAdminDel() {
+		return AdminDel;
+	}
+
+	public void setAdminDel(String adminDel) {
+		AdminDel = adminDel;
 	}
 	
 }
