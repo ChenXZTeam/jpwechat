@@ -27,32 +27,32 @@
 </style>
 </head>
 
-<body>
+<body  style="background-image:url(<%=basePath %>console/images/callkefu.jpg)";>
 	<div id="bigContent">
 		<div class="kefuImg"><img src="<%=basePath %>console/images/kefu_03.png" style="width:40px;"></div>
 		<div class="jiantou"><img src="<%=basePath %>console/images/jiantou_03.png"/></div>
 		<div class="textMsg">
-			<div class="zixun"><span>您好，我是客服某某，请问有什么需要咨询的吗？某某竭诚为您服务！</span><span>您是想咨询一下问题吗？</span></div>
+			<div class="zixun"><span>您好，这里是广州续日，我是客服某某，某某竭诚为您服务！</span><span>您是想咨询一下问题吗？</span></div>
 			<ul>
 				<li>
-					<span>怎么取票</span>
-					<span style="color:#C5C6C8; font-weight:bold; float:right;">＞</span>
+					<span>咨询电话：021-13567899</span>
+					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
 				<li>
-					<span>怎么查看订单</span>
-					<span style="color:#C5C6C8; font-weight:bold; float:right;">＞</span>
+					<span>联系邮箱：123567889@163.com</span>
+					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
 				<li>
-					<span>名字选错了怎么办</span>
-					<span style="color:#C5C6C8; font-weight:bold; float:right;">＞</span>
+					<span>QQ:02928371802</span>
+					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
 				<li>
-					<span>退机票</span>
-					<span style="color:#C5C6C8; font-weight:bold; float:right;">＞</span>
+					<span>公司地址：广州市天河区。。。。</span>
+					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
 				<li>
-					<span>申请机票改期</span>
-					<span style="color:#C5C6C8; font-weight:bold; float:right;">＞</span>
+					<span>祝你旅途愉快！</span>
+					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
 			</ul>
 		</div>
