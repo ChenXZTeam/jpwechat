@@ -10,11 +10,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>天气预报</title>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/lanrenzhijia.css"  />
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityselect.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js" ></script>
 <script type="text/javascript" src="<%=basePath %>console/js/lanrenzhijia.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/kinetic-v5.0.1.min.js" ></script>
+<script type="text/javascript" src="<%=basePath %>console/js/cityselect.js"  charset="utf-8"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vKCQUCy8RGAuMMHU3iPH226z32Ojt6fI" charset="utf-8"></script>
+
 <style type="text/css">
 	body{margin:0px; padding:0px; text-align:center; background-color:#F9F9F9;}
+	
+	#bigContent{padding:0px;}
+	#find{padding:10px 10px 5px 10px; text-align:center;}
+	#xFind{border-radius:5px; background-color:#FFFFFF;}
+	#xFind .inputName,.inputDiv{padding:10px; overflow:hidden; float:left;}	
+	#xFind>img,#xFind>span,#xFind>input{float:left; outline:none;}
+
 	.Temperature{width:95%; padding:20px 0px; margin-left:auto; margin-right:auto;}
 	.Temperature .wendu{overflow:hidden; text-align:center;}
 	.Temperature .wendu .tianqiClass{padding:0px; width:210px; margin-left:auto; margin-right:auto; padding-left:25px; overflow:hidden;}
@@ -40,6 +51,11 @@
 	
 	.todayDre{line-height:30px; color:#999999; font-family:Microsoft YaHei; text-align:left; width:95%; margin-left:auto; margin-right:auto; margin-top:5px; border-bottom:#D4D4D2 solid 1px;}
 	
+	
+	
+</style>
+<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
 </style>
 
 <script>
@@ -53,6 +69,7 @@ $(function(){
 	draw24('box5',1.5);
 	draw24('box6',0.3);
 	draw24('box7',1.5);
+	
 });
 
 //绘制浪潮曲线的方法
@@ -169,6 +186,13 @@ function draw24(id,height) {
 </head>
 
 <body>
+<div id="find">
+		<div id="xFind">
+			<div class="inputName" style="border-right:#F0EFF4 solid 1px;"><img src="<%=basePath %>console/images/dingwei.gif"/><span style="color:#0278FC; margin-left:5px; line-height:10px; font-weight:bold;font-size:10px" id="cityName"   ></span></div>
+			<div class="inputDiv"><input type="text" class="cityinput"   style="font-size:14px;color:#666666;border:none" id="citySelect" placeholder="请输入目的地" "/></div>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
 <div class="lanrenzhijia">
   <div class="title cf">
     <ul class="title-list fr cf ">
@@ -189,11 +213,11 @@ function draw24(id,height) {
         <div class="Temperature">
 			<div class="wendu">
 				<div class="tianqiClass">
-					<img src="<%=basePath %>console/images/fengImg.png"/><span>46</span><span class="shangbiao">。</span><span>/</span><span>19</span><span class="shangbiao">。</span>
+					<img src="<%=basePath %>console/images/fengImg.png"/><span id=temp><!-- 46</span><span class="shangbiao">。</span><span>/</span><span>19 --></span><span class="shangbiao">。</span>
 				</div>
 			</div>
 			<div style="clear:both;"></div>
-			<div class="pingpan"><span>阴雨</span><span class="you">良</span></div>
+			<div class="pingpan"><span  class="weather"></span><span class="you">良</span></div>
 		</div>
 		<div style="clear:both;"></div>
 		<div class="chaoxiTitle"><span>详情</span></div>
@@ -220,11 +244,11 @@ function draw24(id,height) {
 		<div class="Temperature">
 			<div class="wendu">
 				<div class="tianqiClass">
-					<img src="<%=basePath %>console/images/fengImg.png"/><span>45</span><span class="shangbiao">。</span><span>/</span><span>10</span><span class="shangbiao">。</span>
+					<img src="<%=basePath %>console/images/fengImg.png"/><span  id="temp">45</span><span class="shangbiao">。</span><span>/</span><span>10</span><span class="shangbiao">。</span>
 				</div>
 			</div>
 			<div style="clear:both;"></div>
-			<div class="pingpan"><span>暴风预警</span><span class="you">良</span></div>
+			<div class="pingpan"><span   class="weather"></span><span class="you">良</span></div>
 		</div>
 		<div style="clear:both;"></div>
 		<div class="chaoxiTitle"><span>详情</span></div>
@@ -244,7 +268,7 @@ function draw24(id,height) {
 			<canvas id="box2" class="canvasBox" width="410px"></canvas>
 		</div>
 		<div class="chaoxiTitle" style="border:none; text-align:right;"><a>查看各港口详情></a></div>
-		<div class="todayDre">今天穿什么？</div>
+		<div class="todayDre" id="today">今天穿什么？</div>
     </div>
     <!--案例3-->
     <div class="product">
@@ -286,7 +310,7 @@ function draw24(id,height) {
 				</div>
 			</div>
 			<div style="clear:both;"></div>
-			<div class="pingpan"><span>雷雨</span><span class="you">差</span></div>
+			<div class="pingpan"><span class="weather"></span><span class="you">差</span></div>
 		</div>
 		<div style="clear:both;"></div>
 		<div class="chaoxiTitle"><span>详情</span></div>
@@ -324,7 +348,7 @@ function draw24(id,height) {
 		<div class="winAndSun">
 			<div class="win">
 				<div class="img"><img src="<%=basePath %>console/images/winImg.png"/></div>
-				<div class="text"><span style="color:#B6B6B6;">4级</span><span>微风</span></div>
+				<div class="text"><span style="color:#B6B6B6;"  >4级</span><span>微风</span></div>
 			</div>
 			<div class="sun">
 				<div class="img"><img src="<%=basePath %>console/images/sunImg.png"/></div>
@@ -356,7 +380,7 @@ function draw24(id,height) {
 		<div class="winAndSun">
 			<div class="win">
 				<div class="img"><img src="<%=basePath %>console/images/winImg.png"/></div>
-				<div class="text"><span style="color:#B6B6B6;">2级</span><span>微风</span></div>
+				<div class="text"><span style="color:#B6B6B6;"  class="wind"></span><span>微风</span></div>
 			</div>
 			<div class="sun">
 				<div class="img"><img src="<%=basePath %>console/images/sunImg.png"/></div>
@@ -388,7 +412,7 @@ function draw24(id,height) {
 		<div class="winAndSun">
 			<div class="win">
 				<div class="img"><img src="<%=basePath %>console/images/winImg.png"/></div>
-				<div class="text"><span style="color:#B6B6B6;">5级</span><span>中风</span></div>
+				<div class="text"><span style="color:#B6B6B6;"  class="wind"></span><span>中风</span></div>
 			</div>
 			<div class="sun">
 				<div class="img"><img src="<%=basePath %>console/images/sunImg.png"/></div>
@@ -401,11 +425,94 @@ function draw24(id,height) {
 			<canvas id="box7" class="canvasBox" width="410px"></canvas>
 		</div>
 		<div class="chaoxiTitle" style="border:none; text-align:right;"><a>查看各港口详情></a></div>
-		<div class="todayDre">今天穿什么？</div>
+		<div class="todayDre"   >今天穿什么？</div>
+		
+		<span id="javaBasePath"><%=basePath %></span>
     </div>
 	
   </div>
 </div>
+<script type="text/javascript">
+	var test=new Vcity.CitySelector({input:'citySelect'});
+</script>
 
 </body>
 </html>
+<script type="text/javascript">
+
+//
+
+// 百度地图API功能
+//var map = new BMap.Map("allmap");
+//var point = new BMap.Point(116.331398,39.897445);
+//map.centerAndZoom(point,12);
+function myFun(result){
+	var cityName = result.name;
+	//map.setCenter(cityName);
+	//alert("当前定位城市:"+cityName);
+	var ele=window.document.getElementById ("cityName");
+	ele.innerHTML = cityName;
+	
+	$.ajax({
+	    type: "post",//数据发送的方式（post 或者 get）
+	    url: "<%=basePath%>wechatController/find/dayweather.action",//要发送的后台地址
+	    data: {"val1":cityName},//要发送的数据（参数）格式为{'val1':"1","val2":"2"}
+	    dataType: "json",//后台处理后返回的数据格式
+	    
+	    cache:false,
+	    
+	    success: function (data) {//ajax请求成功后触发的方法
+	    	//alert(cityName);
+	   
+	    	 //alert(jsonObj[''+temp+'']); 
+	    	<%-- //$.getJSON("<%=basePath%>wechatController/find/dayweather.action", function(json){ --%>
+			//	var temp=json.data[0].temp;
+		//});
+	 
+	    	
+
+           
+	    	
+	    //console.log(values);
+	    var result = JSON.parse(data);
+	    
+	    
+	   /*  $.each(data,function(dix,obj){
+    		alert(obj);
+    		alert(obj);
+    	}); */
+	    
+	    console.log(result);
+	    console.log(result.sk.temp);
+	    console.log(result.today.temperature);
+	   
+	    
+	    $(".weather").text(result.today.weather);
+	    
+	    $(".wind").text(result.future[0].wind);
+	    //$(".wind").text(c);
+	    console.log(result.future[0].wind);
+	    
+	    $("#today").text(result.today.dressing_advice);
+	    
+	    
+	      // alert('请求成功');
+	    },
+	    
+	    
+	    error: function (msg) {//ajax请求失败后触发的方法
+	        alert(msg);//弹出错误信息
+	        console.log(msg);
+	    }
+
+	});
+}
+var myCity = new BMap.LocalCity();
+myCity.get(myFun);
+
+function changeCity(){
+	//alert("123123");
+	//alert($("#citySelect").val());
+}
+  
+</script>
