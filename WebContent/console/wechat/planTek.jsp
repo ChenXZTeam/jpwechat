@@ -1019,8 +1019,6 @@
 		var daodCity = $("#zhong00001").text();
 		var cangW = $(".cang.on").text();
 		var dateTime = $(".jcD01").val();
-		//将选择的日期拆分并进行判断是否选择是已过去的时间		
-		nowTime(dateTime);
 		if(dateTime==""){
 			alert("请选择出发日期");
 			gofind=false;
@@ -1031,37 +1029,6 @@
 		if(gofind==true){
 			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime;
 		}
-	}
-	
-	function nowTime(time){
-		var myDate = new Date();
-		var yy = myDate.getFullYear();
-		var mm = myDate.getMonth()+1;
-		var dd = myDate.getDate();
-		if(mm<10){
-			mm="0"+mm;
-		}
-		if(dd<10){
-			dd+"0"+dd;
-		}
-		//将传进来的时间拆分
-		var strs= new Array();		
-		strs = time.split("-");
-		var yyTime = strs[0];
-		var mmTime = strs[1];
-		var ddTime = strs[2];
-		
-		//计算是否为已过去的时间
-		if(0<=yy-yyTime){
-			return false;
-		}else if(0<=mm-mmTime){
-			return false;
-		}else if(0<=dd-ddTime){
-			return false;
-		}
-		alert(yy+"/"+yyTime);
-		alert(mm+"/"+mmTime);
-		alert(dd+"/"+ddTime);
 	}
 	
 	function bb(){

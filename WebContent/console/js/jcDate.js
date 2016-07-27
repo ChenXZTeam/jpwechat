@@ -258,14 +258,18 @@
 					format = printDate.split("/");
 					dateInfo = format[0]+options.format+format[1]+options.format+format[2]+" "+format[3]
 				};
-				$("input.dateVisited").val(dateInfo);				
-				closeDate();
-				
 				//获取当前时间
-				var mydate = new Date();
+				var mydate = new Date();				
 				var todateY=mydate.getFullYear();//获取当前的年
 				var todateM=(mydate.getMonth()+1);//获取当前的月
 				var todateD=mydate.getDate();//获取当前的日
+				if(0<=(Sy-todateY)&&0<=(Sm-todateM)&&0<=(Sd-todateD)){
+					$("input.dateVisited").val(dateInfo);				
+					closeDate();//关闭日期					
+				}else{
+					alert("您选择的时间已经过完");
+				}
+
 				if((Sy-todateY)==0&&(Sm-todateM)==0&&(Sd-todateD)==0){
 					$(".jisuanDay").text("今天");
 				}else if((Sy-todateY)==0&&(Sm-todateM)==0&&(Sd-todateD)==1){
