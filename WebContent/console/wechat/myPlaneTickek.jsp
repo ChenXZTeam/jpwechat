@@ -14,7 +14,7 @@
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planDD.js" charset="utf-8"></script>
 <style>
-	body{background-color:#f9f9f9; font-family:Microsoft YaHei; font-size:14px;}
+	body{background-color:#e1e1e1; font-family:Microsoft YaHei; font-size:14px;}
 	.product ul{list-style-type:none; padding:0px; margin:0px; padding-bottom:10px;}
 	.product ul li{overflow:hidden; margin-top:10px; padding-bottom:10px; background:#fff;}
 	.product ul li .planTitle{border-bottom:1px solid #E0E0E0; overflow:hidden; padding:10px;}
@@ -42,10 +42,10 @@
 	  <div class="product-wrap">
 		<!--案例1-->
 		<div class="product show">
-			<ul>
-				<li>
+			<ul id="orderUL">
+				<%-- <li>
 					<div class="planTitle">
-						<img src="<%=basePath %>console/images/plan.png" style="width:20px;">
+						<img src="<%=basePath %>console/images/plan.png" style="width:20px;"/>
 						<span style="margin-left:7px; line-height:23px;">机票</span>
 						<span style="float:right; color:#FE8204;">请支付</span>
 					</div>					
@@ -62,29 +62,10 @@
 					</div>
 					
 					<div class="payBtn"><a>立即支付</a></div>
-				</li>
+				</li> --%>
 				
 				
-				<li>
-					<div class="planTitle">
-						<img src="<%=basePath %>console/images/plan.png" style="width:20px;">
-						<span style="margin-left:7px; line-height:23px;">机票</span>
-						<span style="float:right; color:#FE8204;">请支付</span>
-					</div>					
-					<div style="clear:both;"></div>
-					
-					<div class="TekMas">
-						<div class="hangban">
-							<span>深圳-北京</span>
-							<span>2016-03-09 08:30-11:35</span>
-							<span style="color:#B5B5B5;">海南航空HU7710</span>
-						</div>
-						<div class="money"><span>￥1265</span></div>
-						<div style="clear:both;"></div>
-					</div>
-					
-					<div class="payBtn"><a>立即支付</a></div>
-				</li>
+				
 			</ul>
 		</div>
 		<!--案例2-->
@@ -100,4 +81,29 @@
 	  </div>
 	</div>
 </body>
+<script>
+	$(function(){
+		$.ajax({
+				url: "<%=basePath %>userOrderController/loading/order.action",
+				type: "POST",
+				data: {},
+				dataType: "json",
+				success: function(res) {
+					var data = res.orderList;
+					if(res.msg==1){
+						for(var i=0; i<data.length; i++){
+							var orderlist = '<li><div class="planTitle"><img src="<%=basePath %>console/images/plan.png" style="width:20px;"/><span style="margin-left:7px; line-height:23px;">机票</span>	<span style="float:right; color:#FE8204;">请支付</span></div><div style="clear:both;"></div><div class="TekMas"><div class="hangban"><span>'+data[i].chufCity+'-'+data[i].daodCity+'</span><span>'+data[i].chufDate+' '+data[i].chufTime+'-'+data[i].daodTime+'</span><span style="color:#B5B5B5;">南方航空'+data[i].hangbanNum+'</span></div><div class="money"><span>'+data[i].costMoney+'</span></div><div style="clear:both;"></div></div><div class="payBtn"><a>立即支付</a></div></li>'
+							$("#orderUL").append(orderlist);
+						}
+					}else{
+						alert("没有找到订单");
+					}
+					console.log(res.orderList); 					
+				},
+				error: function() {
+					
+				}
+		});
+	});
+</script>
 </html>
