@@ -136,7 +136,6 @@ $(function(){
 					alert("查找数据错误");
 				}
 			},error:function(){
-				alert("不行");
 			}
 	});
 	

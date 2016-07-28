@@ -96,4 +96,66 @@ public class userOrderService {
 		  //返回自动生成后的流水号
 		  return start+=strDate+s2;
 	}
+	 
+	 /**
+	  * @Title updateGetTeickTime 修改出票期限
+	  * @param oInfo
+	  * @return
+	  */
+	 public int updateGetTeickTime(userOrderInfo oInfo){
+		 String sql = "UPDATE userorderinfo SET getTeickTime = '"+oInfo.getGetTeickTime()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR = '"+oInfo.getPNR()+"'";
+		 int i = gDao.executeJDBCSql(sql);
+		 if(i > 0){
+			return 1;
+		 }
+		 return 0;
+	 }
+	 
+	 /**
+	  * @Title changeAirSegment 修改航段信息
+	  * @param oInfo
+	  * @return
+	  */
+	 public int changeAirSegment(userOrderInfo oInfo){
+		 String sql = "UPDATE userorderinfo SET chufCity = '"+oInfo.getChufCity()+"', daodCity = '"+oInfo.getDaodCity()+"', hangbanNum = '"+oInfo.getHangbanNum()+"', cabin = '"+oInfo.getCabin()+"', chufDate = '"+oInfo.getChufDate()+"', actionCode = '"+oInfo.getActionCode()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR='"+oInfo.getPNR()+"'";
+			int i = gDao.executeJDBCSql(sql);
+			if(i > 0){
+				return 1;
+			}
+			return 0;
+	 }
+	 
+	 /**
+	  * @Title changeCertificate(修改旅客信息)
+	  * @param oInfo
+	  * @return
+	  */	 
+	 public int changeCertificate(userOrderInfo oInfo){
+		String sql = "UPDATE userorderinfo SET linkName = '"+oInfo.getLinkName()+"', age = '"+oInfo.getAge()+"', linkSex = '"+oInfo.getLinkSex()+"', birthday = '"+oInfo.getBirthday()+"', psgType = '"+oInfo.getPsgType()+"', IDcase = '"+oInfo.getIDcase()+"', IDcaseType = '"+oInfo.getIDcaseType()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR='"+oInfo.getPNR()+"'";
+		int i = gDao.executeJDBCSql(sql);
+		if(i > 0){
+			return 1;
+		}
+		return 0;
+	 }
+	 
+		/**
+		 * 
+		 * @Title: deleteOrder 
+		 * @Description: 删除订单业务数据--将AdminDel值设为1
+		 * @param orderNum
+		 * @return: void
+		 */
+		public int deleteOrder(String ID, String orderNum) {
+			try {
+				if(orderNum != null){
+					String sql = "UPDATE userorderinfo SET AdminDel = 1 WHERE ID = '"+ID+"' AND orderNum = '"+orderNum+"'";
+					gDao.executeJDBCSql(sql);
+				}
+				return 1; 
+			}catch (Exception e) {
+				//log.info("msg", e.getCause());
+				return -1;
+			}
+		}
 }

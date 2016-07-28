@@ -25,7 +25,7 @@ $(function(){
 		var zhongPlace = obj.children(".notTjTicketDiv").children(".StartAndEnd").children(".EndTJC").children("span").text();//终点机场名和历经时间
 		var cost = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".money").text();//获取价格
 		var zhekou = $(this).parent().next().children(".zhe").text();
-		var cangweiType = $(this).parent().next().next().children(".Eimg").text();
+		var cangweiType = $(this).parent().next().next().children(".Eimg").text(); //舱位类型
 		var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
 		
 		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&cangweiType="+cangweiType+"&zhekou="+zhekou;         
@@ -41,7 +41,7 @@ $(function(){
 		var zhongPlace = obj.children(".notTjTicketDiv").children(".StartAndEnd").children(".EndTJC").children("span").text();//终点机场名和历经时间
 		var cost = $(this).parent().next().children(".money").text();//获取价格
 		var zhekou = $(this).parent().next().children(".zhe").text();
-		var cangweiType = $(this).parent().next().next().children(".Eimg").text();
+		var cangweiType = $(this).parent().next().next().children(".Eimg").text(); //舱位类型
 		var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
 		
 		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&zhekou="+zhekou+"&cangweiType="+cangweiType;

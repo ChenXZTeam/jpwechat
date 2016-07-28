@@ -137,12 +137,12 @@ public class ECUtils {
 			avRequest.setStopCity(stopCity); // 转机地（中转城市）
 		}
 		if(!StringUtils.isEmpty(fltNo)){
-			avRequest.setFltNo(fltNo); // ����ų��˲�ѯ�����⣬��������������������ܹ���
+			avRequest.setFltNo(fltNo);// 航班号除了查询日期外，这个条件跟其他条件不能共存
 		}
 		
-		AVClient avClient=new AVClient(); // �½��ͻ��˶���
+		AVClient avClient=new AVClient(); // 新建客户端对象
 		try {
-			AVResponse avResponse=avClient.avForObe(avRequest); // �½�һ����Ӧ����
+			AVResponse avResponse=avClient.avForObe(avRequest); // 新建一个响应对象
 			if(avResponse != null && avResponse.getResultCode() == 0){
 				
 				List<AvSegment> resultList = new ArrayList<AvSegment>();
@@ -151,7 +151,7 @@ public class ECUtils {
 				if(avList != null && avList.size() > 0){
 					for(AvItem item : avList){
 						for(AvSegment avSeg : item.getSegments()){
-							resultList.add(avSeg); // ��ȡ��Ӧ�е����к�����λ
+							resultList.add(avSeg); // 获取响应中的所有航班座位
 						}
 					}
 				}
@@ -167,29 +167,29 @@ public class ECUtils {
 		return null;
 	}
 	
-	// �˼۲�ѯ
+	// 运价查询
 	public List<FDItem> fd(String org, String dst, String date, String airline, String planeModel, String passType, String fullFareBasis) {
-		FDRequest fdRequest = new FDRequest(); // �½�һ���������
-		fdRequest.setOfficeNo(OFFICENO); // ����Office��
-		fdRequest.setToken(token); // �������ƺ�
+		FDRequest fdRequest = new FDRequest(); // 新建一个请求对象
+		fdRequest.setOfficeNo(OFFICENO); // 设置Office号
+		fdRequest.setToken(token); // 设置令牌号
 		
-		fdRequest.setOrg(org); // ���ó�������
-		fdRequest.setDst(dst); // ���õ������
-		fdRequest.setDate(date); // ���ò�ѯ����
+		fdRequest.setOrg(org); // 设置出发城市
+		fdRequest.setDst(dst); // 设置到达城市
+		fdRequest.setDate(date); // 设置查询日期
 		if(airline == null){
 			fdRequest.setAirline("");
 		}else{
-			fdRequest.setAirline(airline); // ���չ�˾������
+			fdRequest.setAirline(airline); // 航空公司两字码
 		}
-		fdRequest.setPlaneModel(planeModel); // ���û���
-		fdRequest.setPassType(passType); // �ÿ����� ��"ad"�����ˣ�"IN"��Ӥ��"CH"����ͯ��
-		fdRequest.setFullFareBasis(fullFareBasis); // �˼ۻ� ����Ϊ��
+		fdRequest.setPlaneModel(planeModel); // 设置机型
+		fdRequest.setPassType(passType); // 旅客类型 （"ad"：成人；"IN"：婴儿；"CH"：儿童）
+		fdRequest.setFullFareBasis(fullFareBasis); // 运价基础 ，可为空
 		
-		FDClient fdClient = new FDClient(); // �½��ͻ��˶���
+		FDClient fdClient = new FDClient(); // 新建客户端对象
 		try {
-			FDResponse fdResponse = fdClient.fdForObe(fdRequest); // �½�һ����Ӧ����
+			FDResponse fdResponse = fdClient.fdForObe(fdRequest); // 新建一个响应对象
 			if(fdResponse != null && fdResponse.getResultCode() == 0){
-				return fdResponse.getFare().getSortedfares(); // �������е��˼���Ϣ
+				return fdResponse.getFare().getSortedfares(); // 返回所有的运价信息
 			}
 		} catch (ObeException e) {
 			// TODO Auto-generated catch block
@@ -198,26 +198,26 @@ public class ECUtils {
 		return null;
 	}
 	
-	// ��ȡ��������(��ѯһ���ж����ض����������к������Ϣ,ֻ�ܲ�ѯ���졢���켰�Ժ������)
+	// 获取飞行周期(查询一城市对在特定周期内所有航班的信息,只能查询当天、昨天及以后的周期)
 	public List<SkSegment> sk(String org, String dst, String date, String airline, String direct, String noStop){
-		SKRequest skRequest = new SKRequest(); // �½�һ���������
-		skRequest.setToken(token); // �������ƺ�
-		skRequest.setOfficeNo(OFFICENO); // ����Office��
+		SKRequest skRequest = new SKRequest();// 新建一个请求对象
+		skRequest.setToken(token); // 设置令牌号
+		skRequest.setOfficeNo(OFFICENO); // 设置Office号
 		
-		skRequest.setOrg(org); // ���ó�������
-		skRequest.setDst(dst); // ���õ������
-		skRequest.setDate(date); // ���ò�ѯ����
+		skRequest.setOrg(org); // 设置出发城市
+		skRequest.setDst(dst); // 设置到达城市
+		skRequest.setDate(date); // 设置查询日期
 		if(airline == null){
 			skRequest.setAirline("");
 		}else{
-			skRequest.setAirline(airline); // ���ú��չ�˾
+			skRequest.setAirline(airline); // 设置航空公司
 		}
-		skRequest.setDirect(direct); // ָ���Ƿ�ֱ�ɺ��� ��Ĭ��Ϊfalse 
-		skRequest.setNoStop(noStop); // ָ���Ƿ�ֻ��ѯ�޾�ͣ���� ��Ĭ��Ϊfalse 
+		skRequest.setDirect(direct); // 指明是否直飞航班 ，默认为false 
+		skRequest.setNoStop(noStop); // 指明是否只查询无经停航班 ，默认为false 
 		
-		SKClient skClient = new SKClient(); // �½��ͻ��˶���
+		SKClient skClient = new SKClient(); // 新建客户端对象
 		try {
-			SKResponse skResponse = skClient.skForObe(skRequest); // �½�һ����Ӧ����
+			SKResponse skResponse = skClient.skForObe(skRequest); // 新建一个响应对象
 			if(skResponse !=null && skResponse.getResultCode() == 0){
 				List<SkItem> skList = skResponse.getSkItems();
 				if(skList != null && skList.size() > 0){
@@ -231,7 +231,7 @@ public class ECUtils {
 					}
 					
 					if(resultList != null && resultList.size() > 0){
-						return resultList; // �������з�������
+						return resultList; // 返回所有飞行周期
 					}
 				}
 			}
@@ -241,27 +241,27 @@ public class ECUtils {
 		return null;
 	}
 	
-	// ��ѯ��ʾָ�����ڵĺ����ϵĺ�����Ϣ(��ݺ����)
+	// 查询显示指定日期的航段上的航班信息(根据航班号)
 	public DsgSegment[] dsgByFlightNo(String flightNo, String flightDate, String cabin, String segment){
-		DsgRequest dsgRequest=new DsgRequest(); // �½�һ���������
+		DsgRequest dsgRequest=new DsgRequest(); // 新建一个请求对象
 		
-		dsgRequest.setToken(token); // �������ƺ�
-		dsgRequest.setOfficeNo(OFFICENO); // ����Office��
+		dsgRequest.setToken(token); // 设置令牌号
+		dsgRequest.setOfficeNo(OFFICENO); // 设置Office号
 		
-		dsgRequest.setFlightNo(flightNo); // ���ú����
-		dsgRequest.setFlightDate(flightDate); // ���ú�������
+		dsgRequest.setFlightNo(flightNo); // 设置航班号
+		dsgRequest.setFlightDate(flightDate); // 设置航班日期
 		if(!StringUtils.isEmpty(cabin)){
-			dsgRequest.setCabin(cabin);  // ��λ
+			dsgRequest.setCabin(cabin);  // 舱位
 		}
 		if(!StringUtils.isEmpty(segment)){
-			dsgRequest.setSegment(segment); // ���Σ����жԣ�
+			dsgRequest.setSegment(segment);  // 航段（城市对）
 		}
 		
-		DSGClient dsgClient = new DSGClient(); // �½��ͻ��˶���
+		DSGClient dsgClient = new DSGClient(); // 新建客户端对象
 		try {
-			DsgResponse dsgResponse = dsgClient.dsg(dsgRequest); // �½�һ����Ӧ����
+			DsgResponse dsgResponse = dsgClient.dsg(dsgRequest); // 新建一个响应对象
 			if(dsgResponse != null && dsgResponse.getResultCode() == 0){
-				return dsgResponse.getSegments(); // �������к�����Ϣ
+				return dsgResponse.getSegments(); // 返回所有航班信息
 			}
 		} catch (ObeException e) { 
 			e.printStackTrace(); 
@@ -724,24 +724,24 @@ public class ECUtils {
 		return false;
 	}
 	
-	// �޸ĺ���
+	// 修改航段
 	public boolean changeAirSegment(String pnrNo, String fltNoOld, String fltDateOld, SegmentInfo[] segmentInfos){ 
-		PNRAirSegmentRequest request = new PNRAirSegmentRequest(); // �½�һ��������� 
+		PNRAirSegmentRequest request = new PNRAirSegmentRequest(); // 新建一个请求对象 
 
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����PNR��
-		request.setFltNoOld(fltNoOld); // ���þɺ����
-		request.setFltDateOld(fltDateOld); // ���þɺ�������
-		request.setSegmentInfo(segmentInfos); // ������Ϣ
+		request.setPnrNo(pnrNo); // 设置PNR号
+		request.setFltNoOld(fltNoOld); // 设置旧航班号
+		request.setFltDateOld(fltDateOld); // 设置旧航班日期
+		request.setSegmentInfo(segmentInfos); // 航段信息
 		
-		PNRManageClient client = new PNRManageClient(); // �½�һ���ͻ���
+		PNRManageClient client = new PNRManageClient(); // 新建一个客户端
 		try{
-			OBECommonResponse response = client.changeAirSegment(request); // �½�һ����Ӧ����
+			OBECommonResponse response = client.changeAirSegment(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
 				if("OK".equals(response.getResultMsg())){
-					return true; // �����޸Ľ��
+					return true; // 返回增加结果
 				}
 			}
 		}catch(ObeException e){

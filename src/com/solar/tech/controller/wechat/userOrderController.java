@@ -20,6 +20,7 @@ import com.travelsky.sbeclient.obe.book.SegmentInfo;
 import com.travelsky.sbeclient.obe.response.PnrResponse;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.utils.ECUtils;
+import com.solar.tech.utils.saveCost;
 import com.solar.tech.service.userOrderService;
 
 @Controller
@@ -30,7 +31,8 @@ public class userOrderController {
 	
 	@RequestMapping("/add/order.action")
 	@ResponseBody
-	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity,String DaodTime,String QishiPlan,String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,HttpSession session){
+	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,HttpSession session){
+		saveCost getCost = new saveCost();
 		Map<String, Object> map = new HashMap<String, Object>();
 		userOrderInfo oderInfo = new userOrderInfo();
 		oderInfo.setChufDate(ChufDate);
@@ -38,13 +40,15 @@ public class userOrderController {
 		oderInfo.setDaodTime(DaodTime);
 		oderInfo.setChufCity(ChufCity);
 		oderInfo.setDaodCity(DaodCity);
+		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
-		System.out.println((String) session.getAttribute("openId"));
 		oderInfo.setOpenID((String) session.getAttribute("openId"));
 		oderInfo.setQishiPlane(QishiPlan);
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
 		oderInfo.setCuntTime(lishiTime);
+		String lastpayCout=getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay);
+		System.out.println("执行吧皮卡丘："+lastpayCout);
 		oderInfo.setCostMoney(CostPay);
 		oderInfo.setLinkName(LinkName);
 		oderInfo.setLinkPhoneNum(PhoneNum);
@@ -53,6 +57,7 @@ public class userOrderController {
 		oderInfo.setIDcaseType(iDcaseType);
 		oderInfo.setYiwaiBX(YiwaiBX);
 		oderInfo.setYanwuBX(YanwuBX);
+		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
 		String maxOrderNum = OrderService.fingMaxOrderNum();
@@ -103,7 +108,7 @@ public class userOrderController {
 		RMKInfo[] rmks = new RMKInfo[]{rmk};
 		
 		//以下代码在开发的过程中请不要取消注释掉，因为会产生真实的订票系统。需要付款的
-		/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
+		/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30", null, osis, rmks, null, null, null);
 		System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 		System.out.println("预定的编号："+response.getPnrNo());
 		System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -117,7 +122,11 @@ public class userOrderController {
 		System.out.println("行动代码："+response.getSegList().get(0).getActionCode());
 		System.out.println("航线类型："+response.getSegList().get(0).getType());
 		System.out.println("-----------------------到这信息全部返回成功-------------------");*/
-		//System.out.println(response.toJson());//返回的json数据
+		//System.out.println(response.toJson());//返回的json数据		
+		
+		//oderInfo.setPNR(response.getPnrNo());//将获得的编号保存到数据库中
+		oderInfo.setGetTeickTime("2017-01-30");//出票期限
+		
 		//这个if是只有在中航信系统生成预定编号之后才能存到我们的数据库中。不然不能存
 		int num=0;
 		//if(response.getPnrNo()==""||response.getPnrNo().equals("")||response.getPnrNo()==null){
@@ -132,6 +141,132 @@ public class userOrderController {
 			System.out.println("数据错误");
 		}
 		//new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
+		return map;
+	}
+	
+	/**
+	 * @title updateCorder 修改出票时间
+	 * @param pnrNo
+	 * @param tktl(新出票的时间) yyyy-MM-dd HH:mm:ss
+	 * @return
+	 */
+	//修改出票时限
+	@RequestMapping("/update/Corder.action")
+	@ResponseBody
+	public Map<String, Object> updateCorder(String pnrNo, String tktl, String uuid, String orderNum){
+		Map<String, Object> map = new HashMap<String, Object>();
+		//boolean YesOrNo = new ECUtils().tktl("JZCBY9", tktl);//修改出票时间
+		//if(YesOrNo){
+			userOrderInfo uinfo = new userOrderInfo();
+			uinfo.setGetTeickTime(tktl);
+			uinfo.setID(uuid);
+			uinfo.setOrderNum(orderNum);
+			int i=OrderService.updateGetTeickTime(uinfo);
+			if(i==1){
+				map.put("msg", 1);
+				System.out.println("出票时限修改成功");
+			}else{
+				map.put("msg", 0);
+				System.out.println("出票时限修改失败");
+			}
+		//}
+		return map;
+	}
+	
+	//修改航段信息（未付款的时候，付款的时候就只能改舱了）
+	@RequestMapping("/update/changeAirSegment.action")
+	@ResponseBody
+	public Map<String, Object> changeAirSegment(String pnrNo, String fltNoOld, String fltDateOld ,String orderNum, String departure, String arrival, String flightNo ,String cabin, String departureDate, String DepartureTime, String actionCode){
+		Map<String, Object> map = new HashMap<String, Object>();
+		//航段组实体类
+		SegmentInfo s = new SegmentInfo();
+		s.setDeparture(departure);//起飞城市
+		s.setArrival(arrival);//到达城市
+		s.setFlightNo(flightNo);//航班号	
+		s.setCabin(cabin);//舱位
+		s.setDepartureDate(departureDate);//起飞日期，格式如：yyyy-MM-dd
+		s.setDepartureTime(DepartureTime);//起飞时间，格式如：HH:mm
+		s.setActionCode("NN");//行动代码
+		s.setType("HK");//航线类型(国内/国际)
+		SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
+		//boolean YesOrNo = new ECUtils().changeAirSegment(pnrNo, fltNoOld, fltDateOld, segmentInfos);//执行中航信修改航段方法
+		//if(YesOrNo){
+			userOrderInfo uinfo = new userOrderInfo();
+			uinfo.setPNR(pnrNo);
+			uinfo.setOrderNum(orderNum);
+			uinfo.setChufCity(departure);
+			uinfo.setDaodCity(arrival);
+			uinfo.setHangbanNum(flightNo);
+			uinfo.setCabin(cabin);
+			uinfo.setChufDate(departureDate);
+			uinfo.setChufTime(DepartureTime);
+			uinfo.setActionCode("NN");
+			int i = OrderService.changeAirSegment(uinfo);
+			if(i==1){
+				map.put("msg", 1);
+				System.out.println("修改航段成功");
+			}else{
+				map.put("msg", 0);
+				System.out.println("修改航段失败");
+			}
+		//}
+		return map;
+	}
+	
+	//修改旅客证件
+	@RequestMapping("/update/changeCertificate.action")
+	@ResponseBody
+	public Map<String, Object> changeCertificate(String pnrNo, String orderNum, String name, int age, String gender, String birthday, String psgType, String certNo, String certType){
+		Map<String, Object> map = new HashMap<String, Object>();		
+		PassengerInfo psg = new PassengerInfo();
+		psg.setName(name);//旅客姓名
+		psg.setAge(age);//年龄
+		psg.setGender(gender); //性别
+		psg.setBirthDay(birthday);//出生日期yyyy-mm-dd
+		psg.setPsgType(psgType);//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
+		psg.setCertNo(certNo);//证件号码
+		psg.setCertType(certType);//证件类型(NI 身份证,PP 护照,ID其他证件)
+		PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};		
+		//boolean YesOrNo = new ECUtils().changeCertificate(pnrNo, passengerInfos);//执行中航信修改航段方法
+		//if(YesOrNo){
+			userOrderInfo uinfo = new userOrderInfo();
+			uinfo.setOrderNum(orderNum);
+			uinfo.setPNR(pnrNo);
+			uinfo.setLinkName(name);
+			uinfo.setAge(age);
+			uinfo.setLinkSex(gender);
+			uinfo.setBirthday(birthday);
+			uinfo.setPsgType(psgType);
+			uinfo.setIDcase(certNo);
+			uinfo.setIDcaseType(certType);
+			int i = OrderService.changeCertificate(uinfo);
+			if(i==1){
+				map.put("msg", 1);
+				System.out.println("修改乘机人信息成功");
+			}else{
+				map.put("msg", 0);
+				System.out.println("修改乘机人信息失败");
+			}
+		//}
+		return map;
+	}
+	
+	//删除订单同时得删除中航信中的订单
+	@RequestMapping("/delete/order.action")
+	@ResponseBody
+	public Map<String, Object> deleteOrder(String pnrNo, String orderNum, String ID){
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean YesOrNo = new ECUtils().cancelPnr(pnrNo);
+		if(YesOrNo){
+			int i = OrderService.deleteOrder(ID, orderNum);
+			if(i==1){
+				map.put("msg",1);
+				System.out.println("订单删除成功");
+			}else{
+				map.put("msg",0);
+				System.out.println("订单删除出错");
+			}
+		}
 		return map;
 	}
 }

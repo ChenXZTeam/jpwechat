@@ -613,7 +613,7 @@ public class GenericDao{
 		return clone;
 	}
 	
-	//add by weijun xiao
+	//修改功能
 	public int executeJDBCSql(String sql){
 		return getSession().createSQLQuery(sql).executeUpdate();
 	}
