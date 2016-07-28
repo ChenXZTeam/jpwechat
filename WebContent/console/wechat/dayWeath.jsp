@@ -188,7 +188,7 @@ function draw24(id,height) {
 <body>
 <div id="find">
 		<div id="xFind">
-			<div class="inputName" style="border-right:#F0EFF4 solid 1px;"><img src="<%=basePath %>console/images/dingwei.gif"/><span style="color:#0278FC; margin-left:5px; line-height:10px; font-weight:bold;font-size:10px" id="cityName"   ></span></div>
+			<div class="inputName" style="border-right:#F0EFF4 solid 1px;"><img src="<%=basePath %>console/images/dingwei.gif"/><span style="color:#0278FC; margin-left:5px; line-height:10px; font-weight:bold;font-size:10px;float:right; margin-top:4px;"  id="cityName"   ></span></div>
 			<div class="inputDiv"><input type="text" class="cityinput"   style="font-size:14px;color:#666666;border:none" id="citySelect" placeholder="请输入目的地" "/></div>
 			<div style="clear:both;"></div>
 		</div>
@@ -275,7 +275,7 @@ function draw24(id,height) {
         <div class="Temperature">
 			<div class="wendu">
 				<div class="tianqiClass">
-					<img src="<%=basePath %>console/images/fengImg.png"/><span>-32</span><span class="shangbiao">。</span><span>/</span><span>-26</span><span class="shangbiao">。</span>
+					<img src="<%=basePath %>console/images/fengImg.png"/><span>32</span><span class="shangbiao">。</span><span>/</span><span>26</span><span class="shangbiao">。</span>
 				</div>
 			</div>
 			<div style="clear:both;"></div>
@@ -481,6 +481,14 @@ function myFun(result){
     		alert(obj);
     		alert(obj);
     	}); */
+    	
+    	
+    	//用jquery
+    	
+    	  
+    	    //遍历name为txt的所有input元素
+    
+    	
 	    
 	    console.log(result);
 	    console.log(result.sk.temp);
