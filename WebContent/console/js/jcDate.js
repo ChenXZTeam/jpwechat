@@ -263,9 +263,15 @@
 				var todateY=mydate.getFullYear();//获取当前的年
 				var todateM=(mydate.getMonth()+1);//获取当前的月
 				var todateD=mydate.getDate();//获取当前的日
-				if(0<=(Sy-todateY)&&0<=(Sm-todateM)&&0<=(Sd-todateD)){
+				if(0<=(Sy-todateY)){
 					$("input.dateVisited").val(dateInfo);				
 					closeDate();//关闭日期					
+				}else if(0<=(Sy-todateY)&&0<=(Sm-todateM)){
+					$("input.dateVisited").val(dateInfo);				
+					closeDate();//关闭日期
+				}else if(0<=(Sy-todateY)&&0<=(Sm-todateM)&&0<=(Sd-todateD)){
+					$("input.dateVisited").val(dateInfo);				
+					closeDate();//关闭日期
 				}else{
 					alert("您选择的时间已经过完");
 				}
