@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.service.PlanTekService;
+import com.solar.tech.utils.ECUtils;
+import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.SeatUtils;
+import com.travelsky.sbeclient.obe.response.PATFareItem;
+import com.travelsky.sbeclient.obe.response.PataFareResponse;
 
 @Controller
 @RequestMapping("/wechatController")
@@ -58,5 +62,42 @@ public class PlanTekController {
 		}
 		return map;
 	}
+	
 
+	//支付前得确认是否还有空座位
+	@RequestMapping("/confirmCabin/seatInfo.action")
+	@ResponseBody
+	public Map<String, Object> confirmCabin(String chufCity,String daodCity,String chufDate,String flightNo,String cabin){
+		Map<String, Object> map = new HashMap<String, Object>();
+		OptimizeECUtils op = new OptimizeECUtils();
+		int seatNum = op.confirmCabin(chufCity, daodCity, chufDate, flightNo, cabin);
+		if(0<seatNum){
+			map.put("seatNum",seatNum);			
+		}else{
+			map.put("msg",0);
+			System.out.println("该座位已被订完");
+		}
+		return map;
+	}
+	
+	//查询国内运价
+	@RequestMapping("/find/patPNR.action")
+	@ResponseBody
+	public Map<String, Object> patPNR(String pnrNo){
+		Map<String, Object> map=new HashMap<String, Object>();
+		PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", "CH", 1, null, null, null, null);
+		System.out.println("长度："+segmentInfos.length);
+		map.put("SEG", segmentInfos);
+		return map;
+	}
+	
+	//删除单个中航信pnrNo的方法（程序调试时使用）
+	/*@RequestMapping("/deletes/PNRno.action")
+	@ResponseBody
+	public Map<String, Object> deletePnrNo(String pnrNo){
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean YesOrNo = new ECUtils().cancelPnr(pnrNo);//删除中航信系统中刚刚预定的数据
+		System.out.println("删除是否成功："+YesOrNo);
+		return map;
+	}*/
 }
