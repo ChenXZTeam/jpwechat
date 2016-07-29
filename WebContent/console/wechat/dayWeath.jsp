@@ -510,7 +510,8 @@ geolocation.getCurrentPosition( function(r) {   //定位结果对象会传递给
                 var addComp = rs.addressComponents; 
                 $("#cityName").html(addComp.city);
                 console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);    
-            });  
+            }); 
+            
         }
 });
   
