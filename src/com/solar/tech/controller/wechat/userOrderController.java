@@ -280,9 +280,7 @@ public class userOrderController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
-		System.out.println("我进来了："+openId+"/"+userName);
 		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);
-		System.out.println("获取到的链表数据数量："+orderList.size());
 		if(orderList.size()>0){
 			map.put("orderList",orderList);
 			System.out.println("数据不为空");
