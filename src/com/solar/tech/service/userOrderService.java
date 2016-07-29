@@ -164,7 +164,7 @@ public class userOrderService {
 			List<Object> params = new ArrayList<Object>();
 			params.add(userName);
 			params.add(openId);
-			String sql="from userOrderInfo where AdminDel=0 AND UserName=? AND openID=?";
+			String sql="from userOrderInfo where AdminDel=0 AND UserName=? AND openID=? ORDER BY updateTime DESC";
 			List<userOrderInfo> list = gDao.getListByHql(userOrderInfo.class, sql, params);
 			if(list.size()>0){
 				return list;
