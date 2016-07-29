@@ -96,9 +96,9 @@
 				$("#fm").form("clear");
 				$("#ftitle").html("修改免签信息");
 				$("#countryID").val(rowData.countryID);			
-				$("#countryName").combobox("setValue",rowData.countryName).combobox("disable");
+				$("#countryName").combobox("disable").combobox("setValue",rowData.countryName);
 				$("#content").textbox("setValue",rowData.content);
-				$("#dlg").dialog("open").dialog("setTitle","");;
+				$("#dlg").dialog("open").dialog("setTitle","");
 			}
 		});
 	});
@@ -106,9 +106,24 @@
 		$("#fm").form("clear");
 		$("#ftitle").html("添加免签信息");
 		$("#countryName").combobox({
-			url:'<%=basePath%>/console/json/countries_EN.json',
+			url:"<%=basePath%>console/json/countries_EN.json",
 		    valueField:'id',
-		    textField:'name'
+		    textField:'name',
+		    onSelect:function(record){
+		    	var data = $("#hotCountriesList").datagrid('getData');
+		    	var flag = true;
+		    	for(var i=0;i<data.rows.length;i++){
+		    		if(data.rows[i].countryID==record.id){
+		    			flag = false;
+		    			$("#countryName").combobox('clear');
+		    			$.messager.alert("提示消息","此国家已存在！");
+		    		}
+		    	}
+		    	$("#countryID").val(record.id);
+		    	if(flag){
+			    	$("#countryName").combobox('setValue',record.name);
+		    	}
+		    }
 		});		
 		$("#dlg").dialog("open").dialog('setTitle','');
 	}
@@ -147,7 +162,7 @@
 	            		arr[i] = rows[i].countryID;
 	            	}
 	            	$.ajax({
-                        url: "<%=basePath%>framework/visa/deleteVisaOrder.action",
+                        url: "<%=basePath%>framework/visa/deleteVisaFree.action",
                         type: "POST",
                         dataType: "json",
                         data: { "ids": JSON.stringify(arr) },
