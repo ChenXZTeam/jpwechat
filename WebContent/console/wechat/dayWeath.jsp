@@ -462,33 +462,9 @@ function myFun(result){
 	    cache:false,
 	    
 	    success: function (data) {//ajax请求成功后触发的方法
-	    	//alert(cityName);
-	   
-	    	 //alert(jsonObj[''+temp+'']); 
-	    	<%-- //$.getJSON("<%=basePath%>wechatController/find/dayweather.action", function(json){ --%>
-			//	var temp=json.data[0].temp;
-		//});
-	 
 	    	
-
-           
-	    	
-	    //console.log(values);
 	    var result = JSON.parse(data);
-	    
-	    
-	   /*  $.each(data,function(dix,obj){
-    		alert(obj);
-    		alert(obj);
-    	}); */
-    	
-    	
-    	//用jquery
-    	
-    	  
-    	    //遍历name为txt的所有input元素
-    
-    	
+	  
 	    
 	    console.log(result);
 	    console.log(result.sk.temp);
@@ -522,5 +498,20 @@ function changeCity(){
 	//alert("123123");
 	//alert($("#citySelect").val());
 }
+
+var geolocation = new BMap.Geolocation();    
+var gc = new BMap.Geocoder();     
+  
+geolocation.getCurrentPosition( function(r) {   //定位结果对象会传递给r变量  
+  
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){  //通过Geolocation类的getStatus()可以判断是否成功定位。  
+            var pt = r.point;    
+            gc.getLocation(pt, function(rs){    
+                var addComp = rs.addressComponents; 
+                $("#cityName").html(addComp.city);
+                console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);    
+            });  
+        }
+});
   
 </script>
