@@ -158,7 +158,7 @@ public class userOrderService {
 				//log.info("msg", e.getCause());
 				return -1;
 			}
-		}
+		} 
 		
 		public List<userOrderInfo> loadOrder(String userName,String openId){
 			List<Object> params = new ArrayList<Object>();
