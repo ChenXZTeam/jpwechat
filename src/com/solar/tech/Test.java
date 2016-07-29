@@ -79,7 +79,6 @@ public class Test {
 					System.out.println(countriesJSON.toString());
 			    }	
 			    
-			    @org.junit.Test
 			    public void test(){
 			    	try {
 			    		String token = this.wxMpConfigStorage.getAccessToken();

@@ -58,6 +58,30 @@ public class VisaOrder {
 	//签证标题
 	private String visaTitle;
 	
+	@Column(name="progress",length=20)
+	//进度
+	private String progress;
+	
+	@Column(name="userID",length=50)
+	//用户ID
+	private String userID;
+	
+	public String getProgress() {
+		return progress;
+	}
+
+	public void setProgress(String progress) {
+		this.progress = progress;
+	}
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
 	public String getProposer() {
 		return proposer;
 	}
@@ -151,7 +175,8 @@ public class VisaOrder {
 		return "VisaOrder [visaOrderID=" + visaOrderID + ", proposer=" + proposer + ", customerType=" + customerType
 				+ ", contactsName=" + contactsName + ", contactsPhone=" + contactsPhone + ", contactsEmail="
 				+ contactsEmail + ", deliveryMethod=" + deliveryMethod + ", deliveryAddress=" + deliveryAddress
-				+ ", totalCost=" + totalCost + ", visaID=" + visaID + ", visaTitle=" + visaTitle + "]";
+				+ ", totalCost=" + totalCost + ", visaID=" + visaID + ", visaTitle=" + visaTitle + ", progress="
+				+ progress + ", userID=" + userID + "]";
 	}
 	
 	

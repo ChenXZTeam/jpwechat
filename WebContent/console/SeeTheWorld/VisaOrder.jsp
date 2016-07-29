@@ -21,6 +21,7 @@
 </head>
 <body>
 	<form method="post"  action="<%=basePath %>framework/visa/addVisaOrder.action">
+		<input id="userID" name="userID" type="text" value="" hidden="hidden">
 		<table>
 			<tr>
 				<td>申请人：</td>

@@ -69,6 +69,7 @@
 }
 </style>
 <script>
+	var progressArr = new Array({"id":"签证完成","name":"签证完成"},{"id":"处理中","name":"处理中"});
 	$(function(){
 		$('#visaOrderList').datagrid({
 			height: '100%',
@@ -96,7 +97,9 @@
 				        { field: 'deliveryMethod', title: '配送方式', width: 80},
 				        { field: 'deliveryAddress', title: '配送地址', width: 80},
 				        { field: 'totalCost', title: '总费用', width: 80},
-				        { field: 'visaID', title: '签证ID', width: 80}
+				        { field: 'visaID', title: '签证ID', width: 80},
+				        { field: 'userID', title: '用户ID', width: 80},
+				        { field: 'progress', title: '签证进度', width: 80},
 			]],	        
 		    checkOnSelect:false,
 		    selectOnCheck:false,
@@ -110,6 +113,7 @@
 				$("#contactsEmail").textbox("setValue",rowData.contactsEmail);
 				$("#deliveryMethod").textbox("setValue",rowData.deliveryMethod);
 				$("#deliveryAddress").textbox("setValue",rowData.deliveryAddress);
+				$("#userID").textbox("setValue",rowData.userID);
 				$("#totalCost").textbox("setValue",rowData.totalCost);
 				$("#visaID").combobox({
 					url:'<%=basePath%>/framework/visa/getVisaList.action',
@@ -126,7 +130,12 @@
 				    onLoadSuccess:function(){
 				    	$("#customerType").combobox('setValue',rowData.customerType);
 				    }
-				});	
+				});
+				$("#progress").combobox({
+					valueField:'id',
+				    textField:'name',
+				    data:progressArr
+				});
 				$("#dlg").dialog("open").dialog("setTitle","");
 			}
 		});
@@ -145,6 +154,12 @@
 		    valueField:'id',
 		    textField:'name'
 		});		
+		
+		$("#progress").combobox({
+			valueField:'id',
+		    textField:'name',
+		    data:progressArr
+		});
 		$("#dlg").dialog("open").dialog('setTitle','');
 	}
 	
@@ -256,8 +271,16 @@
 				<input id="deliveryAddress" name="deliveryAddress" class="easyui-textbox" data-options="required:true">
 			</div>
 			<div class="fitem">
+				<label>用户ID:</label>
+				<input id="userID" name="userID" class="easyui-textbox" data-options="required:true">
+			</div>
+			<div class="fitem">
 				<label>总费用:</label>
 				<input id="totalCost" name="totalCost" class="easyui-textbox" data-options="required:true">
+			</div>
+			<div class="fitem">
+				<label>签证进度:</label>
+				<input id="progress" name="progress" class="easyui-combobox">
 			</div>
 		</form>
 	</div>
