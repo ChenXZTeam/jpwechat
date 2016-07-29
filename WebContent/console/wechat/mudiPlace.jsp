@@ -42,12 +42,12 @@
 	.notTjTicketDiv{padding-top:13px; height:70px; border-bottom:#E0E0E0 solid 1px;}
 	.notTjTicket .notTjTicketDiv .lineHeight{line-height:25px;}
 	.notTjTicket .notTjTicketDiv .lineHeight img{width:25px; height:24px;}
-	.notTjTicket .notTjTicketDiv .StartTimeEnd{width:60px; float:left; margin-left:20px;}
+	.notTjTicket .notTjTicketDiv .StartTimeEnd{width:60px; float:left; margin-left:10px;}
 	.notTjTicket .notTjTicketDiv .StartTimeEnd .StartTime{color:#666666;}
-	.notTjTicket .notTjTicketDiv .StartTimeEnd .EndTime{color:#c7c7c7;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd{float:left; text-align:left; margin-left:5%;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{display:block; color:#666666; width:90px; height:25px; overflow:hidden;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{display:block; color:#c7c7c7; width:90px; height:25px; overflow:hidden;}
+	.notTjTicket .notTjTicketDiv .StartTimeEnd .EndTime{color:#c7c7c7;} 
+	.notTjTicket .notTjTicketDiv .StartAndEnd{float:left; text-align:left; margin-left:3%;}
+	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{display:block; color:#666666; width:100px; height:25px; overflow:hidden;}
+	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{display:block; color:#c7c7c7; width:100px; height:25px; overflow:hidden;}
 	.notTjTicket .notTjTicketDiv .moneyAndTicket{text-align:right; float:right; margin-right:10px;}
 	.notTjTicket .notTjTicketDiv .moneyAndTicket .zuowei{color:#c7c7c7;}
 	.hangbanImform{padding:20px 10px; background-color:#F1F5FF; text-align:center;}
@@ -69,12 +69,43 @@
 </style>
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script>
+
 $(function(){ 
 	var chufCityCode="<%=chufCityCode %>";
 	var daodCityCode="<%=daodCityCode %>";
 	var cangW="<%=cangW %>";
-	var dateTime="<%=dateTime %>";
+	var dateTime=$("#dateTimeID").text();
+	conterCONTime(dateTime);//显示在中间的时间
+	ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
 	
+	$(".prevDate").click(function(){		
+		var newDate = prevTime($("#dateTimeID").text());
+		conterCONTime(newDate);
+		$(".notTjTicket").remove();
+		ajax(chufCityCode, daodCityCode, cangW, newDate); //执行数据加载ajax		
+		$("#dateTimeID").text(newDate);
+	});
+	
+	$(".nextDate").click(function(){		
+		var newDate = nextTime($("#dateTimeID").text());//获取加上一天的日期
+		conterCONTime(newDate);//把这个日期格式转换一个放在中间的标签中
+		$(".notTjTicket").remove();//移除原来加载的数据
+		ajax(chufCityCode, daodCityCode, cangW, newDate); //执行数据加载ajax		
+		$("#dateTimeID").text(newDate);//把这个值重新赋值一下，当做下一此点击时再一次调用
+	});
+	
+	var tjTicket=0;//推荐的机票
+	if(tjTicket==1){
+		var tjList='<li class="tjTicket"><div class="notTjTicketDiv"><div class="tuijianImg tuijianLan"><img src="<%=basePath %>console/images/tuijianImg.jpg" /></div><div class="hanban tuijianLan"><div class="hanbanName"><span style="line-height:40px;">深圳-->北京</span></div><div class="hanbanCompany"><span style="line-height:20px;">HU7710 海南航空</span></div></div><div class="money tuijianLan"><div class="moneyPay"><span style="line-height:35px; color:#FF8201;">￥806起</span></div><div class="zhekouPay"><span style="line-height:20px; font-size:12px;">4.5折</span></div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">经济舱</span><a class="aYuding">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥1760</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">E</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></li>';
+		$("#TicketList").append(tjList);
+	}
+	
+	//推荐的机票点击时执行
+	
+});
+
+//封装ajax方法
+function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 	//开始通过传递过来的几个参数进行后台查询之后加载查询结果
 	$.ajax({
 			url:"<%=basePath%>/wechatController/find/planTek.action",
@@ -142,16 +173,7 @@ $(function(){
 			},error:function(){
 			}
 	});
-	
-	var tjTicket=0;//推荐的机票
-	if(tjTicket==1){
-		var tjList='<li class="tjTicket"><div class="notTjTicketDiv"><div class="tuijianImg tuijianLan"><img src="<%=basePath %>console/images/tuijianImg.jpg" /></div><div class="hanban tuijianLan"><div class="hanbanName"><span style="line-height:40px;">深圳-->北京</span></div><div class="hanbanCompany"><span style="line-height:20px;">HU7710 海南航空</span></div></div><div class="money tuijianLan"><div class="moneyPay"><span style="line-height:35px; color:#FF8201;">￥806起</span></div><div class="zhekouPay"><span style="line-height:20px; font-size:12px;">4.5折</span></div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">经济舱</span><a class="aYuding">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥1760</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">E</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></li>';
-		$("#TicketList").append(tjList);
-	}
-	
-	//推荐的机票点击时执行
-	
-});
+}
 
 //计算剩余票价张数的方法
 function tekNum(date){
@@ -214,6 +236,50 @@ function cuntTime(depTime,arrTime){
 	}
 }
 
+//对传过来的时间进行处理，为了实现前一天和后一天的切换
+function conterCONTime(time){
+	var yymmdd = time.split("-"); //拆分传进来的时间
+	//根据时间获取星期
+	var date = time;
+	var day = new Date(Date.parse(date.replace(/-/g, '/')));  
+	var today = new Array('周日','周一','周二','周三','周四','周五','周六');  
+	var week = today[day.getDay()]; //获得星期
+	var mmdd = yymmdd[1]+"月"+yymmdd[2]+"日 "+week;
+	$(".mmddWeek").text(mmdd);
+}
+
+//前一天时间切换
+function prevTime(time){
+	var date = new Date(time);
+ 	date.setDate(date.getDate() - 1);
+ 	var yy = date.getFullYear();
+ 	var mm = date.getMonth()+1;
+ 	var dd = date.getDate();
+ 	if(mm < 10){
+ 		mm = "0"+mm;
+ 	}
+ 	if(dd<10){
+ 		dd = "0"+dd;
+ 	}
+ 	return yy+"-"+mm+"-"+dd;
+}
+
+//后一天时间切换
+function nextTime(time){
+	var date = new Date(time);
+ 	date.setDate(date.getDate() + 1);
+ 	var yy = date.getFullYear();
+ 	var mm = date.getMonth()+1;
+ 	var dd = date.getDate();
+ 	if(mm < 10){
+ 		mm = "0"+mm;
+ 	}
+ 	if(dd<10){
+ 		dd = "0"+dd;
+ 	}
+ 	return yy+"-"+mm+"-"+dd;
+}
+
 //重新加载指定js文件
 function loadjs(){
 	var jsElem = document.createElement('script');
@@ -226,10 +292,11 @@ function loadjs(){
 <body>
 <ul id="TicketList">
 	<li class="time" style="border-bottom:#E0E0E0 solid 1px; background-color:#F8F8F8; height:40px;">
-		<div class="timeDiv" style="float:left; width:25%; "><a>＜前一天</a></div>
-		<div class="timeDiv" style="float:left; width:35%; text-align:right;">12月19日 周三</div>
-		<div class="timeDiv" style="float:left; width:15%; text-align:left;">明天▼</div>
-		<div class="timeDiv" style="float:left; width:25%; "><a>后一天＞</a><a id="basePath" style="display:none;"><%=basePath %></a></div>
+		<div class="timeDiv" style="float:left; width:25%; "><a class="prevDate">＜前一天</a></div>
+		<div class="timeDiv mmddWeek" style="float:left; width:35%; text-align:right;"></div>
+		<div id="dateTimeID" style="display:none;"><%=dateTime %></div>
+		<!-- <div class="timeDiv" style="float:left; width:15%; text-align:left;">明天▼</div> -->
+		<div class="timeDiv" style="float:right; width:25%; "><a class="nextDate">后一天＞</a><a id="basePath" style="display:none;"><%=basePath %></a></div>
 		<div style="clear:both;"></div>
 	</li>
 	<!--推荐机票-->
