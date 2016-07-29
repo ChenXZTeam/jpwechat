@@ -13,13 +13,26 @@ import com.solar.tech.dao.GenericDao;
 import com.solar.tech.service.InviteCodeService;
 import net.sf.json.JSONArray;
 
+/**
+ * 类名：InvitationCodeImpl 
+ *
+ * 功能描述：这是InviteCodeService的实现类，负责邀请码模块的业务逻辑
+ *
+ * @author 曾令维
+ *
+ * Version info版本号：V1.0
+ * © Copyright 续日科技 2016年7月29日  版权所有
+ */
 @Service
 @Transactional
 public class InvitationCodeImpl implements InviteCodeService {
 	private static final String[] storeInvitationChars={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"
 			,"P","Q","R","S","T","U","V","W","X","Y","Z"};
+	
 	@Resource
 	private GenericDao gDao;
+	
+	
 	public void generateUUID(InvitationCode invitationCode,String deadline_){
 		String code = new String();
     	Random random = new Random();

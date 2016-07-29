@@ -52,4 +52,8 @@ public class UserService extends AbstractUserService{
 //			System.out.println(e.getMessage());
 //		}
 	}
+	
+	public List<User> findAllUser(){
+		return this.gDao.findAll(User.class);
+	}
 }

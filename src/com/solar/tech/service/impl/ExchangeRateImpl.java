@@ -8,6 +8,16 @@ import java.net.URL;
 import org.springframework.stereotype.Service;
 import com.solar.tech.service.ExchangeRateService;
 
+/**
+ * 类名：ExchangeRateImpl 
+ *
+ * 功能描述：这是ExchangeRateService接口的实现类，负责处理汇率模块的业务逻辑
+ *
+ * @author 曾令维
+ *
+ * Version info版本号：V1.0
+ * © Copyright 续日科技 2016年7月29日  版权所有
+ */
 @Service
 public class ExchangeRateImpl implements ExchangeRateService {
 	String currencyUrl = "http://apis.baidu.com/apistore/currencyservice/type";
