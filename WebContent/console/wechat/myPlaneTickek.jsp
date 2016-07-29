@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-
+ 
 <%
 	String path= request.getContextPath();
 	String basePath= request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ path +"/";
@@ -17,14 +17,19 @@
 	body{background-color:#e1e1e1; font-family:Microsoft YaHei; font-size:14px;}
 	.product ul{list-style-type:none; padding:0px; margin:0px; padding-bottom:10px;}
 	.product ul li{overflow:hidden; margin-top:10px; padding-bottom:10px; background:#fff;}
+	.product ul li .hiddenClass{display:none;}
 	.product ul li .planTitle{border-bottom:1px solid #E0E0E0; overflow:hidden; padding:10px;}
 	.product ul li .planTitle img,span{float:left;}
 	.product ul li .TekMas{border-bottom:1px solid #E0E0E0; padding:10px;}
 	.product ul li .hangban{float:left;}
 	.product ul li .hangban span{ clear:both; display:block; line-height:24px;}
-	.product ul li .money{ float:right;}	
-	.product ul li .payBtn{padding:10px;}
+	.product ul li .money{ float:right;}
+	.product ul li .xialaImg{ padding:3px; margin-left:15px; border:1px solid #0A8CD2; border-radius:3px; margin-top:10px; float:left;}	
+	.product ul li .xialaImg img{width:20px; height:20px;}
+	.product ul li .payBtn{padding:10px; overflow:hidden; float:right;}
 	.product ul li .payBtn a{padding:5px 10px; float:right; border:1px solid #FE8204; border-radius:3px; color:#FE8204;}
+	.product ul li .movement{height:0px; line-height:50px; overflow:hidden;}
+	.product ul li .movement a{margin-left:10px; padding:5px 10px; border:1px solid #FE8204; border-radius:3px; color:#FE8204;}
 </style>
 </head>
 
@@ -60,8 +65,15 @@
 						<div class="money"><span>￥1265</span></div>
 						<div style="clear:both;"></div>
 					</div>
-					
+					<div class="xialaImg"><img src="<%=basePath%>console/images/123.png" /></div>
 					<div class="payBtn"><a>立即支付</a></div>
+					<div style="clear:both;"></div>
+					<div class="movement">
+						<a>改签</a>
+						<a>修改资料</a>
+						<a>退票</a>
+						<a>删除订单</a>
+					</div>
 				</li> --%>
 				
 				
@@ -80,6 +92,7 @@
 		
 	  </div>
 	</div>
+	<div id="basePathJava" style="display:none"><%=basePath %></div>
 </body>
 <script>
 	$(function(){
@@ -92,18 +105,25 @@
 					var data = res.orderList;
 					if(res.msg==1){
 						for(var i=0; i<data.length; i++){
-							var orderlist = '<li><div class="planTitle"><img src="<%=basePath %>console/images/plan.png" style="width:20px;"/><span style="margin-left:7px; line-height:23px;">机票</span>	<span style="float:right; color:#FE8204;">请支付</span></div><div style="clear:both;"></div><div class="TekMas"><div class="hangban"><span>'+data[i].chufCity+'-'+data[i].daodCity+'</span><span>'+data[i].chufDate+' '+data[i].chufTime+'-'+data[i].daodTime+'</span><span style="color:#B5B5B5;">南方航空'+data[i].hangbanNum+'</span></div><div class="money"><span>'+data[i].costMoney+'</span></div><div style="clear:both;"></div></div><div class="payBtn"><a>立即支付</a></div></li>'
+							var orderlist = '<li><div class="hiddenClass"><div class="pnrNoDel">'+data[i].pnr+'</div><div class="orderNumDel">'+data[i].orderNum+'</div><div class="IDDel">'+data[i].id+'</div></div><div class="planTitle"><img src="<%=basePath %>console/images/plan.png" style="width:20px;"/><span style="margin-left:7px; line-height:23px;">机票</span>	<span style="float:right; color:#FE8204;">请支付</span></div><div style="clear:both;"></div><div class="TekMas"><div class="hangban"><span>'+data[i].chufCity+'-'+data[i].daodCity+'</span><span>'+data[i].chufDate+' '+data[i].chufTime+'-'+data[i].daodTime+'</span><span style="color:#B5B5B5;">南方航空'+data[i].hangbanNum+'</span></div><div class="money"><span>'+data[i].costMoney+'</span></div><div style="clear:both;"></div></div><div class="xialaImg"><img src="<%=basePath%>console/images/123.png" /></div><div class="payBtn"><a>立即支付</a></div><div style="clear:both"></div><div class="movement"><a>改签</a><a>修改资料</a>	<a>退票</a><a class="deleteThis">删除订单</a></div></li>';
 							$("#orderUL").append(orderlist);
-						}
+						}						
+						loadjs();
 					}else{
 						alert("没有找到订单");
 					}
-					console.log(res.orderList); 					
+					//console.log(res.orderList); 					
 				},
-				error: function() {
-					
+				error: function() {					
 				}
 		});
 	});
+	
+	//动态加载指定js文件
+	function loadjs(){
+		var jsElem = document.createElement('script');
+		jsElem.src='<%=basePath%>console/js/myPlaneTick.js';
+		document.getElementsByTagName('head')[0].appendChild(jsElem);
+	}
 </script>
 </html>

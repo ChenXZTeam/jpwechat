@@ -153,7 +153,7 @@ public class userOrderService {
 					String sql = "UPDATE userorderinfo SET AdminDel = 1 WHERE ID = '"+ID+"' AND orderNum = '"+orderNum+"'";
 					gDao.executeJDBCSql(sql);
 				}
-				return 1; 
+				return 1;  
 			}catch (Exception e) {
 				//log.info("msg", e.getCause());
 				return -1;
@@ -164,7 +164,7 @@ public class userOrderService {
 			List<Object> params = new ArrayList<Object>();
 			params.add(userName);
 			params.add(openId);
-			String sql="from userOrderInfo where UserName=? AND openID=?";
+			String sql="from userOrderInfo where AdminDel=0 AND UserName=? AND openID=?";
 			List<userOrderInfo> list = gDao.getListByHql(userOrderInfo.class, sql, params);
 			if(list.size()>0){
 				return list;
