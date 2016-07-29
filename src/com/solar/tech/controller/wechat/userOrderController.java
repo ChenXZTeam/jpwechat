@@ -47,8 +47,8 @@ public class userOrderController {
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
 		oderInfo.setCuntTime(lishiTime);
-		String lastpayCout=getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay);
-		System.out.println("执行吧皮卡丘："+lastpayCout);
+		//String lastpayCout=getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay);
+		//System.out.println("执行吧皮卡丘："+lastpayCout);
 		oderInfo.setCostMoney(CostPay);
 		oderInfo.setLinkName(LinkName);
 		oderInfo.setLinkPhoneNum(PhoneNum);
@@ -75,14 +75,14 @@ public class userOrderController {
 		s.setDeparture("CAN");//起飞城市
 		s.setArrival("PEK");//到达城市
 		s.setFlightNo("CZ3103");//航班号	
-		s.setCabin("E");//舱位
+		s.setCabin("W");//舱位
 		s.setDepartureDate("2017-01-31");//起飞日期，格式如：yyyy-MM-dd
 		s.setDepartureTime("11:00");//起飞时间，格式如：HH:mm
 		s.setActionCode("NN");//行动代码
-		s.setType("HK");//航线类型(国内/国际)
+		s.setType("HK");//航线类型(国内/国际)	
 		SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
 		
-		//旅客组实体类
+		//旅客组实体类（是否可以添加多个旅客）
 		PassengerInfo psg = new PassengerInfo();
 		psg.setName("李四");//旅客姓名
 		psg.setAge(22);//年龄
@@ -90,7 +90,7 @@ public class userOrderController {
 		psg.setBirthDay("1991-01-02");//出生日期
 		psg.setPsgType("ADT");//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
 		psg.setCertNo("612429199107214641");//证件号码
-		psg.setCertType("NI");//证件类型PP,NI
+		psg.setCertType("NI");//证件类型PP,NI		
 		PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
 		
 		//OSI组实体类 
@@ -108,7 +108,7 @@ public class userOrderController {
 		RMKInfo[] rmks = new RMKInfo[]{rmk};
 		
 		//以下代码在开发的过程中请不要取消注释掉，因为会产生真实的订票系统。需要付款的
-		/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30", null, osis, rmks, null, null, null);
+		/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
 		System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 		System.out.println("预定的编号："+response.getPnrNo());
 		System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -130,7 +130,9 @@ public class userOrderController {
 		//这个if是只有在中航信系统生成预定编号之后才能存到我们的数据库中。不然不能存
 		int num=0;
 		//if(response.getPnrNo()==""||response.getPnrNo().equals("")||response.getPnrNo()==null){
-			num=OrderService.addOrder(oderInfo);//保存信息到数据库			
+			//System.out.println("订票失败");
+		//}else{
+			num=OrderService.addOrder(oderInfo);//保存信息到数据库		
 		//}
 		if(num==1){
 			System.out.println("数据插入成功");
@@ -216,11 +218,12 @@ public class userOrderController {
 	//修改旅客证件
 	@RequestMapping("/update/changeCertificate.action")
 	@ResponseBody
-	public Map<String, Object> changeCertificate(String pnrNo, String orderNum, String name, int age, String gender, String birthday, String psgType, String certNo, String certType){
+	public Map<String, Object> changeCertificate(String pnrNo, String orderNum, String name, String age, String gender, String birthday, String psgType, String certNo, String certType){
 		Map<String, Object> map = new HashMap<String, Object>();		
 		PassengerInfo psg = new PassengerInfo();
 		psg.setName(name);//旅客姓名
-		psg.setAge(age);//年龄
+		int ageNum = Integer.parseInt(age);
+		psg.setAge(ageNum);//年龄
 		psg.setGender(gender); //性别
 		psg.setBirthDay(birthday);//出生日期yyyy-mm-dd
 		psg.setPsgType(psgType);//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
@@ -256,8 +259,8 @@ public class userOrderController {
 	@ResponseBody
 	public Map<String, Object> deleteOrder(String pnrNo, String orderNum, String ID){
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean YesOrNo = new ECUtils().cancelPnr(pnrNo);
-		if(YesOrNo){
+		//boolean YesOrNo = new ECUtils().cancelPnr(pnrNo); //执行中航信删除订单的方法
+		//if(YesOrNo){
 			int i = OrderService.deleteOrder(ID, orderNum);
 			if(i==1){
 				map.put("msg",1);
@@ -266,7 +269,29 @@ public class userOrderController {
 				map.put("msg",0);
 				System.out.println("订单删除出错");
 			}
+		//}
+		return map;
+	}
+	
+	//加载该用户的全部订单
+	@RequestMapping("/loading/order.action")
+	@ResponseBody
+	public Map<String, Object> loadOrder(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String openId = (String) session.getAttribute("openId");
+		String userName = (String) session.getAttribute("userName");
+		System.out.println("我进来了："+openId+"/"+userName);
+		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);
+		System.out.println("获取到的链表数据数量："+orderList.size());
+		if(orderList.size()>0){
+			map.put("orderList",orderList);
+			System.out.println("数据不为空");
+			map.put("msg",1);
+		}else{
+			map.put("msg",0);
+			System.out.println("数据为空");
 		}
 		return map;
 	}
+	
 }

@@ -774,32 +774,32 @@ public class ECUtils {
 		return false;
 	}
 	
-	// PAT�����˼�
+	// PAT国内运价
 	public PATFareItem[] patPNR(String pnrNo, String option, String type, Integer index, Boolean ifinput, String license, String payment, Integer priceIndex){ 
-		PatRequest request = new PatRequest(); // �½�һ��������� 
-		request.setOfficeNo(OFFICENO); // ����Office�� 
-		request.setToken(token); // �������ƺ�
+		PatRequest request = new PatRequest(); // 新建一个请求对象 
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����Pnr��
-		request.setOption(option); // �����Ƿ񽫲�ѯ���˼۽��¼��
-		request.setType(type); // ���ò�ѯ����
+		request.setPnrNo(pnrNo); // 设置Pnr号
+		request.setOption(option); // 设置是否将查询的运价结果录入
+		request.setType(type); // 设置查询类型
 		if(index != null){
-			request.setIndex(index); // �����ÿ����
+			request.setIndex(index); // 设置旅客序号
 		}
 		if(ifinput != null){
-			request.setIfinput(ifinput); // �Ƿ񽫲�ѯ���˼۽��¼��PNR������۸���ͼ۸�д��pnr��
+			request.setIfinput(ifinput); // 是否将查询的运价结果录入PNR。多个价格将最低价格写入pnr。
 		}
-		request.setLicense(license); // ��Э���
-		request.setPayment(payment); // ֧����ʽ��"CC" ���ÿ�
+		request.setLicense(license); // 大协议号
+		request.setPayment(payment); // 支付方式，"CC" 信用卡
 		if(priceIndex != null){
-			request.setPriceIndex(priceIndex); // �۸����
+			request.setPriceIndex(priceIndex); // 价格序号
 		}
 		
-		PATClient client = new PATClient();// �½��ͻ��˶���
+		PATClient client = new PATClient();// 新建客户端对象
 		try { 
-			PatResponse response = client.pat(request); // �½�һ����Ӧ����
+			PatResponse response = client.pat(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
-				return response.getFareItems(); // �������й����˼���Ϣ
+				return response.getFareItems(); // 返回所有国内运价信息
 			}
 		} catch (ObeException e) { 
 			e.printStackTrace();
@@ -807,44 +807,44 @@ public class ECUtils {
 		return null;
 	} 
 	
-	// QTE����˼�
+	// QTE国际运价
 	public List<XSFSPFare> qte(String pnrNo, String queryType, String fareType, String currency, String lowestonly, String validateCarrier, 
 			String index, String needEtermStr, String license){ 
-		QTERequest  request = new QTERequest (); // �½�һ��������� 
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		QTERequest  request = new QTERequest (); // 新建一个请求对象 
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����Pnr��
+		request.setPnrNo(pnrNo); // 设置Pnr号
 		if(!StringUtils.isEmpty(queryType)){
-			request.setQueryType(queryType); // �ÿ����ͣ�Ĭ��Ϊ����AD, "CH" ��ͯ,"SD"ѧ��"IN"Ӥ��"ZZ"����"EM"����"VAC"����������"VFR"̽��
+			request.setQueryType(queryType);// 旅客类型，默认为成人AD, "CH" 儿童,"SD"学生"IN"婴儿"ZZ"青年"EM"移民"VAC"访问其它国家"VFR"探亲
 		}
 		if(!StringUtils.isEmpty(fareType)){
-			request.setFareType(fareType); // ��ѯ���ͣ���Ʊ��Ϊ"N"������Ʊ��Ϊ"S"
+			request.setFareType(fareType); // 查询类型，正常票价为"N"或特殊票价为"S"
 		}
 		if(!StringUtils.isEmpty(currency)){
-			request.setCurrency(currency); // �����ֶ�[��Ҫ����Ļ�������]
+			request.setCurrency(currency); // 保留字段[需要计算的货币类型]
 		}
 		if(!StringUtils.isEmpty(lowestonly)){
-			request.setLowestonly(lowestonly); // �Ƿ����ѯ������˼��ۿ������е�����˼�
+			request.setLowestonly(lowestonly); // 是否仅查询给出的运价折扣种类中的最低运价
 		}
 		if(!StringUtils.isEmpty(validateCarrier)){
-			request.setValidateCarrier(validateCarrier); // ��Ʊ���չ�˾
+			request.setValidateCarrier(validateCarrier); // 出票航空公司
 		}
 		if(!StringUtils.isEmpty(index)){
-			request.setIndex(index); // ����ѯ�Ľ�����һ����������"1"��"2"����Բ�ѯ˰����ϸ����ѯ������XSFSQResult��,����?NONE?�������˼۾������ϸ��ѯ
+			request.setIndex(index); // 如果查询的结果多于一条，则输入"1"或"2"序号以查询税项明细，查询结果保存在XSFSQResult中,输入?NONE?对所有运价均不进行明细查询
 		}
 		if(!StringUtils.isEmpty(needEtermStr)){
-			request.setNeedEtermStr(needEtermStr); // �Ƿ���Ҫ���غ���ԭʼ�ַ�,true:���� false:������ Ĭ��Ϊfalse
+			request.setNeedEtermStr(needEtermStr); // 是否需要返回黑屏原始字符串,true:返回 false:不返回 默认为false
 		}
 		if(!StringUtils.isEmpty(license)){
-			request.setLicense(license); // ��ͻ�����
+			request.setLicense(license); // 大客户编码
 		}
 	
-		QTEClient client = new QTEClient();// �½��ͻ��˶���
+		QTEClient client = new QTEClient(); // 新建客户端对象
 		try { 
-			QTEResult response = client.qte(request); // �½�һ����Ӧ����
+			QTEResult response = client.qte(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
-				return response.getFares(); // �������й���˼���Ϣ
+				return response.getFares(); // 返回所有国际运价信息
 			}
 		} catch (ObeException e) { 
 			e.printStackTrace();

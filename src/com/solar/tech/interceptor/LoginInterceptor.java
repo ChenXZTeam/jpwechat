@@ -41,10 +41,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		String root = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + root + "/";
 
-		if (pageurl.equals("/wechatController/page/planTek.action")) {  //拦截机票查询的界面
+		if (pageurl.equals("/wechatController/page/planTek.action")||pageurl.equals("/wechatController/page/myPlaneTickek.action")) {  //拦截机票查询的界面
 			HttpSession session = request.getSession();
 			String newCode = request.getParameter("code");
-			//String number = (String) session.getAttribute("number");
+			String userName = (String) session.getAttribute("userName");
 			String openId = (String) session.getAttribute("openId");
 			System.out.println("newCode的值："+newCode);
 			
@@ -54,13 +54,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				return false;
 			}*/
 			System.out.println("start...55");
-			if (/*number == null || */openId == null) {
+			if (userName == null || openId == null) {
 				System.out.println("start...57");
 				openId = wxMpService.getWxUser(newCode);
 				session.setAttribute("openId", openId);//<----------取消注释下面的if(openId !=null)的时候记得注释掉这个
-				System.out.println("(LoginInterceptor类中)openId的值："+openId);
+
 				//先不强制注册
-				/*
+				
 				if (openId != null) {
 					session.setAttribute("openId", openId);
 
@@ -70,12 +70,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 						return false;
 					} else {
 						RD_wechatUser yHopenID = RDUserService.findbyOpenids(openId);
-						number = yHopenID.getPhoneNum();
-						session.setAttribute("number", number);
+						userName = yHopenID.getUserName();
+						session.setAttribute("userName", userName);
 					}
-				}*/
+					
+					System.out.println("(LoginInterceptor类中)openId的值："+openId+" userName:"+userName);
+				}
 			} else {
-				System.out.println("pageurl:" + pageurl +" openId:" + openId);
+				System.out.println("pageurl:" + pageurl +" userName:"+userName+" openId:" + openId);
 			}
 
 		}

@@ -1,6 +1,7 @@
 package com.solar.tech.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class userOrderService {
 	}
 	
 	/**
-	 * 
+	 * @title 查找最大的编号
 	 * @return map
 	 */
 	public String fingMaxOrderNum(){
@@ -157,5 +158,17 @@ public class userOrderService {
 				//log.info("msg", e.getCause());
 				return -1;
 			}
+		}
+		
+		public List<userOrderInfo> loadOrder(String userName,String openId){
+			List<Object> params = new ArrayList<Object>();
+			params.add(userName);
+			params.add(openId);
+			String sql="from userOrderInfo where UserName=? AND openID=?";
+			List<userOrderInfo> list = gDao.getListByHql(userOrderInfo.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
 		}
 }

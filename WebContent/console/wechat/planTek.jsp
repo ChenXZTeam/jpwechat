@@ -1015,8 +1015,12 @@
 	});
 	
 	function aa(){
-		var chufCity = $("#shi00001").text();
-		var daodCity = $("#zhong00001").text();
+		var chufCity= $("#shi001").text();
+		var daodCity = $("#zhong001").text();
+		var chufPlan = $("#shi0001").text();
+		var daodPlan = $("#zhong0001").text();
+		var chufCityCode = $("#shi00001").text();
+		var daodCityCode = $("#zhong00001").text();
 		var cangW = $(".cang.on").text();
 		var dateTime = $(".jcD01").val();
 		if(dateTime==""){
@@ -1027,7 +1031,7 @@
 			gofind=true;
 		}
 		if(gofind==true){
-			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime;
+			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&chufPlan="+chufPlan+"&daodPlan="+daodPlan;
 		}
 	}
 	

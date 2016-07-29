@@ -47,7 +47,7 @@ $(function(){
 传递过来的值有：<br/>
 
 <div id="bigContent">
----------航班信息--------------
+---------航班信息(上一个界面传过来的信息)--------------
 	<div><input type="text" id="chufTime" value="<%=chufTime %>"/></div>
 	<div><input type="text" id="daodTime" value="<%=arrDTime %>"/></div>
 	<div><input type="text" id="chufDate" value="2016-07-30"/></div>
@@ -61,17 +61,25 @@ $(function(){
 	<div><input type="text" id="zhekou" value="<%=zhekou %>"/></div>
 	<div><input type="text" id="cangweiType" value="<%=cangweiType %>"/></div>
 -------个人填写的信息-----------
+	<div>旅客类型：
+		<select id="IDcaseType">  
+			<option value="NI" selected="selected">成人</option>  
+			<option value="PP">儿童</option>
+			<option value="ID">婴儿</option>
+		</select>
+	</div>
 	<div><input type="text" id="linkName" value="李向前"/></div>
 	<div><input type="radio" name="sex" value="男" checked="checked"/>男 <input type="radio" name="sex" value="女"/>女</div>
 	<div>
-		<input type="text" id="IDcase" value="460003199305323545"/>
 		<select id="IDcaseType">  
 			<option value="NI" selected="selected">身份证</option>  
 			<option value="PP">护照</option>
 			<option value="ID">其他</option>
 		</select> 
+		<input type="text" id="IDcase" value="460003199305323545"/>
 	</div>
-	<div><input type="text" id="phoneNum" value="15799024022"/></div>
+	<div>手机号码：<input type="text" id="phoneNum" value="15799024022"/></div>
+	<div>出生年月: <input type="text" value="1996-05-07"/></div>
 	<div><input type="checkbox" name="yiwaiBX" id="yiwaiBX" value="是"/>是否购买意外险</div>
 	<div><input type="checkbox" name="yanwuBX" id="yanwuBX" value="是"/>是否购买延误险</div>
 	<div><a style="display:block; padding:5px; color:#ffffff; text-align:center; background-color:#FF9913;" id="nextButton">下一步</a></div>

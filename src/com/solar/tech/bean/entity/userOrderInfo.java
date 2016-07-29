@@ -110,7 +110,7 @@ public class userOrderInfo {
 	
 	//年龄
 	@Column(name="age",length=10)
-	private int age;
+	private String age;
 
 	//旅客的类型（旅客类型 ADT 成人,CHD 儿童, UM 无人陪伴儿童）
 	@Column(name="psgType",length=5)
@@ -193,11 +193,11 @@ public class userOrderInfo {
 		this.actionCode = actionCode;
 	}	
 	
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 	
