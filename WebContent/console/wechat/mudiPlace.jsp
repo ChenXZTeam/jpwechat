@@ -7,6 +7,10 @@
 	String chufCity=new String(request.getParameter("chufCity").getBytes("ISO-8859-1"),"utf-8");
 	String daodCity=new String(request.getParameter("daodCity").getBytes("ISO-8859-1"),"utf-8");
 	String cangW=new String(request.getParameter("cangW").getBytes("ISO-8859-1"),"utf-8");
+	String chufCityCode=new String(request.getParameter("chufCityCode").getBytes("ISO-8859-1"),"utf-8");
+	String daodCityCode=new String(request.getParameter("daodCityCode").getBytes("ISO-8859-1"),"utf-8");
+	String chufPlan=new String(request.getParameter("chufPlan").getBytes("ISO-8859-1"),"utf-8");
+	String daodPlan=new String(request.getParameter("daodPlan").getBytes("ISO-8859-1"),"utf-8");
 	String dateTime=request.getParameter("dateTime");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,7 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>深圳-->北京</title>
+<title><%=chufCity %>--><%=daodCity %></title>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <style type="text/css">
 	*{padding:0px;margin:0px;}
@@ -42,8 +46,8 @@
 	.notTjTicket .notTjTicketDiv .StartTimeEnd .StartTime{color:#666666;}
 	.notTjTicket .notTjTicketDiv .StartTimeEnd .EndTime{color:#c7c7c7;}
 	.notTjTicket .notTjTicketDiv .StartAndEnd{float:left; text-align:left; margin-left:5%;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{color:#666666;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{color:#c7c7c7;}
+	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{display:block; color:#666666; width:90px; height:25px; overflow:hidden;}
+	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{display:block; color:#c7c7c7; width:90px; height:25px; overflow:hidden;}
 	.notTjTicket .notTjTicketDiv .moneyAndTicket{text-align:right; float:right; margin-right:10px;}
 	.notTjTicket .notTjTicketDiv .moneyAndTicket .zuowei{color:#c7c7c7;}
 	.hangbanImform{padding:20px 10px; background-color:#F1F5FF; text-align:center;}
@@ -66,8 +70,8 @@
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script>
 $(function(){ 
-	var chufCity="<%=chufCity %>";
-	var daodCity="<%=daodCity %>";
+	var chufCityCode="<%=chufCityCode %>";
+	var daodCityCode="<%=daodCityCode %>";
 	var cangW="<%=cangW %>";
 	var dateTime="<%=dateTime %>";
 	
@@ -75,7 +79,7 @@ $(function(){
 	$.ajax({
 			url:"<%=basePath%>/wechatController/find/planTek.action",
 			type:"POST",
-			data:{"chufCity":chufCity,"daodCity":daodCity,"cangW":cangW,"dateTime":dateTime},
+			data:{"chufCity":chufCityCode,"daodCity":daodCityCode,"cangW":cangW,"dateTime":dateTime},
 			dataType:"json",
 			beforeSend:function(){
 				$("#loading").css("display","block");
@@ -109,7 +113,7 @@ $(function(){
 								onewayPrice = getDate[i].seatList[j].onewayPrice;//价钱
 							}						
 						}
-						var notTjList = '<li class="notTjTicket"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+depTime+'</div><div class="EndTime lineHeight">'+arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.png" style="float:left;"/><span style="float:left;">宝安机场 '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.png" style="float:left;"><span style="float:left;">首都机场 '+cuntNumTime+'</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥'+onewayPrice+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cangW+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangW+'</span><a class="aYuding">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+onewayPrice+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
+						var notTjList = '<li class="notTjTicket"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+depTime+'</div><div class="EndTime lineHeight">'+arrTime+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.png" style="float:left;"/><span style="float:left;"><%=chufPlan%></span><span style="width:60px;">'+' '+getDate[i].flightNo+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.png" style="float:left;"><span style="float:left;"><%=daodPlan%></span><span style="width:60px;">'+' '+cuntNumTime+'</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201;">￥'+onewayPrice+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cangW+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangW+'</span><a class="aYuding">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+onewayPrice+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
 						$("#TicketList").append(notTjList);	
 						//动态加载针对该航班的其他舱位的信息
 						for(var j=0;j<(getDate[i].seatList.length)-1;j++){
