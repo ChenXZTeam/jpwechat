@@ -44,7 +44,7 @@
 	.notTjTicket .notTjTicketDiv .lineHeight img{width:25px; height:24px;}
 	.notTjTicket .notTjTicketDiv .StartTimeEnd{width:60px; float:left; margin-left:10px;}
 	.notTjTicket .notTjTicketDiv .StartTimeEnd .StartTime{color:#666666;}
-	.notTjTicket .notTjTicketDiv .StartTimeEnd .EndTime{color:#c7c7c7;}
+	.notTjTicket .notTjTicketDiv .StartTimeEnd .EndTime{color:#c7c7c7;} 
 	.notTjTicket .notTjTicketDiv .StartAndEnd{float:left; text-align:left; margin-left:3%;}
 	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{display:block; color:#666666; width:100px; height:25px; overflow:hidden;}
 	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{display:block; color:#c7c7c7; width:100px; height:25px; overflow:hidden;}
