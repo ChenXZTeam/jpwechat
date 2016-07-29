@@ -79,24 +79,6 @@
 			}
 		});
 		
-		$.ajax({
-			url:'<%=basePath%>framework/visa/urbanPositioning.action',
-			dataType:'json',
-			method:'post',
-			success:function(data){
-				 //实例化城市查询类
-		        var citysearch = new AMap.CitySearch();
-		        //自动获取用户IP，返回当前城市
-		        citysearch.getLocalCity(function(status, result) {
-		        	console.log(result);
-		        });
-				var position = JSON.parse(data);
-				console.log();
-			},
-			error:function(){
-				alert("请求失败！");
-			}
-		});
 	});
 	
 	function findVisa(){

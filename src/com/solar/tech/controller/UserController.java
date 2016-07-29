@@ -1,6 +1,7 @@
 package com.solar.tech.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -48,5 +49,11 @@ public class UserController extends AbstractUserController{
 		map.put("success", true);
 		System.out.println(map);
 		return map;
+	}
+
+	@RequestMapping("/findAllUser.action")
+	@ResponseBody
+	public List<User> findAllUser(){
+		return userService.findAllUser();
 	}
 }
