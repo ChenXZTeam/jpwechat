@@ -1,10 +1,12 @@
 package com.solar.tech.bean.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Table; 
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -152,6 +154,10 @@ public class userOrderInfo {
 	//用户删除
 	@Column(name="AdminDel",length=5)
 	private String AdminDel;
+	
+	// 修改这条数据的时间
+	@Column(name = "updateTime")
+	private Timestamp updateTime;
 
 	public String getGetTeickTime() {
 		return getTeickTime;
@@ -416,5 +422,15 @@ public class userOrderInfo {
 	public void setAdminDel(String adminDel) {
 		AdminDel = adminDel;
 	}
+
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+	
+	
 	
 }
