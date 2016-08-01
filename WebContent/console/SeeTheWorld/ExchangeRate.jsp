@@ -12,19 +12,15 @@
 <script type="text/javascript" src="<%=basePath %>scripts/common/jquery-easyui/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$.ajax({
-            type: "GET",
-            url: "<%= basePath %>framework/exchangeRate/queryCurrency.action",
-            dataType: "json",
-            success: function(data){
-            			var result = $.parseJSON(data); 
-            			var currencies = result.retData;
-            			console.log(result.retData);
-            			for(var i=0;i<currencies.length;i++){
-	                     	$(".currency").append("<option value='"+currencies[i]+"'>"+currencies[i]+"</option>");   
-            			 }
-                     }
-        });
+		$.getJSON("<%= basePath %>console/json/currency.json", function(currencies){
+				//console.log(data);
+				//var currencies = $.parseJSON(data); 
+	   			console.log(currencies);
+	   			for(var i=0;i<currencies.length;i++){
+	             	$(".currency").append("<option value='"+currencies[i].id+"'>"+currencies[i].name+"</option>");   
+	   			}
+           }
+        );
 	});
 	function toCurrency(){
 		var fromCurrency = $("#fromCurrency").val();
