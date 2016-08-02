@@ -26,17 +26,6 @@ public class ExchangeRateController {
 	private ExchangeRateService exchangeRateService; 
 	
 	/**
-	 * 功能描述：从接口中查询各国的币种并将结果返回到前端
-	 *
-	 * @return String
-	 */
-	@RequestMapping("/queryCurrency.action")
-	@ResponseBody
-	public String queryCurrency(){
-		return this.exchangeRateService.queryCurrency();
-	}
-	
-	/**
 	 * 功能描述：根据前端传来的币种进行汇率转换并将结果返回到前端
 	 *
 	 * @param fromCurrency

@@ -21,12 +21,5 @@ public interface ExchangeRateService {
 	 * @return String
 	 */
 	String queryExchangeRate(String fromCurrency,String toCurrency,String amount);
-	
-	/**
-	 * 功能描述：从接口中查询币种并将其返回
-	 *
-	 * @return String
-	 */
-	String queryCurrency();
-	
+		
 }
