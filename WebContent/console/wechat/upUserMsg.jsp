@@ -22,9 +22,9 @@
 乘机人年龄：<input type="text" id="userage"/><br/>
 乘机人性别：<input type="text" id="usergender"/><br/>
 乘机人生日：<input type="text" id="userBirth"/><br/>
-乘机人旅客类型：<input type="text" id="usertype"/><br/>
+乘机人旅客类型：<input type="radio" id="usertype" name="usertype" value="ADT" checked="checked"/>成人<input type="radio" id="usertype" name="usertype" value="CHD"/>儿童 <input type="radio" id="usertype" name="usertype" value="INF"/>婴儿<br/>
 乘机人证件号码：<input type="text" id="userIDnum"/><br/>
-乘机人证件类型：<input type="text" id="userIDtype"/><br/>
+乘机人证件类型：<input type="radio" id="userIDtype" name="userIDtype" value="NI" checked="checked"/>身份证<input type="radio" id="userIDtype" name="userIDtype" value="PP"/>护照 <input type="radio" id="userIDtype" name="userIDtype" value="ID"/>其他证件<br/>
 <button>确认修改</button>
 </body>
 <script>
