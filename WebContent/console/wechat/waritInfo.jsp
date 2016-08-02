@@ -166,7 +166,6 @@ $(function(){
 				DaodPlan=arr1[0];
 			var lishiTime=arr1[1];
 			var CostPay=$("#CostPay").text().substr(1,$("#CostPay").text().length);//该付金额
-			alert(CostPay);
 			var LinkName=$("#LinkName").text();//乘机人
 			var Sex=$("#Sex").text();//性别
 			var iDcaseType=$("#iDcaseType").text();//证件类型

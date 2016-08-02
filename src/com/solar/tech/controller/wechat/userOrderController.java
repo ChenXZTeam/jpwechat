@@ -220,30 +220,30 @@ public class userOrderController {
 	//修改旅客证件
 	@RequestMapping("/update/changeCertificate.action")
 	@ResponseBody
-	public Map<String, Object> changeCertificate(String pnrNo, String orderNum, String name, String age, String gender, String birthday, String psgType, String certNo, String certType){
+	public Map<String, Object> changeCertificate(String pnrNo, String orderNum, String username, String userage, String usergender, String userBirth, String usertype, String userIDnum, String userIDtype){
 		Map<String, Object> map = new HashMap<String, Object>();		
 		PassengerInfo psg = new PassengerInfo();
-		psg.setName(name);//旅客姓名
-		int ageNum = Integer.parseInt(age);
+		psg.setName(username);//旅客姓名
+		int ageNum = Integer.parseInt(userage);
 		psg.setAge(ageNum);//年龄
-		psg.setGender(gender); //性别
-		psg.setBirthDay(birthday);//出生日期yyyy-mm-dd
-		psg.setPsgType(psgType);//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
-		psg.setCertNo(certNo);//证件号码
-		psg.setCertType(certType);//证件类型(NI 身份证,PP 护照,ID其他证件)
+		psg.setGender(usergender); //性别
+		psg.setBirthDay(userBirth);//出生日期yyyy-mm-dd
+		psg.setPsgType(usertype);//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
+		psg.setCertNo(userIDnum);//证件号码
+		psg.setCertType(userIDtype);//证件类型(NI 身份证,PP 护照,ID其他证件)
 		PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};		
 		//boolean YesOrNo = new ECUtils().changeCertificate(pnrNo, passengerInfos);//执行中航信修改航段方法
 		//if(YesOrNo){
 			userOrderInfo uinfo = new userOrderInfo();
 			uinfo.setOrderNum(orderNum);
 			uinfo.setPNR(pnrNo);
-			uinfo.setLinkName(name);
-			uinfo.setAge(age);
-			uinfo.setLinkSex(gender);
-			uinfo.setBirthday(birthday);
-			uinfo.setPsgType(psgType);
-			uinfo.setIDcase(certNo);
-			uinfo.setIDcaseType(certType);
+			uinfo.setLinkName(username);
+			uinfo.setAge(userage);
+			uinfo.setLinkSex(usergender);
+			uinfo.setBirthday(userBirth);
+			uinfo.setPsgType(usertype);
+			uinfo.setIDcase(userIDnum);
+			uinfo.setIDcaseType(userIDtype);
 			int i = OrderService.changeCertificate(uinfo);
 			if(i==1){
 				map.put("msg", 1);
@@ -280,6 +280,8 @@ public class userOrderController {
 	@ResponseBody
 	public Map<String, Object> loadOrder(HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
+		session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
+		session.setAttribute("userName", "kkk");
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
 		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);

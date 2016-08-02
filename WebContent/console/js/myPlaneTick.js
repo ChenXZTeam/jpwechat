@@ -47,4 +47,11 @@ $(function(){
 			});
 		}
 	});
+	
+	$(".upUserMsg").click(function(){
+		var basePathJava = $("#basePathJava").text();
+		var pnr = $(this).parent().siblings(".hiddenClass").children(".pnrNoDel").text();
+		var orderNum = $(this).parent().siblings(".hiddenClass").children(".orderNumDel").text();
+		window.location.href = basePathJava+"console/wechat/upUserMsg.jsp?orderNum="+orderNum+"&pnrNo=JASDVS";
+	});
 });
