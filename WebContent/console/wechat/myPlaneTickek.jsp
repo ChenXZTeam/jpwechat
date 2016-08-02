@@ -82,12 +82,16 @@
 		</div>
 		<!--案例2-->
 		<div class="product">
-		2
+			<ul id="NOpay">
+				
+			</ul>
 		</div>
 		
 		<!--案例3-->
 		<div class="product">
-		3
+			<ul id="YESpay">
+				
+			</ul>
 		</div>
 		
 	  </div>
@@ -105,8 +109,15 @@
 					var data = res.orderList;
 					if(res.msg==1){
 						for(var i=0; i<data.length; i++){
-							var orderlist = '<li><div class="hiddenClass"><div class="pnrNoDel">'+data[i].pnr+'</div><div class="orderNumDel">'+data[i].orderNum+'</div><div class="IDDel">'+data[i].id+'</div></div><div class="planTitle"><img src="<%=basePath %>console/images/plan.png" style="width:20px;"/><span style="margin-left:7px; line-height:23px;">机票</span>	<span style="float:right; color:#FE8204;">请支付</span></div><div style="clear:both;"></div><div class="TekMas"><div class="hangban"><span>'+data[i].chufCity+'-'+data[i].daodCity+'</span><span>'+data[i].chufDate+' '+data[i].chufTime+'-'+data[i].daodTime+'</span><span style="color:#B5B5B5;">南方航空'+data[i].hangbanNum+'</span></div><div class="money"><span>'+data[i].costMoney+'</span></div><div style="clear:both;"></div></div><div class="xialaImg"><img src="<%=basePath%>console/images/orderTip.png" /></div><div class="payBtn"><a>立即支付</a></div><div style="clear:both"></div><div class="movement"><a>改签</a><a>修改资料</a>	<a>退票</a><a class="deleteThis">删除订单</a></div></li>';
-							$("#orderUL").append(orderlist);
+							if(data[i].stutisPay=="0"){	//判断支付状态（0：为支付、1：已出票）							
+								var orderlist = '<li><div class="hiddenClass"><div class="pnrNoDel">'+data[i].pnr+'</div><div class="orderNumDel">'+data[i].orderNum+'</div><div class="IDDel">'+data[i].id+'</div></div><div class="planTitle"><img src="<%=basePath %>console/images/plan.png" style="width:20px;"/><span style="margin-left:7px; line-height:23px;">机票</span>	<span style="float:right; color:#FE8204;">请支付</span></div><div style="clear:both;"></div><div class="TekMas"><div class="hangban"><span>'+data[i].chufCity+'-'+data[i].daodCity+'</span><span>'+data[i].chufDate+' '+data[i].chufTime+'-'+data[i].daodTime+'</span><span style="color:#B5B5B5;">南方航空 '+data[i].hangbanNum+'</span></div><div class="money"><span>'+data[i].costMoney+'</span></div><div style="clear:both;"></div></div><div class="xialaImg"><img src="<%=basePath%>console/images/orderTip.png" /></div><div class="payBtn"><a>立即支付</a></div><div style="clear:both"></div><div class="movement"><a id="gaiqianCode" style="display:none;"></a><a>修改资料</a><a>退票</a><a class="deleteThis">删除订单</a></div></li>';
+								$("#orderUL").append(orderlist);//全部订单	
+								$("#NOpay").append(orderlist);
+							}else if(data[i].stutisPay=="1"){
+								var orderlist = '<li><div class="hiddenClass"><div class="pnrNoDel">'+data[i].pnr+'</div><div class="orderNumDel">'+data[i].orderNum+'</div><div class="IDDel">'+data[i].id+'</div></div><div class="planTitle"><img src="<%=basePath %>console/images/plan.png" style="width:20px;"/><span style="margin-left:7px; line-height:23px;">机票</span>	<span style="float:right; color:#0A8CD2;">已支付</span></div><div style="clear:both;"></div><div class="TekMas"><div class="hangban"><span>'+data[i].chufCity+'-'+data[i].daodCity+'</span><span>'+data[i].chufDate+' '+data[i].chufTime+'-'+data[i].daodTime+'</span><span class="fildNum" style="color:#B5B5B5;">南方航空 '+data[i].hangbanNum+'</span></div><div class="money"><span>'+data[i].costMoney+'</span></div><div style="clear:both;"></div></div><div class="xialaImg"><img src="<%=basePath%>console/images/orderTip.png" /></div><div style="clear:both"></div><div class="movement"><a class="gaiqian">同舱改期</a><a id="gaiqianCode" style="display:none;"></a><a>修改资料</a><a>退票</a><a class="deleteThis">删除订单</a></div></li>';
+								$("#orderUL").append(orderlist);//全部订单	
+								$("#YESpay").append(orderlist);
+							}
 						}						
 						loadjs();
 					}else{

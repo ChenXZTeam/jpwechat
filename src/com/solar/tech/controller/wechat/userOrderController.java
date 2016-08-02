@@ -60,6 +60,8 @@ public class userOrderController {
 		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
+		int MaxNum = Integer.parseInt(OrderService.fingMaxNum());
+		oderInfo.setIntNum((MaxNum+1)+"");
 		String maxOrderNum = OrderService.fingMaxOrderNum();
 		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
 		oderInfo.setOrderNum(orderNum);

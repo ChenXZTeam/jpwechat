@@ -81,18 +81,18 @@ public class PlanTekController {
 	}
 	
 	//查询国内运价
-	@RequestMapping("/find/patPNR.action")
+	/*@RequestMapping("/find/patPNR.action")
 	@ResponseBody
 	public Map<String, Object> patPNR(String pnrNo){
 		Map<String, Object> map=new HashMap<String, Object>();
-		PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", "CH", 1, null, null, null, null);
+		PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", null, 1, null, null, null, null);
 		System.out.println("长度："+segmentInfos.length);
 		map.put("SEG", segmentInfos);
 		return map;
 	}
 	
 	//删除单个中航信pnrNo的方法（程序调试时使用）
-	/*@RequestMapping("/deletes/PNRno.action")
+	@RequestMapping("/deletes/PNRno.action")
 	@ResponseBody
 	public Map<String, Object> deletePnrNo(String pnrNo){
 		Map<String, Object> map = new HashMap<String, Object>();

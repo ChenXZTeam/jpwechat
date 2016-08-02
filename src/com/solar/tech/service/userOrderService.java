@@ -43,6 +43,17 @@ public class userOrderService {
 	 * @title 查找最大的编号
 	 * @return map
 	 */
+	public String fingMaxNum(){
+		 String hql = "SELECT MAX(uinfo.intNum) FROM userOrderInfo as uinfo";
+		 List<String> MaxorderNum = this.gDao.find(hql);
+		 String MaxNum = MaxorderNum.get(0);
+		 return MaxNum;
+	}
+	
+	/**
+	 * @title 查找最大的编号
+	 * @return map
+	 */
 	public String fingMaxOrderNum(){
 		 String hql = "SELECT (uOrder.orderNum) FROM userOrderInfo as uOrder WHERE intNum = (SELECT MAX(uinfo.intNum) FROM userOrderInfo as uinfo)";
 		 List<String> MaxorderNum = this.gDao.find(hql);

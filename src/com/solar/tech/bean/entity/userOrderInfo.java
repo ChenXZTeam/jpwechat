@@ -139,9 +139,8 @@ public class userOrderInfo {
 	private String takePlane;
 	
 	//用于预约编号识别最大的
-	@GenericGenerator(name = "intNum", strategy = "increment")
-	@Column(name = "intNum", length=100)
-	private int intNum;
+	@Column(name = "intNum", length=20)
+	private String intNum;
 	
 	//中航信预定成功之后的编号
 	@Column(name="PNR",length=25)
@@ -175,11 +174,11 @@ public class userOrderInfo {
 		PNR = pNR;
 	}
 
-	public int getIntNum() {
+	public String getIntNum() {
 		return intNum;
 	}
 
-	public void setIntNum(int intNum) {
+	public void setIntNum(String intNum) {
 		this.intNum = intNum;
 	}	
 	
