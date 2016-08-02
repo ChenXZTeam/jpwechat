@@ -64,7 +64,7 @@ public class userOrderController {
 		oderInfo.setIntNum((MaxNum+1)+"");
 		String maxOrderNum = OrderService.fingMaxOrderNum();
 		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
-		oderInfo.setOrderNum(orderNum);
+		oderInfo.setOrderNum(orderNum); 
 		
 		//联系组实体类
 		BookContact bookContact = new BookContact();

@@ -94,7 +94,7 @@
 			</ul>
 		</div>
 		
-	  </div>
+	  </div> 
 	</div>
 	<div id="basePathJava" style="display:none"><%=basePath %></div>
 </body>

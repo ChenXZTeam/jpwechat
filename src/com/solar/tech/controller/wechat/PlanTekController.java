@@ -87,7 +87,7 @@ public class PlanTekController {
 		Map<String, Object> map=new HashMap<String, Object>();
 		PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", null, 1, null, null, null, null);
 		System.out.println("长度："+segmentInfos.length);
-		map.put("SEG", segmentInfos);
+		map.put("SEG", segmentInfos); 
 		return map;
 	}
 	

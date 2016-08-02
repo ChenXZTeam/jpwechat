@@ -141,7 +141,7 @@ public class userOrderInfo {
 	//用于预约编号识别最大的
 	@Column(name = "intNum", length=20)
 	private String intNum;
-	
+	 
 	//中航信预定成功之后的编号
 	@Column(name="PNR",length=25)
 	private String PNR;
