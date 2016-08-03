@@ -54,10 +54,18 @@ public class userOrderInfo {
 	@Column(name="qishiPlane",length=50)
 	private String qishiPlane;
 	
+	//起始机场的三字码
+	@Column(name="qishiPlaneCode",length=5)
+	private String qishiPlaneCode;
+	
 	//到达机场
 	@Column(name="daodPlane",length=50)
 	private String daodPlane;
 	
+	//到达机场的三字码
+	@Column(name="daodPlaneCode",length=5)
+	private String daodPlaneCode;
+		
 	//航班号
 	@Column(name="hangbanNum",length=25)
 	private String hangbanNum;
@@ -236,6 +244,22 @@ public class userOrderInfo {
 
 	public void setAirCode(String airCode) {
 		this.airCode = airCode;
+	}
+	
+	public String getQishiPlaneCode() {
+		return qishiPlaneCode;
+	}
+
+	public void setQishiPlaneCode(String qishiPlaneCode) {
+		this.qishiPlaneCode = qishiPlaneCode;
+	}
+
+	public String getDaodPlaneCode() {
+		return daodPlaneCode;
+	}
+
+	public void setDaodPlaneCode(String daodPlaneCode) {
+		this.daodPlaneCode = daodPlaneCode;
 	}
 
 	public String getPsgType() {

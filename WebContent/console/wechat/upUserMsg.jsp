@@ -28,7 +28,34 @@
 <button>确认修改</button>
 </body>
 <script>
-	$(function(){
+	$(function(){		
+		//加载数据在表单中
+		var orderNum = "<%=orderNum%>";
+		if(orderNum!=null||orderNum!="null"||orderNum!=""){
+			$.ajax({
+				url:"<%=basePath%>userOrderController/loading/userMsg.action",
+				type:"POST",
+				data:{"orderNum":orderNum},
+				dataType:"json",
+				success: function(result) {
+					var dataList = (result.orderList)[0];
+					$("#username").val(dataList.linkName);
+					$("#userage").val(dataList.age);
+					$("#usergender").val(dataList.linkSex);
+					$("#userBirth").val(dataList.birthday);
+					if(dataList.stutisPay==1){					
+						$("input[type=radio][name='usertype'][value="+dataList.psgType+"]").attr("checked",'checked');
+						$("input[type=radio][name='usertype']").attr("disabled",'disabled');
+					}
+					$("#userIDnum").val(dataList.idcase);
+					$("input[type=radio][name='userIDtype'][value="+dataList.idcaseType+"]").attr("checked",'checked');
+				},error:function(){
+					
+				}
+			});			
+		}
+		
+		//修改资料的执行的方法
 		$("button").click(function(){
 			var orderNum = $("#orderNum").val();
 			var pnrNo = $("#pnrNo").val();

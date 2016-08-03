@@ -171,11 +171,34 @@ public class userOrderService {
 			}
 		}  
 		
+		/**
+		 * 加载用户订单
+		 * @param userName
+		 * @param openId
+		 * @return
+		 */
 		public List<userOrderInfo> loadOrder(String userName,String openId){
 			List<Object> params = new ArrayList<Object>();
 			params.add(userName);
 			params.add(openId);
 			String sql="from userOrderInfo where AdminDel=0 AND UserName=? AND openID=? ORDER BY updateTime DESC";
+			List<userOrderInfo> list = gDao.getListByHql(userOrderInfo.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
+		}
+		
+		/**
+		 * 加载用户订单的信息
+		 * @param userName
+		 * @param openId
+		 * @return
+		 */
+		public List<userOrderInfo> loadUserMsg(String orderNum){
+			List<Object> params = new ArrayList<Object>();
+			params.add(orderNum);
+			String sql="from userOrderInfo where orderNum=?";
 			List<userOrderInfo> list = gDao.getListByHql(userOrderInfo.class, sql, params);
 			if(list.size()>0){
 				return list;

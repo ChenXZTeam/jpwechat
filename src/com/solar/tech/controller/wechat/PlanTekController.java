@@ -1,8 +1,11 @@
 package com.solar.tech.controller.wechat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import com.solar.tech.service.PlanTekService;
 import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.SeatUtils;
+import com.travelsky.sbeclient.obe.response.AvSegment;
 import com.travelsky.sbeclient.obe.response.PATFareItem;
 import com.travelsky.sbeclient.obe.response.PataFareResponse;
 
@@ -26,8 +30,10 @@ public class PlanTekController {
 	
 	@RequestMapping("/find/planTek.action")
 	@ResponseBody
-	public Map<String, Object> FindPlanTek(String chufCity,String daodCity,String cangW,String dateTime){
+	public Map<String, Object> FindPlanTek(String chufCity,String daodCity,String cangW,String dateTime, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
+		session.setAttribute("qishiPlanCode", chufCity);
+		session.setAttribute("daodPlanCode", daodCity);
 		System.out.println(chufCity);
 		System.out.println(daodCity);
 		System.out.println(cangW);
@@ -78,6 +84,31 @@ public class PlanTekController {
 			System.out.println("该座位已被订完");
 		}
 		return map;
+	}
+	
+	//根据（出发地、到达地、航班号、出发时间、舱位）查找是否有座位。在改签中需要查找是否有位置才能预定
+	@RequestMapping("/find/planTekOne.action")
+	@ResponseBody
+	public Map<String, Object> planTekOne(String chufCity,String daodCity,String chufDate, String fildNo, String canbin){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String airCode = fildNo.substring(0, 2);
+		System.out.println(airCode);
+		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, chufDate, airCode, null);
+		List<FlightInfo> tempFlil = PlanTekServ.removeRepeat(list); //这个链表剔除重复数据
+		List<FlightInfo> canbinList = new ArrayList<FlightInfo>();//这个链表是保存所有含有与 变量（canbin）相同的航班数据
+		if(tempFlil != null && tempFlil.size() > 0){
+			for(FlightInfo f : tempFlil){				
+				for(SeatInfo info : f.getSeatList()){
+					if(info.getCangwei().equals(canbin)){
+						//System.out.println("> " + f.getFlightNo() + ". " + f.getOrgCity() + " ( " + f.getDepTime() + " ) " + " : " + f.getDstCity() + " ( " + f.getArrTime() + " ) " + f.getPlaneStyle());
+						//System.out.println(info.getCangwei() + " (" + SeatUtils.getSeatType(info.getBasicCabin()) + ")" + " : " + SeatUtils.getSeatNum(info.getCangwei_data()) + " OP: " + info.getOnewayPrice() + "\t\t\t\t\t RP: " + info.getRoundtripPrice());
+						canbinList.add(f);
+					}					
+				}
+			}
+		}
+		map.put("dataList", canbinList);
+		return map;		
 	}
 	
 	//查询国内运价

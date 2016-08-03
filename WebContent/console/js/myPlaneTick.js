@@ -19,6 +19,7 @@ $(function(){
 	});
 	
 	$(".deleteThis").click(function(){
+		$(this).parents("li").addClass("signLi");
 		var basePathJava = $("#basePathJava").text();
 		var pnr = $(this).parent().siblings(".hiddenClass").children(".pnrNoDel").text();
 		var orderNum = $(this).parent().siblings(".hiddenClass").children(".orderNumDel").text();
@@ -38,8 +39,8 @@ $(function(){
 				type:"POST",
 				data:{"pnrNo":pnr, "orderNum":orderNum, "ID":id},
 				dataType:"json",
-				success:function(res){
-					window.location.reload();
+				success:function(res){	
+					$(".signLi").remove();
 					alert("删除成功");
 				},error:function(){
 					
@@ -48,10 +49,20 @@ $(function(){
 		}
 	});
 	
-	$(".upUserMsg").click(function(){
+	//修改乘机人资料
+	$(".upUserMsg").click(function(){		
 		var basePathJava = $("#basePathJava").text();
 		var pnr = $(this).parent().siblings(".hiddenClass").children(".pnrNoDel").text();
 		var orderNum = $(this).parent().siblings(".hiddenClass").children(".orderNumDel").text();
-		window.location.href = basePathJava+"console/wechat/upUserMsg.jsp?orderNum="+orderNum+"&pnrNo=JASDVS";
+		window.location.href = basePathJava+"console/wechat/upUserMsg.jsp?orderNum="+orderNum+"&pnrNo="+pnr;
 	});
+	
+	//同舱改期
+	$(".sameCanbin").click(function(){	
+		var basePathJava = $("#basePathJava").text();
+		var pnr = $(this).parent().siblings(".hiddenClass").children(".pnrNoDel").text();
+		var orderNum = $(this).parent().siblings(".hiddenClass").children(".orderNumDel").text();
+		window.location.href = basePathJava+"console/wechat/upCanbin.jsp?orderNum="+orderNum+"&pnrNo="+pnr;
+	});
+	
 });

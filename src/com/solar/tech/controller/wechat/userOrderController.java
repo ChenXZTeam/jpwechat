@@ -43,6 +43,8 @@ public class userOrderController {
 		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
 		oderInfo.setOpenID((String) session.getAttribute("openId"));
+		oderInfo.setQishiPlaneCode((String) session.getAttribute("qishiPlanCode"));//在查找订单中的方法就已经定义了 PlanTekController.java 中能找到
+		oderInfo.setDaodPlaneCode((String) session.getAttribute("daodPlanCode"));//在查找订单中的方法就已经定义了 PlanTekController.java 中能找到
 		oderInfo.setQishiPlane(QishiPlan);
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
@@ -256,6 +258,16 @@ public class userOrderController {
 		return map;
 	}
 	
+	//改签（已付款的时候）我的订单中的 同舱改期功能调用的方法
+	@RequestMapping("/update/changeDate.action")
+	@ResponseBody
+	public Map<String, Object> updateChufDate(String pnrNo, String orderNum, String fltNoOld, String fltDateOld, String fltNoNew, String fltDateNew, String chufTime, String daodTime){
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println(pnrNo+"/"+orderNum+"/"+fltNoOld+"/"+fltDateOld+"/"+fltNoNew+"/"+fltDateNew+"/"+chufTime+"/"+daodTime);
+		System.out.println("我进来了");
+		return map;
+	}
+	
 	//删除订单同时得删除中航信中的订单
 	@RequestMapping("/delete/order.action")
 	@ResponseBody
@@ -280,8 +292,8 @@ public class userOrderController {
 	@ResponseBody
 	public Map<String, Object> loadOrder(HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
-		/*session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
-		session.setAttribute("userName", "kkk");*/
+		session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
+		session.setAttribute("userName", "kkk");
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
 		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);
@@ -292,6 +304,22 @@ public class userOrderController {
 		}else{
 			map.put("msg",0);
 			System.out.println("数据为空");
+		}
+		return map;
+	}
+	
+	//反馈信息到用户修改的输入框里面
+	@RequestMapping("/loading/userMsg.action")
+	@ResponseBody
+	public Map<String, Object> loaduserMsg(String orderNum, HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<userOrderInfo> orderList = OrderService.loadUserMsg(orderNum);
+		if(orderList.size()>0){
+			map.put("orderList",orderList);
+			map.put("msg",1);
+		}else{
+			map.put("msg",0);
+			System.out.println("该订单的用户资料为空");
 		}
 		return map;
 	}
