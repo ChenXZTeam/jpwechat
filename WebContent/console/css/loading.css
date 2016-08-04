@@ -1,14 +1,16 @@
 @CHARSET "UTF-8";
 #loading{
 		/*background-color: #000000;*/
-		/*background:rgba(0,0,0,0.5);*/
-		background-color: #df5a49;
+		/*background:rgba(255,163,69,1);*/
+		background-color: #37C27F;
 		height: 100%;
 		width: 100%;
 		position: fixed;
 		z-index: 1;
 		margin-top: 0px;
 		top: 0px;
+		left:0px;
+		display:none;
 	}
 	#loading-center{
 		width: 100%;

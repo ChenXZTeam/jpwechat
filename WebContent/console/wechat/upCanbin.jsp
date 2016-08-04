@@ -13,18 +13,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>改签</title>
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
+<link rel="stylesheet" type="text/css"  href="<%=basePath %>console/css/jcDate.css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/upCanbinDate.js"></script>
 <style>
 	#findCanUpFilght{position:absolute; top:0px; left:0px; display:none; background-color:#fff; width:100%;}
-	.classLiStyle{border:1px solid #cccccc; margin-top:10px;}
-	.fildOneDiv{ padding:5px; overflow:hidden;}
+	.classLiStyle{border:1px solid #cccccc; margin-top:10px; padding-buttom:10px;}
+	.fildOneDiv{ padding:5px 10px 10px 10px; overflow:hidden;}
 	.styleClass{font-size:12px; margin-top:5px;}
 	.styleClass .upMSGbtn{padding:5px; border:1px solid #FF6F43; color:#FF6F43;}
 	#qrMSG{position:fixed; top:30%; left:15%; padding:15px; display:none; background-color:#fff; z-index:9999; border:1px solid #cccccc;}
 </style>
 </head>
 <body>
-	<p style="color:#ff0000; font-size:14px;">温馨提示：改签的功能只能是在相同舱位的情况下修改出发时间和航班号，如果想升舱：那只能退掉该票重新订了</p>
+	<p style="color:#ff0000; font-size:14px;">温馨提示：改签的功能只能是在相同舱位的情况下修改出发时间和航班号，如果想升舱：请退掉该票重新预定</p>
 	<div>
 		<p>旧的出发时间和航班号</p>
 		<input type="text" id="orderNum" value="<%=orderNum%>"/>
@@ -32,7 +35,7 @@
 		<input type="text" id="chufDate"/>
 		<input type="text" id="fildNO"/>
 		<p>选择时间</p>
-		<input type="text" id="NewchufDate"/>
+		<input type="text" id="NewchufDate" class="jcDate" readonly="readonly"/>
 		<button id="findFild">查找可预订航班</button>
 		<div id="basePathJava" style="display:none;"><%=basePath %></div>
 		<!-- <p>以下是为您匹配到可以修改的航班</p>
@@ -62,6 +65,19 @@
 		<div><span>证件号码：</span><span id="IDcase"></span></div>
 		<div><button id="submitBtn">信息正确</button><button id="colseThis">取消</button></div>
 	</div>
+	
+	<!-- 加载等待界面 -->	
+	<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_four"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_one"></div>
+			</div>
+			<div style="color:#ffffff; position:absolute; left:39%; top:58%;">数据加载中...</div>
+		</div> 
+	</div>
 </body>
 <script>
 	$(function(){		
@@ -73,6 +89,10 @@
 				type:"POST",
 				data:{"orderNum":orderNum},
 				dataType:"json",
+				beforeSend:function(){
+					$("#loading").css("display","block");
+				},
+				complete:function(){$("#loading").css("display","none");},
 				success: function(result) {
 					var dataList = (result.orderList)[0];
 					$("#chufDate").val(dataList.chufDate);
@@ -108,6 +128,10 @@
 				type:"POST",
 				data:{"chufCity":chufCity,"daodCity":daodCity,"chufDate":chufDate,"fildNo":fildNo,"canbin":canbin},
 				dataType:"json",
+				beforeSend:function(){
+					$("#loading").css("display","block");
+				},
+				complete:function(){$("#loading").css("display","none");},
 				success: function(result) {
 					var dataList = result.dataList;
 					console.log(result.dataList);
@@ -128,6 +152,16 @@
 			});
 		});	
 
+		//加载日期控件
+		$(".jcDate").jcDate({
+			Event : "click",
+			Speed : 100,
+			Left : 0,
+			Top : 28,
+			format : "-",
+			Timeout : 100
+		});
+		
 	});
 	
 //计算剩余票价张数的方法

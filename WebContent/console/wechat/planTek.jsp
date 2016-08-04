@@ -47,9 +47,9 @@
 <div>
 	<div class="banner"> 
 		<div class="b-img">
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner0.jpg" style="width:100%;"/></div>
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner1.jpg" style="width:100%;"/></div>
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner2.jpg" style="width:100%;"/></div>
+			<div class="runDiv"><img src="<%=basePath %>console/images/banner01.png" style="width:100%;"/></div>
+			<div class="runDiv"><img src="<%=basePath %>console/images/banner02.png" style="width:100%;"/></div>
+			<div class="runDiv"><img src="<%=basePath %>console/images/banner03.png" style="width:100%;"/></div>
 		</div>
 			
 		<div class="b-list"></div>

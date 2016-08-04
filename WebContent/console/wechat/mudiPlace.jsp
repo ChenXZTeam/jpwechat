@@ -314,7 +314,7 @@ function loadjs(){
 				<div class="object" id="object_two"></div>
 				<div class="object" id="object_one"></div>
 			</div>
-			<div style="color:#ffffff; position:absolute; left:37%; top:58%;">数据加载中...</div>
+			<div style="color:#ffffff; position:absolute; left:39%; top:58%;">数据加载中...</div>
 		</div> 
 	</div>
 </body>

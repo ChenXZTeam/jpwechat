@@ -107,7 +107,7 @@
 				<div class="object" id="object_two"></div>
 				<div class="object" id="object_one"></div>
 			</div>
-			<div style="color:#ffffff; position:absolute; left:37%; top:58%;">数据加载中...</div>
+			<div style="color:#ffffff; position:absolute; left:39%; top:58%;">数据加载中...</div>
 		</div> 
 	</div>
 	<div id="basePathJava" style="display:none"><%=basePath %></div>
@@ -119,6 +119,10 @@
 				type: "POST",
 				data: {},
 				dataType: "json",
+				beforeSend:function(){
+					$("#loading").css("display","block");
+				},
+				complete:function(){$("#loading").css("display","none");},
 				success: function(res) {
 					var data = res.orderList;
 					if(res.msg==1){

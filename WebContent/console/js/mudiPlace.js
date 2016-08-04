@@ -12,7 +12,7 @@ $(function(){
 	//点击“对应舱位其他票价”时
 	$(".piaojia").click(function(){
 		$(".cangweiClass").fadeOut();
-		$(this).parent().parent().parent().parent().parent().parent().next(".cangweiClass").fadeIn();
+		$(this).parents(".banner").next(".cangweiClass").fadeIn();
 	});
 	
 	//预定的方法

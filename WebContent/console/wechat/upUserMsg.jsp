@@ -13,6 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>修改乘机人资料</title>
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 </head>
 <body>
@@ -21,11 +22,23 @@
 乘机人姓名：<input type="text" id="username"/><br/>
 乘机人年龄：<input type="text" id="userage"/><br/>
 乘机人性别：<input type="text" id="usergender"/><br/>
-乘机人生日：<input type="text" id="userBirth"/><br/>
+乘机人生日：<input type="text" id="userBirth" readonly="readonly"/><br/>
 乘机人旅客类型：<input type="radio" id="usertype" name="usertype" value="ADT" checked="checked"/>成人<input type="radio" id="usertype" name="usertype" value="CHD"/>儿童 <input type="radio" id="usertype" name="usertype" value="INF"/>婴儿<br/>
 乘机人证件号码：<input type="text" id="userIDnum"/><br/>
 乘机人证件类型：<input type="radio" id="userIDtype" name="userIDtype" value="NI" checked="checked"/>身份证<input type="radio" id="userIDtype" name="userIDtype" value="PP"/>护照 <input type="radio" id="userIDtype" name="userIDtype" value="ID"/>其他证件<br/>
 <button>确认修改</button>
+<!-- 加载等待界面 -->	
+	<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_four"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_one"></div>
+			</div>
+			<div style="color:#ffffff; position:absolute; left:39%; top:58%;">数据加载中...</div>
+		</div> 
+	</div>
 </body>
 <script>
 	$(function(){		
@@ -37,6 +50,10 @@
 				type:"POST",
 				data:{"orderNum":orderNum},
 				dataType:"json",
+				beforeSend:function(){
+					$("#loading").css("display","block");
+				},
+				complete:function(){$("#loading").css("display","none");},
 				success: function(result) {
 					var dataList = (result.orderList)[0];
 					$("#username").val(dataList.linkName);
