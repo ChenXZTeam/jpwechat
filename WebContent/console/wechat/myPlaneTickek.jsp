@@ -11,8 +11,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>机票订单</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/planDD.css"/>
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planDD.js" charset="utf-8"></script>
+
 <style>
 	body{background-color:#e1e1e1; font-family:Microsoft YaHei; font-size:14px;}
 	.product ul{list-style-type:none; padding:0px; margin:0px; padding-bottom:10px;}
@@ -95,6 +97,18 @@
 		</div>
 		
 	  </div> 
+	</div>
+	<!-- 加载等待界面 -->	
+	<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_four"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_one"></div>
+			</div>
+			<div style="color:#ffffff; position:absolute; left:37%; top:58%;">数据加载中...</div>
+		</div> 
 	</div>
 	<div id="basePathJava" style="display:none"><%=basePath %></div>
 </body>

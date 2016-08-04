@@ -305,17 +305,17 @@ function loadjs(){
 	
 </ul>
 
-<!-- 加载等待界面 -->
-<div id="loading">
+	<!-- 加载等待界面 -->	
+	<div id="loading">
 		<div id="loading-center">
 			<div id="loading-center-absolute">
-				<div class="object" id="first_object"></div>
-				<div class="object" id="second_object"></div>
-				<div class="object" id="third_object"></div>
-				<div class="object" id="forth_object"></div>
+				<div class="object" id="object_four"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_one"></div>
 			</div>
 			<div style="color:#ffffff; position:absolute; left:37%; top:58%;">数据加载中...</div>
-		</div>
+		</div> 
 	</div>
 </body>
 </html>
