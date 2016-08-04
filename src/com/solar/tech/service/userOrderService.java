@@ -151,6 +151,20 @@ public class userOrderService {
 		return 0;
 	 }
 	 
+	 /**
+	  * @Title updateChufDateSer(同舱改签)
+	  * @param oInfo
+	  * @return
+	  */	 
+	 public int updateChufDateSer(userOrderInfo oInfo){
+		String sql = "UPDATE userorderinfo SET hangbanNum = '"+oInfo.getHangbanNum()+"', chufDate = '"+oInfo.getChufDate()+"', chufTime = '"+oInfo.getChufTime()+"', daodTime = '"+oInfo.getDaodTime()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR='"+oInfo.getPNR()+"'";
+		int i = gDao.executeJDBCSql(sql);
+		if(i > 0){
+			return 1;
+		}
+		return 0;
+	 }
+	 
 		/**
 		 * 
 		 * @Title: deleteOrder 

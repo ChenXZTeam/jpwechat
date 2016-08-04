@@ -34,7 +34,7 @@
 		<p>选择时间</p>
 		<input type="text" id="NewchufDate"/>
 		<button id="findFild">查找可预订航班</button>
-		<div id="basePathJava"><%=basePath %></div>
+		<div id="basePathJava" style="display:none;"><%=basePath %></div>
 		<!-- <p>以下是为您匹配到可以修改的航班</p>
 		<input type="text" id="NewchufDate"/>
 		<input type="text" id="NewfildNO"/>
@@ -111,7 +111,6 @@
 				success: function(result) {
 					var dataList = result.dataList;
 					console.log(result.dataList);
-					$("#findCanUpFilght").css("display","block");
 					for(var i=0;i<dataList.length;i++){
 						for(var j=0;j<dataList[i].seatList.length;j++){
 							if((dataList[i].seatList)[j].cangwei==canbin){ //只查找对应舱位的信息 比如用户原先订的是Y舱位的票，那就只能查询Y舱位的票
@@ -121,6 +120,7 @@
 							}						
 						}
 					}
+					$("#findCanUpFilght").css("display","block");
 					loadjs();//动态加载外部js文件
 				},error:function(){
 					

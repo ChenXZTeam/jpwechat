@@ -529,24 +529,24 @@ public class ECUtils {
 	
 	// 同舱改期
 	public boolean changeTKTAirSegment(String pnrNo, String fltNoOld, String fltDateOld, String fltNoNew, String fltDateNew) { 
-		PNRTKTAirSegmentRequest request = new PNRTKTAirSegmentRequest(); // �½�һ���������
-		request.setOfficeNo(OFFICENO); // ����Office�� 
-		request.setToken(token); // �������ƺ�
+		PNRTKTAirSegmentRequest request = new PNRTKTAirSegmentRequest(); // 新建一个请求对象
+		request.setOfficeNo(OFFICENO);// 设置Office号 
+		request.setToken(token);// 设置令牌号
 		
-		request.setPnrNo(pnrNo); // ����PNR�� 
-		request.setFltNoOld(fltNoOld); // ���þɺ����
-		request.setFltDateOld(fltDateOld); // ���þɺ�������
-		request.setFltNoNew(fltNoNew); // �����º����
-		request.setFltDateNew(fltDateNew); // �����º�������
+		request.setPnrNo(pnrNo); // 设置PNR号 
+		request.setFltNoOld(fltNoOld); // 设置旧航班号
+		request.setFltDateOld(fltDateOld); // 设置旧航班日期
+		request.setFltNoNew(fltNoNew); // 设置新航班号
+		request.setFltDateNew(fltDateNew); // 设置新航班日期
 		
-		request.setActionCode ("NN"); // �����ж����룬ֻ��ΪNN
+		request.setActionCode ("NN"); // 设置行动代码，只能为NN
 		
 		PNRManageClient client = new PNRManageClient();
 		try{
-			OBECommonResponse response = client.changeTKTAirSegment(request); // �½�һ����Ӧ����
+			OBECommonResponse response = client.changeTKTAirSegment(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
 				if("OK".equals(response.getResultMsg())){
-					return true; // ����ͬ�ո��ڽ��
+					return true; // 返回同舱改期结果
 				}
 			}
 		}catch(ObeException e){

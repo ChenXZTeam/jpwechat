@@ -263,8 +263,26 @@ public class userOrderController {
 	@ResponseBody
 	public Map<String, Object> updateChufDate(String pnrNo, String orderNum, String fltNoOld, String fltDateOld, String fltNoNew, String fltDateNew, String chufTime, String daodTime){
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		System.out.println(pnrNo+"/"+orderNum+"/"+fltNoOld+"/"+fltDateOld+"/"+fltNoNew+"/"+fltDateNew+"/"+chufTime+"/"+daodTime);
-		System.out.println("我进来了");
+		//boolean YesOrNo = new ECUtils().changeTKTAirSegment(pnrNo,fltNoOld,fltDateOld,fltNoNew,fltDateNew);//执行中航信同舱改期的方法
+		//if(YesOrNo){
+			userOrderInfo uinfo = new userOrderInfo();
+			uinfo.setPNR(pnrNo);
+			uinfo.setOrderNum(orderNum);
+			uinfo.setHangbanNum(fltNoNew); 
+			uinfo.setChufDate(fltDateNew);
+			uinfo.setChufTime(chufTime);
+			uinfo.setDaodTime(daodTime);
+			int i = OrderService.updateChufDateSer(uinfo);
+			if(i==1){
+				map.put("msg", 1);
+				System.out.println("改签成功");				
+			}else{
+				map.put("msg", 0);
+				System.out.println("改签失败");		
+			}
+		//}
 		return map;
 	}
 	
