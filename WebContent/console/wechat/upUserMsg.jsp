@@ -15,18 +15,69 @@
 <title>修改乘机人资料</title>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+<style>
+	body{padding:0px; padding:0px;}
+	#BigPanerTitle{}
+	#BigPanerTitle span{ display:block; padding:10px 10px 5px 0px; border-bottom:#FF8204 solid 1px; width:95%; margin-left:auto; margin-right:auto; color:#FF8204; font-weight:bold; font-size:18px;}
+	#BigPaner{ border-top:none; border-radius:0px 0px 5px 5px; padding:5px;}
+	.inputClassStyle{ width:95%;  -webkit-tap-highlight-color:rgba(255,255,255,0); outline:none; display:block; height:30px; margin-top:10px; font-size:15px; color:#666666; border:#CCCCCC solid 1px; padding-left:10px; border-radius:5px;}
+	.bigSelectDiv{ margin-top:10px;}
+	.selectDivClassStyle{width:98px; height:30px; border:#CCCCCC solid 1px;}
+	.selectDivClassStyle img{width:30px; float:right;}
+	.selectClassStyle{padding-left:10px; background-color:transparent; border:solid 0px; -webkit-appearance:initial; width:80px; height:30px; position:relative; background:none; margin-top:-31px; border:none; outline:none; cursor:pointer; filter:alpha(opacity=1); -moz-opacity:1; opacity:1; color:#666666; font-size:15px;  -webkit-tap-highlight-color:rgba(255,255,255,0);}
+	#buttonBtn{ margin-top:15px; overflow:hidden;}
+	#buttonBtn a{ display:block; width:30%; float:left; margin-left:10px; padding:10px; background-color:#FF8204; color:#FFFFFF; font-family:"Times New Roman", Times, serif; text-align:center; font-size:18px; border:#FF8204 solid 1px; border-radius:5px;}
+</style>
 </head>
 <body>
-预约编号：<input type="text" id="orderNum" value="<%=orderNum%>"/><br/>
-中航信ID：<input type="text" id="pnrNo" value="<%=pnrNo%>"/><br/>
-乘机人姓名：<input type="text" id="username"/><br/>
-乘机人年龄：<input type="text" id="userage"/><br/>
-乘机人性别：<input type="text" id="usergender"/><br/>
-乘机人生日：<input type="text" id="userBirth" readonly="readonly"/><br/>
-乘机人旅客类型：<input type="radio" id="usertype" name="usertype" value="ADT" checked="checked"/>成人<input type="radio" id="usertype" name="usertype" value="CHD"/>儿童 <input type="radio" id="usertype" name="usertype" value="INF"/>婴儿<br/>
-乘机人证件号码：<input type="text" id="userIDnum"/><br/>
-乘机人证件类型：<input type="radio" id="userIDtype" name="userIDtype" value="NI" checked="checked"/>身份证<input type="radio" id="userIDtype" name="userIDtype" value="PP"/>护照 <input type="radio" id="userIDtype" name="userIDtype" value="ID"/>其他证件<br/>
-<button>确认修改</button>
+<input type="hidden" id="orderNum" value="<%=orderNum%>"/>
+<input type="hidden" id="pnrNo" value="<%=pnrNo%>"/>
+<!--  -->
+	<div id="BigPanerTitle"><span>修改乘机人信息</span></div>
+	<div id="BigPaner">
+		<div>
+			<input type="text" class="inputClassStyle" id="username" placeholder="乘机人姓名"/>
+		</div>
+		
+		<div class="bigSelectDiv">		
+			<div class="selectDivClassStyle"><img src="<%=basePath %>console/images/jiantou.png"/></div>
+			<select class="selectClassStyle" id="sex">
+				<option value="男">男</option>
+				<option value="女">女</option>
+			</select>
+		</div>
+		
+		<div>
+			<input type="text" class="inputClassStyle" id="userage" placeholder="乘机人年龄"/>
+		</div>
+		
+		<div class="bigSelectDiv">		
+			<div class="selectDivClassStyle"><img src="<%=basePath %>console/images/jiantou.png"/></div>
+			<select class="selectClassStyle" id="usertype">
+				<option value="ADT">成人</option>
+				<option value="CHD">儿童</option>
+				<option value="INF">婴儿</option>
+			</select>
+		</div>
+		
+		<div>
+			<input type="text" class="inputClassStyle" id="userBirth" placeholder="乘机人生日"/>
+		</div>
+		
+		<div class="bigSelectDiv">		
+			<div class="selectDivClassStyle"><img src="<%=basePath %>console/images/jiantou.png"/></div>
+			<select class="selectClassStyle" id="userIDtype">
+				<option value="NI" class="option">身份证</option>
+				<option value="PP" class="option">护照</option>
+				<option value="ID" class="option">其他证件</option>
+			</select>
+		</div>
+		
+		<div><input type="text" class="inputClassStyle" id="userIDnum" placeholder="证件号码"/></div>
+		
+		<div id="buttonBtn"><a id="btnA">信息正确</a><a id="btnQ" style="float:right; margin-right:10px;">取消</a></div>
+	</div>
+
 <!-- 加载等待界面 -->	
 	<div id="loading">
 		<div id="loading-center">
@@ -58,14 +109,12 @@
 					var dataList = (result.orderList)[0];
 					$("#username").val(dataList.linkName);
 					$("#userage").val(dataList.age);
-					$("#usergender").val(dataList.linkSex);
-					$("#userBirth").val(dataList.birthday);
-					if(dataList.stutisPay==1){					
-						$("input[type=radio][name='usertype'][value="+dataList.psgType+"]").attr("checked",'checked');
-						$("input[type=radio][name='usertype']").attr("disabled",'disabled');
-					}
+					$("#userBirth").val(dataList.birthday);	
+					$("#usertype").find("option[value="+dataList.psgType+"]").attr("selected",true);						
+					$("#usertype").attr("disabled","disabled");
 					$("#userIDnum").val(dataList.idcase);
-					$("input[type=radio][name='userIDtype'][value="+dataList.idcaseType+"]").attr("checked",'checked');
+					$("#sex").find("option[value="+dataList.linkSex+"]").attr("selected",true);
+					$("#userIDtype").find("option[value="+dataList.idcaseType+"]").attr("selected",true);
 				},error:function(){
 					
 				}
@@ -73,16 +122,25 @@
 		}
 		
 		//修改资料的执行的方法
-		$("button").click(function(){
-			var orderNum = $("#orderNum").val();
-			var pnrNo = $("#pnrNo").val();
+		$("#btnA").click(function(){
+			var orderNum = "<%=orderNum%>";
+			var pnrNo = "<%=pnrNo%>";
 			var username = $("#username").val();
 			var userage = $("#userage").val();
-			var usergender = $("#usergender").val();
+			var usergender = $("#sex").val();
 			var userBirth = $("#userBirth").val();
 			var usertype = $("#usertype").val();
 			var userIDnum = $("#userIDnum").val();
-			var userIDtype = $("#userIDtype").val();
+			var userIDtype = $("#userIDtype").val();			
+			if(userage==""||userage==null){
+				alert("请填写年龄格式：19");
+				return false;
+			}
+			if(userBirth==""||userBirth==null){
+				alert("请填写生日格式：1993-05-03");
+				return false;
+			}
+			console.log(orderNum+"/"+pnrNo+"/"+username+"/"+userage+"/"+usergender+"/"+userBirth+"/"+usertype+"/"+userIDnum+"/"+userIDtype);
 			$.ajax({ 
 				url:"<%=basePath%>userOrderController/update/changeCertificate.action",
 				type:"POST",
@@ -109,6 +167,10 @@
 				
 				}
 			});		
+		});
+		
+		$("#btnQ").click(function(){
+			window.location.href="<%=basePath %>console/wechat/myPlaneTickek.jsp";
 		});
 	});
 </script>

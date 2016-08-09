@@ -12,6 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>在线客服</title>
+<script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js" ></script>
 <style>
 	body{padding:0px; margin:0px; font-size:12px; font-family:Microsoft YaHei;}
 	#bigContent{ padding:10px; margin-top:25px;}
@@ -29,7 +30,7 @@
 
 <body  style="background-image:url(<%=basePath %>console/images/callkefu.jpg)";>
 	<div id="bigContent">
-		<div class="kefuImg"><img src="<%=basePath %>console/images/kefu_03.png" style="width:40px;"></div>
+		<div class="kefuImg"><img src="<%=basePath %>console/images/kefu_03.png" style="width:40px;"/></div>
 		<div class="jiantou"><img src="<%=basePath %>console/images/jiantou_03.png"/></div>
 		<div class="textMsg">
 			<div class="zixun"><span>您好，这里是广州续日，我是客服某某，某某竭诚为您服务！</span><span>您是想咨询一下问题吗？</span></div>
@@ -54,8 +55,42 @@
 					<span>祝你旅途愉快！</span>
 					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
+				<li>
+					<span id="findPAT">查看国内运价！</span>
+					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
+				</li>
 			</ul>
 		</div>
 	</div>
+<script>
+ 	$(function(){
+		$.ajax({ 
+	    	type: "post",
+	    	url: "<%=basePath%>wechatController/find/patPNR.action",
+	    	data: {"pnrNo":"HE2MMF"},
+	   	 	dataType: "json",//后台处理后返回的数据格式
+	  		success: function (data) {
+	  			console.log(data.SEG);
+	    		alert("成功");
+	    	},error:function(){
+	    		
+	    	}
+	    }) 
+	    
+	    $("#findPAT").click(function(){
+	    	$.ajax({
+		    	type: "post",
+		    	url: "<%=basePath%>wechatController/deletes/PNRno.action",
+		    	data: {"pnrNo":"HE2MMF"},
+		   	 	dataType: "json",//后台处理后返回的数据格式
+		  		success: function (data) {
+		    		alert("删除成功");
+		    	},error:function(){
+		    		
+		    	}
+	    	})
+	    });
+	}); 
+</script>
 </body>
 </html>

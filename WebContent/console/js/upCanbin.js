@@ -5,11 +5,12 @@ $(function(){
 	var daodTime = null;
 	//确认预订的按钮方法
 	$(".upMSGbtn").click(function(){
-		var flightNo = $(this).parents(".fildOneDiv").children().children(".flightNo").text();
-		var cangwei = $(this).parents(".fildOneDiv").children().children(".cangwei").text();
-		var chufDate = $(this).parents(".fildOneDiv").children().children(".chufDate").text();
-		var depTime = $(this).parents(".fildOneDiv").children().children(".depTime").text();
-		daodTime = $(this).parents(".fildOneDiv").children().children(".daodTime").text();
+		var $dome = $(this).parents(".infoFiletghtLi").children(".infoFiletght").children(".smalldivClass");
+		var flightNo = $dome.children(".flightNo").text();
+		var cangwei = $dome.children(".cangwei").text();
+		var chufDate = $dome.children(".chufDate").text();
+		var depTime = $dome.children(".depTime").text();
+		daodTime = $dome.children(".daodTime").text();
 		
 		//给确认信息的界面赋予新的值
 		$("#chufDateTime").text(chufDate+" "+depTime);
