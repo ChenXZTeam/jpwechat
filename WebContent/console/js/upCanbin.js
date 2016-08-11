@@ -15,7 +15,7 @@ $(function(){
 		//给确认信息的界面赋予新的值
 		$("#chufDateTime").text(chufDate+" "+depTime);
 		$("#fildNum").text(flightNo);
-		$("#qrMSG").css("display","block");
+		$(".MsgSureBox").css("display","block");
 	});
 	
 	
@@ -36,7 +36,11 @@ $(function(){
 			data:{"pnrNo":pnrNo,"orderNum":orderNum,"fltDateOld":chufDate,"fltNoOld":fildNO,"fltDateNew":newChufDate,"chufTime":newChufTime,"fltNoNew":fildNum,"daodTime":daodTime},
 			dataType:"json",
 			success:function(res){
-				
+				if(res.msg==1){
+					alert("改签成功！");
+				}else{
+					alert("改签失败！");
+				}
 			},error:function(){
 				
 			}
@@ -45,6 +49,6 @@ $(function(){
 	
 	//信息确认中的取消按钮
 	$("#colseThis").click(function(){
-		$("#qrMSG").css("display","none");
+		$(".MsgSureBox").css("display","none");
 	});
 });

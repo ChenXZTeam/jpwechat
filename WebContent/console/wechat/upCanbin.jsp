@@ -28,8 +28,14 @@
 	.fildOneDiv{ padding:5px 10px 10px 10px; overflow:hidden;}
 	.styleClass{font-size:12px; margin-top:5px;}
 	.styleClass .upMSGbtn{padding:5px; border:1px solid #FF6F43; color:#FF6F43;}
-	#qrMSG{position:fixed; top:30%; left:15%; padding:15px; display:none; background-color:#fff; z-index:9999; border:1px solid #cccccc;}
-
+	
+	.MsgSureBox{display:none; position:absolute; left:0px; top:0px; background:rgba(0,0,0,0.5); overflow:hidden; z-index:9998; width:100%; height:1000px;}
+	.MsgSureBox #qrMSG{position:fixed; top:15%; left:15%; padding-top:5px; display:block; background-color:#fff; z-index:9999; border-radius:5px; font-size:12px; color:#666666; font-family:"Microsoft YaHei"; width:232px;}
+	.MsgSureBox #qrMSG .spanDiv{ height:20px; padding:0px 5px 0px 15px;}
+	.MsgSureBox #qrMSG .spanDiv span{ line-height:20px;}
+	.MsgSureBox #qrMSG #submitBtn{ width:50%; padding:20px 0px 20px 0px; border:none; background-color:#FC716A; color:#FFFFFF; border-radius:0px 0px 0px 5px; outline:none; margin-top:10px;}
+	.MsgSureBox #qrMSG #colseThis{ width:50%; padding:20px 0px 20px 0px; border:none; background-color:#B5BECD; color:#FFFFFF; border-radius:0px 0px 5px 0px; outline:none; margin-top:10px;}
+		
 	.infoFiletghtLi{background-color:#FFFFFF; padding:10px; font-family:Microsoft Yahei; margin-top:5px; border-radius:5px;}
 	.infoFiletghtLi .infoFiletght{width:65%; float:left;}
 	/*.infoFiletghtLi .infoFiletght .smalldivClass:first-child{margin-top:5px;}选择第一个css*/
@@ -40,6 +46,7 @@
 </style>
 </head>
 <body>
+	<!-- 温馨提示框 -->
 	<div class="canweiMsg">
 		<div class="SmallcanweiMsg">
 			<div class="wenxinTitle">
@@ -54,6 +61,7 @@
 			</div>		
 		</div>
 	</div>
+	
 	<div>
 		<input type="hidden" id="orderNum" value="<%=orderNum%>"/>
 		<input type="hidden" id="pnrNo" value="<%=pnrNo%>"/>
@@ -64,26 +72,30 @@
 		<div id="basePathJava" style="display:none;"><%=basePath %></div>
 	</div>
 	
+	<!-- 航班列表 -->
 	<div id="findCanUpFilght">
 		<ul id="fildDataList" style="list-style-type:none; padding:1px 10px; margin:0px; background-color:#E9E8E6;">
 		</ul>
 	</div>
 	
 	<!-- 订单信息确认div框 -->
+<div class="MsgSureBox">
 	<div id="qrMSG">
-		<div><span>起飞时间：</span><span id="chufDateTime"></span></div>
-		<div><span>起始城市：</span><span id="chufCity"></span><span id="chufPlanCode"></span></div>
-		<div><span>终点城市：</span><span id="daodCity"></span><span id="daodPlanCode"></span></div>
-		<div><span>航班号：</span><span id="fildNum"></span></div>
-		<div><span>舱位：</span><span id="canbin"></span></div>
-		<div><span>乘机人：</span><span id="linkName"></span></div>
-		<div><span>联系电话：</span><span id="linkPhone"></span></div>
-		<div><span>性别：</span><span id="sex"></span></div>
-		<div><span>旅客类型：</span><span id="userType"></span></div>
-		<div><span>证件类型：</span><span id="IDcaseType"></span></div>
-		<div><span>证件号码：</span><span id="IDcase"></span></div>
-		<div><button id="submitBtn">信息正确</button><button id="colseThis">取消</button></div>
+		<div class="spanDiv"><img id="colseBTN" src="<%=basePath %>console/images/cha.png" style="width:20px; float:right;"/></div>
+		<div class="spanDiv"><span>起飞时间：</span><span id="chufDateTime"></span></div>
+		<div class="spanDiv"><span>起始城市：</span><span id="chufCity"></span><span id="chufPlanCode" style="display:none;"></span></div>
+		<div class="spanDiv"><span>终点城市：</span><span id="daodCity"></span><span id="daodPlanCode" style="display:none;"></span></div>
+		<div class="spanDiv"><span>航班号：</span><span id="fildNum"></span></div>
+		<div class="spanDiv"><span>舱位：</span><span id="canbin"></span></div>
+		<div class="spanDiv"><span>乘机人：</span><span id="linkName"></span></div>
+		<div class="spanDiv"><span>联系电话：</span><span id="linkPhone"></span></div>
+		<div class="spanDiv"><span>性别：</span><span id="sex"></span></div>
+		<div class="spanDiv"><span>旅客类型：</span><span id="userType"></span></div>
+		<div class="spanDiv"><span>证件类型：</span><span id="IDcaseType"></span></div>
+		<div class="spanDiv"><span>证件号码：</span><span id="IDcase"></span></div>
+		<button id="submitBtn">信息正确</button><button id="colseThis">取消</button>
 	</div>
+</div>
 	
 	<!-- 加载等待界面 -->	
 	<div id="loading">
@@ -144,6 +156,10 @@
         
         $(".wenxinTitle img").click(function(){
        		$(".canweiMsg").css("display","none");
+        });
+        
+        $("#colseBTN").click(function(){
+        	$(".MsgSureBox").css("display","none");
         });
 	});
 	
