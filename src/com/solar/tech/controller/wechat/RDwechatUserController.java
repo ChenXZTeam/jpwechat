@@ -1,6 +1,8 @@
 package com.solar.tech.controller.wechat;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import com.solar.tech.service.RDwechatUserService;
 import com.solar.tech.dbutil.Encode;
 import com.solar.tech.us.service.LoginService;
 import com.solar.tech.util.Current;
+import com.solar.tech.utils.Send106msg;
 import com.solar.tech.utils.Sender;
 
 @Controller
@@ -77,7 +80,7 @@ public class RDwechatUserController {
 	@ResponseBody
 	public String message(String phoneNum, HttpSession session) throws UnsupportedEncodingException {
 		String result = "-1";
-		Sender sender = new Sender();
+		Send106msg sender = new Send106msg();
 		Random random = new Random();
 		String a = random.nextInt(10) + "";
 		String b = random.nextInt(10) + "";
@@ -85,12 +88,19 @@ public class RDwechatUserController {
 		String d = random.nextInt(10) + "";
 		String code = a + b + c + d;
 		session.setAttribute("code", code);
-		//session.setAttribute("userName", userName);
 		session.setAttribute("phone", phoneNum);
 		System.out.println(code);
-		boolean success = sender.msg(phoneNum, code);
-		if(success) {
-			/**对生成的验证码进行md5加密，传到页面*/
+		String resultNum = null;
+		try {
+			resultNum = sender.SendMSGtoPhone("【微信公众号机票预定平台短信验证】验证码为："+code, phoneNum);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//boolean success = sender.msg(phoneNum, code);
+		if(resultNum=="1") {
+			/*对生成的验证码进行md5加密，传到页面*/
 			result = Encode.MD5(code);
 		}
 		System.out.println(result);
