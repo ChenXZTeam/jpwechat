@@ -9,7 +9,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>注册</title>
+<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
 <script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>console/js/md5.js"></script>
 <style>
 	*{padding:0px; margin:0px;}
@@ -62,7 +65,6 @@
 	<script>		
 		var code = ""; //保存验证码
 		$(function(){
-			var fale=true;	//防止重复提交注册信息
 			//验证码倒计时
 			var wait = 60;
 			function time(o){		
@@ -84,6 +86,7 @@
 			//获取验证码按钮事件
 			$(".divInput>a").click(function(){
 				//首先判断手机号码是否存在
+				alert("等待的时间:"+wait);
 				$.ajax({
 					url:"<%=basePath%>/wechatController/register/userNameIsExist.action",
 					type:"POST",
@@ -92,36 +95,34 @@
 					success:function(res){
 						if(res.msg==1){
 							$("#spanMsg").text("");
+							if(chexPhone()&&wait==60){	//发短信时检查手机号码格式	
+								$.ajax({
+									url:"<%=basePath%>/wechatController/register/message.action",
+									type:"POST",
+									data:{"phoneNum":$("#userPhone").val()},
+									dataType:"json",
+									success:function(res,textStatus){
+										if (textStatus == "success") {		
+											time($(".divInput>a"));
+											$(".divInput>a").css("background-color","#dddddd");
+											$(".divInput>a").css("color","#666666");
+											$(".divInput>a").css("border","#cccccc solid 1px");					
+											$.alert("发送成功","消息提醒");
+											//能否获取到后台传回来的code
+											code = res;
+										} 
+									},error:function(){								
+									}
+								});
+							}
 						}else if(res.msg==0){
 							$("#spanMsg").text("");
 							$("#spanMsg").text("手机号码已存在"); 
-							fale=false;
 							return false;
 						}
 					},error:function(){
 					}
 				});
-							
-  				if(chexPhone()){	//发短信时检查手机号码格式
-					time($(this));
-					$(this).css("background-color","#dddddd");
-					$(this).css("color","#666666");
-					$(this).css("border","#cccccc solid 1px");
-					$.ajax({
-						url:"<%=basePath%>/wechatController/register/message.action",
-						type:"POST",
-						data:{"phoneNum":$("#userPhone").val()},
-						dataType:"json",
-						success:function(res,textStatus){
-							if (textStatus == "success") {
-								alert("发送成功");
-								//能否获取到后台传回来的code
-								code = res; 
-							} 
-						},error:function(){								
-						}
-					});
-				} 			
 			});	
 			
 			/**change事件， 对输入的验证码进行比对*/		
@@ -133,7 +134,7 @@
 			function chexPhone(){
 				var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
 				if(!phone.test($("#userPhone").val())){
-					alert("请输入正确的手机号码");
+					$.alert("请输入正确的手机号码","填写错误");
 					$("#iPhone").focus();
 					return false;
 				}else{
@@ -154,7 +155,6 @@
 						}else if(res.msg==0){
 							$("#spanMsg").text("");
 							$("#spanMsg").text("用户名已存在");
-							fale=false;
 							return false;
 						}
 					},error:function(){
@@ -164,40 +164,15 @@
 			
 			//注册按钮事件
 			$(".buttonRegist a").click(function(){
+				/*判断步骤：先判断用户名是否被注册，然后再判断手机格式是否正确，再然后就是检查手机是否被注册
+				 *再然后就是各种条件了
+				 */
+				var fale=true;	//防止重复提交注册信息
 				var userName=$("#userName").val();
 				var userPhone=$("#userPhone").val();
 				var password=$("#passWord").val();
 				var passwordAgr=$("#passWordAg").val();
 				var aoqing=$("#Aoqing").val();
-			
-				//验证手机号码是否正确
-				var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
-				if(!phone.test($("#userPhone").val())){
-					alert("请输入正确的手机号码");
-					$("#userPhone").focus();
-					fale=false;
-					return false;
-				}	
-			
-				//判断信息是否填写完成
-				if(password==""||passwordAgr==""||aoqing==""){
-					alert("信息填写未完成");
-					fale=false;
-					return false;
-				}
-				
-				//验证验证码是否正确
-				if(checkCode() == false){
-					fale=false;
-					return false;
-				}	
-			
-				//判断密码是否输入一样
-				if(password!=passwordAgr){
-					alert("密码不一致");
-					fale=false;
-					return false;
-				}
 				
 				//用户名是否被注册
 				$.ajax({
@@ -208,6 +183,84 @@
 					success:function(res){
 						if(res.msg==1){
 							$("#spanMsg").text("");
+							//验证手机号码是否正确
+							var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+							if(!phone.test($("#userPhone").val())){
+								$.alert("请输入正确的手机号码","填写错误");
+								$("#userPhone").focus();
+								fale=false;
+								return false;
+							}
+							
+							//手机号码是否被注册
+							$.ajax({
+								url:"<%=basePath%>/wechatController/register/userNameIsExist.action",
+								type:"POST",
+								data:{"userName":$("#userPhone").val()},
+								dataType:"json",
+								success:function(res){
+									if(res.msg==1){
+										$("#spanMsg").text("");
+										//判断信息是否填写完成
+										if(userName==""||userPhone==""||password==""||passwordAgr==""||aoqing==""){
+											$.alert("信息填写未完成","填写错误");
+											fale=false;
+											return false;
+										}
+										
+										//验证验证码是否正确
+										if(checkCode() == false){
+											fale=false;
+											return false;
+										}	
+									
+										//判断密码是否输入一样
+										if(password!=passwordAgr){
+											$.alert("密码不一致","填写错误");
+											fale=false;
+											return false;
+										}
+									
+										//提交信息注册
+										if(fale==true){
+											//上面的条件正确时候改变按钮格式
+											$(this).css("background-color","#dddddd");
+											$(this).css("color","#666666");
+											$(this).css("border","#cccccc solid 1px");
+											$(this).html("");
+											$(this).html("加载中...");
+											
+											$.ajax({
+												url: "<%=basePath %>/wechatController/register/add.action",
+												type: "POST",
+												data: {
+													"userName":userName, "password":password, "userPhone":userPhone,"aoqing":aoqing
+												},
+												dataType: "json",
+												success: function(result) {
+													if(result.msg==1){
+														$.alert("注册成功","消息提醒");
+														window.location.href="<%=basePath%>console/wechat/logo.jsp";
+													}else{
+														$.alert("注册错误","消息提醒");
+													}							
+												},
+												error: function() {
+													$.alert("注册失败","消息提醒");
+												}
+											});
+										}
+										
+									}else if(res.msg==0){
+										$("#spanMsg").text("");
+										$("#spanMsg").text("手机号码已存在");
+										fale=false;
+										return false;
+									}
+								},error:function(){
+								}
+							});				
+							
 						}else if(res.msg==0){
 							$("#spanMsg").text("");
 							$("#spanMsg").text("用户名已存在");
@@ -217,55 +270,6 @@
 					},error:function(){
 					}
 				});
-				
-				//手机号码是否被注册
-				$.ajax({
-					url:"<%=basePath%>/wechatController/register/userNameIsExist.action",
-					type:"POST",
-					data:{"userName":$("#userPhone").val()},
-					dataType:"json",
-					success:function(res){
-						if(res.msg==1){
-							$("#spanMsg").text("");
-						}else if(res.msg==0){
-							$("#spanMsg").text("");
-							$("#spanMsg").text("手机号码已存在");
-							fale=false;
-							return false;
-						}
-					},error:function(){
-					}
-				});
-								
-				if(fale==true){
-					//上面的条件正确时候改变按钮格式
-					$(this).css("background-color","#dddddd");
-					$(this).css("color","#666666");
-					$(this).css("border","#cccccc solid 1px");
-					$(this).html("");
-					$(this).html("加载中...");
-					
-					$.ajax({
-						url: "<%=basePath %>/wechatController/register/add.action",
-						type: "POST",
-						data: {
-							"userName":userName, "password":password, "userPhone":userPhone,"aoqing":aoqing
-						},
-						dataType: "json",
-						success: function(result) {
-							if(result.msg==1){
-								alert("注册成功");
-								window.location.href="<%=basePath%>console/wechat/logo.jsp";
-							}else{
-								alert("注册错误");
-							}							
-						},
-						error: function() {
-							alert("注册失败");
-						}
-					});
-				}
-				fale=true;
 			});
 		});
 		
@@ -273,14 +277,15 @@
 		function checkCode(){
 			var message = $("#PhoneCode").val();
 			/*对输入的验证码进行md5加密*/
-			if(message.length == 4){
+			if(message.length == 4){ 
 				var md5_code = hex_md5(message);
 				if(code != md5_code){
-					alert("请输入正确的验证码");
+					$.alert("请输入正确的验证码","填写错误");
 					return false;
 				}
+				
 			}else{
-				alert("请输入正确的验证码");
+				$.alert("请输入正确的验证码","填写错误");
 				return false;
 			}					    
 		}
