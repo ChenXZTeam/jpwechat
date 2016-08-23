@@ -99,7 +99,7 @@ public class RDwechatUserController {
 			e.printStackTrace();
 		}
 		//boolean success = sender.msg(phoneNum, code);
-		if(resultNum=="1") {
+		if(resultNum.equals("1")) {
 			/*对生成的验证码进行md5加密，传到页面*/
 			result = Encode.MD5(code);
 		}
