@@ -129,7 +129,8 @@ $(".logoBtn a").click(function(){
 						$(".logoBtn a").css("border","#cccccc solid 1px");
 						$(".logoBtn a").html("");
 						$(".logoBtn a").html("加载中...");
-						if(result.url)window.location.href=result.url;//跳转到指定界面
+						alert("登录成功...没有界面");
+						//if(result.url)window.location.href=result.url;//跳转到指定界面
 					}else{
 						alert("登录错误");
 					}							

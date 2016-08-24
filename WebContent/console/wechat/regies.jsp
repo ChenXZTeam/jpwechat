@@ -86,7 +86,6 @@
 			//获取验证码按钮事件
 			$(".divInput>a").click(function(){
 				//首先判断手机号码是否存在
-				alert("等待的时间:"+wait);
 				$.ajax({
 					url:"<%=basePath%>/wechatController/register/userNameIsExist.action",
 					type:"POST",
