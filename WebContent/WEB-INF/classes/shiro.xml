@@ -24,12 +24,13 @@
         <property name="filterChainDefinitions">
         <!-- 以下写上的是不被监控/屏蔽的路径 -->
             <value>
+            	/framework/exchangeRate/** = anon
             	/framework/invite/** = anon
             	/framework/visa/** = anon  
                 /images/framework/** = anon
                 /scripts/common/** = anon
                 /console/** = anon
-                /login.jsp=anon
+                /login.jsp = anon
                 /login.action = anon
                 /wechatController/** = anon 
                 /userOrderController/** = anon      
