@@ -42,11 +42,11 @@ public class WechatService {
 
 	public WechatService() {
 		wxMpConfigStorage = new WxMpInMemoryConfigStorage();
-		wxMpConfigStorage.setAppId("wx0c792f8b27916232"); // 设置微信公众号的appid
-		wxMpConfigStorage.setSecret("05c4c9112586340e9825213e85a9b47d"); // 设置微信公众号的app
+		wxMpConfigStorage.setAppId("wx21f1f64150786239"); // 设置微信公众号的appid
+		wxMpConfigStorage.setSecret("594a178490b9bc9c15748ca7e8b24038"); // 设置微信公众号的app
 																			// corpSecret
-		wxMpConfigStorage.setToken("gzyhinctoken"); // 设置微信公众号的token
-		wxMpConfigStorage.setAesKey("9kR01rJTqlVt4aQcqbBzlTiiXWICoSSQL0qpDjRzHhc"); // 设置微信公众号的EncodingAESKey
+		wxMpConfigStorage.setToken("gzrdswzx"); // 设置微信公众号的token
+		wxMpConfigStorage.setAesKey("titPyhhqAfqV7hFFuWsdH64hQD29OqRXdlscOTShhv6"); // 设置微信公众号的EncodingAESKey
 
 		wxMpService = new WxMpServiceImpl();
 		wxMpService.setWxMpConfigStorage(wxMpConfigStorage);

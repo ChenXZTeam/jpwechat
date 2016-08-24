@@ -310,8 +310,8 @@ public class userOrderController {
 	@ResponseBody
 	public Map<String, Object> loadOrder(HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
-		session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
-		session.setAttribute("userName", "ttt");
+		/*session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
+		session.setAttribute("userName", "ttt");*/
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
 		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);

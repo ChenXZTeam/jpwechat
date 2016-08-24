@@ -35,7 +35,7 @@
                 /wechatController/** = anon 
                 /userOrderController/** = anon      
                 /**= authc,roles[admin]
-            </value>  
+            </value>   
         </property>  
 	</bean>
 	<!-- bean id="shiroRealm" class="com.solar.tech.util.DatsRealm">
