@@ -65,4 +65,10 @@ $(function(){
 		window.location.href = basePathJava+"console/wechat/upCanbin.jsp?orderNum="+orderNum+"&pnrNo="+pnr;
 	});
 	
+	//退票（只有支付的订单才有）
+	$(".exitTel").click(function(){
+		var basePathJava = $("#basePathJava").text();
+		window.location.href = basePathJava+"console/wechat/exitTick.jsp";
+	});
+	
 });

@@ -28,7 +28,7 @@
 </style>
 </head>
 
-<body  style="background-image:url(<%=basePath %>console/images/callkefu.jpg)";>
+<body  style="background-color:#fff;">
 	<div id="bigContent">
 		<div class="kefuImg"><img src="<%=basePath %>console/images/kefu_03.png" style="width:40px;"/></div>
 		<div class="jiantou"><img src="<%=basePath %>console/images/jiantou_03.png"/></div>
@@ -55,10 +55,10 @@
 					<span>祝你旅途愉快！</span>
 					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
 				</li>
-				<li>
+				<!-- <li>
 					<span id="findPAT">查看国内运价！</span>
 					<span style="color:#C5C6C8; font-weight:bold; float:right;"></span>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 	</div>

@@ -13,6 +13,9 @@
 	String cost=new String(request.getParameter("cost").getBytes("ISO-8859-1"),"utf-8");
 	String zhekou=new String(request.getParameter("zhekou").getBytes("ISO-8859-1"),"utf-8");
 	String cangweiType=new String(request.getParameter("cangweiType").getBytes("ISO-8859-1"),"utf-8");
+	String chufCityID=new String(request.getParameter("chufCityID").getBytes("ISO-8859-1"),"utf-8");
+	String daodCityID=new String(request.getParameter("daodCityID").getBytes("ISO-8859-1"),"utf-8");
+	String chufDate = request.getParameter("chufDate");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -42,25 +45,24 @@ $(function(){
 });
 
 </script>
-来到这一步就需要你填写信息进行订票，并且判断是否登录
-
-传递过来的值有：<br/>
+<div>来到这一步就需要你填写信息进行订票，并且判断是否登录</div>
 
 <div id="bigContent">
----------航班信息(上一个界面传过来的信息)--------------
-	<div><input type="text" id="chufTime" value="<%=chufTime %>"/></div>
-	<div><input type="text" id="daodTime" value="<%=arrDTime %>"/></div>
-	<div><input type="text" id="chufDate" value="2016-07-30"/></div>
-	<div><input type="text" id="chufCity" value="广州"/></div>
-	<div><input type="text" id="daodCity" value="北京"/></div>
-	<div><input type="text" id="qishiPlan" value="<%=shiPlace %>"/></div>
-	<div><input type="text" id="daodPlan" value="<%=zhongPlace %>"/></div>
-	<div><input type="text" id="costPay" value="<%=cost %>"/></div>
-	<div><input type="text" id="isDengJi" value="no"/></div>
-	<div><input type="text" id="payCost" value="no"/></div>
-	<div><input type="text" id="zhekou" value="<%=zhekou %>"/></div>
-	<div><input type="text" id="cangweiType" value="<%=cangweiType %>"/></div>
--------个人填写的信息-----------
+	<div style="display:block;">
+		<div><input type="text" id="chufTime" value="<%=chufTime %>"/></div>
+		<div><input type="text" id="daodTime" value="<%=arrDTime %>"/></div>
+		<div><input type="text" id="chufDate" value="<%=chufDate%>"/></div>
+		<div><input type="text" id="chufCity" value="<%=chufCityID%>"/></div>
+		<div><input type="text" id="daodCity" value="<%=daodCityID%>"/></div>
+		<div><input type="text" id="qishiPlan" value="<%=shiPlace %>"/></div>
+		<div><input type="text" id="daodPlan" value="<%=zhongPlace %>"/></div>
+		<div><input type="text" id="costPay" value="<%=cost %>"/></div>
+		<div><input type="text" id="isDengJi" value="no"/></div>
+		<div><input type="text" id="payCost" value="no"/></div>
+		<div><input type="text" id="zhekou" value="<%=zhekou %>"/></div>
+		<div><input type="text" id="cangweiType" value="<%=cangweiType %>"/></div>
+	</div>
+	
 	<div>旅客类型：
 		<select id="IDcaseType">  
 			<option value="NI" selected="selected">成人</option>  
@@ -68,7 +70,7 @@ $(function(){
 			<option value="ID">婴儿</option>
 		</select>
 	</div>
-	<div><input type="text" id="linkName" value="李向前"/></div>
+	<div><input type="text" id="linkName"/></div>
 	<div><input type="radio" name="sex" value="男" checked="checked"/>男 <input type="radio" name="sex" value="女"/>女</div>
 	<div>
 		<select id="IDcaseType">  
@@ -76,12 +78,12 @@ $(function(){
 			<option value="PP">护照</option>
 			<option value="ID">其他</option>
 		</select> 
-		<input type="text" id="IDcase" value="460003199305323545"/>
+		<input type="text" id="IDcase"/>
 	</div>
-	<div>手机号码：<input type="text" id="phoneNum" value="15799024022"/></div>
-	<div>出生年月: <input type="text" value="1996-05-07"/></div>
-	<div><input type="checkbox" name="yiwaiBX" id="yiwaiBX" value="是"/>是否购买意外险</div>
-	<div><input type="checkbox" name="yanwuBX" id="yanwuBX" value="是"/>是否购买延误险</div>
+	<div>手机号码：<input type="text" id="phoneNum"/></div>
+	<div>出生年月: <input type="text"/></div>
+	<div><input type="checkbox" name="yiwaiBX" id="yiwaiBX" value="yes"/>是否购买意外险</div>
+	<div><input type="checkbox" name="yanwuBX" id="yanwuBX" value="yes"/>是否购买延误险</div>
 	<div><a style="display:block; padding:5px; color:#ffffff; text-align:center; background-color:#FF9913;" id="nextButton">下一步</a></div>
 </div>
 
@@ -96,7 +98,7 @@ $(function(){
 </div>
 
 <!-- 信息确认界面 -->
-<div id="querenInfo">
+<div id="querenInfo" style="height:700px;">
 	<ul>
 		<li><span>出发日期：</span><span id="ChufDate"></span></li>
 		<li><span>出发时间：</span><span id="ChufTime"></span></li>
@@ -145,6 +147,7 @@ $(function(){
 			}else{
 				$("#YanwuBX").text("");
 			}
+			$(document).attr("title","机票预定_确认信息");
 			$("#querenInfo").css("display","block");
 		});
 		
@@ -201,8 +204,9 @@ $(function(){
 					data:date,
 					dataType:"json",
 					success:function(result){
-						alert("订单提交成功");
-						console.log(result.planMsg);						
+						alert("机票预定成功");
+						console.log(result.planMsg);	
+						window.location.href="<%=basePath%>console/wechat/myPlaneTickek.jsp";					
 						fals=false;
 					},
 					error:function(result){
@@ -219,6 +223,7 @@ $(function(){
 		
 		//个人信息错误的时候
 		$("#selfFalse").click(function(){
+			$(document).attr("title","填写信息_订票");			
 			$("#querenInfo").css("display","none");
 		});
 	

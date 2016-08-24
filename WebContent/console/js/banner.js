@@ -19,7 +19,7 @@ $(function(){
 	$(".b-list span:eq(0)").addClass("spcss").siblings("span").removeClass("spcss");  //在显示的图片对应的切换点的地方增加spcss类，同时移除其他含有spcss的类
 	
 	//向右切换的方法
-	$(".bar-right em").click(function(){
+	$(".banner").on("swipeleft",function(){
 		if(n==imgLength-1){
 			var ctPosit=(n+1)*100;
 			//$('.alert').html("<span style='color:#ff0000; font-size:30px;'>"+n+"</span>");
@@ -42,7 +42,7 @@ $(function(){
 	})
 	
 	//向左切换的方法
-	$(".bar-left em").click(function(){
+	$(".banner").on("swiperight",function(){
 		if(n==0){
 			var stPosit=imgLength*100;
 			var etPosit=(imgLength-1)*100;

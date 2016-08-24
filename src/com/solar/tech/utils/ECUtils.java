@@ -602,23 +602,23 @@ public class ECUtils {
 		return null;
 	}
 	
-	// �����Ʊ���
+	// 生成退票表格
 	public RefundFormResponse getRefund(String option, String tktNo, String tktType) { 
-		RefundTktRequest request=new RefundTktRequest(); // �½�һ���������
+		RefundTktRequest request=new RefundTktRequest(); // 新建一个请求对象
 		
-		request.setOfficeNo(OFFICENO); // ����Office��
-		request.setToken(token); // �������ƺ�
+		request.setOfficeNo(OFFICENO); // 设置Office号
+		request.setToken(token); // 设置令牌号
 		
-		request.setOption(option); // Ʊ��ѡ�AMƱ�ţ�M��Ʊ����
-		request.setTktNo(tktNo); // Ʊ��
-		request.setTktType(tktType); // Ʊ����: D ����,I ���
-		request.setPrintNo("1"); // ��ӡ�����
+		request.setOption(option); // 票类选项：AM票号，M退票单号
+		request.setTktNo(tktNo); // 票号
+		request.setTktType(tktType); // 票类型: D 国内,I 国际
+		request.setPrintNo("1"); // 打印机号码
 		
-		TRFDClient client=new TRFDClient(); //�½�һ���ͻ���
+		TRFDClient client=new TRFDClient(); //新建一个客户端
 		try{
-			RefundFormResponse response=client.getRefundTKTForm(request); // �½�һ����Ӧ����
+			RefundFormResponse response=client.getRefundTKTForm(request); // 新建一个响应对象
 			if(response != null && response.getResultCode() == 0){
-				return response; // ������Ʊ���
+				return response; // 返回退票表格
 			}
 		}catch(ObeException e){
 			e.printStackTrace();
@@ -626,13 +626,13 @@ public class ECUtils {
 		return null;
 	}
 		
-	// ��Ʊ
+	// 退票
 	public boolean refund(RefundFormResponse response){
-		RefundFormRequest request = new RefundFormRequest(); // �½�һ���������
-		request.setOfficeNo(OFFICENO); // office��
-		request.setToken(token); // �������ƺ�
+		RefundFormRequest request = new RefundFormRequest(); // 新建一个请求对象
+		request.setOfficeNo(OFFICENO); // office号
+		request.setToken(token); // 设置令牌号
 		
-		//��response �?���ݸ��Ƶ�formRequest,���а���cmdOption cmdPrnt cmdTktType cmdNo command�⼸����Ϊԭ���������� 
+		//把response 表单内容复制到formRequest,其中包括cmdOption cmdPrnt cmdTktType cmdNo command这几属性为原来返回内容 
 		request.setCommand(response.getCommand());
 		request.setCmdOption(response.getCmdOption());
 		request.setCmdPrnt(response.getCmdPrnt());
@@ -659,16 +659,15 @@ public class ECUtils {
 		request.setTaxCode(response.getTaxCode());
 		request.setRemark(response.getRemark());
 		
-		TRFDClient trfdClient = new TRFDClient(); //�½�һ���ͻ���
+		TRFDClient trfdClient = new TRFDClient(); //新建一个客户端
 		try {
-			OBECommonResponse obeResp = trfdClient.changeRefund(request); // �½�һ����Ӧ����
+			OBECommonResponse obeResp = trfdClient.changeRefund(request); // 新建一个响应对象
 			if(obeResp != null && obeResp.getResultCode() == 0){
 				if("OK".equals(obeResp.getResultMsg())){
-					return true; // ������Ʊ���
+					return true; // 返回退票结果
 				}
 			}
 		} catch (ObeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;

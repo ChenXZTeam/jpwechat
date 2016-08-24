@@ -4,8 +4,8 @@ body{}
 .banner{height:500px; overflow:hidden; position:relative;}
 .b-img{height:100%; position:absolute; left:0; top:0; overflow:hidden;}
 .b-img .runDiv{display:block; height:auto; float:left; color:#FF0000; z-index:1111;}
-.b-list{height:20px; padding-top:100%; position:relative; margin:0 auto;z-index:1;}
-.b-list span{ display:block;cursor:pointer; width:5px; height:5px; border-radius:50%; border:2px solid #fff; float:left; margin:0 5px; _margin:0 3px;  -webkit-tap-highlight-color:rgba(255,255,255,0);}
+.b-list{height:20px; padding-top:80%; position:relative; margin:0 auto;z-index:1;}
+.b-list span{ display:block;cursor:pointer; width:5px; height:5px; border-radius:50%; border:2px solid #e1e1e1; float:left; margin:0 5px; _margin:0 3px;  -webkit-tap-highlight-color:rgba(255,255,255,0);}
 .b-list .spcss{border:2px solid #14ab04;}
 .bar-left{ position:absolute; z-index:100; display:block; width:30px; height:30%; left:0px; background:none; top:10%;}
 .bar-right{ position:absolute;z-index:100; display:block; width:30px; height:30%; right:0px; background:none; top:10%;}

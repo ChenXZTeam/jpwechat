@@ -46,8 +46,8 @@
 	.notTjTicket .notTjTicketDiv .StartTimeEnd .StartTime{color:#666666;}
 	.notTjTicket .notTjTicketDiv .StartTimeEnd .EndTime{color:#c7c7c7;} 
 	.notTjTicket .notTjTicketDiv .StartAndEnd{float:left; text-align:left; margin-left:3%;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{display:block; color:#666666; width:100px; height:25px; overflow:hidden;}
-	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{display:block; color:#c7c7c7; width:100px; height:25px; overflow:hidden;}
+	.notTjTicket .notTjTicketDiv .StartAndEnd .StartJC span{display:block; color:#666666; width:70px; height:25px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+	.notTjTicket .notTjTicketDiv .StartAndEnd .EndTJC span{display:block; color:#c7c7c7; width:70px; height:25px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
 	.notTjTicket .notTjTicketDiv .moneyAndTicket{text-align:right; float:right; margin-right:10px;}
 	.notTjTicket .notTjTicketDiv .moneyAndTicket .zuowei{color:#c7c7c7;}
 	.hangbanImform{padding:20px 10px; background-color:#F1F5FF; text-align:center;}
@@ -295,6 +295,8 @@ function loadjs(){
 		<div class="timeDiv" style="float:left; width:25%; "><a class="prevDate">＜前一天</a></div>
 		<div class="timeDiv mmddWeek" style="float:left; width:35%; text-align:right;"></div>
 		<div id="dateTimeID" style="display:none;"><%=dateTime %></div>
+		<div id="chufCityID" style="display:none;"><%=chufCity %></div>
+		<div id="daodCityID" style="display:none;"><%=daodCity %></div>
 		<!-- <div class="timeDiv" style="float:left; width:15%; text-align:left;">明天▼</div> -->
 		<div class="timeDiv" style="float:right; width:25%; "><a class="nextDate">后一天＞</a><a id="basePath" style="display:none;"><%=basePath %></a></div>
 		<div style="clear:both;"></div>

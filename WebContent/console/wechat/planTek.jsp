@@ -14,6 +14,7 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/banner.css"/>
 <link href="<%=basePath %>console/css/cityChoose.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/jquery.mobile-1.3.2.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
 <script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js"></script>

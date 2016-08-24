@@ -24,11 +24,14 @@ $(function(){
 		var shiPlace = obj.children(".notTjTicketDiv").children(".StartAndEnd").children(".StartJC").children("span").text();//起始机场名和航班
 		var zhongPlace = obj.children(".notTjTicketDiv").children(".StartAndEnd").children(".EndTJC").children("span").text();//终点机场名和历经时间
 		var cost = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".money").text();//获取价格
-		var zhekou = $(this).parent().next().children(".zhe").text();
+		var zhekou = $(this).parent().next().children(".zhe").text();//折扣
 		var cangweiType = $(this).parent().next().next().children(".Eimg").text(); //舱位类型
 		var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
-		
-		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&cangweiType="+cangweiType+"&zhekou="+zhekou;         
+		var chufDate = $("#dateTimeID").text();//出发时间
+		var chufCityID = $("#chufCityID").text();//出发城市
+		var daodCityID = $("#daodCityID").text();//到达城市
+		//alert(chufDate+"/"+chufCityID+"/"+daodCityID);
+		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&cangweiType="+cangweiType+"&zhekou="+zhekou+"&chufDate="+chufDate+"&chufCityID="+chufCityID+"&daodCityID="+daodCityID;         
 	});
 	
 	//其他舱位中的预定
@@ -40,11 +43,13 @@ $(function(){
 		var shiPlace = obj.children(".notTjTicketDiv").children(".StartAndEnd").children(".StartJC").children("span").text();//起始机场名和航班
 		var zhongPlace = obj.children(".notTjTicketDiv").children(".StartAndEnd").children(".EndTJC").children("span").text();//终点机场名和历经时间
 		var cost = $(this).parent().next().children(".money").text();//获取价格
-		var zhekou = $(this).parent().next().children(".zhe").text();
+		var zhekou = $(this).parent().next().children(".zhe").text();//折扣
 		var cangweiType = $(this).parent().next().next().children(".Eimg").text(); //舱位类型
+		var chufDate = $("#dateTimeID").text();//出发时间
+		var chufCityID = $("#chufCityID").text();//出发城市
+		var daodCityID = $("#daodCityID").text();//到达城市
 		var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
-		
-		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&zhekou="+zhekou+"&cangweiType="+cangweiType;
+		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&zhekou="+zhekou+"&cangweiType="+cangweiType+"&chufDate"+chufDate+"&chufCityID="+chufCityID+"&daodCityID="+daodCityID;
 	});
 });
 

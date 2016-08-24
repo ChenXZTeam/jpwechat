@@ -134,4 +134,13 @@ public class WechatPageControlle {
 	public String callKeFu() {
 		return "wechat/callKeFu";
 	}
+	
+	/**
+	 * @title 开发中的界面跳转
+	 * @return
+	 */
+	@RequestMapping("/kaifing.action")
+	public String kaifing() {
+		return "wechat/waiting";
+	}
 }
