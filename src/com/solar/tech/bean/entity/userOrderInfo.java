@@ -165,6 +165,10 @@ public class userOrderInfo {
 	// 修改这条数据的时间
 	@Column(name = "updateTime")
 	private Timestamp updateTime;
+	
+	//票号
+	@Column(name = "telNum")
+	private Timestamp telNum;
 
 	public String getGetTeickTime() {
 		return getTeickTime;

@@ -64,10 +64,10 @@ $(function(){
 	</div>
 	
 	<div>旅客类型：
-		<select id="IDcaseType">  
-			<option value="NI" selected="selected">成人</option>  
-			<option value="PP">儿童</option>
-			<option value="ID">婴儿</option>
+		<select id="menType">  
+			<option value="ADT" selected="selected">成人</option>  
+			<option value="CHD">儿童</option>
+			<option value="INF">婴儿</option>
 		</select>
 	</div>
 	<div><input type="text" id="linkName"/></div>
@@ -81,7 +81,7 @@ $(function(){
 		<input type="text" id="IDcase"/>
 	</div>
 	<div>手机号码：<input type="text" id="phoneNum"/></div>
-	<div>出生年月: <input type="text"/></div>
+	<div>出生时间: <input type="text" id="birthday"/></div>
 	<div><input type="checkbox" name="yiwaiBX" id="yiwaiBX" value="yes"/>是否购买意外险</div>
 	<div><input type="checkbox" name="yanwuBX" id="yanwuBX" value="yes"/>是否购买延误险</div>
 	<div><a style="display:block; padding:5px; color:#ffffff; text-align:center; background-color:#FF9913;" id="nextButton">下一步</a></div>
@@ -111,6 +111,7 @@ $(function(){
 		<li><span>姓　　名：</span><span id="LinkName"></span></li>
 		<li><span>性　　别：</span><span id="Sex"></span></li>
 		<li><span id="iDcaseType">证 件 号</span><span>：</span><span id="iDcase"></span></li>
+		<li><span>乘机人类型：</span><span id="MenType"></span></li>
 		<li><span>手机号码：</span><span id="PhoneNum"></span></li>
 		<li><span>购买意外险：</span><span id="YiwaiBX"></span></li>
 		<li><span>购买延误险：</span><span id="YanwuBX"></span></li>
@@ -133,6 +134,7 @@ $(function(){
 			$("#LinkName").text($("#linkName").val());
 			$("#Sex").text($("input[name='sex']:checked").val());
 			$("#iDcaseType").text($("#IDcaseType").val());
+			$("#MenType").text($("#menType").val());
 			$("#iDcase").text($("#IDcase").val());
 			$("#PhoneNum").text($("#phoneNum").val());
 			//意外险的值
@@ -164,6 +166,7 @@ $(function(){
 			var arr = QishiPlan.split(" ");
 				QishiPlan=arr[0];
 			var hangbanNum=arr[1];
+			var airCode = hangbanNum.substring(0,2);
 			var DaodPlan=$("#DaodPlan").text();//到达机场(包含到达机场和历经的时候，所以得进行拆分)
 			var arr1 = DaodPlan.split(" ");
 				DaodPlan=arr1[0];
@@ -177,6 +180,9 @@ $(function(){
 			var YiwaiBX=$("#YiwaiBX").text();//意外保险
 			var YanwuBX=$("#YanwuBX").text();//延误险
 			var cangweiType=$("#cangweiType").val();
+			var birthDay = $("#birthday").val();//生日
+			var age = ageFunc(birthDay);//年龄
+			var menType = $("#MenType").text();//乘机人类型
 			var date={
 				"ChufDate":ChufDate,
 				"ChufTime":ChufTime,
@@ -195,7 +201,11 @@ $(function(){
 				"PhoneNum":PhoneNum,
 				"YiwaiBX":YiwaiBX,
 				"YanwuBX":YanwuBX,
-				"cabin":cangweiType
+				"cabin":cangweiType,
+				"birthday":birthDay,
+				"menType":menType,
+				"airCode":airCode,
+				"age":age
 			};
 			if(fals==true){
 				$.ajax({
@@ -258,5 +268,21 @@ $(function(){
 			});
 		});
 	});
+	
+	function ageFunc(birthday){
+		var age = 0;
+		var birth = birthday.split("-");	//对生日进行拆分
+		var today=new Date();				//创建今天的日期
+	    var todayYear=today.getFullYear();	//今天的年
+	    var ageNum = todayYear*1 - birth[0]*1;
+	    if(ageNum > 0){
+	    	age = ageNum;
+	    	alert("年龄是："+age);
+	    }else{
+	    	alert("年龄选择错误，请重新选择！");
+	    	return false;
+	    }
+		return age;
+	}
 </script>
 </html>

@@ -31,7 +31,7 @@ public class userOrderController {
 	
 	@RequestMapping("/add/order.action")
 	@ResponseBody
-	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,HttpSession session){
+	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,String birthday,String menType,String age, HttpSession session){
 		saveCost getCost = new saveCost();
 		Map<String, Object> map = new HashMap<String, Object>();
 		userOrderInfo oderInfo = new userOrderInfo();
@@ -55,10 +55,14 @@ public class userOrderController {
 		oderInfo.setLinkName(LinkName);
 		oderInfo.setLinkPhoneNum(PhoneNum);
 		oderInfo.setLinkSex(Sex); 
+		oderInfo.setBirthday(birthday);
+		oderInfo.setAge(age);//乘机人年龄
+		oderInfo.setPsgType(menType);//乘机人类型
 		oderInfo.setIDcase(iDcase);
 		oderInfo.setIDcaseType(iDcaseType);
 		oderInfo.setYiwaiBX(YiwaiBX);
 		oderInfo.setYanwuBX(YanwuBX);
+		oderInfo.setAirCode(airCode);//航空公司的二字码 
 		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
@@ -66,47 +70,74 @@ public class userOrderController {
 		oderInfo.setIntNum((MaxNum+1)+"");
 		String maxOrderNum = OrderService.fingMaxOrderNum();
 		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
-		oderInfo.setOrderNum(orderNum); 
-		
+		oderInfo.setOrderNum(orderNum);
+		System.out.println(
+				"出发日期："+oderInfo.getChufDate()+
+				"，出发时间："+oderInfo.getChufTime()+
+				"，到达时间："+oderInfo.getDaodTime()+
+				"，出发城市："+oderInfo.getChufCity()+
+				"，到达城市："+oderInfo.getDaodCity()+
+				"，舱位："+oderInfo.getCabin()+
+				"，用户名："+oderInfo.getUserName()+
+				"，openId："+oderInfo.getOpenID()+
+				"，起始机场的三字码："+oderInfo.getQishiPlaneCode()+
+				"，到达机场的三字码："+oderInfo.getDaodPlaneCode()+
+				"，起始机场："+oderInfo.getQishiPlane()+
+				"，航班号："+oderInfo.getHangbanNum()+
+				"，到达机场："+oderInfo.getDaodPlane()+
+				"，历时多长时间："+oderInfo.getCuntTime()+
+				"，付款金额："+oderInfo.getCostMoney()+
+				"，联系人："+oderInfo.getLinkName()+
+				"，联系电话："+oderInfo.getLinkPhoneNum()+
+				"，联系人性别："+oderInfo.getLinkSex()+
+				"，出生时间："+oderInfo.getBirthday()+
+				"，乘机人年龄："+oderInfo.getAge()+
+				"，乘机人类型："+oderInfo.getPsgType()+
+				"，联系人证件号码："+oderInfo.getIDcase()+
+				", 联系人证件类型："+oderInfo.getIDcaseType()+
+				"，是否购买意外保险："+oderInfo.getYiwaiBX()+
+				"，是否购买延误保险："+oderInfo.getYanwuBX()+
+				"，航空公司："+oderInfo.getAirCode()+
+				"，订单编号："+oderInfo.getOrderNum()); 
 		//联系组实体类
 		BookContact bookContact = new BookContact();
-		bookContact.setCity("CAN");//城市
-		bookContact.setContact("18729034712");//联系电话
+		bookContact.setCity(oderInfo.getQishiPlaneCode());//城市
+		bookContact.setContact(oderInfo.getLinkPhoneNum());//联系电话
 		bookContact.setPsgId("Zhang/Hong");//旅客序号
 		
 		//航段组实体类
 		SegmentInfo s = new SegmentInfo();
-		s.setDeparture("CAN");//起飞城市
-		s.setArrival("PEK");//到达城市
-		s.setFlightNo("CZ3103");//航班号	
-		s.setCabin("W");//舱位
-		s.setDepartureDate("2017-01-31");//起飞日期，格式如：yyyy-MM-dd
-		s.setDepartureTime("11:00");//起飞时间，格式如：HH:mm
+		s.setDeparture(oderInfo.getQishiPlaneCode());//起飞城市
+		s.setArrival(oderInfo.getDaodPlaneCode());//到达城市
+		s.setFlightNo(oderInfo.getHangbanNum());//航班号	
+		s.setCabin(oderInfo.getCabin());//舱位
+		s.setDepartureDate(oderInfo.getChufDate());//起飞日期，格式如：yyyy-MM-dd
+		s.setDepartureTime(oderInfo.getChufTime());//起飞时间，格式如：HH:mm
 		s.setActionCode("NN");//行动代码
 		s.setType("HK");//航线类型(国内/国际)	
 		SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
 		
 		//旅客组实体类（是否可以添加多个旅客）
 		PassengerInfo psg = new PassengerInfo();
-		psg.setName("李四");//旅客姓名
-		psg.setAge(22);//年龄
-		psg.setGender("男"); //性别
-		psg.setBirthDay("1991-01-02");//出生日期
-		psg.setPsgType("ADT");//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
-		psg.setCertNo("612429199107214641");//证件号码
-		psg.setCertType("NI");//证件类型PP,NI		
+		psg.setName(oderInfo.getLinkName());//旅客姓名
+		psg.setAge(Integer.parseInt(oderInfo.getAge()));//年龄
+		psg.setGender(oderInfo.getLinkSex()); //性别
+		psg.setBirthDay(oderInfo.getBirthday());//出生日期
+		psg.setPsgType(oderInfo.getPsgType());//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
+		psg.setCertNo(oderInfo.getIDcase());//证件号码
+		psg.setCertType(oderInfo.getIDcaseType());//证件类型PP,NI		
 		PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
 		
 		//OSI组实体类 
 		OSIInfo osi = new OSIInfo();
 		//osi.setIdx("");
-		osi.setAirCode("CZ");//航空公司代码
+		osi.setAirCode(oderInfo.getAirCode());//航空公司代码
 		osi.setOsi("CTCT18729034712");//OSI内容
 		OSIInfo[] osis = new OSIInfo[]{osi};
 
 		//RMK组实体类
 		RMKInfo rmk = new RMKInfo();
-		rmk.setPsgName("李四");//旅客姓名
+		rmk.setPsgName(oderInfo.getLinkName());//旅客姓名
 		rmk.setRmkType("");//RMK类型
 		rmk.setRmkInfo("rmk 内容");//RMK内容
 		RMKInfo[] rmks = new RMKInfo[]{rmk};
