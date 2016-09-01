@@ -10,15 +10,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>机票预订</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
-<link href="<%=basePath %>console/css/jcDate.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css"/>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/banner.css"/>
-<link href="<%=basePath %>console/css/cityChoose.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
 <script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js"></script>
- <script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
 <style>
 	body{margin:0px; padding:0px;}
 	.product .ziDiv{width:100%; margin-left:auto; margin-right:auto; border-bottom:#cccccc solid 1px;}
@@ -81,7 +81,7 @@
 				<span id="shi0001">广州新白云国际机场</span>
 				<span id="shi00001" style="display:none">CAN</span>
 			</div>
-			<div class="to dancheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wang.gif" width="35"/></div>
+			<div class="to dancheng" style="padding-top:5px; padding-bottom:7px;" onclick="dancheng()"><img src="<%=basePath %>console/images/wang.gif" width="35"/></div>
 			<div class="zhong">
 				<span id="zhong01">国内/国际到达城市</span>
 				<span id="zhong001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
@@ -119,14 +119,14 @@
 				<span>国内/国际出发城市</span>
 				<span id="shif02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
 				<span id="shif03">宝安机场T3</span>
-				<span id="shif04" style="display:none;"></span>
+				<span id="shif04" style="display:none;">SZX</span>
 			</div>
-			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;"><img src="<%=basePath %>console/images/wangfan.gif" width="35"/></div>
+			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;" onclick="fangcheng()"><img src="<%=basePath %>console/images/wangfan.gif" width="35"/></div>
 			<div class="zhong">
 				<span>国内/国际到达城市</span>
 				<span id="zhongf02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
 				<span id="zhongf03">首都机场T3</span>
-				<span id="zhongf04" style="display:none;"></span>			
+				<span id="zhongf04" style="display:none;">PEK</span>			
 			</div>
 			<div style="clear:both;"></div>
 	   </div>
@@ -159,7 +159,9 @@
 
 <div id="CityCH">
 	<!--输入框搜索部分-->
-	<div id="cityFind"><input type="text" class="citySearch" placeholder="城市查找"/><button>搜索</button></div>
+	<div id="basePathDiv" style="display:none;"><%=basePath %></div>
+	<div id="cityFind"><input type="text" class="citySearch" id="citySearch" placeholder="城市查找" oninput="myFunction()"/><a href="#CityResult" id="finBtn">搜索</a></div>
+	<div id="pipeiValue"></div>
 	<!---热门推荐部分--->
 	<div id="remenCity">
 		<div id="remenTitle">
@@ -942,34 +944,8 @@
 </div>
 </body>
 <script>
-	var gofind=true;
 	$(function(){
-		//目的地和出发地切换功能(单程)
-		$(".dancheng").click(function(){
-			var shi001=$("#shi001").text();
-			var shi0001=$("#shi0001").text();
-			var shi00001=$("#shi00001").text();
-			$("#shi001").text("");
-			$("#shi0001").text("");
-			$("#shi00001").text("");
-			$("#shi001").text($("#zhong001").text());
-			$("#shi0001").text($("#zhong0001").text());
-			$("#shi00001").text($("#zhong00001").text());
-			$("#zhong001").text(shi001);
-			$("#zhong0001").text(shi0001);
-			$("#zhong00001").text(shi00001);
-		});
-		//目的地和出发地切换功能(返程)
-		$(".fangcheng").click(function(){
-			var shif02=$("#shif02").text();
-			var shif03=$("#shif03").text();
-			$("#shif02").text("");
-			$("#shif03").text("");
-			$("#shif02").text($("#zhongf02").text());
-			$("#shif03").text($("#zhongf03").text());
-			$("#zhongf02").text(shif02);
-			$("#zhongf03").text(shif03);
-		});
+		var gofind=true;		
 		//单程的舱位切换
 		$(".cangwei .cang").click(function(){
 			$(this).addClass('on').siblings().removeClass('on');
@@ -987,33 +963,39 @@
 			format : "-",
 			Timeout : 100
 		});
-		
-		//城市选择
-		$(".CityChoose").click(function(){	
-			$(document).attr("title","城市选择");
-			$(this).addClass("CityC");
-			$("#CityCH").fadeIn();
-		});
-		
-		//城市子类信息选择(热门)
-		$("#CityCH>#remenCity>ul>li>.remenLi").click(function(){
-			$(".CityC").text($(this).text());
-			$(".CityChoose").removeClass("CityC");
-			$(document).attr("title","机票查询");
-			$("#CityCH").fadeOut();
-		});
-		
-		//城市子类信息选择(城市链表)
-		$("#CityCH #CityList>.zimuResult>.cityUL>li").click(function(){
-			$(".CityC").text($(this).children(".cityName").text());
-			$(".CityC").next().text($(this).children(".planeName").text());
-			$(".CityC").next().next().text($(this).children(".airportCode").text());//获取点击选择城市之后隐藏于其中的机场代码
-			//alert($(this).children(".airportCode").text());
-			$(".CityChoose").removeClass("CityC");
-			$(document).attr("title","机票查询");
-			$("#CityCH").fadeOut();
-		});
 	});
+	
+	//目的地和出发地切换功能(单程)
+	function dancheng(){
+		var shi001=$("#shi001").text();
+		var shi0001=$("#shi0001").text();
+		var shi00001=$("#shi00001").text();
+		$("#shi001").text("");
+		$("#shi0001").text("");
+		$("#shi00001").text("");
+		$("#shi001").text($("#zhong001").text());
+		$("#shi0001").text($("#zhong0001").text());
+		$("#shi00001").text($("#zhong00001").text());
+		$("#zhong001").text(shi001);
+		$("#zhong0001").text(shi0001);
+		$("#zhong00001").text(shi00001);
+	}
+	
+	//目的地和出发地切换功能(返程)
+	function fangcheng(){
+		var shif02=$("#shif02").text();
+		var shif03=$("#shif03").text();
+		var shif04=$("#shif04").text();
+		$("#shif02").text("");
+		$("#shif03").text("");
+		$("#shif04").text("");
+		$("#shif02").text($("#zhongf02").text());
+		$("#shif03").text($("#zhongf03").text());
+		$("#shif04").text($("#zhongf04").text());
+		$("#zhongf02").text(shif02);
+		$("#zhongf03").text(shif03);
+		$("#zhongf04").text(shif04);
+	}
 	
 	function aa(){
 		var chufCity= $("#shi001").text();
@@ -1037,13 +1019,23 @@
 	}
 	
 	function bb(){
-		alert("返程出发城市:"+$("#shif02").text());
-		alert("返程到达城市:"+$("#zhongf02").text());
-		alert("舱位："+$(".cang1.on").text());
-		if($(".jcD02").val()==""){
-			alert("请选择返程日期");
+		var chufCity= $("#shif02").text();
+		var daodCity = $("#zhongf02").text();
+		var chufPlan = $("#shif03").text();
+		var daodPlan = $("#zhongf03").text();
+		var chufCityCode = $("#shif04").text();
+		var daodCityCode = $("#zhongf04").text();
+		var cangW = $(".cang1.on").text();
+		var dateTime = $(".jcD02").val();
+		if(dateTime==""){
+			alert("请选择出发日期");
+			gofind=false;
+			return false;
 		}else{
-			alert("日期："+$(".jcD02").val());			
+			gofind=true;
+		}
+		if(gofind==true){
+			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&chufPlan="+chufPlan+"&daodPlan="+daodPlan;
 		}
 	}
 </script>

@@ -139,7 +139,7 @@ public class userOrderController {
 		RMKInfo rmk = new RMKInfo();
 		rmk.setPsgName(oderInfo.getLinkName());//旅客姓名
 		rmk.setRmkType("");//RMK类型
-		rmk.setRmkInfo("rmk 内容");//RMK内容
+		rmk.setRmkInfo("rmk 仁德机票出售中心");//RMK内容
 		RMKInfo[] rmks = new RMKInfo[]{rmk};
 		
 		//以下代码在开发的过程中请不要取消注释掉，因为会产生真实的订票系统。需要付款的

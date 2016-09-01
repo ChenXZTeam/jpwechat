@@ -15,7 +15,7 @@
 <title>行李须知</title>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/TravelBanner.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/TravelBanner.js"></script>
 <style>
 	body{padding:0px; margin:0px;}

@@ -1,64 +1,5 @@
-// ����ѡ����
-$(function(){
-	//����һ����ǩ�û���ʶ�����غ�Ŀ�ĵ�
-	var num;	
-	//���̵ĳ�����
-	$("#shi001").click(function(e){
-		var X = $('#shi001').offset().top; 
-		var Y = $('#shi001').offset().left;
-		$('.cityContent').css("top",(X+20)+"px");
-		$('.cityContent').css("left",Y+"px");
-		$(".cityContent").show();
-		num=0;
-	});
-	//���̵�Ŀ�ĵ�
-	$("#zhong001").click(function(e){
-		var X = $('#zhong001').offset().top; 
-		var Y = $('#zhong001').offset().left;
-		$('.cityContent').css("top",(X+20)+"px");
-		$('.cityContent').css("left",(Y-120)+"px");
-		$(".cityContent").show();
-		num=1;
-	});
-	
-	//���̵ĳ�����
-	$("#shif02").click(function(e){
-		var X = $('#shif02').offset().top; 
-		var Y = $('#shif02').offset().left;
-		$('.cityContent').css("top",(X+20)+"px");
-		$('.cityContent').css("left",Y+"px");
-		$(".cityContent").show();
-		num=2;
-	});
-	//���̵�Ŀ�ĵ�
-	$("#zhongf02").click(function(e){
-		var X = $('#zhongf02').offset().top; 
-		var Y = $('#zhongf02').offset().left;
-		$('.cityContent').css("top",(X+20)+"px");
-		$('.cityContent').css("left",(Y-120)+"px");
-		$(".cityContent").show();
-		num=3;
-	});
-	
-	//����ѡ�񱳾��ķ���
-	$(".A_G ul>li").click(function(){
-		$(".A_G").find("li").removeClass('onCity');	
-		$(this).addClass('onCity').siblings().removeClass('onCity');
-		if(num==0){
-			$("#shi001").text($(this).text());				
-		}
-		if(num==1){
-			$("#zhong001").text($(this).text());				
-		}
-		if(num==2){
-			$("#shif02").text($(this).text());				
-		}
-		if(num==3){
-			$("#zhongf02").text($(this).text());				
-		}
-		$(".cityContent").hide();
-	});	
-	
+//城市选择js文件
+$(function(){	
 	//设计案例切换
 	$('.titleTab-list li').click(function(){
 		var liindex = $('.titleTab-list li').index(this);
@@ -67,4 +8,65 @@ $(function(){
 		var liWidth = $('.titleTab-list li').width();
 		$('.CityTab .titleTab-list p').stop(false,true).animate({'left' : liindex * liWidth + 'px'},0);
 	});
+	
+	//城市选择
+	$(".CityChoose").click(function(){	
+		$(document).attr("title","城市选择");
+		$(this).addClass("CityC");
+		$("#CityCH").fadeIn();
+	});
+	
+	//城市子类信息选择(热门)
+	$("#CityCH>#remenCity>ul>li>.remenLi").click(function(){
+		$(".CityC").text($(this).text());
+		$(".CityChoose").removeClass("CityC");
+		$(document).attr("title","机票查询");
+		$("#CityCH").fadeOut();
+	});
+	
+	//城市子类信息选择(城市链表)
+	$("#CityCH #CityList>.zimuResult>.cityUL>li").click(function(){
+		$(".CityC").text($(this).children(".cityName").text());
+		$(".CityC").next().text($(this).children(".planeName").text());
+		$(".CityC").next().next().text($(this).children(".airportCode").text());//获取点击选择城市之后隐藏于其中的机场代码
+		//alert($(this).children(".airportCode").text());
+		$(".CityChoose").removeClass("CityC");
+		$(document).attr("title","机票查询");
+		$("#CityCH").fadeOut();
+	});
+	
+	//城市查找中的搜索按钮点击事件
+	$("#finBtn").click(function(){
+		var keyVal = $(".citySearch").val();
+		$(".zimuResult>.cityUL>li>.cityName").removeAttr("id").filter(":contains(" + keyVal + ")").attr("id","CityResult");
+	});
+	//城市搜索输入框获得焦点时
+	$("#citySearch").focus(function(){
+		$("#pipeiValue").css("display","block");		
+	});
 });
+
+//输入关键字的时候自动索引
+function myFunction() {
+	var keyVal = document.getElementById("citySearch").value;
+	$(".zimuResult>.cityUL>li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
+	$("#pipeiValue").text("");
+	for(var i=0; i<$(".chCity").length&&i!=6; i++){
+		var cityname = $(".chCity:eq("+i+")").text();
+		var palnename = $(".chCity:eq("+i+")").next().text();
+		var airCodeName = $.trim($(".chCity:eq("+i+")").next().next().text());
+		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)" style="padding:2px 10px;"><span class="cityName01">'+cityname+'</span><span style="display:none;" class="palneName01">'+palnename+'</span><span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
+		$("#pipeiValue").append(dateList);
+	}
+}
+
+//索引出来的结果的点击事件
+function chaRes(inc){
+	$(".CityC").text($(inc).children(".cityName01").text());//选择的城市名字
+	$(".CityC").next().text($(inc).children(".palneName01").text());//选择的城市名字
+	$(".CityC").next().next().text($(inc).children(".airCode01").text());//选择的城市名字
+	$("#pipeiValue").css("display","none");
+	$(".CityChoose").removeClass("CityC");
+	$(document).attr("title","机票查询");
+	$("#CityCH").fadeOut();
+}
