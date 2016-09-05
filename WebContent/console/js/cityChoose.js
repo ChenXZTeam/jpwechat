@@ -44,6 +44,23 @@ $(function(){
 	$("#citySearch").focus(function(){
 		$("#pipeiValue").css("display","block");		
 	});
+	//隐藏城市字母列表的按钮点击方法
+	var fals = true;
+	$(".zimuListImgDiv").click(function(){
+		if(fals==true){
+			$(this).animate({right:"-2px"},200);
+			$(this).next().animate({right:"-22px"},200);	
+			$(this).children("img").css("transition","all 0s ease-in-out");
+			$(this).children("img").css("transform","rotateZ(180deg)");
+			fals=false;
+		}else{
+			$(this).animate({right:"20px"},200);
+			$(this).next().animate({right:"0px"},200);
+			$(this).children("img").css("transition","all 0s ease-in-out");
+			$(this).children("img").css("transform","rotateZ(0deg)");
+			fals=true;
+		}
+	});
 });
 
 //输入关键字的时候自动索引
@@ -55,7 +72,7 @@ function myFunction() {
 		var cityname = $(".chCity:eq("+i+")").text();
 		var palnename = $(".chCity:eq("+i+")").next().text();
 		var airCodeName = $.trim($(".chCity:eq("+i+")").next().next().text());
-		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)" style="padding:2px 10px;"><span class="cityName01">'+cityname+'</span><span style="display:none;" class="palneName01">'+palnename+'</span><span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
+		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span><span style="display:none;" class="palneName01">'+palnename+'</span><span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
 		$("#pipeiValue").append(dateList);
 	}
 }

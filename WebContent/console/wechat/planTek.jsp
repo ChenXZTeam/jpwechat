@@ -537,7 +537,8 @@
 				</div>
 			</div>
 			<!---右边字母查找部分--->
-			<div id="zimuList">
+			<div class="zimuListImgDiv"><img src="<%=basePath %>console/images/cityPoint.png" /></div>
+			<div class="zimuList">
 				<div class="zimuOne"><a href="#A-a">A</a></div>
 				<div class="zimuOne"><a href="#B-b">B</a></div>
 				<div class="zimuOne"><a href="#C-c">C</a></div>
@@ -910,7 +911,8 @@
 				</div>
 			</div>
 			<!---右边字母查找部分--->
-			<div id="zimuList">
+			<div class="zimuListImgDiv"><img src="<%=basePath %>console/images/cityPoint.png" /></div>
+			<div class="zimuList">
 				<div class="zimuOne"><a href="#a-A">A</a></div>
 				<div class="zimuOne"><a href="#b-B">B</a></div>
 				<div class="zimuOne"><a href="#c-C">C</a></div>

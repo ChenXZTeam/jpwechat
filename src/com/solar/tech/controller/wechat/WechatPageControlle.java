@@ -42,7 +42,7 @@ public class WechatPageControlle {
 	 */
 	@RequestMapping("/YDticket.action")
 	public String yudiTek() {
-		return "wechat/waritInfo";
+		return "wechat/confirmInfo";
 	}
 	
 	/**
