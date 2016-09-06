@@ -44,6 +44,8 @@
 
 <body>
 <script>
+var fals=true;//防止重复提交
+var a = "";
 $(function(){
 	//获取上个界面传过来的值
 	var chufTime = "<%=chufTime%>"; //出发时间
@@ -62,7 +64,6 @@ $(function(){
 	var chufCityID = "<%=chufCityID%>"; //出发城市
 	var daodCityID = "<%=daodCityID%>"; //目的城市
 	var chufDate = "<%=chufDate%>"; //出发日期
-	var fals=true;//防止重复提交
 	//为信息框赋值
 	console.log(chufTime+","+arrDTime+","+shiPlace+","+flidNum+","+zhongPlace+","+countTime+","+cost+","+zhekou+","+cangweiType+","+chufCityID+","+daodCityID+","+chufDate); 
 	$(".chufTime").text(chufTime);
@@ -133,16 +134,18 @@ $(function(){
 			$("#CountTime").text(countTime);
 			$("#DaodPlan").text(zhongPlace);
 			$("#CostPay").text($(".cost").text());
+			
+			if($("#linkName").val()==""||$("#sexIpnt").val()==""||$("#caseIpnt").text()==""||$("#personIpnt").val()==""||$("#IDcase").val()==""||$("#phoneNum").val()==""){
+				alert("信息填写未完成");
+				return false;
+			}
 			$("#LinkName").text($("#linkName").val());
 			$("#Sex").text($("#sexIpnt").val());
 			$("#iDcaseType").text($("#caseIpnt").text());
 			$("#MenType").text($("#personIpnt").val());
 			$("#iDcase").text($("#IDcase").val());
 			$("#PhoneNum").text($("#phoneNum").val());
-			if($("#linkName").val()==""||$("#sexIpnt").val()==""||$("#caseIpnt").text()==""||$("#personIpnt").val()==""||$("#IDcase").val()==""||$("#phoneNum").val()==""){
-				alert("信息填写未完成");
-				return false;
-			}
+			
 			//意外险的值
 			if($(".flindYw").is(':checked')){
 				$("#YiwaiBX").text($(".flindYw").val());
@@ -154,7 +157,8 @@ $(function(){
 				$("#YanwuBX").text($(".delayBx").val());
 			}else{
 				$("#YanwuBX").text("无");
-			}			
+			}	
+			nextPat(); //创建订单表		
 			$(document).attr("title","机票预定_确认信息");
 			$("#trueOrderInfo").css("display","block");
 		});
@@ -180,6 +184,42 @@ $(function(){
 		
 		//确认付款
 		$(".truePayBtn").click(function(){
+			$.ajax({
+					url:"<%=basePath%>wechatController/payCost/orderPay.action",
+					type:"POST",
+					data:{"a":a},
+					dataType:"json",
+					success:function(result){
+						var obj = JSON.parse(result);
+						if(obj.state==1){
+							WeixinJSBridge.invoke('getBrandWCPayRequest',{
+								"appId" : obj.appId, //公众号名称，由商户传入
+								"timeStamp" : obj.timeStamp, //时间戳
+								"nonceStr" : obj.nonceStr, //随机串
+								"package" : obj.wxPackage,//统一支付接口返回的prepay_id 参数值，提交格式如：prepay_id=***
+								"signType" : obj.signType, //微信签名方式:sha1
+								"paySign" : obj.paySign //微信签名
+							},function(res){
+								if (res.err_msg == "get_brand_wcpay_request:ok") {
+										<%-- window.location.href = "<%=basePath%>/wechatController/business/paySncyNotify.action?time=" + obj.time; --%>
+										window.location.href = "<%=basePath %>console/wechat/StepFour.jsp?companyTypeJS="+companyTypeJS+"&typeCode="+typeCode;
+								} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+												
+								} else if (res.err_msg == "get_brand_wcpay_request:fail") {
+										alert("支付失败，请重新下单！");
+								}
+							});
+						} else if(obj.state == 0) {
+									
+						}
+					},
+					error:function(result){
+					}
+				});
+		});
+});
+
+function nextPat(){
 			var ChufDate=$("#ChufDate").text();//出发日期
 			var ChufTime=$("#ChufTime").text();//出发时间
 			var DaodTime=$("#DaodTime").text();//到达时间
@@ -235,18 +275,15 @@ $(function(){
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						alert("机票预定成功");
-						console.log(result.planMsg);	
-						window.location.href="<%=basePath%>console/wechat/myPlaneTickek.jsp";					
+						console.log(result.planMsg);
+						a = result.c;
 						fals=false;
 					},
 					error:function(result){
-						alert("订单提交失败");
 					}
 				});			
 			}
-		});
-});
+}
 
 function ageFunc(birthday){
 		var age = 0;

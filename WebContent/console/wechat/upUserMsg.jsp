@@ -18,7 +18,7 @@
 <style>
 	body{padding:0px; padding:0px;}
 	#BigPanerTitle{}
-	#BigPanerTitle span{ display:block; padding:10px 10px 5px 0px; border-bottom:#FF8204 solid 1px; width:95%; margin-left:auto; margin-right:auto; color:#FF8204; font-weight:bold; font-size:18px;}
+	#BigPanerTitle span{ display:block; padding:10px 10px 5px 0px; border-bottom:#37C27F solid 1px; width:95%; margin-left:auto; margin-right:auto; color:#37C27F; font-weight:bold; font-size:18px;}
 	#BigPaner{ border-top:none; border-radius:0px 0px 5px 5px; padding:5px;}
 	.inputClassStyle{ width:95%;  -webkit-tap-highlight-color:rgba(255,255,255,0); outline:none; display:block; height:30px; margin-top:10px; font-size:15px; color:#666666; border:#CCCCCC solid 1px; padding-left:10px; border-radius:5px;}
 	.bigSelectDiv{ margin-top:10px;}
@@ -26,7 +26,7 @@
 	.selectDivClassStyle img{width:30px; float:right;}
 	.selectClassStyle{padding-left:10px; background-color:transparent; border:solid 0px; -webkit-appearance:initial; width:80px; height:30px; position:relative; background:none; margin-top:-31px; border:none; outline:none; cursor:pointer; filter:alpha(opacity=1); -moz-opacity:1; opacity:1; color:#666666; font-size:15px;  -webkit-tap-highlight-color:rgba(255,255,255,0);}
 	#buttonBtn{ margin-top:15px; overflow:hidden;}
-	#buttonBtn a{ display:block; width:30%; float:left; margin-left:10px; padding:10px; background-color:#FF8204; color:#FFFFFF; font-family:"Times New Roman", Times, serif; text-align:center; font-size:18px; border:#FF8204 solid 1px; border-radius:5px;}
+	#buttonBtn a{ display:block; width:30%; float:left; margin-left:10px; padding:10px; background-color:#37C27F; color:#FFFFFF; font-family:"Times New Roman", Times, serif; text-align:center; font-size:18px; border:#37C27F solid 1px; border-radius:5px;}
 </style>
 </head>
 <body>
@@ -47,9 +47,9 @@
 			</select>
 		</div>
 		
-		<div>
+		<!-- <div>
 			<input type="text" class="inputClassStyle" id="userage" placeholder="乘机人年龄"/>
-		</div>
+		</div> -->
 		
 		<div class="bigSelectDiv">		
 			<div class="selectDivClassStyle"><img src="<%=basePath %>console/images/jiantou.png"/></div>
@@ -132,10 +132,10 @@
 			var usertype = $("#usertype").val();
 			var userIDnum = $("#userIDnum").val();
 			var userIDtype = $("#userIDtype").val();			
-			if(userage==""||userage==null){
+			/* if(userage==""||userage==null){
 				alert("请填写年龄格式：19");
 				return false;
-			}
+			} */
 			if(userBirth==""||userBirth==null){
 				alert("请填写生日格式：1993-05-03");
 				return false;

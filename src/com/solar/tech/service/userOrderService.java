@@ -143,7 +143,7 @@ public class userOrderService {
 	  * @return
 	  */	 
 	 public int changeCertificate(userOrderInfo oInfo){
-		String sql = "UPDATE userorderinfo SET linkName = '"+oInfo.getLinkName()+"', age = '"+oInfo.getAge()+"', linkSex = '"+oInfo.getLinkSex()+"', birthday = '"+oInfo.getBirthday()+"', psgType = '"+oInfo.getPsgType()+"', IDcase = '"+oInfo.getIDcase()+"', IDcaseType = '"+oInfo.getIDcaseType()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR='"+oInfo.getPNR()+"'";
+		String sql = "UPDATE userorderinfo SET linkName = '"+oInfo.getLinkName()+"', age = '"+oInfo.getAge()+"', linkSex = '"+oInfo.getLinkSex()+"', birthday = '"+oInfo.getBirthday()+"', psgType = '"+oInfo.getPsgType()+"', IDcase = '"+oInfo.getIDcase()+"', IDcaseType = '"+oInfo.getIDcaseType()+"' WHERE orderNum = '"+oInfo.getOrderNum()/*+"' AND PNR='"+oInfo.getPNR()*/+"'";
 		int i = gDao.executeJDBCSql(sql);
 		if(i > 0){
 			return 1;

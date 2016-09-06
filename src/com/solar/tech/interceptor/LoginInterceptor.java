@@ -46,6 +46,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			String newCode = request.getParameter("code");
 			String userName = (String) session.getAttribute("userName");
 			String openId = (String) session.getAttribute("openId");
+			String phoneNumber = (String) session.getAttribute("phoneNumber");
 			System.out.println("newCode的值："+newCode);
 			
 			//先不强制注册
@@ -54,16 +55,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				return false;
 			}*/
 			System.out.println("start...55");
-			if (userName == null || openId == null) {
+			if (userName == null || openId == null|| phoneNumber == null) {
 				System.out.println("start...57");
 				openId = wxMpService.getWxUser(newCode);
 				session.setAttribute("openId", openId);//<----------取消注释下面的if(openId !=null)的时候记得注释掉这个
 
 				//先不强制注册
-				
 				if (openId != null) {
-					session.setAttribute("openId", openId);
-
 					boolean exist = RDUserService.findbyOpenid(openId);
 					if (!exist) {
 						response.sendRedirect(basePath + "console/wechat/regies.jsp");
@@ -71,13 +69,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 					} else {
 						RD_wechatUser yHopenID = RDUserService.findbyOpenids(openId);
 						userName = yHopenID.getUserName();
+						phoneNumber = yHopenID.getPhoneNum();
 						session.setAttribute("userName", userName);
+						session.setAttribute("phoneNumber", phoneNumber);
 					}
-					
-					System.out.println("(LoginInterceptor类中)openId的值："+openId+" userName:"+userName);
+					System.out.println("(LoginInterceptor类中)openId的值："+openId+" userName:"+userName+" phoneNumber:"+phoneNumber);
 				}
 			} else {
-				System.out.println("pageurl:" + pageurl +" userName:"+userName+" openId:" + openId);
+				System.out.println("pageurl:" + pageurl +" userName:"+userName+" openId:" + openId+" phoneNumber:"+phoneNumber);
 			}
 
 		}

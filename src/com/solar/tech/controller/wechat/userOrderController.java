@@ -171,6 +171,7 @@ public class userOrderController {
 		//}
 		if(num==1){
 			System.out.println("数据插入成功");
+			map.put("c", orderNum);
 			//map.put("planMsg", response.toJson());
 		}else if(num==0){
 			System.out.println("数据插入失败");
