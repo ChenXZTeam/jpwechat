@@ -95,7 +95,7 @@ $(function(){
 		}
 	}
 	
-	var slidesetInterval=setInterval(rollEnvent,4000000);
+	var slidesetInterval=setInterval(rollEnvent,40000000);
 	//$(".banner").hover(function(){clearInterval(slidesetInterval);},function(){slidesetInterval=setInterval(rollEnvent,4000);});
 	
 	//鼠标移动到左切换图标上时

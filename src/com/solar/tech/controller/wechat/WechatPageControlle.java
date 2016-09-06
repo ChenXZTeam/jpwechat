@@ -78,7 +78,7 @@ public class WechatPageControlle {
 	 */
 	@RequestMapping("/visaMessage.action")
 	public String visaMessage() {
-		return "wechat/visaMessage";
+		return "wechat/qzMassege";
 	}
 	
 	/**
