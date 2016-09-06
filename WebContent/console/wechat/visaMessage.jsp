@@ -77,10 +77,10 @@
 	
 	<!--热门大洲-->
 	<div class="dazhou">
-		<div class="float"><img src="<%=basePath %>console/images/qiuMap02.gif"><span style="color:#007AFF;">亚洲</span></div>
-		<div class="float" style="padding:6px 0px;"><img src="<%=basePath %>console/images/meizhou01.gif"><span>美洲</span></div>
-		<div class="float"><img src="<%=basePath %>console/images/feizhou01.gif"><span>非洲</span></div>
-		<div class="float"><img src="<%=basePath %>console/images/ouzhou01.png"><span>欧洲</span></div>
+		<div class="float"><img src="<%=basePath %>console/images/qiuMap02.gif"/><span style="color:#007AFF;">亚洲</span></div>
+		<div class="float" style="padding:6px 0px;"><img src="<%=basePath %>console/images/meizhou01.gif"/><span>美洲</span></div>
+		<div class="float"><img src="<%=basePath %>console/images/feizhou01.gif"/><span>非洲</span></div>
+		<div class="float"><img src="<%=basePath %>console/images/ouzhou01.png"/><span>欧洲</span></div>
 		<div style="clear:both"></div>
 	</div>
 	
