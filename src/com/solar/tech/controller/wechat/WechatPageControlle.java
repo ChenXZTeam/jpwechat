@@ -105,7 +105,7 @@ public class WechatPageControlle {
 	 */
 	@RequestMapping("/dayWeath.action")
 	public String dayWeath() {
-		return "wechat/dayWeath";
+		return "wechat/WeatherInter";
 	}
 	
 	/**
