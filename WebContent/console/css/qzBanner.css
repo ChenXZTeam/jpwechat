@@ -15,9 +15,10 @@ body{text-align:center;}
 .bar-left .emcss{ background-position:0px -100px;}
 .bar-right .emcss{ background-position:-50px -100px;}
  
-ul{	width:100%;	list-style: none; overflow:hidden;}
-ul li{float: left; margin-left: 6%;	overflow: hidden;margin-top: 2%;border-radius:10px;}
-ul .remenCantroyClass span{display:block; text-align:center; width:100%; color:#FFFFFF; font-size:13px; font-weight:bold; line-height:60px;}
+ul{	width:100%;	list-style: none; overflow:hidden; padding-bottom:5px; background-color:#FFFFFF;}
+.contryClassZ ul li{float: left; width:25%; margin-left:6%; overflow:hidden; margin-top:2%;}
+ul li .remenCantroyClass{border-radius:10px; display:block; text-align:center; width:100%; color:#FFFFFF; font-size:13px; font-weight:bold; line-height:60px;}
+ul li .contryMonty{margin-top:5px; display:block; width:100%; text-align:center; font-size:13px; color:#C70D07; font-weight:bold; font-family:"微软雅黑";}
 ul li img{	width: 60%;	border-radius: 6px;}
 #yazhou {display: block;}
 #meizhou{display: none;}

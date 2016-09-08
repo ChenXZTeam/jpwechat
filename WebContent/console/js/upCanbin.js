@@ -15,7 +15,8 @@ $(function(){
 		//给确认信息的界面赋予新的值
 		$("#chufDateTime").text(chufDate+" "+depTime);
 		$("#fildNum").text(flightNo);
-		$(".MsgSureBox").css("display","block");
+		var height = $("#fildDataList").height();
+		$(".MsgSureBox").css("height",height+5).css("display","block");
 	});
 	
 	

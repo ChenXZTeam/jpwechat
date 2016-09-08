@@ -10,60 +10,60 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="fw_VisaOrder")
 public class VisaOrder {
-	
+
+	//订单ID
 	@Id
 	@GenericGenerator(name="uuid", strategy="uuid")
 	@GeneratedValue(generator="uuid")
 	@Column(name="visaOrderID",length=50)
-	//订单ID
 	private String visaOrderID;
-	
-	@Column(name="proposer",length=20)
+
 	//申请人
+	@Column(name="proposer",length=20)
 	private String proposer;
-	
-	@Column(name="customerType",length=20)
+
 	//客户类型
+	@Column(name="customerType",length=20)
 	private String customerType;
-	
-	@Column(name="contactsName",length=20)
+
 	//联系人名称
+	@Column(name="contactsName",length=20)
 	private String contactsName;
-	
-	@Column(name="contactsPhone",length=50)
+
 	//联系人电话
+	@Column(name="contactsPhone",length=50)
 	private String contactsPhone;
-	
-	@Column(name="contactsEmail",length=50)
+
 	//联系人邮箱
+	@Column(name="contactsEmail",length=50)
 	private String contactsEmail;
-	
-	@Column(name="deliveryMethod",length=50)
+
 	//配送方式
+	@Column(name="deliveryMethod",length=50)
 	private String  deliveryMethod ;
-	
-	@Column(name="deliveryAddress",length=50)
+
 	//配送地址
+	@Column(name="deliveryAddress",length=50)
 	private String deliveryAddress;
-	
-	@Column(name="totalCost",length=10)
+
 	//总费用
+	@Column(name="totalCost",length=10)
 	private String totalCost;
-	
-	@Column(name="visaID",length=50)
+
 	//签证ID
+	@Column(name="visaID",length=50)
 	private String visaID;
-	
-	@Column(name="visaTitle",length=100)
+
 	//签证标题
+	@Column(name="visaTitle",length=100)
 	private String visaTitle;
-	
-	@Column(name="progress",length=20)
+
 	//进度
+	@Column(name="progress",length=20)
 	private String progress;
-	
-	@Column(name="userID",length=50)
+
 	//用户ID
+	@Column(name="userID",length=50)
 	private String userID;
 	
 	public String getProgress() {

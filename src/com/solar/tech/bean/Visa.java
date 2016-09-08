@@ -13,50 +13,50 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="FW_visa")
 public class Visa {
+	//签证ID
     @Id
     @GenericGenerator(name="uuid", strategy="uuid")
     @GeneratedValue(generator="uuid")
     @Column(name="visaID", length=50)
-	//签证ID
 	private String visaID;
-    
-    @Column(name="immigrationOfTimes", length=50)
+
 	//入境次数
+    @Column(name="immigrationOfTimes", length=50)
 	private String immigrationOfTimes;
-    
-    @Column(name="sojournTime", length=50)
+
 	//逗留天数
+    @Column(name="sojournTime", length=50)
 	private String sojournTime;
-    
-    @Column(name="periodOfValidity", length=50)
+
 	//有效期限
+    @Column(name="periodOfValidity", length=50)
 	private String periodOfValidity;
-    
-    @Column(name="visaType", length=50)
+
 	//签证类型
+    @Column(name="visaType", length=50)
 	private String visaType;
     
 	//最早可定日期
 	private Date earlyDates ;
-	
-	@Column(name="elapsedTime", length=50)
+
 	//办理时长
+	@Column(name="elapsedTime", length=50)
 	private String elapsedTime;
-	
-	@Column(name="serviceContent", length=500)
+
 	//服务内容
+	@Column(name="serviceContent", length=500)
 	private String serviceContent;
 	
 	@Column(name="scopeOfAcceptance", length=500)
 	//受理范围
 	private String scopeOfAcceptance;
-	
-	@Column(name="immigrationFlow", length=1000)
+
 	//办理流程
+	@Column(name="immigrationFlow", length=1000)
 	private String immigrationFlow;
-	
-	@Column(name="visaTitle", length=100)
+
 	//签证标题
+	@Column(name="visaTitle", length=100)
 	private String visaTitle;
 	
 	//签证价格

@@ -6,6 +6,7 @@
 <%
 	String orderNum=new String(request.getParameter("orderNum").getBytes("ISO-8859-1"),"utf-8");
 	String pnrNo=new String(request.getParameter("pnrNo").getBytes("ISO-8859-1"),"utf-8");
+	System.out.println(orderNum+"，"+pnrNo);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -29,20 +30,21 @@
 	.styleClass{font-size:12px; margin-top:5px;}
 	.styleClass .upMSGbtn{padding:5px; border:1px solid #FF6F43; color:#FF6F43;}
 	
-	.MsgSureBox{display:none; position:absolute; left:0px; top:0px; background:rgba(0,0,0,0.5); overflow:hidden; z-index:9998; width:100%; height:1000px;}
+	.MsgSureBox{display:none; position:absolute; left:0px; top:0px; background:rgba(0,0,0,0.5); overflow:hidden; z-index:9998; width:100%; height:100%;}
 	.MsgSureBox #qrMSG{position:fixed; top:15%; left:15%; padding-top:5px; display:block; background-color:#fff; z-index:9999; border-radius:5px; font-size:12px; color:#666666; font-family:"Microsoft YaHei"; width:232px;}
 	.MsgSureBox #qrMSG .spanDiv{ height:20px; padding:0px 5px 0px 15px;}
 	.MsgSureBox #qrMSG .spanDiv span{ line-height:20px;}
-	.MsgSureBox #qrMSG #submitBtn{ width:50%; padding:20px 0px 20px 0px; border:none; background-color:#FC716A; color:#FFFFFF; border-radius:0px 0px 0px 5px; outline:none; margin-top:10px;}
-	.MsgSureBox #qrMSG #colseThis{ width:50%; padding:20px 0px 20px 0px; border:none; background-color:#B5BECD; color:#FFFFFF; border-radius:0px 0px 5px 0px; outline:none; margin-top:10px;}
+	.MsgSureBox #qrMSG #submitBtn{ width:50%; padding:20px 0px 20px 0px; border:none; background-color:#FC716A; color:#FFFFFF; border-radius:0px 0px 0px 5px; outline:none; margin-top:10px;display: block;text-align: center;float: left;}
+	.MsgSureBox #qrMSG #colseThis{ width:50%; padding:20px 0px 20px 0px; border:none; background-color:#B5BECD; color:#FFFFFF; border-radius:0px 0px 5px 0px; outline:none; margin-top:10px;display: block;text-align: center;float: left;}
 		
-	.infoFiletghtLi{background-color:#FFFFFF; padding:10px; font-family:Microsoft Yahei; margin-top:5px; border-radius:5px;}
+	.infoFiletghtLi{background-color:#FFFFFF; padding:10px 0px 10px 10px; font-family:Microsoft Yahei; margin-top:5px; border-radius:5px;}
 	.infoFiletghtLi .infoFiletght{width:65%; float:left;}
 	/*.infoFiletghtLi .infoFiletght .smalldivClass:first-child{margin-top:5px;}选择第一个css*/
-	.infoFiletghtLi .infoFiletght .smalldivClass{margin-top:2px;}	
+	.infoFiletghtLi .infoFiletght .smalldivClass{margin-top:2px;overflow:hidden;}	
 	.infoFiletghtLi .infoFiletght span{padding:0px 3px;float:left; display:block; font-size:12px; color:#666666;}
-	.infoFiletghtLi .filetBtn{width:30%; font-size:12px; color:#666666; float:left; text-align:center;}
-	.infoFiletghtLi .filetBtn span{display:block; background-color:#FF9900; border-radius:5px; padding:10px; margin-top:13px; font-weight:bold; color:#FFFFFF;}
+	.infoFiletghtLi .filetBtn{width:30%; font-size:12px; color:#666666; float:right; margin-right:5px; text-align:center;}
+	.infoFiletghtLi .filetBtn .upMSGbtn{font-size:10px; display:block; background-color:#007AFF; border-radius:4px; padding:8px; margin-top:3px; margin-bottom:5px; color:#FFFFFF;}
+	.ovfHiden{overflow: hidden;height: 100%;}
 </style>
 </head>
 <body>
@@ -93,7 +95,7 @@
 		<div class="spanDiv"><span>旅客类型：</span><span id="userType"></span></div>
 		<div class="spanDiv"><span>证件类型：</span><span id="IDcaseType"></span></div>
 		<div class="spanDiv"><span>证件号码：</span><span id="IDcase"></span></div>
-		<button id="submitBtn">信息正确</button><button id="colseThis">取消</button>
+		<a id="submitBtn">信息正确</a><a id="colseThis">取消</a>
 	</div>
 </div>
 	
@@ -166,7 +168,7 @@
 //计算剩余票价张数的方法
 function tekNum(date){
 	if(date=="A"){
-		date="充足";
+		date="9";
 	}else if(date=="L"||date=="Q"||date=="S"||date=="C"||date=="X"||date=="Z"){
 		date="";
 	}else if(date!=""){
@@ -212,8 +214,8 @@ function ajaxjson(){
 					for(var j=0;j<dataList[i].seatList.length;j++){
 						if((dataList[i].seatList)[j].cangwei==canbin){ //只查找对应舱位的信息 比如用户原先订的是Y舱位的票，那就只能查询Y舱位的票
 							var teickNum = (dataList[i].seatList)[j].cangwei_data;
-							//var liList='<li class="classLiStyle"><div class="fildOneDiv"><div class="styleClass">'+(i+1)+'、广州->北京</div><div class="styleClass">航班号：<span class="flightNo">'+dataList[i].flightNo+'</span><span class="cangwei">'+(dataList[i].seatList)[j].cangwei+'</span>剩余的票：'+tekNum(teickNum)+'</div><div class="styleClass">出发时间：<span class="chufDate">'+chufDate+'</span><span class="depTime">'+changeType(dataList[i].depTime)+'</span></div><div class="styleClass">到达时间：<span class="daodTime">'+changeType(dataList[i].arrTime)+'</span></div><div class="styleClass"><a class="upMSGbtn">改为该航班</a></div></div></li>';
-							var liList='<li class="infoFiletghtLi"><div class="infoFiletght"><div class="smalldivClass"><span>广州</span><span style="color:#999999;"><img src="<%=basePath%>console/images/to.png" style="height:12px; margin-top:3px;"></span><span>北京</span></div><div style="clear:both;"></div><div class="smalldivClass"><span>出发时间</span><span class="chufDate">'+chufDate+'</span><span class="depTime">'+changeType(dataList[i].depTime)+'</span></div><div style="clear:both;"></div><div class="smalldivClass"><span>到达时间</span><span class="daodTime">'+changeType(dataList[i].arrTime)+'</span></div><div style="clear:both;"></div>	<div class="smalldivClass"><span class="flightNo">'+dataList[i].flightNo+'</span><span style="cangwei">'+(dataList[i].seatList)[j].cangwei+'</span><span>'+tekNum(teickNum)+'</span></div></div><div class="filetBtn"><span class="upMSGbtn">改为该航班</span></div><div style="clear:both;"></div></li>';
+							//var liList='<li class="classLiStyle"><div class="fildOneDiv"><div class="styleClass">'+(i+1)+'、广州->北京</div><div class="styleClass">航班号：<span class="flightNo">'+dataList[i].flightNo+'</span><span class="cangwei">'+(dataList[i].seatList)[j].cangwei+'</span>剩余的票：'+tekNum(teickNum)+'</div><div class="styleClass">出发时间：<span class="chufDate">'+chufDate+'</span><span class="depTime">'+changeType(dataList[i].depTime)+'</span></div><div class="styleClass">到达时间：<span class="daodTime">'+changeType(dataList[i].arrTime)+'</span></div><div class="styleClass"><a class="upMSGbtn">改为该航班</a></div></div></li>';     
+							var liList='<li class="infoFiletghtLi"><div class="infoFiletght"><div class="smalldivClass"><span>广州</span><span style="color:#999999;"><img src="<%=basePath%>console/images/to.png" style="height:12px; margin-top:1px;"></span><span>北京</span></div><div style="clear:both;"></div><div class="smalldivClass"><span>出发时间</span><span class="chufDate">'+chufDate+'</span><span class="depTime">'+changeType(dataList[i].depTime)+'</span></div><div style="clear:both;"></div><div class="smalldivClass"><span>到达时间</span><span class="daodTime">'+changeType(dataList[i].arrTime)+'</span></div><div style="clear:both;"></div>	<div class="smalldivClass"><span>航班编号 </span><span class="flightNo">'+dataList[i].flightNo+'</span></div></div><div class="filetBtn"><span class="upMSGbtn">改为该航班</span><span>舱位：</span><span class="cangwei">'+(dataList[i].seatList)[j].cangwei+'</span><br/><span>余数：</span><span>'+tekNum(teickNum)+'</span></div><div style="clear:both;"></div></li>';
 							$("#fildDataList").append(liList);									
 						}						
 					}
@@ -229,7 +231,7 @@ function ajaxjson(){
 //重新加载指定js文件
 function loadjs(){
 	var jsElem = document.createElement('script');
-	jsElem.src='<%=basePath%>console/js/upCanbin.js';
+	jsElem.src='<%=basePath%>console/js/upCanbin.js?v=79';
 	document.getElementsByTagName('head')[0].appendChild(jsElem);
 }
 </script>

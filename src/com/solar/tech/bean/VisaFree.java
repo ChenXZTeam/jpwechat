@@ -8,18 +8,18 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "FW_VisaFree")
 public class VisaFree {
-	
+
+	//国家id
 	@Id
 	@Column(name="countryID",length=10)
-	//国家id
 	private String countryID;
-	
-	@Column(name="countryName",length=20)
+
 	//国家名称
+	@Column(name="countryName",length=20)
 	private String countryName;
-	
-	@Column(name="content",length=1000)
+
 	//免签信息
+	@Column(name="content",length=1000)
 	private String content;
 	
 	public String getCountryID() {
