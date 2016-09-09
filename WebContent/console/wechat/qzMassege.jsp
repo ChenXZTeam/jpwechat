@@ -146,7 +146,7 @@
 	</div>
 	
 	<!-- 免签、落地签国家连接 -->
-	<div style="text-align:right; margin-top:15px; margin-right:10px; text-decoration:none;"><a href="<%=basePath %>console/wechat/qzOtherCountry.jsp" style="color:#999999;font-size:11px;">去查看免签、落地签国家有哪些？</a></div>
+	<div style="text-align:right; margin-top:15px; margin-right:10px;"><a href="<%=basePath %>console/wechat/qzOtherCountry.jsp" style="color:#999999;font-size:11px; text-decoration:none;">去查看免签、落地签国家有哪些？</a></div>
 </div>
 
 <!-- 城市选择 -->

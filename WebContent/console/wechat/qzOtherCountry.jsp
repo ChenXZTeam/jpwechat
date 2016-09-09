@@ -193,6 +193,7 @@ function myFunction() {
 	var keyVal = document.getElementById("citySearch").value;
 	$(".conteryList>ul>li").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
 	$("#findResult").text("");
+	$("#findResult").css("display","block");
 	for(var i=0; i<$(".chCity").length&&i!=10; i++){
 		var contrayName = $(".chCity:eq("+i+")").text();
 		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+contrayName+'</span></div>';
@@ -203,7 +204,7 @@ function myFunction() {
 //索引出来的结果的点击事件
 function chaRes(inc){
 	alert($(inc).children(".cityName01").text());
-	$("#findResult").slideToggle("fast");
+	$("#findResult").css("display","none");
 }
 </script>
 </body>
