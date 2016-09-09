@@ -65,7 +65,7 @@ public class VisaOrder {
 	@Column(name="visaTitle",length=100)
 	private String visaTitle;
 
-	//进度
+	//进度（0：预约中、1：进行中、2：已完成）
 	@Column(name="progress",length=20)
 	private String progress;
 
@@ -89,6 +89,18 @@ public class VisaOrder {
 	@Column(name="IDcase",length=100)
 	private String IDcase;
 	
+	//标识最新插入数据的字段
+	@Column(name="newOrderNum",length=10)
+	private String newOrderNum;
+	
+	public String getNewOrderNum() {
+		return newOrderNum;
+	}
+
+	public void setNewOrderNum(String newOrderNum) {
+		this.newOrderNum = newOrderNum;
+	}
+
 	public String getIDcase() {
 		return IDcase;
 	}

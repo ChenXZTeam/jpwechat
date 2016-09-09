@@ -3,6 +3,10 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+<%
+	String payTry = new String(request.getParameter("payTry").getBytes("ISO-8859-1"),"utf-8");
+	String countryName = new String(request.getParameter("countryName").getBytes("ISO-8859-1"),"utf-8");
+ %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -128,6 +132,8 @@
 			var IDcase = $("#IDcase").val()//身份证号
 			var songTypeIpnt = $("#songTypeIpnt").text();//配送方式
 			var sondAdd = $("#sondAdd").val();//配送地址
+			var payTry = "<%=payTry%>";
+			var countryName = "<%=countryName%>";
 			var dataList = {
 				"linkName":linkName,
 				"personWorkIpnt":personWorkIpnt,
@@ -137,7 +143,9 @@
 				"trayTypeIpnt":trayTypeIpnt,
 				"IDcase":IDcase,
 				"songTypeIpnt":songTypeIpnt,
-				"sondAdd":sondAdd
+				"sondAdd":sondAdd,
+				"payTry":payTry,
+				"countryName":countryName
 			}
 			$.ajax({
 				url:"<%=basePath%>framework/visa/addVisaOrder.action",

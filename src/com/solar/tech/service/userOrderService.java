@@ -40,7 +40,7 @@ public class userOrderService {
 	}
 	
 	/**
-	 * @title 查找最大的编号
+	 * @title 查找最新插入的数据
 	 * @return map
 	 */
 	public String fingMaxNum(){

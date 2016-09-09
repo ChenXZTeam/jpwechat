@@ -189,6 +189,28 @@ public class VisaService {
 	}
 	
 	/**
+	 * @title 查找最新插入的数据
+	 * @return map
+	 */
+	public String fingMaxNum(){
+		 String hql = "SELECT MAX(uinfo.newOrderNum) FROM VisaOrder as uinfo";
+		 List<String> MaxorderNum = this.gDao.find(hql);
+		 String MaxNum = MaxorderNum.get(0);
+		 return MaxNum;
+	}
+	
+	/**
+	 * @title 查找最大的编号
+	 * @return map
+	 */
+	public String fingMaxOrderNum(){ 
+		 String hql = "SELECT (uOrder.orderNum) FROM VisaOrder as uOrder WHERE newOrderNum = (SELECT MAX(uinfo.newOrderNum) FROM VisaOrder as uinfo)";
+		 List<String> MaxorderNum = this.gDao.find(hql);
+		 String MaxNum = MaxorderNum.get(0);
+		 return MaxNum;
+	}
+	
+	/**
 	 * 功能描述：获取VisaOrder列表
 	 *
 	 * @return

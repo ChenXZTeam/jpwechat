@@ -62,7 +62,9 @@
 		});
 		
 		$("#qzBtn").click(function(){
-			window.location.href="<%=basePath%>console/wechat/qz_waritInfo.jsp";
+			var payMoney = $(".payMoney").text().substring(1,$(".payMoney").text().length);
+			var countryName = $(".countryName").text();
+			window.location.href="<%=basePath%>console/wechat/qz_waritInfo.jsp?payTry="+payMoney+"&countryName="+countryName;
 		});
 	});
 </script>

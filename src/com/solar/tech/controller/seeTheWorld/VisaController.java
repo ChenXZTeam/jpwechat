@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,7 @@ import com.solar.tech.bean.Visa;
 import com.solar.tech.bean.VisaFree;
 import com.solar.tech.bean.VisaOrder;
 import com.solar.tech.service.VisaService;
+import com.solar.tech.service.userOrderService;
 
 /**
  * 类名：VisaController 
@@ -36,7 +38,8 @@ import com.solar.tech.service.VisaService;
 @Controller
 @RequestMapping("/framework/visa")
 public class VisaController {
-	
+	@Autowired
+	private userOrderService OrderService;
 	@Resource
 	private VisaService visaService;
 	
@@ -230,8 +233,16 @@ public class VisaController {
 	       if(key.equals("IDcase"))visaOrder.setIDcase(value);//身份证号码
 	       if(key.equals("songTypeIpnt"))visaOrder.setDeliveryMethod(value);//配送方式
 	       if(key.equals("sondAdd"))visaOrder.setDeliveryAddress(value);//配送地址
+	       if(key.equals("payTry"))visaOrder.setTotalCost(value);//总费用
+	       if(key.equals("countryName"))visaOrder.setApplyCountry(value);//申请签证的国家
 	    } 
+	    int MaxNum = Integer.parseInt(visaService.fingMaxNum());
+	    visaOrder.setNewOrderNum((MaxNum+1)+"");
+		String maxOrderNum = visaService.fingMaxOrderNum();
+	    String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+	    visaOrder.setOrderNum(orderNum);
 	    visaOrder.setPaystatus("0");//支付状态
+	    visaOrder.setProgress("0");//预约中
 	    int i = visaService.addVisaOrder(visaOrder);
 	    System.out.println("存储结果："+i);
 		map.put("msg", "1");
