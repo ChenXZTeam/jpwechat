@@ -1,4 +1,4 @@
-package com.solar.tech.service.impl;
+/*package com.solar.tech.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,7 +34,7 @@ import com.solar.tech.utils.JSONFile;
 
 import net.sf.json.JSONArray;
 
-/**
+*//**
  * 类名：VisaImpl 
  *
  * 功能描述：此类为VisaService的实现类，负责处理签证模块的业务逻辑
@@ -43,7 +43,7 @@ import net.sf.json.JSONArray;
  *
  * Version info版本号：V1.0
  * © Copyright 续日科技 2016年7月29日  版权所有
- */
+ *//*
 @Service
 @Transactional
 public class VisaImpl implements VisaService{
@@ -290,3 +290,4 @@ public class VisaImpl implements VisaService{
 
 
 }
+*/

@@ -2,10 +2,14 @@ package com.solar.tech.controller.seeTheWorld;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +47,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/getVisaList.action")
 	@ResponseBody
-	public List<Visa> getVisaList(){
-		return this.visaService.getVisaList();
+	public List<Visa> getVisaList(List<Visa> ss){
+		return ss;
+		//return this.visaService.getVisaList();
 	}
 
 	/**
@@ -56,8 +61,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/addVisa.action")
 	@ResponseBody
-	public Serializable addVisa(Visa visa){
-		return this.visaService.addVisa(visa);
+	public Serializable addVisa(Visa visa,Serializable ss){
+		return ss;
+		//return this.visaService.addVisa(visa);
 	}
 	
 	/**
@@ -72,7 +78,8 @@ public class VisaController {
 	@RequestMapping("/deleteVisa.action")
 	@ResponseBody
 	public int deleteVisa(String ids){
-		return this.visaService.deleteVisa(ids);
+		return 0;
+		//return this.visaService.deleteVisa(ids);
 	}
 	
 	/**
@@ -85,7 +92,7 @@ public class VisaController {
 	@RequestMapping("/updateVisa.action")
 	@ResponseBody
 	public void updateVisa(Visa visa){
-		this.visaService.updateVisa(visa);
+		//this.visaService.updateVisa(visa);
 	}
 	
 	/**
@@ -97,9 +104,9 @@ public class VisaController {
 	 * @return String
 	 */
 	@RequestMapping("/findByCountry.action")
-	public String findByCountry(Visa visa,Map map){
-		List<Visa> list = this.visaService.findByCountry(visa);
-		map.put("list", list);
+	public String findByCountry(Visa visa,Map<String, Object> map){
+		//List<Visa> list = this.visaService.findByCountry(visa);
+		//map.put("list", list);
 		return "/SeeTheWorld/VisaList";
 	}
 	
@@ -112,9 +119,9 @@ public class VisaController {
 	 * @return String
 	 */
 	@RequestMapping("/findByID.action")
-	public String findByID(String id,Map map){
-		Visa visa = this.visaService.findByID(id);
-		map.put("visa", visa);
+	public String findByID(String id,Map<String, Object> map){
+		//Visa visa = this.visaService.findByID(id);
+		//map.put("visa", visa);
 		return "/SeeTheWorld/VisaContent";
 	}
 
@@ -127,9 +134,9 @@ public class VisaController {
 	 * @return String
 	 */
 	@RequestMapping("/findByVisaFreeID.action")
-	public String findByVisaFreeID(String id,Map map){
-		VisaFree visaFree = this.visaService.findByVisaFreeID(id);
-		map.put("visaFree", visaFree);
+	public String findByVisaFreeID(String id,Map<String, Object> map){
+		//VisaFree visaFree = this.visaService.findByVisaFreeID(id);
+		//map.put("visaFree", visaFree);
 		return "/SeeTheWorld/VisaFreeContent";
 	}
 	
@@ -140,8 +147,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/getVisaFreeList.action")
 	@ResponseBody
-	public List<VisaFree> getVisaFreeList(){
-		return this.visaService.getVisaFreeList();
+	public List<VisaFree> getVisaFreeList(List<VisaFree> ss){
+		return ss;
+		//return this.visaService.getVisaFreeList();
 	}
 
 	/**
@@ -153,8 +161,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/addVisaFree.action")
 	@ResponseBody
-	public Serializable addVisaFree(VisaFree visaFree){
-		return this.visaService.addVisaFree(visaFree);
+	public Serializable addVisaFree(VisaFree visaFree,Serializable ss){
+		return ss;
+		//return this.visaService.addVisaFree(visaFree);
 	}
 	
 	/**
@@ -167,7 +176,7 @@ public class VisaController {
 	@RequestMapping("/updateVisaFree.action")
 	@ResponseBody
 	public void updateVisaFree(VisaFree visaFree){
-		this.visaService.updateVisaFree(visaFree);
+		//this.visaService.updateVisaFree(visaFree);
 	}
 	
 	/**
@@ -180,7 +189,8 @@ public class VisaController {
 	@RequestMapping("/deleteVisaFree.action")
 	@ResponseBody
 	public int deleteVisaFree(String ids){
-		return this.visaService.deleteVisaFree(ids);
+		return 0;
+		//return this.visaService.deleteVisaFree(ids);
 	}
 	
 	/**
@@ -190,8 +200,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/getVisaOrderList.action")
 	@ResponseBody
-	public List<VisaOrder> getVisaOrderList(){
-		return this.visaService.getVisaOrderList();
+	public List<VisaOrder> getVisaOrderList(List<VisaOrder> ss){
+		return ss;
+		//return this.visaService.getVisaOrderList();
 	}
 	
 	/**
@@ -203,8 +214,28 @@ public class VisaController {
 	 */
 	@RequestMapping("/addVisaOrder.action")
 	@ResponseBody
-	public Serializable addVisaOrder(VisaOrder visaOrder){
-		return this.visaService.addVisaOrder(visaOrder);
+	public Map<String, Object> addVisaOrder(VisaOrder visaOrder,HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Enumeration<String> paramNames = request.getParameterNames();  
+	    // 通过循环将表单参数放入键值对映射中  
+	    while(paramNames.hasMoreElements()) {  
+	       String key = paramNames.nextElement();  
+	       String value = request.getParameter(key); 
+	       if(key.equals("linkName"))visaOrder.setContactsName(value);//联系人
+	       if(key.equals("personWorkIpnt"))visaOrder.setCustomerType(value);//客户类型
+	       if(key.equals("sexIpnt"))visaOrder.setContactsSex(value);//性别
+	       if(key.equals("phoneNum"))visaOrder.setContactsPhone(value);//联系人电话
+	       if(key.equals("EmailAdd"))visaOrder.setContactsEmail(value);//电子邮件
+	       if(key.equals("trayTypeIpnt"))visaOrder.setTrayTypeIpnt(value);//旅客类型
+	       if(key.equals("IDcase"))visaOrder.setIDcase(value);//身份证号码
+	       if(key.equals("songTypeIpnt"))visaOrder.setDeliveryMethod(value);//配送方式
+	       if(key.equals("sondAdd"))visaOrder.setDeliveryAddress(value);//配送地址
+	    } 
+	    visaOrder.setPaystatus("0");//支付状态
+	    int i = visaService.addVisaOrder(visaOrder);
+	    System.out.println("存储结果："+i);
+		map.put("msg", "1");
+		return map;
 	}
 	
 	/**
@@ -217,7 +248,7 @@ public class VisaController {
 	@RequestMapping("/updateVisaOrder.action")
 	@ResponseBody
 	public void updateVisaOrder(VisaOrder visaOrder){
-		this.visaService.updateVisaOrder(visaOrder);
+		//this.visaService.updateVisaOrder(visaOrder);
 	}
 	
 	/**
@@ -230,7 +261,8 @@ public class VisaController {
 	@RequestMapping("/deleteVisaOrder.action")
 	@ResponseBody
 	public int deleteVisaOrder(String ids){
-		return this.visaService.deleteVisaOrder(ids);
+		return 0;
+		//return this.visaService.deleteVisaOrder(ids);
 	}
 
 	/**
@@ -240,8 +272,8 @@ public class VisaController {
 	 */
 	@RequestMapping("/getRequiredMaterialsList.action")
 	@ResponseBody
-	public List<RequiredMaterials> getRequiredMaterialsList(){
-		return this.visaService.getRequiredMaterialsList();
+	public List<RequiredMaterials> getRequiredMaterialsList(List<RequiredMaterials> s){
+		return s;
 	}
 	
 	/**
@@ -253,8 +285,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/addRequiredMaterials.action")
 	@ResponseBody
-	public Serializable addRequiredMaterials(RequiredMaterials requiredMaterials){
-		return this.visaService.addRequiredMaterials(requiredMaterials);
+	public Serializable addRequiredMaterials(RequiredMaterials requiredMaterials,Serializable ss){
+		return ss;
+		//return this.visaService.addRequiredMaterials(requiredMaterials);
 	}
 	
 	/**
@@ -268,7 +301,7 @@ public class VisaController {
 	@RequestMapping("/updateRequiredMaterials.action")
 	@ResponseBody
 	public void updateRequiredMaterials(RequiredMaterials requiredMaterials){
-		this.visaService.updateRequiredMaterials(requiredMaterials);
+		//this.visaService.updateRequiredMaterials(requiredMaterials);
 	}
 	
 	/**
@@ -281,7 +314,8 @@ public class VisaController {
 	@RequestMapping("/deleteRequiredMaterials.action")
 	@ResponseBody
 	public int deleteRequiredMaterials(String ids){
-		return this.visaService.deleteRequiredMaterials(ids);
+		return 0;
+		//return this.visaService.deleteRequiredMaterials(ids);
 	}
 	
 	/**
@@ -293,9 +327,9 @@ public class VisaController {
 	 * @return String
 	 */
 	@RequestMapping("/findByMaterialsID.action")
-	public String findByMaterialsID(String id,Map map){
-		RequiredMaterials materials = this.visaService.findByMaterialsID(id);
-		map.put("materials", materials);
+	public String findByMaterialsID(String id,Map<String, Object> map){
+		//RequiredMaterials materials = this.visaService.findByMaterialsID(id);
+		//map.put("materials", materials);
 		return "/SeeTheWorld/MaterialsContent";
 	}
 	
@@ -306,8 +340,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/getHotCountriesList.action")
 	@ResponseBody
-	public List<HotCountries> getHotCountriesList(){
-		return this.visaService.getHotCountriesList();
+	public List<HotCountries> getHotCountriesList(List<HotCountries> ss){
+		return ss;
+		//return this.visaService.getHotCountriesList();
 	}
 	
 	/**
@@ -320,8 +355,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/addHotCountries.action")
 	@ResponseBody
-	public Serializable addHotCountries(HotCountries hotCountries,MultipartFile image){
-	    return this.visaService.addHotCountries(hotCountries, image);
+	public Serializable addHotCountries(HotCountries hotCountries,MultipartFile image,Serializable ss){
+	    return ss;
+		//return this.visaService.addHotCountries(hotCountries, image);
 	}
 	
 	/**
@@ -336,7 +372,7 @@ public class VisaController {
 	@RequestMapping("/updateHotCountries.action")
 	@ResponseBody
 	public void updateHotCountries(HotCountries hotCountries,MultipartFile image,String imgOld){
-		this.visaService.updateHotCountries(hotCountries, image,imgOld);
+		//this.visaService.updateHotCountries(hotCountries, image,imgOld);
 	}
 	
 	/**
@@ -349,7 +385,8 @@ public class VisaController {
 	@RequestMapping("/deleteHotCountries.action")
 	@ResponseBody
 	public int deleteHotCountries(String ids){
-		return this.visaService.deleteHotCountries(ids);
+		return 0;
+		//return this.visaService.deleteHotCountries(ids);
 	}
 	
 	/**
@@ -361,8 +398,9 @@ public class VisaController {
 	 */
 	@RequestMapping("/findByUserID.action")
 	@ResponseBody
-	public List<VisaOrder> findByUserID(VisaOrder visaOrder){
-		return this.visaService.findByUserID(visaOrder);
+	public List<VisaOrder> findByUserID(VisaOrder visaOrder,List<VisaOrder> ss){
+		return ss;
+		//return this.visaService.findByUserID(visaOrder);
 	}
 	
 	/**
@@ -374,9 +412,9 @@ public class VisaController {
 	 * @return String
 	 */
 	@RequestMapping("/findByVisaOrderID.action")
-	public String findByVisaOrderID(String id,Map map){
-		VisaOrder visaOrder = this.visaService.findByVisaOrderID(id);
-		map.put("visaOrder",visaOrder);
+	public String findByVisaOrderID(String id,Map<String, Object> map){
+		//VisaOrder visaOrder = this.visaService.findByVisaOrderID(id);
+		//map.put("visaOrder",visaOrder);
 		return "/SeeTheWorld/VisaOrderContent";
 	}
 
@@ -389,9 +427,9 @@ public class VisaController {
 	 * @return String
 	 */
 	@RequestMapping("/findByProgress.action")
-	public String findByProgress(String id,Map map){
-		VisaOrder visaOrder = this.visaService.findByVisaOrderID(id);
-		map.put("visaOrder",visaOrder);
+	public String findByProgress(String id,Map<String, Object> map){
+		//VisaOrder visaOrder = this.visaService.findByVisaOrderID(id);
+		//map.put("visaOrder",visaOrder);
 		return "/SeeTheWorld/ProgressContent";
 	}
 	

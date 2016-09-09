@@ -73,7 +73,7 @@
 		<div style="line-height:20px; margin-left:5px; float:left; font-size:12px;"><span>热门国家/地区</span></div>
 		<div style="line-height:20px; float:right;">＞</div>
 		<div style="line-height:20px; float:right; font-size:12px;"><span>更多</span></div>
-		<div style="clear:both;"></div>
+		<div style="clear:both;"><span id="basePathID" style="display:none;"><%=basePath %></span></div>
 	</div>
 	
 	<!--热门大洲-->
@@ -413,6 +413,11 @@
 			$("#ouzhou").css("display","none");
 			$("#meizhou").css("display","none");
 			$("#feizhou").css("display","none");
+		});
+		
+		$(".remenCantroyClass").click(function(){
+			var country = $(this).text();
+			window.location.href="<%=basePath %>console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
 		});
 	});
 	

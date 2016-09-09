@@ -17,19 +17,16 @@ $(function(){
 	
 	//城市子类信息选择(热门)
 	$("#CityCH>#remenCity>ul>li>.remenLi").click(function(){
-		$("#cityFindInpt").val($(this).text());
-		$(".CityChoose").removeClass("CityC");
-		$(".zimuTishi").css("display","none");
-		$("#CityCH").fadeOut();
+		var country = $(this).text();
+		var basePathID = $("#basePathID").text();
+		window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
 	});
 	
 	//城市子类信息选择(城市链表)
 	$("#CityCH #CityList>.zimuResult>.cityUL>li").click(function(){
-		$("#cityFindInpt").val($(this).text());
-		//alert($(this).children(".airportCode").text());
-		$(".CityChoose").removeClass("CityC");
-		$("#CityCH").fadeOut();
-		$(".zimuTishi").css("display","none");
+		var country = $(this).text();
+		var basePathID = $("#basePathID").text();
+		window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
 	});
 	
 	//城市查找中的搜索按钮点击事件
@@ -83,9 +80,7 @@ function myFunction() {
 
 //索引出来的结果的点击事件
 function chaRes(inc){
-	$("#cityFindInpt").val($(inc).children(".cityName01").text());//选择的城市名字
-	$("#pipeiValue").css("display","none");
-	$(".CityChoose").removeClass("CityC");
-	$("#CityCH").fadeOut();
-	$(".zimuTishi").css("display","none");
+	var country = $(inc).children(".cityName01").text();//选择的城市名字
+	var basePathID = $("#basePathID").text();
+	window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
 }

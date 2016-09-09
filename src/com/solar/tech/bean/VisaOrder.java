@@ -10,7 +10,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="fw_VisaOrder")
 public class VisaOrder {
-
 	//订单ID
 	@Id
 	@GenericGenerator(name="uuid", strategy="uuid")
@@ -18,6 +17,10 @@ public class VisaOrder {
 	@Column(name="visaOrderID",length=50)
 	private String visaOrderID;
 
+	//订单流水号
+	@Column(name="orderNum",length=50)
+	private String orderNum;
+	
 	//申请人
 	@Column(name="proposer",length=20)
 	private String proposer;
@@ -29,7 +32,11 @@ public class VisaOrder {
 	//联系人名称
 	@Column(name="contactsName",length=20)
 	private String contactsName;
-
+	
+	//联系人性别
+	@Column(name="contactsSex",length=20)
+	private String contactsSex;
+		
 	//联系人电话
 	@Column(name="contactsPhone",length=50)
 	private String contactsPhone;
@@ -66,6 +73,38 @@ public class VisaOrder {
 	@Column(name="userID",length=50)
 	private String userID;
 	
+	//付款状态
+	@Column(name="paystatus",length=5)
+	private String paystatus;
+	
+	//申请国家
+	@Column(name="ApplyCountry",length=50)
+	private String ApplyCountry;
+	
+	//旅客类型（成人、儿童）
+	@Column(name="trayTypeIpnt",length=10)
+	private String trayTypeIpnt;
+	
+	//申请人身份证号码
+	@Column(name="IDcase",length=100)
+	private String IDcase;
+	
+	public String getIDcase() {
+		return IDcase;
+	}
+
+	public void setIDcase(String iDcase) {
+		IDcase = iDcase;
+	}
+
+	public String getTrayTypeIpnt() {
+		return trayTypeIpnt;
+	}
+
+	public void setTrayTypeIpnt(String trayTypeIpnt) {
+		this.trayTypeIpnt = trayTypeIpnt;
+	}
+
 	public String getProgress() {
 		return progress;
 	}
@@ -146,7 +185,15 @@ public class VisaOrder {
 		this.totalCost = totalCost;
 	}
 	
- 	public String getVisaOrderID() {
+ 	public String getContactsSex() {
+		return contactsSex;
+	}
+
+	public void setContactsSex(String contactsSex) {
+		this.contactsSex = contactsSex;
+	}
+
+	public String getVisaOrderID() {
 		return visaOrderID;
 	}
 
@@ -170,14 +217,41 @@ public class VisaOrder {
 		this.visaTitle = visaTitle;
 	}
 
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public String getPaystatus() {
+		return paystatus;
+	}
+
+	public void setPaystatus(String paystatus) {
+		this.paystatus = paystatus;
+	}
+
+	public String getApplyCountry() {
+		return ApplyCountry;
+	}
+
+	public void setApplyCountry(String applyCountry) {
+		ApplyCountry = applyCountry;
+	}
+
 	@Override
 	public String toString() {
-		return "VisaOrder [visaOrderID=" + visaOrderID + ", proposer=" + proposer + ", customerType=" + customerType
-				+ ", contactsName=" + contactsName + ", contactsPhone=" + contactsPhone + ", contactsEmail="
-				+ contactsEmail + ", deliveryMethod=" + deliveryMethod + ", deliveryAddress=" + deliveryAddress
-				+ ", totalCost=" + totalCost + ", visaID=" + visaID + ", visaTitle=" + visaTitle + ", progress="
-				+ progress + ", userID=" + userID + "]";
+		return "VisaOrder [visaOrderID=" + visaOrderID + ", orderNum="
+				+ orderNum + ", proposer=" + proposer + ", customerType="
+				+ customerType + ", contactsName=" + contactsName
+				+ ", contactsPhone=" + contactsPhone + ", contactsEmail="
+				+ contactsEmail + ", deliveryMethod=" + deliveryMethod
+				+ ", deliveryAddress=" + deliveryAddress + ", totalCost="
+				+ totalCost + ", visaID=" + visaID + ", visaTitle=" + visaTitle
+				+ ", progress=" + progress + ", userID=" + userID
+				+ ", paystatus=" + paystatus + ", ApplyCountry=" + ApplyCountry
+				+ "]";
 	}
-	
-	
 }

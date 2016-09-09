@@ -186,6 +186,11 @@
 			$(this).prev().addClass("nowShow");
 			$(".nowShow").slideToggle("slow");
 		});
+		//选中的国家
+		$(".conteryList").click(function(){
+			var country = $(this).text();
+			window.location.href="<%=basePath%>console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
+		});
 	});
 	
 //输入关键字的时候自动索引
@@ -203,7 +208,9 @@ function myFunction() {
 
 //索引出来的结果的点击事件
 function chaRes(inc){
-	alert($(inc).children(".cityName01").text());
+	var countryName = $(inc).children(".cityName01").text();
+	alert(countryName);
+	window.location.href="<%=basePath%>console/wechat/qzOneCoInfo.jsp?countryName="+countryName+"&countryId=213543";
 	$("#findResult").css("display","none");
 }
 </script>

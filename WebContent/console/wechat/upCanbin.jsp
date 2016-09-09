@@ -6,7 +6,6 @@
 <%
 	String orderNum=new String(request.getParameter("orderNum").getBytes("ISO-8859-1"),"utf-8");
 	String pnrNo=new String(request.getParameter("pnrNo").getBytes("ISO-8859-1"),"utf-8");
-	System.out.println(orderNum+"，"+pnrNo);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
