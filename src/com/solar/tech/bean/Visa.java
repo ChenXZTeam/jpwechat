@@ -37,7 +37,8 @@ public class Visa {
 	private String visaType;
     
 	//最早可定日期
-	private Date earlyDates ;
+    @Column(name="earlyDates", length=50)
+	private String earlyDates ;
 
 	//办理时长
 	@Column(name="elapsedTime", length=50)
@@ -46,9 +47,9 @@ public class Visa {
 	//服务内容
 	@Column(name="serviceContent", length=500)
 	private String serviceContent;
-	
-	@Column(name="scopeOfAcceptance", length=500)
+
 	//受理范围
+	@Column(name="scopeOfAcceptance", length=500)
 	private String scopeOfAcceptance;
 
 	//办理流程
@@ -60,12 +61,64 @@ public class Visa {
 	private String visaTitle;
 	
 	//签证价格
-	private double visaPrice;
+	@Column(name="visaPrice", length=100)
+	private String visaPrice;
 	
 	//国家
 	@Column(name="country", length=20)
 	private String country;
 	
+	//国家编号
+	@Column(name="countryID", length=20)
+	private String countryID;
+	
+	//国家属于的大洲范围
+	@Column(name="cotryBelongWhat", length=20)
+	private String cotryBelongWhat;
+	
+	//签证方式(3.免签、2.落地签、1.热门推荐、4.无)
+	@Column(name="qzMode", length=5)
+	private String qzMode;
+	
+	//该国家旅游风景介绍
+	@Column(name="TouryIntro", length=1000)
+	private String TouryIntro;
+	
+	//标识数据是否最新插入
+	@Column(name="newDataNum", length=10)
+	private String newDataNum;
+	
+	public String getNewDataNum() {
+		return newDataNum;
+	}
+	public void setNewDataNum(String newDataNum) {
+		this.newDataNum = newDataNum;
+	}
+	public String getTouryIntro() {
+		return TouryIntro;
+	}
+	public void setTouryIntro(String touryIntro) {
+		TouryIntro = touryIntro;
+	}
+	public String getQzMode() {
+		return qzMode;
+	}
+	public void setQzMode(String qzMode) {
+		this.qzMode = qzMode;
+	}
+	public String getCotryBelongWhat() {
+		return cotryBelongWhat;
+	}
+	public void setCotryBelongWhat(String cotryBelongWhat) {
+		this.cotryBelongWhat = cotryBelongWhat;
+	}
+	
+	public String getCountryID() {
+		return countryID;
+	}
+	public void setCountryID(String countryID) {
+		this.countryID = countryID;
+	}
 	public String getCountry() {
 		return country;
 	}
@@ -78,11 +131,13 @@ public class Visa {
 	public void setVisaTitle(String visaTitle) {
 		this.visaTitle = visaTitle;
 	}
-	public double getVisaPrice() {
-		return visaPrice;
-	}
-	public void setVisaPrice(double visaPrice) {
+	
+	public void setVisaPrice(String visaPrice) {
 		this.visaPrice = visaPrice;
+	}
+	
+	public String getVisaPrice() {
+		return visaPrice;
 	}
 	public String getVisaID() {
 		return visaID;
@@ -114,10 +169,11 @@ public class Visa {
 	public void setVisaType(String visaType) {
 		this.visaType = visaType;
 	}
-	public Date getEarlyDates() {
+	
+	public String getEarlyDates() {
 		return earlyDates;
 	}
-	public void setEarlyDates(Date earlyDates) {
+	public void setEarlyDates(String earlyDates) {
 		this.earlyDates = earlyDates;
 	}
 	public String getElapsedTime() {

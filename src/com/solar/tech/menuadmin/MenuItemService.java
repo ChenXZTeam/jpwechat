@@ -270,7 +270,6 @@ public class MenuItemService {
 						+ " and  itemStatus=1    order by sortNum desc,itemId asc",MenuItem.class);
 		//+ " and  itemStatus=1  and "+condition+" order by sortNum desc,itemId asc",MenuItem.class);
 		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-		System.out.println("进来了没？如果进来就输出："+menuItems.size());
 		for (MenuItem menuItem : menuItems) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("id", menuItem.getItemId());

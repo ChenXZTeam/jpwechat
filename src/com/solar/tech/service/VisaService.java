@@ -46,9 +46,16 @@ public class VisaService {
 	 *
 	 * @param visa
 	 *
-	 * @return Serializable
+	 * @return int
 	 */
-	//Serializable addVisa(Visa visa);
+	public int addVisa(Visa visa){
+		try {
+			gDao.save(visa);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 	
 	/**
 	 * 功能描述：删除所选的Visa
@@ -208,6 +215,30 @@ public class VisaService {
 		 List<String> MaxorderNum = this.gDao.find(hql);
 		 String MaxNum = MaxorderNum.get(0);
 		 return MaxNum;
+	}
+	
+	/**
+	 * 查找最新插入数据的最大编号用于生成国家编号
+	 * @return
+	 */
+	public String fingMaxNumVisa(){
+		 String hql = "SELECT MAX(uinfo.newDataNum) FROM Visa as uinfo";
+		 List<String> MaxorderNum = this.gDao.find(hql);
+		 String MaxNum = MaxorderNum.get(0);
+		 return MaxNum;
+	}
+	
+	/**
+	 * 自动生成国家编号的方法。因为有的国家有中文和英文多种语言的名字。所以用编号来代替该国家
+	 * @return
+	 */
+	public String bornCountryNum(String num){
+		String countryNum = "";
+		 int zeroNum = 5-num.length();
+		 for(int i=0;i<zeroNum;i++){
+			 countryNum += "0";
+		 }
+		return "1"+countryNum+""+num;
 	}
 	
 	/**

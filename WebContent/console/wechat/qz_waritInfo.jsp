@@ -14,7 +14,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.maximum-scale=1,user-scalable=no"/>
 <title>申请签证</title>
 <link rel="stylesheet" href="<%=basePath %>console/css/qz_waritInfo.css"/>
+<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <style>
 	.chooseBox{position:absolute; top:0px; left:0px; padding:0px; margin:0px;width:88.55%; display:none;}
 	.chooseBox ul{list-style-type:none; padding:0px 10px; background-color:#FFF; margin:0px; border:1px solid #e1e1e1;}
@@ -153,7 +156,11 @@
 				data:dataList,
 				dataType:"json",
 				success:function(res){
-					alert("成功"+res.msg);
+					if(res.msg==1){
+						$.alert("您的签证订单已生成成功");
+					}else{
+						$.alert("订单生成失败，请稍后再试");
+					}
 				},
 				error:function(res){
 				}

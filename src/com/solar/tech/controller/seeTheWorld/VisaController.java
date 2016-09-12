@@ -1,7 +1,9 @@
 package com.solar.tech.controller.seeTheWorld;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,7 @@ import com.solar.tech.bean.VisaFree;
 import com.solar.tech.bean.VisaOrder;
 import com.solar.tech.service.VisaService;
 import com.solar.tech.service.userOrderService;
+import com.solar.tech.utils.Send106msg;
 
 /**
  * 类名：VisaController 
@@ -64,8 +67,45 @@ public class VisaController {
 	 */
 	@RequestMapping("/addVisa.action")
 	@ResponseBody
-	public Serializable addVisa(Visa visa,Serializable ss){
-		return ss;
+	public Map<String, Object> addVisa(Visa visa,HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Enumeration<String> paramNames = request.getParameterNames();  
+	    // 通过循环将表单参数放入键值对映射中  
+	    while(paramNames.hasMoreElements()) {  
+	       String key = paramNames.nextElement();  
+	       String value = request.getParameter(key); 
+	       if(key.equals("countryName"))visa.setCountry(value); 
+	       if(key.equals("belongArea"))visa.setCotryBelongWhat(value); 
+	       if(key.equals("ruNum"))visa.setImmigrationOfTimes(value); 
+	       if(key.equals("douNumDay"))visa.setSojournTime(value); 
+	       if(key.equals("youxiaoDate"))visa.setPeriodOfValidity(value); 
+	       if(key.equals("banliDate"))visa.setElapsedTime(value); 
+	       if(key.equals("payCost"))visa.setVisaPrice(value); 
+	       if(key.equals("canOrderDate"))visa.setEarlyDates(value);
+	       if(key.equals("qzType"))visa.setVisaType(value); 
+	       if(key.equals("serviceCont"))visa.setServiceContent(value); 
+	       if(key.equals("shouArea"))visa.setScopeOfAcceptance(value); 
+	       if(key.equals("banliTech"))visa.setImmigrationFlow(value); 
+	       if(key.equals("qzMode"))visa.setQzMode(value); 
+	       if(key.equals("TouryIntro"))visa.setTouryIntro(value);
+	    }
+	    String newNum = visaService.fingMaxNumVisa();
+	    if(newNum==null||newNum.equals("")){
+	    	newNum = "1";
+	    }else{
+	    	newNum = (Integer.parseInt(newNum)+1)+"";
+	    }
+	    visa.setNewDataNum(newNum);
+	    String countryIDnum = visaService.bornCountryNum(newNum);
+	    visa.setCountryID(countryIDnum);
+	    int i = visaService.addVisa(visa);
+	    if(i==1){
+	    	System.out.println("国家编辑成功");
+	    	map.put("msg","1");
+	    }else{
+	    	map.put("msg","0");
+	    }
+		return map;
 		//return this.visaService.addVisa(visa);
 	}
 	
@@ -244,8 +284,18 @@ public class VisaController {
 	    visaOrder.setPaystatus("0");//支付状态
 	    visaOrder.setProgress("0");//预约中
 	    int i = visaService.addVisaOrder(visaOrder);
-	    System.out.println("存储结果："+i);
-		map.put("msg", "1");
+	    if(i==1){
+	    	Send106msg sender = new Send106msg();
+	    	try {
+				sender.SendMSGtoPhone("【签证订单提醒】订单编号："+orderNum, visaOrder.getContactsPhone());
+				System.out.println("短信发送成功");
+			    map.put("msg", "1");
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    }
 		return map;
 	}
 	

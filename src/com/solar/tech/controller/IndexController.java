@@ -44,7 +44,6 @@ public class IndexController {
 	@RequestMapping("/sysMenuItem.action")
 	@ResponseBody
 	public List<Map<String, Object>> sysMenuItem(int parentItemId,int menuId) {
-		System.out.println("parentItemId："+parentItemId+"/menuId："+menuId);
 			List<Map<String, Object>> map =menuItemService.sysMenuItem(parentItemId, menuId);
 			return map;
 		}
