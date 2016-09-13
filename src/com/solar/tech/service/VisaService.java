@@ -3,6 +3,7 @@ package com.solar.tech.service;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,12 @@ public class VisaService {
 	 *
 	 * @return List<Visa>
 	 */
-	//List<Visa> getVisaList();
+	public List<Visa> getVisaList(){
+		List<Visa> vList = new ArrayList<>();
+		String hql = "FROM Visa v";
+		vList = this.gDao.find(hql);
+		return vList;
+	};
 	
 	/**
 	 * 功能描述：添加新的Visa
@@ -82,7 +88,12 @@ public class VisaService {
 	 *
 	 * @return List<Visa>
 	 */
-	//List<Visa> findByCountry(Visa visa);
+	public List<Visa> findByCountry(String countId){
+		List<Visa> vList = new ArrayList<Visa>();
+		String hql = "FROM Visa v where v.countryID = '"+countId+"'";
+		vList = this.gDao.find(hql);
+		return vList;
+	};
 	
 	/**
 	 * 功能描述：通过id查找Visa

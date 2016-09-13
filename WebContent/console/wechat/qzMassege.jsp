@@ -15,6 +15,7 @@
 <script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/qzBanner.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/QZcityChoose.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/getLetter.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vKCQUCy8RGAuMMHU3iPH226z32Ojt6fI" charset="utf-8"></script>
 <style type="text/css">
 	body{padding:0px; margin:0px; background-color:#F9F9F9;}
@@ -35,6 +36,10 @@
 	.qianZ{padding:5px; background-color:#FFFFFF;}
 	.qianZ .sessce{padding:20px; border-right:#DCDCDC solid 1px; float:left; text-align:center;}
 	.qianZ .jindu{padding:20px; float:left;}
+	.countryNum{display:none;}
+	.counNameClass{display:block; width:100%;}
+	.remCountrName{display:block; width:100%; text-align:center;}
+	.remCountryId{display:none;}
 </style>
 </head>
 
@@ -87,66 +92,31 @@
 	
 	<!--热门国家（亚洲）-->
 	<div id="yazhou" class="contryClassZ">
-		<ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/thailand.jpg'); background-size:100% 60px; background-repeat:no-repeat;">泰国</span><span class="countryNum">100001</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/japan.jpg'); background-size:100% 60px; background-repeat:no-repeat;">日本</span><span class="countryNum">100002</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/singapore.jpg'); background-size:100% 60px; background-repeat:no-repeat;">新加坡</span><span class="countryNum">100003</span><span class="contryMonty">￥1302</span></li>
-		</ul>
-		<ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/taiwan.jpg'); background-size:100% 60px; background-repeat:no-repeat;">台湾</span><span class="countryNum">100004</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/malaysia.jpg'); background-size:100% 60px; background-repeat:no-repeat;">马来西亚</span><span class="countryNum">100005</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/korea.jpg'); background-size:100% 60px; background-repeat:no-repeat;">韩国</span><span class="countryNum">100006</span><span class="contryMonty">￥1302</span></li>
-		</ul>
+		<ul></ul>
 		<div style="clear:both;"></div>
 	</div>
 	
 	<!--美洲-->
 	<div id="meizhou" class="contryClassZ">
-        <ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/usa.jpg'); background-size:100% 60px; background-repeat:no-repeat;">美国</span><span class="countryNum">100007</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/canada.jpg'); background-size:100% 60px; background-repeat:no-repeat;">加拿大</span><span class="countryNum">100008</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/brazil.jpg'); background-size:100% 60px; background-repeat:no-repeat;">巴西</span><span class="countryNum">100009</span><span class="contryMonty">￥1302</span></li>
-		</ul>
-		<ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/argentina.jpg'); background-size:100% 60px; background-repeat:no-repeat;">阿根廷</span><span class="countryNum">100010</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/mexico.jpg'); background-size:100% 60px; background-repeat:no-repeat;">墨西哥</span><span class="countryNum">100011</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/hawaii.jpg'); background-size:100% 60px; background-repeat:no-repeat;">夏威夷</span><span class="countryNum">100012</span><span class="contryMonty">￥1302</span></li>
-		</ul>
+        <ul></ul>
 		<div style="clear:both;"></div>
 	</div>
 	
 	<!--非洲-->
 	<div id="feizhou" class="contryClassZ">
-        <ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/cairo.jpg'); background-size:100% 60px; background-repeat:no-repeat;">开罗</span><span class="countryNum">100013</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/capetown.jpg'); background-size:100% 60px; background-repeat:no-repeat;">开罗</span><span class="countryNum">100014</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/nebbiolo.jpg'); background-size:100% 60px; background-repeat:no-repeat;">内毕罗</span><span class="countryNum">100015</span><span class="contryMonty">￥1302</span></li>
-		</ul>
-		<ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/algiers.jpg'); background-size:100% 60px; background-repeat:no-repeat;">阿尔及尔</span><span class="countryNum">100016</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/lagos.jpg'); background-size:100% 60px; background-repeat:no-repeat;">拉各斯</span><span class="countryNum">100017</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/kinshasa.jpg'); background-size:100% 60px; background-repeat:no-repeat;">金沙萨</span><span class="countryNum">100018</span><span class="contryMonty">￥1302</span></li>
-		</ul>
+        <ul></ul>
 		<div style="clear:both;"></div>
 	</div>
 	
 	<!--欧洲-->
 	<div id="ouzhou" class="contryClassZ">
-        <ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/swit.jpg'); background-size:100% 60px; background-repeat:no-repeat;">瑞士</span><span class="countryNum">100019</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/netherlands.jpg'); background-size:100% 60px; background-repeat:no-repeat;">荷兰</span><span class="countryNum">100020</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/riga.jpg'); background-size:100% 60px; background-repeat:no-repeat;">里加</span><span class="countryNum">100021</span><span class="contryMonty">￥1302</span></li>
-		</ul>
-		<ul>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/budapest.jpg'); background-size:100% 60px; background-repeat:no-repeat;">布达佩斯</span><span class="countryNum">100022</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/copenhagen.jpg'); background-size:100% 60px; background-repeat:no-repeat;">哥本哈根</span><span class="countryNum">100023</span><span class="contryMonty">￥1302</span></li>
-			<li><span class="remenCantroyClass" style="background:url('<%=basePath %>tempoImg/serbia.jpg'); background-size:100% 60px; background-repeat:no-repeat;">塞尔维亚</span><span class="countryNum">100024</span><span class="contryMonty">￥1302</span></li>
-		</ul>
+        <ul></ul>
 		<div style="clear:both;"></div>
 	</div>
 	
 	<!-- 免签、落地签国家连接 -->
 	<div style="text-align:right; margin-top:15px; margin-right:10px;"><a href="<%=basePath %>console/wechat/qzOtherCountry.jsp" style="color:#999999;font-size:11px; text-decoration:none;">去查看免签、落地签国家有哪些？</a></div>
+	<!-- <input type="text" id="txtChinese" onblur="query('你好帅')"/> -->
 </div>
 
 <!-- 城市选择 -->
@@ -160,18 +130,7 @@
 		<div id="remenTitle">
 			<span>热门城市</span>	
 		</div>
-		<ul>
-			<li><div class="remenLi">泰国</div></li>
-			<li><div class="remenLi">日本</div></li>
-			<li><div class="remenLi">韩国</div></li>
-			<li><div class="remenLi">新加坡</div></li>
-			<li><div class="remenLi">美国</div></li>
-			<li><div class="remenLi">法国</div></li>
-			<li><div class="remenLi">夏威夷</div></li>
-			<li><div class="remenLi">阿根廷</div></li>
-			<li><div class="remenLi">埃及</div></li>
-			<li><div class="remenLi">内毕罗</div></li>
-		</ul>
+		<ul></ul>
 		<div style="clear:both;"></div>
 	</div>
 	
@@ -179,159 +138,107 @@
 	<div id="CityList">
 				<div id="A-a" class="zimuResult">
 					<div class="zimuTitle"><span>A</span></div>
-					<ul class="cityUL">
-						<li>奥地利</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="B-b" class="zimuResult">
 					<div class="zimuTitle"><span>B</span></div>
-					<ul class="cityUL">
-						<li>巴西</li>
-					</ul>			
+					<ul class="cityUL"></ul>			
 				</div>
 				<div id="C-c" class="zimuResult">
 					<div class="zimuTitle"><span>C</span></div>
-					<ul class="cityUL">
-						<li>朝鲜</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="D-d" class="zimuResult">
 					<div class="zimuTitle"><span>D</span></div>
-					<ul class="cityUL">
-						<li>德国</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="E-e" class="zimuResult">
 					<div class="zimuTitle"><span>E</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="F-f" class="zimuResult">
 					<div class="zimuTitle"><span>F</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="G-g" class="zimuResult">
 					<div class="zimuTitle"><span>G</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="H-h" class="zimuResult">
 					<div class="zimuTitle"><span>H</span></div>
-					<ul class="cityUL">
-						<li>海地</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="I-i" class="zimuResult">
 					<div class="zimuTitle"><span>I</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="J-j" class="zimuResult">
 					<div class="zimuTitle"><span>J</span></div>
-					<ul class="cityUL">
-						<li>吉隆坡</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="K-k" class="zimuResult">
 					<div class="zimuTitle"><span>K</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="L-l" class="zimuResult">
 					<div class="zimuTitle"><span>L</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="M-m" class="zimuResult">
 					<div class="zimuTitle"><span>M</span></div>
-					<ul class="cityUL">
-						<li>马耳他</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="N-n" class="zimuResult">
 					<div class="zimuTitle"><span>N</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="O-o" class="zimuResult">
 					<div class="zimuTitle"><span>O</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="P-p" class="zimuResult">
 					<div class="zimuTitle"><span>P</span></div>
-					<ul class="cityUL">
-						<li>葡萄牙</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="Q-q" class="zimuResult">
 					<div class="zimuTitle"><span>Q</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="R-r" class="zimuResult">
 					<div class="zimuTitle"><span>R</span></div>
-					<ul class="cityUL">
-						<li>日本</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="S-s" class="zimuResult">
 					<div class="zimuTitle"><span>S</span></div>
-					<ul class="cityUL">
-						<li>苏丹</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="T-t" class="zimuResult">
 					<div class="zimuTitle"><span>T</span></div>
-					<ul class="cityUL">
-						<li>泰国</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="U-u" class="zimuResult">
 					<div class="zimuTitle"><span>U</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="V-v" class="zimuResult">
 					<div class="zimuTitle"><span>V</span></div>
-					<ul class="cityUL">
-						<li>啊是大富科技</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="W-w" class="zimuResult">
 					<div class="zimuTitle"><span>W</span></div>
-					<ul class="cityUL">
-						<li>乌兰巴托</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="X-x" class="zimuResult">
 					<div class="zimuTitle"><span>X</span></div>
-					<ul class="cityUL">
-						<li>新西兰</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="Y-y" class="zimuResult">
 					<div class="zimuTitle"><span>Y</span></div>
-					<ul class="cityUL">
-						<li>英格兰</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 				<div id="Z-z" class="zimuResult">
 					<div class="zimuTitle"><span>Z</span></div>
-					<ul class="cityUL">
-						<li>智利</li>
-					</ul>
+					<ul class="cityUL"></ul>
 				</div>
 	</div>
 			
@@ -369,45 +276,43 @@
 <div class="zimuTishi">A</div>
 <script type="text/javascript">
 	$(function(){
+		//图片的切换
 		$(".float").click(function(){
 			resetImg();
-			if($(this).children("span").text()=="亚洲"){
-				$(this).children("img").attr("src","<%=basePath %>console/images/qiuMap02.gif");
-			}else if($(this).children("span").text()=="美洲"){
-				$(this).children("img").attr("src","<%=basePath %>console/images/meizhou02.png");
-			}else if($(this).children("span").text()=="非洲"){
-				$(this).children("img").attr("src","<%=basePath %>console/images/feizhou02.gif");
-			}else if($(this).children("span").text()=="欧洲"){
-				$(this).children("img").attr("src","<%=basePath %>console/images/ouzhou02.png");
-			}
+			if($(this).children("span").text()=="亚洲")$(this).children("img").attr("src","<%=basePath %>console/images/qiuMap02.gif");
+			if($(this).children("span").text()=="美洲")$(this).children("img").attr("src","<%=basePath %>console/images/meizhou02.png");
+			if($(this).children("span").text()=="非洲")$(this).children("img").attr("src","<%=basePath %>console/images/feizhou02.gif");
+			if($(this).children("span").text()=="欧洲")$(this).children("img").attr("src","<%=basePath %>console/images/ouzhou02.png");
 			$(this).children("span").css("color","#56ABE4");
 		});
 		
+		//显示城市选择框
 		$("#cityFindInpt").click(function(){
 			$("#CityCH").fadeIn();
 		});
 		
+		//美洲
 		 $("#mei").click(function () {
 			$("#meizhou").css("display","block");
 			$("#yazhou").css("display","none");
 			$("#feizhou").css("display","none");
 			$("#ouzhou").css("display","none");
 		});
-		
+		//非洲
 		$("#fei").click(function() {
 			$("#feizhou").css("display","block");
 			$("#yazhou").css("display","none");
 			$("#meizhou").css("display","none");
 			$("#ouzhou").css("display","none");
 		});
-		
+		//欧洲
 		$("#ou").click(function() {
 			$("#ouzhou").css("display","block");
 			$("#yazhou").css("display","none");
 			$("#meizhou").css("display","none");
 			$("#feizhou").css("display","none");
 		});
-		
+		//亚洲
 		$("#ya").click(function() {
 			$("#yazhou").css("display","block");
 			$("#ouzhou").css("display","none");
@@ -415,11 +320,62 @@
 			$("#feizhou").css("display","none");
 		});
 		
-		$(".remenCantroyClass").click(function(){
-			var country = $(this).text();
-			window.location.href="<%=basePath %>console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
+		//自动加载热门推荐国家的方法
+		var visaList = "";
+		$.ajax({
+			url:"<%=basePath%>framework/visa/getVisaList.action",
+			type:"POST",
+			data:{},
+			dataType:"json",
+			async:false,
+			success:function(res){
+				console.log(res.aList);
+				if(res.msg==1){
+					var dataList = res.aList;
+					visaList = dataList;
+					for(var i = 0; i<dataList.length; i++){
+						var htmlLi = '<li><span class="remenCantroyClass" onclick="remClickIndex(this)" style="background:url(<%=basePath %>tempoImg/thailand.jpg); background-size:100% 60px; background-repeat:no-repeat;">'+dataList[i].country+'</span><span class="countryNum">'+dataList[i].countryID+'</span><span class="contryMonty">￥'+dataList[i].visaPrice+'</span></li>';
+						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="yz")$("#yazhou ul").append(htmlLi); //推荐的亚洲国家
+						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="mz")$("#meizhou ul").append(htmlLi); //推荐的美洲国家
+						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="fz")$("#feizhou ul").append(htmlLi); //推荐的非洲国家
+						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="oz")$("#ouzhou ul").append(htmlLi); //推荐的欧洲国家
+					}
+				}else{
+					alert("系统错误，请稍后再试！");
+				}
+			},
+			error:function(){}
 		});
+		
+		//加载国家列表
+		for(var i =0; i<visaList.length; i++){
+			var counName = visaList[i].country;
+			var countryID = visaList[i].countryID;
+			var szm = query(counName.substring(0,1));  //调用汉字首字母过去的方法，这个方法在getLetter.js
+			var htmlLi = '<li onclick="liclic(this)"><span class="counNameClass">'+counName+'</span><span class="contryIdNum" style="display:none;">'+countryID+'</span></li>';
+			for(var j=0; j<26; j++){
+				if($("#CityList>.zimuResult>.zimuTitle>span").eq(j).text()==szm){
+					$("#CityList>.zimuResult>.cityUL").eq(j).append(htmlLi);
+				}
+			}
+		}
+		
+		//加载热门国家的选择
+		for(var i=0; i<10; i++){
+			var counName = visaList[i].country;
+			var countryID = visaList[i].countryID;
+			var htmlLi = '<li><div class="remenLi" onclick="remenListClick(this)"><span class="remCountrName">'+counName+'</span><span class="remCountryId">'+countryID+'</span></div></li>';
+			if(visaList[i].qzMode==1){ //只有推荐的才能在这里显示
+				$("#remenCity>ul").append(htmlLi);
+			}
+		}
 	});
+	
+	//热门推荐点击
+	function remClickIndex(inc){
+		var countryId = $(inc).next().text();
+		window.location.href="<%=basePath %>console/wechat/qzOneCoInfo.jsp?countryId="+countryId;
+	}
 	
 	//图片恢复成灰色的样式
 	function resetImg(){
@@ -431,8 +387,7 @@
 		$(".float").eq(2).children("span").css("color","#B6B6B6");	
 		$(".float").eq(3).children("img").attr("src","<%=basePath %>console/images/ouzhou01.png");
 		$(".float").eq(3).children("span").css("color","#B6B6B6");	
-	}
-	
+	}	
 	
 	
 	//百度定位的方法

@@ -15,20 +15,6 @@ $(function(){
 		$("#CityCH").fadeIn();
 	});
 	
-	//城市子类信息选择(热门)
-	$("#CityCH>#remenCity>ul>li>.remenLi").click(function(){
-		var country = $(this).text();
-		var basePathID = $("#basePathID").text();
-		window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
-	});
-	
-	//城市子类信息选择(城市链表)
-	$("#CityCH #CityList>.zimuResult>.cityUL>li").click(function(){
-		var country = $(this).text();
-		var basePathID = $("#basePathID").text();
-		window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
-	});
-	
 	//城市查找中的搜索按钮点击事件
 	$("#finBtn").click(function(){
 		var keyVal = $(".citySearch").val();
@@ -64,23 +50,36 @@ $(function(){
 	
 });
 
+//城市子类信息选择(城市链表)
+function liclic(inc){
+	var countryId = $(inc).children(".contryIdNum").text();
+	var basePathID = $("#basePathID").text();
+	window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryId="+countryId;
+}
+
+//城市子类信息选择(热门)
+function remenListClick(inc){
+	var countryId = $(inc).children(".remCountryId").text();
+	var basePathID = $("#basePathID").text();
+	window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryId="+countryId;
+};
+
 //输入关键字的时候自动索引
 function myFunction() {
 	var keyVal = document.getElementById("citySearch").value;
-	$(".zimuResult>.cityUL>li").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
+	$(".zimuResult>.cityUL>li>.counNameClass").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
 	$("#pipeiValue").text("");
 	for(var i=0; i<$(".chCity").length&&i!=6; i++){
 		var cityname = $(".chCity:eq("+i+")").text();
-		var palnename = $(".chCity:eq("+i+")").next().text();
-		var airCodeName = $.trim($(".chCity:eq("+i+")").next().next().text());
-		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span></div>';
+		var cityNum = $(".chCity:eq("+i+")").next().text();
+		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span><span class="cityClass" style="display:none;">'+cityNum+'</span></div>';
 		$("#pipeiValue").append(dateList);
 	}
 }
 
 //索引出来的结果的点击事件
 function chaRes(inc){
-	var country = $(inc).children(".cityName01").text();//选择的城市名字
+	var countryId = $(inc).children(".cityClass").text();//选择的城市名字
 	var basePathID = $("#basePathID").text();
-	window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
+	window.location.href=basePathID+"console/wechat/qzOneCoInfo.jsp?countryId="+countryId;
 }

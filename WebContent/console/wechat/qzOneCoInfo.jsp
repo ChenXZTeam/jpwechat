@@ -3,6 +3,9 @@
 	String path= request.getContextPath();
 	String basePath= request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ path +"/";
 %>
+<%
+	String countryId = new String(request.getParameter("countryId").getBytes("ISO-8859-1"),"utf-8");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -33,21 +36,44 @@
 <div class="imgBoxClass"><img src="<%=basePath %>console/images/jepImg.png"/></div>
 <div class="countryNameBox"><span class="countryName">日本</span></div>
 <ul class="messageBox">
-	<li><span class="titleClass">入境次数：</span><span class="contornClass">50次</span></li>
-	<li><span class="titleClass">停留天数：</span><span class="contornClass">一年</span></li>
+	<li><span class="titleClass">入境次数：</span><span class="contornClass immigrationOfTimes">50次</span></li>
+	<li><span class="titleClass">停留天数：</span><span class="contornClass sojournTime">一年</span></li>
 	<li><span class="titleClass">签字类型：</span><span class="contornClass">本人</span></li>
-	<li><span class="titleClass">办理时长：</span><span class="contornClass">7天</span></li>
-	<li><span class="titleClass">有效期限：</span><span class="contornClass">5年</span></li>
+	<li><span class="titleClass">办理时长：</span><span class="contornClass elapsedTime">7天</span></li>
+	<li><span class="titleClass">有效期限：</span><span class="contornClass periodOfValidity">5年</span></li>
 	<li><span class="titleClass">费　　用：</span><span class="contornClass payMoney">￥1205</span></li>
-	<li><span class="titleClass">最早可定日期：</span><span class="contornClass">2016-08-30</span></li>
+	<li><span class="titleClass">最早可定日期：</span><span class="contornClass earlyDates">2016-08-30</span></li>
 </ul>
 <div class="jianjieBox">
-	<span class="textContClass">日本位于亚洲大陆东边的太平洋上。整个国土由四个主要岛屿组成，在这四个岛屿的周围还有约4,000多个小岛。日本是一个地势多变、水力资源丰富的国家，由此构成了优美壮丽的景色，那里有山中积雪的湖泊、怪石嶙峋的峡谷、湍急的河流、峻峭的山峰、雄伟的瀑布以及大大小小的温泉，这些引人入胜的旅游景点常年吸引着大量游客来到日本观光。</span>
+	<span class="textContClass touryIntro">日本位于亚洲大陆东边的太平洋上。整个国土由四个主要岛屿组成，在这四个岛屿的周围还有约4,000多个小岛。日本是一个地势多变、水力资源丰富的国家，由此构成了优美壮丽的景色，那里有山中积雪的湖泊、怪石嶙峋的峡谷、湍急的河流、峻峭的山峰、雄伟的瀑布以及大大小小的温泉，这些引人入胜的旅游景点常年吸引着大量游客来到日本观光。</span>
 	<span class="seeMore">展开︾</span>
 </div>
 <a id="qzBtn">申请签证</a>
 <script>
 	$(function(){
+		//根据国家编号查找数据并加载在对应的位置
+		var countryId = "<%=countryId%>";
+		$.ajax({
+			url:"<%=basePath%>framework/visa/findByCountryId.action",
+			type:"POST",
+			data:{"countryId":countryId},
+			dataType:"json",
+			success:function(res){
+				console.log(res.dataList);
+				if(res.msg==1){
+					var data = res.dataList;
+					$(".countryName").text(data[0].country);
+					$(".immigrationOfTimes").text(data[0].immigrationOfTimes);
+					$(".sojournTime").text(data[0].sojournTime);
+					$(".elapsedTime").text(data[0].elapsedTime);
+					$(".periodOfValidity").text(data[0].periodOfValidity);
+					$(".payMoney").text("￥"+data[0].visaPrice);
+					$(".earlyDates").text(data[0].earlyDates);
+					$(".touryIntro").text(data[0].touryIntro);
+				}
+			},error:function(){}
+		});
+		
 		var fasl=true;
 		$(".seeMore").click(function(){
 			if(fasl==true){				

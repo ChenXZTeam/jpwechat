@@ -29,6 +29,8 @@
 	.conteryList ul{list-style-type:none; padding:5px 10px 10px 10px; margin:0px; overflow:hidden; margin-top:5px;}
 	.conteryList ul li{text-align:left; padding:5px 0px; margin-top:5px; color:#666666;}
 	.shouImgBox{margin-top:1px; padding-bottom:10px;}
+	.country_id{display:none;}
+	.cityIDstr{display:none;}
 </style>
 </head>
 
@@ -54,25 +56,15 @@
   <div class="product-wrap">
     <!--案例1-->
     <div class="product show">
-		<div class="conteryBox">
+		<div class="conteryBox mianqCountry">
 			<!--亚洲-->
 			<div class="zhouNameBoxClass">
 				<span class="zhouNameClass">亚洲</span>
 				<span style="clear:both;"></span>
 			</div>
-			<div class="conterListBox">
+			<div class="conterListBox yazhouArea">
 				<div class="conteryList" style="display:block;">
-					<ul>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-					</ul>
+					<ul></ul>
 				</div>
 				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
 			</div>
@@ -82,22 +74,9 @@
 				<span class="zhouNameClass">欧洲</span>
 				<span style="clear:both;"></span>
 			</div>
-			<div class="conterListBox">
+			<div class="conterListBox ouzhouArea">
 				<div class="conteryList">
-					<ul>
-						<li>法国</li>
-						<li>德国</li>
-						<li>英国</li>
-						<li>意大利</li>
-						<li>法国</li>
-						<li>德国</li>
-						<li>英国</li>
-						<li>意大利</li>
-						<li>法国</li>
-						<li>德国</li>
-						<li>英国</li>
-						<li>意大利</li>
-					</ul>
+					<ul></ul>
 				</div>
 				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
 			</div>
@@ -107,19 +86,9 @@
 				<span class="zhouNameClass">美洲</span>
 				<span style="clear:both;"></span>
 			</div>
-			<div class="conterListBox">
+			<div class="conterListBox meizhouArea">
 				<div class="conteryList">
-					<ul>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-					</ul>
+					<ul></ul>
 				</div>
 				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
 			</div>
@@ -129,19 +98,9 @@
 				<span class="zhouNameClass">非洲</span>
 				<span style="clear:both;"></span>
 			</div>
-			<div class="conterListBox">
+			<div class="conterListBox feizhouArea">
 				<div class="conteryList">
-					<ul>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-					</ul>
+					<ul></ul>
 				</div>
 				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
 			</div>
@@ -151,20 +110,9 @@
 				<span class="zhouNameClass">大洋洲</span>
 				<span style="clear:both;"></span>
 			</div>
-			<div class="conterListBox">
+			<div class="conterListBox dyzhouArea">
 				<div class="conteryList">
-					<ul>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>韩国</li>
-						<li>日本</li>
-						<li>中国</li>
-						<li>马来西亚</li>
-					</ul>
+					<ul></ul>
 				</div>
 				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
 			</div>
@@ -173,35 +121,132 @@
     </div>
     <!--案例2-->
     <div class="product">
-		2
+		<div class="conteryBox luodiqCountry">
+			<!--亚洲-->
+			<div class="zhouNameBoxClass">
+				<span class="zhouNameClass">亚洲</span>
+				<span style="clear:both;"></span>
+			</div>
+			<div class="conterListBox yazhouArea">
+				<div class="conteryList" style="display:block;">
+					<ul></ul>
+				</div>
+				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
+			</div>
+			
+			<!--欧洲-->
+			<div class="zhouNameBoxClass">
+				<span class="zhouNameClass">欧洲</span>
+				<span style="clear:both;"></span>
+			</div>
+			<div class="conterListBox ouzhouArea">
+				<div class="conteryList">
+					<ul></ul>
+				</div>
+				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
+			</div>
+			
+			<!--美洲-->
+			<div class="zhouNameBoxClass">
+				<span class="zhouNameClass">美洲</span>
+				<span style="clear:both;"></span>
+			</div>
+			<div class="conterListBox meizhouArea">
+				<div class="conteryList">
+					<ul></ul>
+				</div>
+				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
+			</div>
+			
+			<!--非洲-->
+			<div class="zhouNameBoxClass">
+				<span class="zhouNameClass">非洲</span>
+				<span style="clear:both;"></span>
+			</div>
+			<div class="conterListBox feizhouArea">
+				<div class="conteryList">
+					<ul></ul>
+				</div>
+				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
+			</div>
+			
+			<!--大洋洲-->
+			<div class="zhouNameBoxClass">
+				<span class="zhouNameClass">大洋洲</span>
+				<span style="clear:both;"></span>
+			</div>
+			<div class="conterListBox dyzhouArea">
+				<div class="conteryList">
+					<ul></ul>
+				</div>
+				<div class="shouImgBox"><img src="<%=basePath %>console/images/threeLine.png"/></div>
+			</div>
+		</div>
     </div>
   </div>
   
 </div>
 <script type="text/javascript">
 	$(function(){
+		//自动获取落地签、免签的国家有哪些
+		$.ajax({
+			url:"<%=basePath%>framework/visa/getVisaList.action",
+			type:"POST",
+			data:{},
+			dataType:"json",
+			success:function(res){
+				console.log(res.aList);
+				if(res.msg==1){
+					var dataList = res.aList;
+					for(var i=0; i<dataList.length; i++){
+						var htmlLi = '<li onclick="listClick(this)"><span class="country_name">'+dataList[i].country+'</span><span class="country_id">'+dataList[i].countryID+'</span></li>';
+						if(dataList[i].qzMode==3){//免签
+							if(dataList[i].cotryBelongWhat=="yz")$(".mianqCountry .yazhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（亚洲）
+							if(dataList[i].cotryBelongWhat=="oz")$(".mianqCountry .ouzhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（欧洲）
+							if(dataList[i].cotryBelongWhat=="mz")$(".mianqCountry .meizhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（美洲）
+							if(dataList[i].cotryBelongWhat=="fz")$(".mianqCountry .feizhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（非洲）
+							if(dataList[i].cotryBelongWhat=="dyz")$(".mianqCountry .dyzhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（大洋洲）
+						}else if(dataList[i].qzMode==2){ //落地签
+							if(dataList[i].cotryBelongWhat=="yz")$(".luodiqCountry .yazhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（亚洲）
+							if(dataList[i].cotryBelongWhat=="oz")$(".luodiqCountry .ouzhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（欧洲）
+							if(dataList[i].cotryBelongWhat=="mz")$(".luodiqCountry .meizhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（美洲）
+							if(dataList[i].cotryBelongWhat=="fz")$(".luodiqCountry .feizhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（非洲）
+							if(dataList[i].cotryBelongWhat=="dyz")$(".luodiqCountry .dyzhouArea>.conteryList>ul").append(htmlLi); //对大洲进行分类（大洋洲）
+						}else{
+
+						}
+					}
+				}else{
+					alert("系统错误，请稍后再试！");
+				}
+			},
+			error:function(){}
+		});
+		//收起和展开的方法
 		$(".shouImgBox").click(function(){			
 			if(!$(this).prev().hasClass("nowShow"))$(".nowShow").slideUp("slow");
 			$(".conteryList").removeClass("nowShow");
 			$(this).prev().addClass("nowShow");
 			$(".nowShow").slideToggle("slow");
 		});
-		//选中的国家
-		$(".conteryList").click(function(){
-			var country = $(this).text();
-			window.location.href="<%=basePath%>console/wechat/qzOneCoInfo.jsp?countryName="+country+"&countryId=213543";
-		});
 	});
 	
+//国家列表的点击事件
+function listClick(inc){
+	var countryId = $(inc).children(".country_id").text();
+	window.location.href="<%=basePath%>console/wechat/qzOneCoInfo.jsp?countryId="+countryId;
+}
+
 //输入关键字的时候自动索引
 function myFunction() {
 	var keyVal = document.getElementById("citySearch").value;
-	$(".conteryList>ul>li").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
+	$(".conteryList>ul>li>.country_name").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
 	$("#findResult").text("");
 	$("#findResult").css("display","block");
 	for(var i=0; i<$(".chCity").length&&i!=10; i++){
 		var contrayName = $(".chCity:eq("+i+")").text();
-		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+contrayName+'</span></div>';
+		var cityIDstr = $(".chCity:eq("+i+")").next().text();
+		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+contrayName+'</span><span class="cityIDstr">'+cityIDstr+'</span></div>';
 		$("#findResult").append(dateList);
 	}
 }
@@ -209,8 +254,8 @@ function myFunction() {
 //索引出来的结果的点击事件
 function chaRes(inc){
 	var countryName = $(inc).children(".cityName01").text();
-	alert(countryName);
-	window.location.href="<%=basePath%>console/wechat/qzOneCoInfo.jsp?countryName="+countryName+"&countryId=213543";
+	var cityIDstr = $(inc).children(".cityIDstr").text();
+	window.location.href="<%=basePath%>console/wechat/qzOneCoInfo.jsp?countryId="+cityIDstr;
 	$("#findResult").css("display","none");
 }
 </script>

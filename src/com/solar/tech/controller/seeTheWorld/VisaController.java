@@ -47,15 +47,22 @@ public class VisaController {
 	private VisaService visaService;
 	
 	/**
-	 * 功能描述：获取Visa列表 并返回到前端
+	 * 功能描述：获取Visa在签证首页展示的热门列表 并返回到前端
 	 *
 	 * @return List<Visa>
 	 */
 	@RequestMapping("/getVisaList.action")
 	@ResponseBody
-	public List<Visa> getVisaList(List<Visa> ss){
-		return ss;
-		//return this.visaService.getVisaList();
+	public Map<String, Object> getVisaList(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Visa> aList = visaService.getVisaList();
+		if(aList.size()>0){
+			map.put("aList", aList);
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
+		return map;
 	}
 
 	/**
@@ -146,11 +153,18 @@ public class VisaController {
 	 *
 	 * @return String
 	 */
-	@RequestMapping("/findByCountry.action")
-	public String findByCountry(Visa visa,Map<String, Object> map){
-		//List<Visa> list = this.visaService.findByCountry(visa);
-		//map.put("list", list);
-		return "/SeeTheWorld/VisaList";
+	@RequestMapping("/findByCountryId.action")
+	@ResponseBody
+	public Map<String, Object> findByCountry(String countryId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Visa> dataList = visaService.findByCountry(countryId);
+		if(dataList.size()>0){
+			map.put("msg",1);
+			map.put("dataList", dataList);			
+		}else{
+			map.put("msg",0);
+		}
+		return map;
 	}
 	
 	/**

@@ -19,7 +19,7 @@
 #CityCH #CityList>.zimuResult>.zimuTitle{background:#eeeeee; padding:3px 0px 3px 10px; overflow:hidden; /*border-bottom:#CCCCCC solid 1px;*/}
 #CityCH #CityList>.zimuResult>.zimuTitle>span{ font-size:12px; color:#999999;}
 #CityCH #CityList>.zimuResult>.cityUL{padding:0px 0px 5px 0px; margin:0px; list-style-type:none;}
-#CityCH #CityList>.zimuResult>.cityUL>li{color:#999999; font-size:12px; padding:5px 5px 0px 10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);}
+#CityCH #CityList>.zimuResult>.cityUL>li{color:#999999; font-size:12px; padding:8px 5px 2px 10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0); overflow:hidden;}
 #CityCH #CityList>.zimuResult>.cityUL>li>.cityName{display:block;}
 #CityCH #CityList>.zimuResult>.cityUL>li>.planeName{display:none;}
 #CityCH #CityList>.zimuResult>.cityUL>li>.airportCode{display:none;}
