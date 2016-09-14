@@ -76,7 +76,7 @@ public class VisaController {
 	@ResponseBody
 	public Map<String, Object> addVisa(Visa visa,HttpServletRequest request, HttpServletResponse response){
 		Map<String, Object> map = new HashMap<String, Object>();
-		Enumeration<String> paramNames = request.getParameterNames();  
+		Enumeration<String> paramNames = request.getParameterNames();   
 	    // 通过循环将表单参数放入键值对映射中  
 	    while(paramNames.hasMoreElements()) {  
 	       String key = paramNames.nextElement();  
