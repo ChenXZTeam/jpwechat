@@ -96,24 +96,19 @@ public class VisaController {
 	       if(key.equals("qzMode"))visa.setQzMode(value); 
 	       if(key.equals("TouryIntro"))visa.setTouryIntro(value);
 	    }
-	    String newNum = visaService.fingMaxNumVisa();
-	    if(newNum==null||newNum.equals("")){
-	    	newNum = "1";
-	    }else{
-	    	newNum = (Integer.parseInt(newNum)+1)+"";
-	    }
+	    int newNum = visaService.fingMaxNumVisa();
+	    newNum = (newNum==0)?1:(newNum+1);
 	    visa.setNewDataNum(newNum);
 	    String countryIDnum = visaService.bornCountryNum(newNum);
 	    visa.setCountryID(countryIDnum);
 	    int i = visaService.addVisa(visa);
 	    if(i==1){
-	    	System.out.println("国家编辑成功");
+	    	System.out.println("VisaController.java:106=====>>>国家编辑成功");
 	    	map.put("msg","1");
 	    }else{
 	    	map.put("msg","0");
 	    }
 		return map;
-		//return this.visaService.addVisa(visa);
 	}
 	
 	/**
@@ -290,9 +285,13 @@ public class VisaController {
 	       if(key.equals("payTry"))visaOrder.setTotalCost(value);//总费用
 	       if(key.equals("countryName"))visaOrder.setApplyCountry(value);//申请签证的国家
 	    } 
-	    int MaxNum = Integer.parseInt(visaService.fingMaxNum());
-	    visaOrder.setNewOrderNum((MaxNum+1)+"");
+	    int MaxNum = visaService.fingMaxNum();
+	    MaxNum = (MaxNum==0)?1:(MaxNum+1);
+	    visaOrder.setNewOrderNum(MaxNum);
 		String maxOrderNum = visaService.fingMaxOrderNum();
+		if(maxOrderNum==null){
+			maxOrderNum = "RDOD201608020001";
+		}
 	    String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
 	    visaOrder.setOrderNum(orderNum);
 	    visaOrder.setPaystatus("0");//支付状态

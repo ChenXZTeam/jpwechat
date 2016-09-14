@@ -90,14 +90,14 @@ public class VisaOrder {
 	private String IDcase;
 	
 	//标识最新插入数据的字段
-	@Column(name="newOrderNum",length=10)
-	private String newOrderNum;
+	@Column(name="newOrderNum",length=10 ,columnDefinition="INT default 0")
+	private int newOrderNum;
 	
-	public String getNewOrderNum() {
+	public int getNewOrderNum() {
 		return newOrderNum;
 	}
 
-	public void setNewOrderNum(String newOrderNum) {
+	public void setNewOrderNum(int newOrderNum) {
 		this.newOrderNum = newOrderNum;
 	}
 

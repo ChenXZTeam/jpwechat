@@ -210,11 +210,15 @@ public class VisaService {
 	 * @title 查找最新插入的数据
 	 * @return map
 	 */
-	public String fingMaxNum(){
+	public int fingMaxNum(){
 		 String hql = "SELECT MAX(uinfo.newOrderNum) FROM VisaOrder as uinfo";
-		 List<String> MaxorderNum = this.gDao.find(hql);
-		 String MaxNum = MaxorderNum.get(0);
-		 return MaxNum;
+		 List<Integer> MaxorderNum = this.gDao.find(hql);
+		 if(MaxorderNum.get(0)==null){
+			 return 0;
+		 }else{
+			 int MaxNum = MaxorderNum.get(0);
+			 return MaxNum;
+		 }
 	}
 	
 	/**
@@ -224,28 +228,36 @@ public class VisaService {
 	public String fingMaxOrderNum(){ 
 		 String hql = "SELECT (uOrder.orderNum) FROM VisaOrder as uOrder WHERE newOrderNum = (SELECT MAX(uinfo.newOrderNum) FROM VisaOrder as uinfo)";
 		 List<String> MaxorderNum = this.gDao.find(hql);
-		 String MaxNum = MaxorderNum.get(0);
-		 return MaxNum;
+		 if(MaxorderNum.size()==0){
+			 return null;
+		 }else{
+			 String MaxNum = MaxorderNum.get(0);
+			 return MaxNum;
+		 }
 	}
 	
 	/**
 	 * 查找最新插入数据的最大编号用于生成国家编号
 	 * @return
 	 */
-	public String fingMaxNumVisa(){
+	public int fingMaxNumVisa(){
 		 String hql = "SELECT MAX(uinfo.newDataNum) FROM Visa as uinfo";
-		 List<String> MaxorderNum = this.gDao.find(hql);
-		 String MaxNum = MaxorderNum.get(0);
-		 return MaxNum;
+		 List<Integer> MaxorderNum = this.gDao.find(hql);
+		 if(MaxorderNum.get(0)==null){
+			 return 0;
+		 }else{
+			 int MaxNum = MaxorderNum.get(0);
+			 return MaxNum;
+		 }
 	}
 	
 	/**
 	 * 自动生成国家编号的方法。因为有的国家有中文和英文多种语言的名字。所以用编号来代替该国家
 	 * @return
 	 */
-	public String bornCountryNum(String num){
+	public String bornCountryNum(int num){
 		String countryNum = "";
-		 int zeroNum = 5-num.length();
+		 int zeroNum = 5-(num+"").length();
 		 for(int i=0;i<zeroNum;i++){
 			 countryNum += "0";
 		 }

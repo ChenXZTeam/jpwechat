@@ -85,13 +85,13 @@ public class Visa {
 	private String TouryIntro;
 	
 	//标识数据是否最新插入
-	@Column(name="newDataNum", length=10)
-	private String newDataNum;
+	@Column(name="newDataNum", length=10 ,columnDefinition="INT default 0")
+	private int newDataNum;
 	
-	public String getNewDataNum() {
+	public int getNewDataNum() {
 		return newDataNum;
 	}
-	public void setNewDataNum(String newDataNum) {
+	public void setNewDataNum(int newDataNum) {
 		this.newDataNum = newDataNum;
 	}
 	public String getTouryIntro() {
