@@ -73,7 +73,7 @@ public class VisaOrder {
 	@Column(name="userID",length=50)
 	private String userID;
 	
-	//付款状态
+	//付款状态（0、未支付，1、已支付）
 	@Column(name="paystatus",length=5)
 	private String paystatus;
 	
@@ -97,6 +97,14 @@ public class VisaOrder {
 	@Column(name="deleteSige",length=5 ,columnDefinition="INT default 1")
 	private String deleteSige;
 	
+	public String getDeleteSige() {
+		return deleteSige;
+	}
+
+	public void setDeleteSige(String deleteSige) {
+		this.deleteSige = deleteSige;
+	}
+
 	public int getNewOrderNum() {
 		return newOrderNum;
 	}

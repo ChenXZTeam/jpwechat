@@ -326,7 +326,10 @@ public class VisaService {
 	 * @return void
 	 */
 	//void updateVisaOrder(VisaOrder visaOrder);
-	
+	public int updateVisaOrder(VisaOrder visaOrder){
+		gDao.update(visaOrder);
+		return 1;
+	}
 	/**
 	 * 功能描述：删除指定的VisaOrder
 	 *
@@ -334,7 +337,6 @@ public class VisaService {
 	 *
 	 * @return int
 	 */
-	//int deleteVisaOrder(String ids);
 	public int deleteVisaOrder(String orderNum){
 		try {
 			if(orderNum != null){

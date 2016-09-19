@@ -14,110 +14,113 @@
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript"src="<%=basePath%>scripts/common/jquery-easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript"src="<%=basePath %>scripts/common/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<style>
+	.seachBox{margin:10px 0px;}
+	.seachBox ul{margin:0px; padding:0px; list-style-type:none; overflow:hidden;}
+	.seachBox ul li{float:left; margin-left:10px;}
+	.seachBox ul li span{}
+	.seachBox ul li input{height:24px; outline:none; border:1px solid #cccccc; padding-left:10px;}
+	.seachBox ul li a{padding:5px 20px; font-size:13px; border:1px solid blue; color:blue; cursor:pointer; display:block; text-align:center;}
+	.titleClass{width:100px; font-size:12px; color:#666666;}
+	textarea{width:100%; height:100px; color:#777777;}
+	input{height:20px; color:#777777;}
+	select{width:164px; height:23px; color:#777777;}
+	.dispayNoneClass{display:none;}
+</style>
 </head>
 <body>
-<!-- <div class="seachBox">
+<div class="seachBox">
 	<ul>
 		<li><span></span><input type="text" id="yuyueNumber" placeholder="请输入预约编号"/></li>
 		<li><a onclick="query()">搜索</a></li>
 	</ul>
-</div> -->
+</div>
 <div style="height:25px; background-color:#fff;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit(this)">删除</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
-	<a href="<%=basePath%>console/framework/country/qz_inpCountry.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+	<a href="<%=basePath%>console/framework/order/orderInput.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
 </div>
 <div style="width:100%;height:420px;">
 	<div id="orderListBox" style="width:100%;height:420px;">
 	</div>
 </div>
-<div id="upInfoBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
+<div id="upInfoBox" class="easyui-dialog" style="width:720px; height:350px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
 		<table border="0" cellpadding="0" cellspacing="10">
 			<tr class="dispayNoneClass">
 				<td colspan="4"><input name="visaID"/></td>
 			</tr>
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="adminDel"/></td>
+				<td colspan="4"><input name="orderNum"/></td>
 			</tr>
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="countryID"/></td>
+				<td colspan="4"><input name="visaOrderID"/></td>
 			</tr>
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="newDataNum"/></td>
+				<td colspan="4"><input name="newOrderNum"/></td>
 			</tr>
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="newDataNum"/></td>
+				<td colspan="4"><input name="userID"/></td>
+			</tr>
+			<tr class="dispayNoneClass">
+				<td colspan="4"><input name="deleteSige"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">国家名：</td>
-				<td><input name="country"/></td>
-				<td class="titleClass">所属大洲：</td>
-				<td>
-					<select name="cotryBelongWhat">
-						<option value="yz">亚洲</option>
-						<option value="mz">美洲</option>
-						<option value="oz">欧洲</option>
-						<option value="fz">非洲</option>
-						<option value="dyz">大洋洲</option>
-					</select>
-				</td>
+				<td class="titleClass">申请人：</td>
+				<td><input name="contactsName"/></td>
+				<td class="titleClass">手机号：</td>
+				<td><input name="contactsPhone" /></td>
 			</tr>
 			<tr>
-				<td class="titleClass">签证价格：</td>
-				<td colspan="3"><input name="visaPrice"/></td>
+				<td class="titleClass">申请价格：</td>
+				<td colspan="3"><input name="totalCost"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">入境次数：</td>
-				<td><input name="immigrationOfTimes"/></td>
-				<td class="titleClass">有效期限：</td>
-				<td><input name="periodOfValidity"/></td>
+				<td class="titleClass">工作状态：</td>
+				<td><input name="customerType"/></td>
+				<td class="titleClass">性别：</td>
+				<td><input name="contactsSex"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">逗留天数：</td>
-				<td><input name="sojournTime"/></td>
-				<td class="titleClass">是否推荐热门：</td>
-				<td>
-					<select name="remenContry">
-						<option value="0">否</option>
-						<option value="1">是</option>
-					</select>
-				</td>
+				<td class="titleClass">E-mail：</td>
+				<td><input name="contactsEmail"/></td>
+				<td class="titleClass">客户类型：</td>
+				<td><input name="trayTypeIpnt"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">办理时长：</td>
-				<td><input name="elapsedTime"/></td>
-				<td class="titleClass">最早可定日期：</td>
-				<td><input name="earlyDates"/></td>
+				<td class="titleClass">申请国家：</td>
+				<td><input name="applyCountry"/></td>
+				<td class="titleClass">证件号码：</td>
+				<td><input name="idcase" id="idcase" type="text"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">签证类型：</td>
-				<td><input name="visaType" type="text"/></td>
-				<td class="titleClass">签证政策：</td>
-				<td>
-					<select name="qzMode">
+				<td class="titleClass">配送方式：</td>
+				<td><input name="deliveryMethod" type="text"/></td>
+				<td class="titleClass">配送地址：</td>
+				<td><input name="deliveryAddress"/></td>
+					<!-- <select name="qzMode">
 						<option value="1">没有特殊政策</option>
 						<option value="2">落地签</option>
 						<option value="3">免签</option>
+					</select> -->
+			</tr>
+			<tr>
+				<td class="titleClass">支付状态：</td>
+				<td>
+					<select name="paystatus">
+						<option value="0">未支付</option>
+						<option value="1">已支付</option>
 					</select>
 				</td>
-			</tr>
-			<tr>
-				<td class="titleClass">受理范围：</td>
-				<td colspan="3"><textarea name="scopeOfAcceptance"></textarea></td>
-			</tr>
-			<tr>
-				<td class="titleClass">服务内容：</td>
-				<td colspan="3"><textarea name="serviceContent"></textarea></td>
-			</tr>
-			<tr>
-				<td class="titleClass">办理流程：</td>
-				<td colspan="3"><textarea name="immigrationFlow"></textarea></td>
-			</tr>
-			<tr>
-				<td class="titleClass">风景介绍：</td>
-				<td colspan="3"><textarea name="touryIntro"></textarea></td>
+				<td class="titleClass">申请进度：</td>
+				<td>
+					<select name="progress">
+						<option value="0">预约中</option>
+						<option value="1">进行中</option>
+						<option value="2">已完成</option>
+					</select>
+				</td>
 			</tr>
 		</table>
 	</form>
@@ -182,12 +185,7 @@ function removeit(){  //删除
 	if (rows == undefined||rows == null||rows == "") {
          $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
          return false;
-    }/*  
-    if(rows.length > 1){
-         $.messager.alert('操作提示', "只能删除一条数据", 'warning');
-         return false;
-    } */
-    //alert(row.country);
+    }
 	$.messager.confirm('确认', '真的要删除这些数据吗?', function (r) {
           if (r) {
                     if (rows) {
@@ -217,24 +215,23 @@ function removeit(){  //删除
 
 //修改信息
 function toUpdate(){  //弹出修改框
-           var row = $('#orderListBox').datagrid('getSelected');
-           var rows = $('#orderListBox').datagrid('getSelections');	
-           console.log(row);
-           if (row == undefined||row == null||row=="") {
-             	$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
-             	return;
-            } 
-            if(rows.length>1){
-            	$.messager.alert('操作提示', "请选择一条数据！", 'warning');
-             	return false;
-            } 	 
-	        $('#upInfoBox').dialog('open').dialog('setTitle','修改订单信息');
-	        $('#fm').form('load',row);
+       var rows = $('#orderListBox').datagrid('getSelections');	
+       console.log(rows);
+       if (rows == undefined||rows == null||rows == "") {
+           $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+           return;
+       } 
+       if(rows.length>1){
+            $.messager.alert('操作提示', "请选择一条数据！", 'warning');
+            return false;
+       } 	 
+	   $('#upInfoBox').dialog('open').dialog('setTitle','修改订单信息');
+	   $('#fm').form('load',rows[0]);
 }
 //确认修改信息的保存按钮	    
 function saveBean(){ 	
       $('#fm').form('submit',{
-		       url: "<%=basePath%>framework/visa/updateVisa.action",
+		       url: "<%=basePath%>framework/visa/updateVisaOrder.action?idcase="+$('#idcase').val(),
 		       onSubmit: function(){
 		           return $(this).form('validate');
 		       },
@@ -257,6 +254,25 @@ function details(row){
 			var str = JSON.stringify(row); 
 			window.location.href="<%=basePath%>console/framework/order/viewDetails.jsp?str="+str;		
 	}
+}
+
+function shows(){ //查看
+		    var row = $('#orderListBox').datagrid('getSelected');
+		    var rows = $('#orderListBox').datagrid('getSelections');
+		    if (row == undefined) {
+             		$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+             		return;
+             	 } 
+            if(rows.length>1){
+            	$.messager.alert('操作提示', "请选择一条数据！", 'warning');
+             	return false;
+            }  
+			if (row){
+				console.log(row);
+				var str = JSON.stringify(row); 
+				console.log(str);
+				window.location.href="<%=basePath%>console/framework/order/viewDetails.jsp?str="+str;
+			}
 }
 
 //查找的方法

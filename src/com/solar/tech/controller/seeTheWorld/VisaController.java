@@ -328,6 +328,7 @@ public class VisaController {
 	    visaOrder.setOrderNum(orderNum);
 	    visaOrder.setPaystatus("0");//支付状态
 	    visaOrder.setProgress("0");//预约中
+	    visaOrder.setDeleteSige("1");//默认不删除
 	    int i = visaService.addVisaOrder(visaOrder);
 	    if(i==1){
 	    	Send106msg sender = new Send106msg();
@@ -353,8 +354,12 @@ public class VisaController {
 	 */
 	@RequestMapping("/updateVisaOrder.action")
 	@ResponseBody
-	public void updateVisaOrder(VisaOrder visaOrder){
-		//this.visaService.updateVisaOrder(visaOrder);
+	public Map<String, Object> updateVisaOrder(VisaOrder visaOrder,String idcase){
+		Map<String, Object> map = new HashMap<String, Object>();
+		visaOrder.setIDcase(idcase); 
+		visaService.updateVisaOrder(visaOrder);
+		map.put("state", 1);
+		return map;
 	}
 	
 	/**

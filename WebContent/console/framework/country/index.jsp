@@ -271,6 +271,25 @@ function details(row){
 	}
 }
 
+function shows(){ //查看
+		    var row = $('#countryListBox').datagrid('getSelected');
+		    var rows = $('#countryListBox').datagrid('getSelections');
+		    if (row == undefined) {
+             		$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+             		return;
+             	 } 
+            if(rows.length>1){
+            	$.messager.alert('操作提示', "请选择一条数据！", 'warning');
+             	return false;
+            }  
+			if (row){
+				console.log(row);
+				var str = JSON.stringify(row); 
+				console.log(str);
+				window.location.href="<%=basePath%>console/framework/country/qz_viewdetails.jsp?str="+str;
+			}
+}
+
 //查找的方法
 function query(){
 	var countryName = $("#countryNameIdBox").val();	 

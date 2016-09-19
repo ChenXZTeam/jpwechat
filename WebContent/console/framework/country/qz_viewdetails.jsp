@@ -89,7 +89,7 @@ $(function(){
 	 $(".qzType").text(obj.visaType); //签证类型
 	 $(".moneyCost").text("￥"+obj.visaPrice); //签证价格
 	 $(".shouliArea").text(obj.scopeOfAcceptance); //受理范围
-	 $(".banliLC").text(obj.immigrationFlow+"会计师的恢复健康复活卡死机货到付款喀什地方哈萨克的风景好看杀得快放假哈开始的分开就爱好是打飞机阿克苏的复活卡啥地方看见爱上对方卡斯加对方会卡死地方看见爱上对方卡上的发挥"); //办理流程
+	 $(".banliLC").text(obj.immigrationFlow); //办理流程
 	 $(".serviceCont").text(obj.serviceContent); //服务内容
 	 $(".fengjText").text(obj.touryIntro); //风景介绍
 });
