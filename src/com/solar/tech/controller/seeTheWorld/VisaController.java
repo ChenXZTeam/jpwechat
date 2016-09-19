@@ -3,6 +3,7 @@ package com.solar.tech.controller.seeTheWorld;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import com.solar.tech.bean.VisaOrder;
 import com.solar.tech.service.VisaService;
 import com.solar.tech.service.userOrderService;
 import com.solar.tech.utils.Send106msg;
+import com.solar.tech.utils.SystemOutFunc;
 
 /**
  * 类名：VisaController 
@@ -45,19 +47,20 @@ public class VisaController {
 	private userOrderService OrderService;
 	@Resource
 	private VisaService visaService;
+	SystemOutFunc sys = new SystemOutFunc();
 	
 	/**
-	 * 功能描述：获取Visa在签证首页展示的热门列表 并返回到前端
+	 * 功能描述：获取Visa在签证全部列表数据 并返回到前端
 	 *
 	 * @return List<Visa>
 	 */
 	@RequestMapping("/getVisaList.action")
 	@ResponseBody
-	public Map<String, Object> getVisaList(){
+	public Map<String, Object> getVisaList(int page, int rows){
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Visa> aList = visaService.getVisaList();
-		if(aList.size()>0){
-			map.put("aList", aList);
+		map = visaService.getVisaList(page, rows);
+		sys.SysOutInfo("VisaController", "61", map.toString()); 
+		if(map.size()>0){
 			map.put("msg", 1);
 		}else{
 			map.put("msg", 0);
@@ -94,6 +97,7 @@ public class VisaController {
 	       if(key.equals("shouArea"))visa.setScopeOfAcceptance(value); 
 	       if(key.equals("banliTech"))visa.setImmigrationFlow(value); 
 	       if(key.equals("qzMode"))visa.setQzMode(value); 
+	       if(key.equals("remenContry"))visa.setRemenContry(value); 
 	       if(key.equals("TouryIntro"))visa.setTouryIntro(value);
 	    }
 	    int newNum = visaService.fingMaxNumVisa();
@@ -122,10 +126,23 @@ public class VisaController {
 	 */
 	@RequestMapping("/deleteVisa.action")
 	@ResponseBody
-	public int deleteVisa(String ids){
-		return 0;
-		//return this.visaService.deleteVisa(ids);
-	}
+	public Map<String, Object> deleteOrder(String countryID) {
+	     Map<String, Object> map = new HashMap<String, Object>(); 
+	     try {
+	    	 int i = visaService.deleteOrder(countryID);
+	    	 if(i == 1){
+	    		 map.put("state", 1);
+				 map.put("msg", "success");
+				 return map;
+	    	 }
+			 map.put("state", 0);
+			 map.put("msg", "数据删除失败");
+	     } catch (Exception e) {
+	    	 map.put("state", -1);
+	    	 map.put("msg", e.getMessage());
+	     }
+	     return map;
+	   }
 	
 	/**
 	 * 功能描述：接收前端传来的visa对象，根据id在数据库中更新此对象
@@ -136,8 +153,11 @@ public class VisaController {
 	 */
 	@RequestMapping("/updateVisa.action")
 	@ResponseBody
-	public void updateVisa(Visa visa){
-		//this.visaService.updateVisa(visa);
+	public Map<String, Object> updateVisa(Visa visa){
+		Map<String, Object> map = new HashMap<String, Object>();
+		visaService.updateVisaSer(visa);
+		map.put("state", 1);
+		return map;
 	}
 	
 	/**
@@ -169,12 +189,17 @@ public class VisaController {
 	 * @param map
 	 *
 	 * @return String
+	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/findByID.action")
-	public String findByID(String id,Map<String, Object> map){
-		//Visa visa = this.visaService.findByID(id);
-		//map.put("visa", visa);
-		return "/SeeTheWorld/VisaContent";
+	@RequestMapping("/findVisa.action")
+	@ResponseBody
+	public Map<String, Object> findVisa(String countryName,int page, int rows,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
+		Map<String, Object> map =new HashMap<String, Object>();
+		countryName = new String(countryName.getBytes("iso8859-1"),"utf-8");
+		map = visaService.findVisa(countryName, page, rows);
+		sys.SysOutInfo("VisaController", "199", countryName+"/"+page+"/"+rows); 
+		//System.out.println(countryName+"/"+page+"/"+rows);
+		return map;
 	}
 
 	/**
@@ -252,9 +277,16 @@ public class VisaController {
 	 */
 	@RequestMapping("/getVisaOrderList.action")
 	@ResponseBody
-	public List<VisaOrder> getVisaOrderList(List<VisaOrder> ss){
-		return ss;
-		//return this.visaService.getVisaOrderList();
+	public Map<String, Object> getVisaOrderList(int page, int rows){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = visaService.getVisaOrderList(page, rows);
+		sys.SysOutInfo("VisaController", "283", map.toString()); 
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
+		return map;
 	}
 	
 	/**
@@ -334,9 +366,22 @@ public class VisaController {
 	 */
 	@RequestMapping("/deleteVisaOrder.action")
 	@ResponseBody
-	public int deleteVisaOrder(String ids){
-		return 0;
-		//return this.visaService.deleteVisaOrder(ids);
+	public Map<String, Object> deleteVisaOrder(String orderNum){
+		Map<String, Object> map = new HashMap<String, Object>(); 
+	     try {
+	    	 int i = visaService.deleteVisaOrder(orderNum);
+	    	 if(i == 1){
+	    		 map.put("state", 1);
+				 map.put("msg", "success");
+				 return map;
+	    	 }
+			 map.put("state", 0);
+			 map.put("msg", "数据删除失败");
+	     } catch (Exception e) {
+	    	 map.put("state", -1);
+	    	 map.put("msg", e.getMessage());
+	     }
+	     return map;
 	}
 
 	/**

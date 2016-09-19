@@ -37,7 +37,7 @@ public class DomainService {
 	}
 
 	public int getDomainNum(){
-		return dao.count(Domain.class).intValue();
+		return dao.count(Domain.class,"").intValue();
 	}
 	public List<Domain>getDomainPage(int page,int rows){
 		List<Domain> domains=new ArrayList<Domain>();

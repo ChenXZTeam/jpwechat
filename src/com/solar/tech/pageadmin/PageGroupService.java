@@ -75,7 +75,7 @@ public class PageGroupService {
 		List<PageModule> pageModules = dao.findByPage(
 				"from PageModule p order by sortNum desc,moduleId asc", page,
 				rows);
-		Long total = dao.count(PageModule.class);
+		Long total = dao.count(PageModule.class,"");
 		map.put("rows", pageModules);
 		map.put("total", total);
 		return map;

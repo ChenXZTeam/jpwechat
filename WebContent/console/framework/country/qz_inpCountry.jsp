@@ -47,13 +47,21 @@
 		<tr>
 			<td>签证类型：</td>
 			<td><input id="qzType" type="text"/></td>
-			<td>签证方式：</td>
+			<td>签证政策：</td>
 			<td>
 				<select id="qzMode">
-					<option value="1">热门推荐</option>
+					<option value="1">没有特殊政策</option>
 					<option value="2">落地签</option>
 					<option value="3">免签</option>
-					<option value="4">无</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>是否推荐热门：</td>
+			<td colspan="3">
+				<select id="remenContry">
+					<option value="0">否</option>
+					<option value="1">是</option>
 				</select>
 			</td>
 		</tr>
@@ -96,6 +104,7 @@
 					"shouArea":$("#shouArea").val(),
 					"banliTech":$("#banliTech").val(),
 					"qzMode":$("#qzMode").val(),
+					"remenContry":$("#remenContry").val(),
 					"TouryIntro":$("#TouryIntro").val()
 				},
 				dataType:"json",

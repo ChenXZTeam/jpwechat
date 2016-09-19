@@ -325,20 +325,20 @@
 		$.ajax({
 			url:"<%=basePath%>framework/visa/getVisaList.action",
 			type:"POST",
-			data:{},
+			data:{"page":1,"rows":10000},
 			dataType:"json",
 			async:false,
 			success:function(res){
-				console.log(res.aList);
+				console.log(res.vList);
 				if(res.msg==1){
-					var dataList = res.aList;
+					var dataList = res.vList;
 					visaList = dataList;
 					for(var i = 0; i<dataList.length; i++){
 						var htmlLi = '<li><span class="remenCantroyClass" onclick="remClickIndex(this)" style="background:url(<%=basePath %>tempoImg/thailand.jpg); background-size:100% 60px; background-repeat:no-repeat;">'+dataList[i].country+'</span><span class="countryNum">'+dataList[i].countryID+'</span><span class="contryMonty">￥'+dataList[i].visaPrice+'</span></li>';
-						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="yz")$("#yazhou ul").append(htmlLi); //推荐的亚洲国家
-						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="mz")$("#meizhou ul").append(htmlLi); //推荐的美洲国家
-						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="fz")$("#feizhou ul").append(htmlLi); //推荐的非洲国家
-						if(dataList[i].qzMode==1&&dataList[i].cotryBelongWhat=="oz")$("#ouzhou ul").append(htmlLi); //推荐的欧洲国家
+						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="yz")$("#yazhou ul").append(htmlLi); //推荐的亚洲国家
+						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="mz")$("#meizhou ul").append(htmlLi); //推荐的美洲国家
+						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="fz")$("#feizhou ul").append(htmlLi); //推荐的非洲国家
+						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="oz")$("#ouzhou ul").append(htmlLi); //推荐的欧洲国家
 					}
 				}else{
 					alert("系统错误，请稍后再试！");
@@ -365,7 +365,7 @@
 			var counName = visaList[i].country;
 			var countryID = visaList[i].countryID;
 			var htmlLi = '<li><div class="remenLi" onclick="remenListClick(this)"><span class="remCountrName">'+counName+'</span><span class="remCountryId">'+countryID+'</span></div></li>';
-			if(visaList[i].qzMode==1){ //只有推荐的才能在这里显示
+			if(visaList[i].remenContry==1){ //只有推荐的才能在这里显示
 				$("#remenCity>ul").append(htmlLi);
 			}
 		}

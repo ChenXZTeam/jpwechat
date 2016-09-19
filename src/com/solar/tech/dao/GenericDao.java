@@ -351,8 +351,10 @@ public class GenericDao{
 		}
 	}
 	
-	public <T> Long count(Class<T> c) {
-		String hql = "from " + c.getSimpleName();
+	public <T> Long count(Class<T> c,String hql) {
+		if(hql.equals("")||hql==""||hql==null){
+			hql = "from " + c.getSimpleName();
+		}
 		Query q = getSession().createQuery(hql);
 		return getRows(q);
 	}

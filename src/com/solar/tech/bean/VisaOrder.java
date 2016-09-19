@@ -93,6 +93,10 @@ public class VisaOrder {
 	@Column(name="newOrderNum",length=10 ,columnDefinition="INT default 0")
 	private int newOrderNum;
 	
+	//删除标识
+	@Column(name="deleteSige",length=5 ,columnDefinition="INT default 1")
+	private String deleteSige;
+	
 	public int getNewOrderNum() {
 		return newOrderNum;
 	}

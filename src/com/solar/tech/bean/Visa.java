@@ -80,6 +80,10 @@ public class Visa {
 	@Column(name="qzMode", length=5)
 	private String qzMode;
 	
+	//是否推荐热门(1、推荐  0、不推荐)
+	@Column(name="remenContry", length=5 ,columnDefinition="INT default 0")
+	private String remenContry;
+	
 	//该国家旅游风景介绍
 	@Column(name="TouryIntro", length=1000)
 	private String TouryIntro;
@@ -88,6 +92,22 @@ public class Visa {
 	@Column(name="newDataNum", length=10 ,columnDefinition="INT default 0")
 	private int newDataNum;
 	
+	//管理员删除(0、已删除  1、未删除)
+	@Column(name="adminDel", length=5 ,columnDefinition="INT default 1")
+	private String adminDel;
+	
+	public String getAdminDel() {
+		return adminDel;
+	}
+	public void setAdminDel(String adminDel) {
+		this.adminDel = adminDel;
+	}
+	public String getRemenContry() {
+		return remenContry;
+	}
+	public void setRemenContry(String remenContry) {
+		this.remenContry = remenContry;
+	}
 	public int getNewDataNum() {
 		return newDataNum;
 	}

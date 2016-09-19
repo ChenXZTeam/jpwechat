@@ -59,7 +59,7 @@ public class MenuService {
 	public Map<String, Object> shows(int page, int rows) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Menu> menus = dao.findByPage("from Menu m order by sortNum desc,menuId asc", page, rows);
-		Long total = dao.count(Menu.class);
+		Long total = dao.count(Menu.class,"");
 		map.put("rows", menus);
 		map.put("total", total);
 		return map;

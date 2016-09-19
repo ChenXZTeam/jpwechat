@@ -83,7 +83,7 @@ public class PageService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<WebPage> webPages = dao.findByPage(
 				"from WebPage p order by sortNum desc,pageId asc", page, rows);
-		Long total = dao.count(WebPage.class);
+		Long total = dao.count(WebPage.class,"");
 		map.put("rows", webPageToPageModel(webPages));
 		map.put("total", total);
 		return map;

@@ -72,7 +72,7 @@ public class MenuItemService {
 		/*List<MenuItem> menus = dao.findByPage(
 				"from MenuItem m order by sortNum desc,itemId asc", page, rows);*/
 		List<MenuItem> menus = dao.findAll(MenuItem.class);
-		Long total = dao.count(MenuItem.class);
+		Long total = dao.count(MenuItem.class,"");
 		map.put("rows", MenuItemToMenuItemModel(menus));
 		map.put("total", total);
 		return map;

@@ -192,12 +192,12 @@
 		$.ajax({
 			url:"<%=basePath%>framework/visa/getVisaList.action",
 			type:"POST",
-			data:{},
+			data:{"page":1,"rows":10000},
 			dataType:"json",
 			success:function(res){
-				console.log(res.aList);
+				console.log(res.vList);
 				if(res.msg==1){
-					var dataList = res.aList;
+					var dataList = res.vList;
 					for(var i=0; i<dataList.length; i++){
 						var htmlLi = '<li onclick="listClick(this)"><span class="country_name">'+dataList[i].country+'</span><span class="country_id">'+dataList[i].countryID+'</span></li>';
 						if(dataList[i].qzMode==3){//免签

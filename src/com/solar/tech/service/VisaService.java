@@ -2,8 +2,10 @@ package com.solar.tech.service;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import com.solar.tech.bean.Visa;
 import com.solar.tech.bean.VisaFree;
 import com.solar.tech.bean.VisaOrder;
 import com.solar.tech.dao.GenericDao;
+import com.solar.tech.utils.SystemOutFunc;
 
 /**
  * 接口名：VisaService 
@@ -35,16 +38,26 @@ import com.solar.tech.dao.GenericDao;
 public class VisaService {
 	@Resource
 	private GenericDao gDao;
+	SystemOutFunc sys = new SystemOutFunc();
 	/**
 	 * 功能描述：获取Visa列表 
 	 *
 	 * @return List<Visa>
 	 */
-	public List<Visa> getVisaList(){
-		List<Visa> vList = new ArrayList<>();
-		String hql = "FROM Visa v";
-		vList = this.gDao.find(hql);
-		return vList;
+	public Map<String, Object> getVisaList(int pag,int row){
+		Map<String, Object> map = new HashMap<String, Object>();
+		sys.SysOutInfo("VisaService", "45", pag+"/"+row); 
+		String hql = "FROM Visa v where adminDel = 1";
+		if(row==10000){
+			List<Visa> vList = this.gDao.find(hql);
+			map.put("vList", vList);
+		}else{
+			List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+			Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
+			map.put("rows", cList);
+			map.put("total", total);
+		}
+		return map;
 	};
 	
 	/**
@@ -79,7 +92,10 @@ public class VisaService {
 	 *
 	 * @return void
 	 */
-	//void updateVisa(Visa visa);
+	public int updateVisaSer(Visa visa){
+		gDao.update(visa);
+		return 1;
+	}
 	
 	/**
 	 * 功能描述：根据条件查找指定的Visa
@@ -102,7 +118,19 @@ public class VisaService {
 	 *
 	 * @return Visa
 	 */
-	//Visa findByID(String id);
+	public Map<String, Object> findVisa(String countryName,int pag,int row){
+		Map<String, Object> map = new HashMap<String, Object>();
+		//List<Visa> vList = new ArrayList<Visa>();
+		String hql = "FROM Visa v where v.country like '%"+countryName+"%'";
+		//vList = this.gDao.find(hql);
+		List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
+		sys.SysOutInfo("VisaService", "128", total+"/=========/"+cList); 
+		map.put("rows", cList);
+		map.put("total", total);
+		sys.SysOutInfo("VisaService", "131", map.toString()); 
+		return map;
+	};
 	
 	/**
 	 * 功能描述：通过id查找指定的VisaFree记录
@@ -139,13 +167,21 @@ public class VisaService {
 	//void updateVisaFree(VisaFree visaFree);
 	
 	/**
-	 * 功能描述：在数据库中删除指定的VisaFree
-	 *
-	 * @param ids
-	 *
-	 * @return int
+	 * 功能描述：删除国家列表里面的一条数据
+	 * @param orderNum
+	 * @return
 	 */
-	//int deleteVisaFree(String ids);
+	public int deleteOrder(String countryID) {
+		try {
+			if(countryID != null){
+				String sql = "UPDATE fw_visa SET adminDel = 0 WHERE countryID = '"+countryID+"'";
+				gDao.executeJDBCSql(sql);
+			}
+			return 1; 
+		}catch (Exception e) {
+			return -1;
+		}
+	}
 	
 	/**
 	 * 功能描述：在数据库中添加新的RequiredMaterials记录
@@ -271,7 +307,16 @@ public class VisaService {
 	 *
 	 * @return List<VisaOrder>
 	 */
-	//List<VisaOrder> getVisaOrderList();
+	public Map<String, Object> getVisaOrderList(int pag,int row){
+		Map<String, Object> map = new HashMap<String, Object>();
+		sys.SysOutInfo("VisaService", "312", pag+"/"+row); 
+		String hql = "FROM VisaOrder v WHERE deleteSige = '1'";
+		List<VisaOrder> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		Long total = this.gDao.count(VisaOrder.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	 * 功能描述：更新指定的VisaOrder
@@ -290,6 +335,17 @@ public class VisaService {
 	 * @return int
 	 */
 	//int deleteVisaOrder(String ids);
+	public int deleteVisaOrder(String orderNum){
+		try {
+			if(orderNum != null){
+				String sql = "UPDATE fw_visaorder SET deleteSige = 0 WHERE orderNum = '"+orderNum+"'";
+				gDao.executeJDBCSql(sql);
+			}
+			return 1; 
+		}catch (Exception e) {
+			return -1;
+		}
+	}
 	
 	/**
 	 * 功能描述：根据用户ID查找订单列表
