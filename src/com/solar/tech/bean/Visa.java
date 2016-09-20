@@ -1,6 +1,7 @@
 package com.solar.tech.bean;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -96,6 +97,26 @@ public class Visa {
 	@Column(name="adminDel", length=5 ,columnDefinition="INT default 1")
 	private String adminDel;
 	
+	//创建时间
+	@Column(name = "createTime")
+	private Timestamp createTime;
+	
+	//时间格式转换成String的字段
+	private String createTimeBox;
+	
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+	
+	public String getCreateTimeBox() {
+		return createTimeBox;
+	}
+	public void setCreateTimeBox(String createTimeBox) {
+		this.createTimeBox = createTimeBox;
+	}
 	public String getAdminDel() {
 		return adminDel;
 	}

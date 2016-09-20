@@ -90,7 +90,8 @@
 		$("#qzBtn").click(function(){
 			var payMoney = $(".payMoney").text().substring(1,$(".payMoney").text().length);
 			var countryName = $(".countryName").text();
-			window.location.href="<%=basePath%>console/wechat/qz_waritInfo.jsp?payTry="+payMoney+"&countryName="+countryName;
+			var countryIdNum = "<%=countryId%>";
+			window.location.href="<%=basePath%>console/wechat/qz_waritInfo.jsp?payTry="+payMoney+"&countryName="+countryName+"&countryId="+countryIdNum;
 		});
 	});
 </script>

@@ -167,8 +167,9 @@ $(function(){
 						}
                  }	
 	        },
-	        { field: 'idcase', title: '申请人身份证号码', width: 300},
-	        { field: 'trayTypeIpnt', title: '旅客类型', width: 200}
+	        { field: 'idcase', title: '申请人身份证号码', width: 250},
+	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
+	        { field: 'createTimeBox', title: '创建时间', width: 200}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);
@@ -311,7 +312,8 @@ function query(){
                  }	
 	        },
 	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'touryIntro', title: '风景介绍', width: 200}
+	        { field: 'touryIntro', title: '风景介绍', width: 100},
+	        { field: 'createTimeBox', title: '创建时间', width: 200}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){
 			    details(rowData);

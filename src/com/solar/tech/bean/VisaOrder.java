@@ -1,10 +1,13 @@
 package com.solar.tech.bean;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -97,6 +100,29 @@ public class VisaOrder {
 	@Column(name="deleteSige",length=5 ,columnDefinition="INT default 1")
 	private String deleteSige;
 	
+	//创建时间
+	@Column(name = "createTime")
+	private Timestamp createTime;
+		
+	//时间格式转换成String的字段
+	private String createTimeBox;
+
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+	
+	public String getCreateTimeBox() {
+		return createTimeBox;
+	}
+
+	public void setCreateTimeBox(String createTimeBox) {
+		this.createTimeBox = createTimeBox;
+	}
+
 	public String getDeleteSige() {
 		return deleteSige;
 	}

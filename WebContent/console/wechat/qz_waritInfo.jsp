@@ -6,6 +6,7 @@
 <%
 	String payTry = new String(request.getParameter("payTry").getBytes("ISO-8859-1"),"utf-8");
 	String countryName = new String(request.getParameter("countryName").getBytes("ISO-8859-1"),"utf-8");
+	String countryId = new String(request.getParameter("countryId").getBytes("ISO-8859-1"),"utf-8");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -132,11 +133,12 @@
 			var phoneNum = $("#phoneNum").val();//手机号码
 			var EmailAdd = $("#EmailAdd").val();//电子邮件
 			var trayTypeIpnt = $("#trayTypeIpnt").val();//旅客类型
-			var IDcase = $("#IDcase").val()//身份证号
+			var IDcase = $("#IDcase").val();//身份证号
 			var songTypeIpnt = $("#songTypeIpnt").text();//配送方式
 			var sondAdd = $("#sondAdd").val();//配送地址
 			var payTry = "<%=payTry%>";
 			var countryName = "<%=countryName%>";
+			var countryIdNum = "<%=countryId%>";
 			var dataList = {
 				"linkName":linkName,
 				"personWorkIpnt":personWorkIpnt,
@@ -148,7 +150,8 @@
 				"songTypeIpnt":songTypeIpnt,
 				"sondAdd":sondAdd,
 				"payTry":payTry,
-				"countryName":countryName
+				"countryName":countryName,
+				"countryIdNum":countryIdNum
 			}
 			$.ajax({
 				url:"<%=basePath%>framework/visa/addVisaOrder.action",

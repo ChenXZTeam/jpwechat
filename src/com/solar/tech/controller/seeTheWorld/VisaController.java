@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +49,6 @@ public class VisaController {
 	private userOrderService OrderService;
 	@Resource
 	private VisaService visaService;
-	SystemOutFunc sys = new SystemOutFunc();
 	
 	/**
 	 * 功能描述：获取Visa在签证全部列表数据 并返回到前端
@@ -59,7 +60,6 @@ public class VisaController {
 	public Map<String, Object> getVisaList(int page, int rows){
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = visaService.getVisaList(page, rows);
-		sys.SysOutInfo("VisaController", "61", map.toString()); 
 		if(map.size()>0){
 			map.put("msg", 1);
 		}else{
@@ -105,6 +105,7 @@ public class VisaController {
 	    visa.setNewDataNum(newNum);
 	    String countryIDnum = visaService.bornCountryNum(newNum);
 	    visa.setCountryID(countryIDnum);
+	    visa.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
 	    int i = visaService.addVisa(visa);
 	    if(i==1){
 	    	System.out.println("VisaController.java:106=====>>>国家编辑成功");
@@ -155,6 +156,7 @@ public class VisaController {
 	@ResponseBody
 	public Map<String, Object> updateVisa(Visa visa){
 		Map<String, Object> map = new HashMap<String, Object>();
+		visa.setCreateTime(new Timestamp(new Date().getTime())); //重新为创建时间赋值
 		visaService.updateVisaSer(visa);
 		map.put("state", 1);
 		return map;
@@ -197,8 +199,6 @@ public class VisaController {
 		Map<String, Object> map =new HashMap<String, Object>();
 		countryName = new String(countryName.getBytes("iso8859-1"),"utf-8");
 		map = visaService.findVisa(countryName, page, rows);
-		sys.SysOutInfo("VisaController", "199", countryName+"/"+page+"/"+rows); 
-		//System.out.println(countryName+"/"+page+"/"+rows);
 		return map;
 	}
 
@@ -212,8 +212,6 @@ public class VisaController {
 	 */
 	@RequestMapping("/findByVisaFreeID.action")
 	public String findByVisaFreeID(String id,Map<String, Object> map){
-		//VisaFree visaFree = this.visaService.findByVisaFreeID(id);
-		//map.put("visaFree", visaFree);
 		return "/SeeTheWorld/VisaFreeContent";
 	}
 	
@@ -240,7 +238,6 @@ public class VisaController {
 	@ResponseBody
 	public Serializable addVisaFree(VisaFree visaFree,Serializable ss){
 		return ss;
-		//return this.visaService.addVisaFree(visaFree);
 	}
 	
 	/**
@@ -253,7 +250,6 @@ public class VisaController {
 	@RequestMapping("/updateVisaFree.action")
 	@ResponseBody
 	public void updateVisaFree(VisaFree visaFree){
-		//this.visaService.updateVisaFree(visaFree);
 	}
 	
 	/**
@@ -280,7 +276,6 @@ public class VisaController {
 	public Map<String, Object> getVisaOrderList(int page, int rows){
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = visaService.getVisaOrderList(page, rows);
-		sys.SysOutInfo("VisaController", "283", map.toString()); 
 		if(map.size()>0){
 			map.put("msg", 1);
 		}else{
@@ -316,6 +311,9 @@ public class VisaController {
 	       if(key.equals("sondAdd"))visaOrder.setDeliveryAddress(value);//配送地址
 	       if(key.equals("payTry"))visaOrder.setTotalCost(value);//总费用
 	       if(key.equals("countryName"))visaOrder.setApplyCountry(value);//申请签证的国家
+	       if(key.equals("countryIdNum"))visaOrder.setVisaID(value);//申请签证的国家代码
+	       if(key.equals("paystatus"))visaOrder.setPaystatus(value);//支付状态
+	       if(key.equals("progress"))visaOrder.setProgress(value);//申请进度
 	    } 
 	    int MaxNum = visaService.fingMaxNum();
 	    MaxNum = (MaxNum==0)?1:(MaxNum+1);
@@ -326,9 +324,15 @@ public class VisaController {
 		}
 	    String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
 	    visaOrder.setOrderNum(orderNum);
-	    visaOrder.setPaystatus("0");//支付状态
-	    visaOrder.setProgress("0");//预约中
+	    if(visaOrder.getTotalCost()==null||visaOrder.getTotalCost().equals("")){ //价格等于空这说明是从后台管理员输入的订单，因为后台没有输入价格的输入框
+	    	String cost = visaService.fingCostByCounryId(visaOrder.getVisaID());
+	    	visaOrder.setTotalCost(cost);
+	    }else{
+		    visaOrder.setPaystatus("0");//支付状态(未支付)
+		    visaOrder.setProgress("0");//预约中
+	    }
 	    visaOrder.setDeleteSige("1");//默认不删除
+	    visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //记录创建时间
 	    int i = visaService.addVisaOrder(visaOrder);
 	    if(i==1){
 	    	Send106msg sender = new Send106msg();
@@ -357,6 +361,7 @@ public class VisaController {
 	public Map<String, Object> updateVisaOrder(VisaOrder visaOrder,String idcase){
 		Map<String, Object> map = new HashMap<String, Object>();
 		visaOrder.setIDcase(idcase); 
+		visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //重新为创建时间赋值
 		visaService.updateVisaOrder(visaOrder);
 		map.put("state", 1);
 		return map;

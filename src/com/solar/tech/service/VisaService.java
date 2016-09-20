@@ -38,7 +38,6 @@ import com.solar.tech.utils.SystemOutFunc;
 public class VisaService {
 	@Resource
 	private GenericDao gDao;
-	SystemOutFunc sys = new SystemOutFunc();
 	/**
 	 * 功能描述：获取Visa列表 
 	 *
@@ -46,14 +45,18 @@ public class VisaService {
 	 */
 	public Map<String, Object> getVisaList(int pag,int row){
 		Map<String, Object> map = new HashMap<String, Object>();
-		sys.SysOutInfo("VisaService", "45", pag+"/"+row); 
-		String hql = "FROM Visa v where adminDel = 1";
+		String hql = "FROM Visa v where adminDel = 1 order by v.newDataNum desc";
 		if(row==10000){
 			List<Visa> vList = this.gDao.find(hql);
 			map.put("vList", vList);
 		}else{
 			List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 			Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
+			for(int i=0; i<cList.size(); i++){
+				String hh = cList.get(i).getCreateTime()+"";
+				hh = hh.substring(0, hh.length()-2);
+				cList.get(i).setCreateTimeBox(hh);
+			}
 			map.put("rows", cList);
 			map.put("total", total);
 		}
@@ -125,10 +128,8 @@ public class VisaService {
 		//vList = this.gDao.find(hql);
 		List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
-		sys.SysOutInfo("VisaService", "128", total+"/=========/"+cList); 
 		map.put("rows", cList);
 		map.put("total", total);
-		sys.SysOutInfo("VisaService", "131", map.toString()); 
 		return map;
 	};
 	
@@ -273,6 +274,21 @@ public class VisaService {
 	}
 	
 	/**
+	 * 通过国家的编号查找对应的签证价格
+	 * @return
+	 */
+	public String fingCostByCounryId(String coutryId){ 
+		 String hql = "SELECT (v.visaPrice) FROM Visa as v WHERE v.countryID = '"+coutryId+"'";
+		 List<String> MaxorderNum = this.gDao.find(hql);
+		 if(MaxorderNum.size()==0){
+			 return null;
+		 }else{
+			 String visaPrice = MaxorderNum.get(0);
+			 return visaPrice;
+		 }
+	}
+	
+	/**
 	 * 查找最新插入数据的最大编号用于生成国家编号
 	 * @return
 	 */
@@ -309,10 +325,14 @@ public class VisaService {
 	 */
 	public Map<String, Object> getVisaOrderList(int pag,int row){
 		Map<String, Object> map = new HashMap<String, Object>();
-		sys.SysOutInfo("VisaService", "312", pag+"/"+row); 
-		String hql = "FROM VisaOrder v WHERE deleteSige = '1'";
+		String hql = "FROM VisaOrder v WHERE deleteSige = '1' order by v.newOrderNum desc";
 		List<VisaOrder> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(VisaOrder.class,hql); //获取影响的行数，用于前台分页
+		for(int i=0; i<cList.size(); i++){
+			String hh = cList.get(i).getCreateTime()+"";
+			hh = hh.substring(0, hh.length()-2);
+			cList.get(i).setCreateTimeBox(hh);
+		}
 		map.put("rows", cList);
 		map.put("total", total);
 		return map;
