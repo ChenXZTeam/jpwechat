@@ -177,7 +177,7 @@ $(function(){
                  }	
 	        },
 	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'createTimeBox', title: '创建时间', width: 200},
+	        { field: 'createTime', title: '创建时间', width: 200},
 	        { field: 'touryIntro', title: '风景介绍', width: 200}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
@@ -327,7 +327,7 @@ function query(){
                  }	
 	        },
 	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'createTimeBox', title: '创建时间', width: 200},
+	        { field: 'createTime', title: '创建时间', width: 200},
 	        { field: 'touryIntro', title: '风景介绍', width: 200}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){

@@ -169,7 +169,7 @@ $(function(){
 	        },
 	        { field: 'idcase', title: '申请人身份证号码', width: 250},
 	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
-	        { field: 'createTimeBox', title: '创建时间', width: 200}
+	        { field: 'createTime', title: '创建时间', width: 200}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);
@@ -278,11 +278,11 @@ function shows(){ //查看
 
 //查找的方法
 function query(){
-	var countryName = $("#yuyueNumber").val();	 
+	var yuyueNumber = $.trim($("#yuyueNumber").val());	 
 	$('#orderListBox').datagrid({
 		height: '100%',
 		fit:true,
-		url: '<%=basePath %>framework/visa/findVisa.action?countryName='+countryName,
+		url: '<%=basePath %>framework/visa/findVisaOrder.action?yuyueNumber='+yuyueNumber,
 		method: 'POST',
 		striped: true,
 		nowrap: true,
@@ -297,23 +297,24 @@ function query(){
 		rownumbers:true,
 		columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'country', title: '国家', width: 150},
-	        { field: 'immigrationOfTimes', title: '入境次数', width: 120},
-	        { field: 'periodOfValidity', title: '有效期限', width: 120},
-	        { field: 'qzMode', title: '特殊签证类型', width: 100,
+	        { field: 'orderNum', title: '预约编号', width: 150},
+	        { field: 'contactsName', title: '用户姓名', width: 150},
+	        { field: 'contactsPhone', title: '联系电话', width: 120},
+	        { field: 'applyCountry', title: '申请国家', width: 120},
+	        { field: 'paystatus', title: '付款状态', width: 100,
 	        	 formatter:function(value,rec,index){  
-                     if(value == '3'){
-						return "免签";
-						}else if(value == '2'){
-							return "落地签";
+                     if(value == '0'){
+						return "未支付";
+						}else if(value == '1'){
+							return "已支付";
 						}else {
-							return "其他";
+							return "未识别支付类型";
 						}
                  }	
 	        },
-	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'touryIntro', title: '风景介绍', width: 100},
-	        { field: 'createTimeBox', title: '创建时间', width: 200}
+	        { field: 'idcase', title: '申请人身份证号码', width: 250},
+	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
+	        { field: 'createTime', title: '创建时间', width: 200}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){
 			    details(rowData);

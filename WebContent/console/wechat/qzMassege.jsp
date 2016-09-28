@@ -334,8 +334,10 @@
 					var dataList = res.vList;
 					visaList = dataList;
 					for(var i = 0; i<dataList.length; i++){
-						var htmlLi = '<li><span class="remenCantroyClass" onclick="remClickIndex(this)" style="background:url(<%=basePath %>tempoImg/thailand.jpg); background-size:100% 60px; background-repeat:no-repeat;">'+dataList[i].country+'</span><span class="countryNum">'+dataList[i].countryID+'</span><span class="contryMonty">￥'+dataList[i].visaPrice+'</span></li>';
-						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="yz")$("#yazhou ul").append(htmlLi); //推荐的亚洲国家
+						var url = dataList[i].urlImg;
+						var newUrl = "<%=basePath%>"+url;
+						var htmlLi = '<li><span class="remenCantroyClass" onclick="remClickIndex(this)" style="background-image:url('+newUrl+'); background-size:100% 60px; background-repeat:no-repeat;">'+dataList[i].country+'</span><span class="countryNum">'+dataList[i].countryID+'</span><span class="contryMonty">￥'+dataList[i].visaPrice+'</span></li>';
+						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="yz")$("#yazhou ul").append(htmlLi); //推荐的亚洲国家 
 						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="mz")$("#meizhou ul").append(htmlLi); //推荐的美洲国家
 						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="fz")$("#feizhou ul").append(htmlLi); //推荐的非洲国家
 						if(dataList[i].remenContry==1&&dataList[i].cotryBelongWhat=="oz")$("#ouzhou ul").append(htmlLi); //推荐的欧洲国家
@@ -361,7 +363,7 @@
 		}
 		
 		//加载热门国家的选择
-		for(var i=0; i<10; i++){
+		for(var i=0; i<visaList.length; i++){
 			var counName = visaList[i].country;
 			var countryID = visaList[i].countryID;
 			var htmlLi = '<li><div class="remenLi" onclick="remenListClick(this)"><span class="remCountrName">'+counName+'</span><span class="remCountryId">'+countryID+'</span></div></li>';

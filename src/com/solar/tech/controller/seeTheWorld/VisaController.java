@@ -1,24 +1,47 @@
 package com.solar.tech.controller.seeTheWorld;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +54,7 @@ import com.solar.tech.service.VisaService;
 import com.solar.tech.service.userOrderService;
 import com.solar.tech.utils.Send106msg;
 import com.solar.tech.utils.SystemOutFunc;
+import com.solar.tech.utils.UploadHelper;
 
 /**
  * 类名：VisaController 
@@ -77,7 +101,7 @@ public class VisaController {
 	 */
 	@RequestMapping("/addVisa.action")
 	@ResponseBody
-	public Map<String, Object> addVisa(Visa visa,HttpServletRequest request, HttpServletResponse response){
+	public Map<String, Object> addVisa(Visa visa,HttpServletRequest request, HttpServletResponse response, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		Enumeration<String> paramNames = request.getParameterNames();   
 	    // 通过循环将表单参数放入键值对映射中  
@@ -105,15 +129,44 @@ public class VisaController {
 	    visa.setNewDataNum(newNum);
 	    String countryIDnum = visaService.bornCountryNum(newNum);
 	    visa.setCountryID(countryIDnum);
+		String fmUrl = (String) session.getAttribute("fmUrl");//刚刚上传的文件路径
+		visa.setUrlImg(fmUrl);
+		visa.setAdminDel("1");
 	    visa.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
 	    int i = visaService.addVisa(visa);
 	    if(i==1){
-	    	System.out.println("VisaController.java:106=====>>>国家编辑成功");
 	    	map.put("msg","1");
 	    }else{
 	    	map.put("msg","0");
 	    }
 		return map;
+	}
+	
+	@RequestMapping("/addVisaImg.action")
+	@ResponseBody
+	public Map<String ,Object> addVisaImg(@RequestParam(value = "myFileImg", required = false) MultipartFile file, HttpServletRequest request, HttpSession session){ 
+		System.out.println("开始");  
+		Map<String ,Object> map = new HashMap<String ,Object>();
+		String path = request.getSession().getServletContext().getRealPath("uploadImg");  
+        String fileName = file.getOriginalFilename();  //文件名
+        //设置保存路径
+        File targetFile = new File(path, fileName); 
+        if(!targetFile.exists()){  
+            targetFile.mkdirs();  
+        }  
+        //保存  
+        try {  
+            file.transferTo(targetFile);
+            System.out.println("保存地址："+path);
+            path = path.substring(path.length()-9,path.length());
+            System.out.println("应该保存的地址："+path);
+            session.setAttribute("fmUrl", path+"/"+fileName);
+            map.put("status", "success");
+        } catch (Exception e) {  
+            e.printStackTrace();
+            map.put("status", "error");
+        }  
+		return map; 
 	}
 	
 	/**
@@ -156,7 +209,8 @@ public class VisaController {
 	@ResponseBody
 	public Map<String, Object> updateVisa(Visa visa){
 		Map<String, Object> map = new HashMap<String, Object>();
-		visa.setCreateTime(new Timestamp(new Date().getTime())); //重新为创建时间赋值
+		//String nowTime = (new Timestamp(new Date().getTime()))+"";
+		visa.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
 		visaService.updateVisaSer(visa);
 		map.put("state", 1);
 		return map;
@@ -332,8 +386,11 @@ public class VisaController {
 		    visaOrder.setProgress("0");//预约中
 	    }
 	    visaOrder.setDeleteSige("1");//默认不删除
-	    visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //记录创建时间
+	    System.out.println("====>>>111");	    
+	    visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
+	    System.out.println("====>>>333"+visaOrder.getCreateTime());
 	    int i = visaService.addVisaOrder(visaOrder);
+	    System.out.println("i="+i);
 	    if(i==1){
 	    	Send106msg sender = new Send106msg();
 	    	try {
@@ -361,7 +418,7 @@ public class VisaController {
 	public Map<String, Object> updateVisaOrder(VisaOrder visaOrder,String idcase){
 		Map<String, Object> map = new HashMap<String, Object>();
 		visaOrder.setIDcase(idcase); 
-		visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //重新为创建时间赋值
+	    visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
 		visaService.updateVisaOrder(visaOrder);
 		map.put("state", 1);
 		return map;
@@ -392,6 +449,15 @@ public class VisaController {
 	    	 map.put("msg", e.getMessage());
 	     }
 	     return map;
+	}
+	
+	@RequestMapping("/findVisaOrder.action")
+	@ResponseBody
+	public Map<String, Object> findVisaOrder(String yuyueNumber,int page, int rows,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
+		Map<String, Object> map =new HashMap<String, Object>();
+		yuyueNumber = new String(yuyueNumber.getBytes("iso8859-1"),"utf-8");
+		map = visaService.FindVisaOrder(yuyueNumber, page, rows);
+		return map;
 	}
 
 	/**

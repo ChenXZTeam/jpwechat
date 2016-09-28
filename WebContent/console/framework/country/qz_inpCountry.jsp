@@ -9,11 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>签证国家的输入</title>
 <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath%>console/js/ajaxfileupload.js"></script>
 </head>
 <body>
 	<table width="1000" border="0" cellpadding="0" cellspacing="10">
 		<tr>
-			<td style="width:90px;">国家名：</td>
+			<td style="width:120px;">国家名：</td>
 			<td style="width:400px;"><input id="countryName" type="text"/></td>
 			<td>所属区域：</td>
 			<td>
@@ -58,12 +59,14 @@
 		</tr>
 		<tr>
 			<td>是否推荐热门：</td>
-			<td colspan="3">
+			<td>
 				<select id="remenContry">
 					<option value="0">否</option>
 					<option value="1">是</option>
 				</select>
 			</td>
+			<td>上传图片：</td>
+			<td><form id="uploadForm" style=" float:left;"><input type="file" name="myFileImg" id="myFileImg" style="width:160px;"/><input type="button" id="btnId" onclick="updataImg()" value="上传" style="margin-left:10px;"/></form><span style="background:none; color:#ff0000; width:70px; line-height:22px; font-size:13px; float:left; margin-left:10px; display:none;" id="upTishi">上传中...</span><div style="clear:both;"></div></td>
 		</tr>
 		<tr>
 			<td>受理范围：</td>
@@ -113,6 +116,41 @@
 				},error:function(){}
 			});
 		});
+		
+		//选择上传文件的时候执行的方法
+		$("#myFileImg").change(function(){
+			$("#btnId").addClass("submit");
+		});
 	});
+	
+	//上传按钮点击事件
+	function updataImg(){
+		var formData = new FormData($( "#uploadForm" )[0]);  
+	    $.ajax({  
+	          url: "<%=basePath %>framework/visa/addVisaImg.action",  
+	          type: "post",  
+	          data: formData,  
+	          async: false,  
+	          cache: false,  
+	          beforeSend:function(){$("#upTishi").css("display","block");},
+			  complete:function(){$("#upTishi").css("display","block");},
+	          contentType: false,  
+	          processData: false,  //对参数进行序列化处理
+	          success: function (returndata) { 
+	          	  var jsondata = JSON.parse(returndata);
+	          	  if(jsondata.status == "success"){
+	          	  		$("#btnId").removeClass("submit");
+	          	  		$("#myFileImg").val(""); //清空上传的文件名
+	          	  		$("#upTishi").text("上传成功！");
+	          	  }else{
+	          	  		$("#upTishi").text("上传失败！");
+	          	  } 
+	          },  
+	          error: function (returndata) {  
+	              alert("上传失败！！");  
+	              $("#upTishi").text("上传失败！");
+	          }  
+	    });  	
+	}
 </script>
 </html>

@@ -52,11 +52,6 @@ public class VisaService {
 		}else{
 			List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 			Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
-			for(int i=0; i<cList.size(); i++){
-				String hh = cList.get(i).getCreateTime()+"";
-				hh = hh.substring(0, hh.length()-2);
-				cList.get(i).setCreateTimeBox(hh);
-			}
 			map.put("rows", cList);
 			map.put("total", total);
 		}
@@ -71,8 +66,10 @@ public class VisaService {
 	 * @return int
 	 */
 	public int addVisa(Visa visa){
+		System.out.println("========>>>>11111:"+visa.getCreateTime());
 		try {
 			gDao.save(visa);
+			System.out.println("========>>>>11111：");
 			return 1;
 		} catch (Exception e) {
 			return 0;
@@ -123,9 +120,7 @@ public class VisaService {
 	 */
 	public Map<String, Object> findVisa(String countryName,int pag,int row){
 		Map<String, Object> map = new HashMap<String, Object>();
-		//List<Visa> vList = new ArrayList<Visa>();
 		String hql = "FROM Visa v where v.country like '%"+countryName+"%'";
-		//vList = this.gDao.find(hql);
 		List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
@@ -328,11 +323,6 @@ public class VisaService {
 		String hql = "FROM VisaOrder v WHERE deleteSige = '1' order by v.newOrderNum desc";
 		List<VisaOrder> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(VisaOrder.class,hql); //获取影响的行数，用于前台分页
-		for(int i=0; i<cList.size(); i++){
-			String hh = cList.get(i).getCreateTime()+"";
-			hh = hh.substring(0, hh.length()-2);
-			cList.get(i).setCreateTimeBox(hh);
-		}
 		map.put("rows", cList);
 		map.put("total", total);
 		return map;
@@ -376,7 +366,22 @@ public class VisaService {
 	 *
 	 * @return List<VisaOrder>
 	 */
-	//List<VisaOrder> findByUserID(VisaOrder visaOrder);
+	/**
+	 * 功能描述：通过id查找Visa
+	 *
+	 * @param id
+	 *
+	 * @return Visa
+	 */
+	public Map<String, Object> FindVisaOrder(String yuyueNumber,int pag,int row){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM VisaOrder v where v.orderNum = '"+yuyueNumber+"'";
+		List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	};
 	
 	/**
 	 * 功能描述：根据订单ID查找订单

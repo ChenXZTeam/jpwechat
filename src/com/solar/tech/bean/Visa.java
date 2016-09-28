@@ -97,12 +97,13 @@ public class Visa {
 	@Column(name="adminDel", length=5 ,columnDefinition="INT default 1")
 	private String adminDel;
 	
+	//国家的背景图片地址
+	@Column(name="urlImg", length=200)
+	private String urlImg;
+	
 	//创建时间
 	@Column(name = "createTime")
 	private Timestamp createTime;
-	
-	//时间格式转换成String的字段
-	private String createTimeBox;
 	
 	public Timestamp getCreateTime() {
 		return createTime;
@@ -110,12 +111,11 @@ public class Visa {
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
-	
-	public String getCreateTimeBox() {
-		return createTimeBox;
+	public String getUrlImg() {
+		return urlImg;
 	}
-	public void setCreateTimeBox(String createTimeBox) {
-		this.createTimeBox = createTimeBox;
+	public void setUrlImg(String urlImg) {
+		this.urlImg = urlImg;
 	}
 	public String getAdminDel() {
 		return adminDel;

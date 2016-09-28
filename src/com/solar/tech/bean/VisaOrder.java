@@ -101,11 +101,8 @@ public class VisaOrder {
 	private String deleteSige;
 	
 	//创建时间
-	@Column(name = "createTime")
+	@Column(name = "createTime", length=30)
 	private Timestamp createTime;
-		
-	//时间格式转换成String的字段
-	private String createTimeBox;
 
 	public Timestamp getCreateTime() {
 		return createTime;
@@ -113,14 +110,6 @@ public class VisaOrder {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
-	}
-	
-	public String getCreateTimeBox() {
-		return createTimeBox;
-	}
-
-	public void setCreateTimeBox(String createTimeBox) {
-		this.createTimeBox = createTimeBox;
 	}
 
 	public String getDeleteSige() {

@@ -33,7 +33,7 @@
 
 <body>
 <!--图片-->
-<div class="imgBoxClass"><img src="<%=basePath %>console/images/jepImg.png"/></div>
+<div class="imgBoxClass"><img id="contryImg" src="<%=basePath %>console/images/jepImg.png"/></div>
 <div class="countryNameBox"><span class="countryName">日本</span></div>
 <ul class="messageBox">
 	<li><span class="titleClass">入境次数：</span><span class="contornClass immigrationOfTimes">50次</span></li>
@@ -70,6 +70,7 @@
 					$(".payMoney").text("￥"+data[0].visaPrice);
 					$(".earlyDates").text(data[0].earlyDates);
 					$(".touryIntro").text(data[0].touryIntro);
+					$("#contryImg").attr("src","<%=basePath%>"+data[0].urlImg);
 				}
 			},error:function(){}
 		});
