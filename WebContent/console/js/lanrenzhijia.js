@@ -24,7 +24,10 @@ $(function(){
 			$('.lanrenzhijia .title-list p').stop(false,true).animate({'left' : i * liWidth + 'px'},0);
 			return false;
 		}
+	
 	}
+	
+	
 
 });
 

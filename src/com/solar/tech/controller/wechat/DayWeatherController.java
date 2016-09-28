@@ -1,12 +1,17 @@
 package com.solar.tech.controller.wechat;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import com.solar.tech.service.weatherService;
+import com.thoughtworks.xstream.converters.reflection.SelfStreamingInstanceChecker;
  
 
 
@@ -24,48 +29,22 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/wechatController")
 public class DayWeatherController {
-	/**
-     * 调用获取城市列表接口,返回所有数据
-     * @return 返回接口数据
-     */
-    public static String excute(String val1){
-        String url="http://v.juhe.cn/weather/index?format=2&cityname="+val1+"&key=9797f5a2ce7bf73c707e83db543ae707";//接口URL
-        //PureNetUtil是一个封装了get和post方法获取网络请求数据的工具类
-        return PureNetUtil.get(url);//使用get方法
-    }
-    /**
-     * 调用接口返回数据后,解析数据,根据输入城市名得到对应ID
-     * @param cityName 城市名称
-     * @return 返回对应ID
-     */
-    @RequestMapping("/find/dayweather.action")
-    @ResponseBody
-    public static String getIDBycityName(String val1) {
-    	System.out.println(val1);
-        String result=excute(val1);//返回接口结果,得到json格式数据
-        System.out.println(result);
-        if(result!=null){
-            JSONObject obj=JSONObject.fromObject(result);
-            result=obj.getString("resultcode");//得到返回状态码
-            if(result!=null&&result.equals("200")){//200表示成功返回数据
-                result=obj.getString("result");//得到城市列表的json格式字符串数组
-                System.out.println(result);
-                JSONObject arr=JSONObject.fromObject(result);
-//                for(Object o:arr){//对arr进行遍历
-                    //将数组中的一个json个数字符串进行解析
-                    obj=JSONObject.fromObject(arr.toString());
-                    /*此时obj如 {"id":"2","province":"北京","city":"北京","district":"海淀"}*/
-                    //以city这个key为线索判断所需要寻找的这条记录
-                   // result=obj.getString("district");
-                    //防止输入城市名不全,如苏州市输入为苏州,类似与模糊查询
-                    if(result.equals(val1)||result.contains(val1)){
-                        result=obj.getString("id");//得到ID
-                        System.out.println(val1);
-                        return result;
-                    }
-//                }
-            }
-        }
-        return result;
-    }
+	
+	@RequestMapping("/findweather/areaCityName.action")
+	@ResponseBody
+	public Map<String, Object> cityWeather(String cityname) {
+		System.out.println("XGDFDS:::::"+cityname);
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			String str = new weatherService("23460549", "816b4f4fec6684ee7f02ebe0ab247822", "http://ali-weather.showapi.com/area-to-weather")
+					.addTextPara("area", cityname)
+					.addTextPara("needMoreDay", "1")
+					.addTextPara("needIndex", "1")
+					.get();
+			map.put("strDate", str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 }
