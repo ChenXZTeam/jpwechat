@@ -43,6 +43,9 @@
   		<property name="sessionFactory" ref="sessionFactory" />
  	</bean>
  	
+ 	<!-- 配置上传图片的方法 -->
+ 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+ 	
  	<!-- 申明annotation 加载事务驱动 -->
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
 	<tx:advice id="txAdvice" transaction-manager="txManager">

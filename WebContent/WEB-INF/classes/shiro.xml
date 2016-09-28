@@ -33,6 +33,7 @@
                 /login.jsp = anon
                 /login.action = anon
                 /tempoImg/** = anon
+                /uploadImg/** = anon
                 /wechatController/** = anon 
                 /userOrderController/** = anon      
                 /**= authc,roles[admin]
