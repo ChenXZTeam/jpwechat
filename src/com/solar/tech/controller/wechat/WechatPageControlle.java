@@ -87,7 +87,7 @@ public class WechatPageControlle {
 	 */
 	@RequestMapping("/huilvSearch.action")
 	public String huilvSearch() {
-		return "wechat/huilvSearch";
+		return "wechat/huilvSearchNew";
 	}
 	
 	/**
