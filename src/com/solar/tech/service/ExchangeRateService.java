@@ -63,7 +63,8 @@ public class ExchangeRateService {
 	 *            :参数
 	 * @return 返回结果
 	 */
-	public static String requestMoney(String httpUrl, String httpArg) {
+	public static String requestMoney(String httpArg) {
+		String httpUrl = ConfigHuilvKeyAndUrl.ChangeMoneyUrl; //请求地址
 	    BufferedReader reader = null;
 	    String result = null;
 	    StringBuffer sbf = new StringBuffer();
@@ -75,7 +76,7 @@ public class ExchangeRateService {
 	                .openConnection();
 	        connection.setRequestMethod("GET");
 	        // 填入apikey到HTTP header
-	        connection.setRequestProperty("apikey",  "ed4c74b5aace6907adab04568c1dff1e");
+	        connection.setRequestProperty("apikey",  ConfigHuilvKeyAndUrl.key);
 	        connection.connect();
 	        InputStream is = connection.getInputStream();
 	        reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));

@@ -18,7 +18,7 @@ import com.solar.tech.service.ExchangeRateService;
  * Version info版本号：V1.0
  * © Copyright 续日科技 2016年7月29日  版权所有
  */
-@Service
+/*@Service
 public class ExchangeRateImpl implements ExchangeRateService {
 	String ExchangeRateUrl = "http://apis.baidu.com/apistore/currencyservice/currency";
 	String apikey = "d9ad9d6aa172794f4b2fa604086c5ff4";
@@ -55,4 +55,4 @@ public class ExchangeRateImpl implements ExchangeRateService {
 	    return result;
 	}
 
-}
+}*/

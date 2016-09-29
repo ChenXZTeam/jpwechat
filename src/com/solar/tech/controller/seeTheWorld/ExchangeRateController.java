@@ -1,5 +1,8 @@
 package com.solar.tech.controller.seeTheWorld;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,15 @@ public class ExchangeRateController {
 	@Resource
 	private ExchangeRateService exchangeRateService; 
 	
+	
+	@RequestMapping("/supperExchangeRate.action")
+	@ResponseBody
+	public Map<String, Object> supperExchangeRate(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String supperMoney = exchangeRateService.request();
+		map.put("data", supperMoney);
+		return map;
+	}
 	/**
 	 * 功能描述：根据前端传来的币种进行汇率转换并将结果返回到前端
 	 *
@@ -36,7 +48,12 @@ public class ExchangeRateController {
 	 */
 	@RequestMapping("/queryExchangeRate.action")
 	@ResponseBody
-	public String queryExchangeRate(String fromCurrency,String toCurrency,String amount){
-		return this.exchangeRateService.queryExchangeRate(fromCurrency, toCurrency, amount);
+	public Map<String, Object> queryExchangeRate(String fromCurrency,String toCurrency,String amount){
+		String httpArg = "fromCurrency="+fromCurrency+"&toCurrency="+toCurrency+"&amount="+amount;
+		//String httpArg = "fromCurrency=CNY&toCurrency=USD&amount=2";
+		Map<String, Object> map = new HashMap<String, Object>();
+		String changeMoney = exchangeRateService.requestMoney(httpArg);
+		map.put("data", changeMoney);
+		return map;
 	}
 }
