@@ -25,6 +25,7 @@
         <!-- 以下写上的是不被监控/屏蔽的路径 -->
             <value>
             	/framework/exchangeRate/** = anon
+            	/framework/order/** = anon
             	/framework/invite/** = anon
             	/framework/visa/** = anon  
                 /images/framework/** = anon
