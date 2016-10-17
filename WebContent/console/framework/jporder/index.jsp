@@ -31,7 +31,7 @@
 	</ul>
 </div>
 <div style="height:25px; background-color:#fff;">
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit(this)">删除</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
@@ -81,6 +81,47 @@ $(function(){
 	   	}
 	});
 });
+
+function removeit(){
+	var rows = $('#dataBox').datagrid('getSelections');	
+	var row = $('#dataBox').datagrid('getSelected');
+	console.log(row);
+	if (row == undefined||row == null||row == "") {
+         $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+         return false;
+    } 
+    if(rows.length > 1){
+         $.messager.alert('操作提示', "只能删除一条数据", 'warning');
+         return false;
+    }
+    
+	$.messager.confirm('确认', '真的要删除吗？', function (r) {
+          if (r) {
+                	var OrderID = row.id;
+                    // console.log("countryID: "+countryID); 
+                    if (row) {
+                    	alert("我开始删除了"+OrderID);
+                        <%-- $.ajax({
+                            cache: false,
+                            async: false,
+                            type: "POST",
+                            data:{"countryID":countryID},
+                            dataType: 'json',
+                            url: "<%=basePath%>framework/visa/deleteVisa.action",
+                            success: function (data) {
+                                console.log(data);
+                                if (data.state == 1) {
+                                    $('#countryListBox').datagrid('reload');                                    
+                                }
+                                else {
+                                    $.messager.alert('Warning', '删除不成功！'); 
+                                }
+                            }
+                        }); --%>
+                    } 
+             }
+      });
+}
 </script>
 </body>
 </html>

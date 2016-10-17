@@ -165,10 +165,8 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 						}
 					}					
 					loadjs();//加载js外部文件
-				}else if(data.msg==0){
-					alert("没有查找到该航班的信息");
 				}else{
-					alert("查找数据错误");
+					alert("没有查找到该航班的信息");
 				}
 			},error:function(){
 			}

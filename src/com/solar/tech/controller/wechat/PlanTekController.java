@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.solar.tech.Test;
 import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.service.PlanTekService;
@@ -129,6 +130,19 @@ public class PlanTekController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		boolean YesOrNo = new ECUtils().cancelPnr(pnrNo);//删除中航信系统中刚刚预定的数据
 		System.out.println("删除是否成功："+YesOrNo);
+		return map;
+	}*/
+	
+	/*
+	//临时使用的方法
+	@RequestMapping("/find/getplanCode.action")
+	@ResponseBody
+	public Map<String, Object> getplanCode(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		//List<Test> cList = PlanTekServ.getPlanList();
+		//System.out.println(cList.toString());
+		map.put("cList",PlanTekServ.getPlanList());
+		//map.put("msg",1);
 		return map;
 	}*/
 }

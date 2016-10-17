@@ -66,10 +66,8 @@ public class VisaService {
 	 * @return int
 	 */
 	public int addVisa(Visa visa){
-		System.out.println("========>>>>11111:"+visa.getCreateTime());
 		try {
 			gDao.save(visa);
-			System.out.println("========>>>>11111：");
 			return 1;
 		} catch (Exception e) {
 			return 0;

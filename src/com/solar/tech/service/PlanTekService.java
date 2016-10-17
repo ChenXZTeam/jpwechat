@@ -3,11 +3,15 @@ package com.solar.tech.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.Test;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.bean.entity.FlightInfo;
+import com.solar.tech.dao.GenericDao;
 
 /**
  * @title PlanTekService 处理机票的查询、预定的类
@@ -17,6 +21,8 @@ import com.solar.tech.bean.entity.FlightInfo;
 @Service
 @Transactional
 public class PlanTekService {
+	@Resource
+	private GenericDao gDao;
 	
 	/**
 	 * @title 传入出发城市、到达城市、日期、航班号及舱位，返回该舱位可用座位数 
@@ -51,4 +57,10 @@ public class PlanTekService {
 		
 		return resultList;
 	}
+	/*
+	//临时方法
+	public List getPlanList(){
+		String sql = "select AIRPORTNAMECN,AIRPORTCODE,CITYNAMECN,ISDOMESTIC from b_airport";
+		return this.gDao.executeJDBCSqlQuery(sql);
+	}*/
 }
