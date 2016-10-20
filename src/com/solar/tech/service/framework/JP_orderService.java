@@ -35,7 +35,23 @@ public class JP_orderService {
 			Long total = this.gDao.count(userOrderInfo.class,hql); //获取影响的行数，用于前台分页
 			map.put("rows", cList);
 			map.put("total", total);
+			System.out.println("总数据："+total);
 		}
 		return map;
 	}
+	
+	/**
+	 * 
+	 * @param countId
+	 * @return
+	 */
+	public Map<String, Object>  findByInfo(int pag, int row, String Info){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM userOrderInfo u where u.IDcase like '%"+Info+"%' OR u.orderNum like '%"+Info+"%' OR u.telNum like '%"+Info+"%'";
+		List<userOrderInfo> vList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		Long total = this.gDao.count(userOrderInfo.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", vList);
+		map.put("total", total);
+		return map;
+	};
 }

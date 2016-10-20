@@ -18,10 +18,24 @@ public class JP_orderController {
 	
 	@RequestMapping("/getOrderList.action")
 	@ResponseBody
-	public Map<String, Object> getVisaList(int page, int rows){
+	public Map<String, Object> getOrderList(int page, int rows){
 		System.out.println(page+"/"+rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = jporderService.loadOrder(page, rows);
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
+		return map;
+	}
+	
+	@RequestMapping("/findOrder.action")
+	@ResponseBody
+	public Map<String, Object> findOrder(int page, int rows, String Info){
+		System.out.println(page+"/"+rows+"/"+Info);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = jporderService.findByInfo(page, rows, Info);
 		if(map.size()>0){
 			map.put("msg", 1);
 		}else{

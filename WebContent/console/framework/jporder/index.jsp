@@ -32,15 +32,18 @@
 </div>
 <div style="height:25px; background-color:#fff;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
+<!-- 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a> -->
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
-	<a href="" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+	<a href="<%=basePath %>console/framework/jporder/addorder.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
 </div>
-<div id="dataBox"></div>
+<div style="width:100%;height:420px;">
+	<div id="dataBox" style="width:100%;height:420px;">
+	</div>
+</div>
 <script>
 $(function(){
 	$('#dataBox').datagrid({
-	    height: '100%',
+		height:'80%',
 	    fit:true,
 	    url: '<%=basePath%>framework/order/getOrderList.action',
 	    method: 'POST',
@@ -63,12 +66,12 @@ $(function(){
 	        { field: 'stutisPay', title: '付款状态', width: 100,
 	        	 formatter:function(value,rec,index){  
                      if(value == '0'){
-						return "未支付";
-						}else if(value == '1'){
+							return "未支付";
+					 }else if(value == '1'){
 							return "已支付";
-						}else {
+					 }else {
 							return "未识别支付类型";
-						}
+					 }
                  }	
 	        },
 	        { field: 'hangbanNum', title: '航班号', width: 50},
@@ -97,30 +100,95 @@ function removeit(){
     
 	$.messager.confirm('确认', '真的要删除吗？', function (r) {
           if (r) {
-                	var OrderID = row.id;
-                    // console.log("countryID: "+countryID); 
-                    if (row) {
-                    	alert("我开始删除了"+OrderID);
-                        <%-- $.ajax({
+                	var UUID = row.id;
+                	var orderNum = row.orderNum;
+                	var pnrNo = row.pnr; 
+                    if (row){
+                        $.ajax({
                             cache: false,
                             async: false,
                             type: "POST",
-                            data:{"countryID":countryID},
+                            data:{
+                            	"ID":UUID,
+                            	"orderNum":orderNum,
+                            	"pnrNo":pnrNo
+                            },
                             dataType: 'json',
-                            url: "<%=basePath%>framework/visa/deleteVisa.action",
+                            url: "<%=basePath%>userOrderController/delete/order.action",
                             success: function (data) {
                                 console.log(data);
-                                if (data.state == 1) {
-                                    $('#countryListBox').datagrid('reload');                                    
-                                }
-                                else {
+                                if (data.msg == 1) {
+                                    $('#dataBox').datagrid('reload');       
+                                    alert('订单删除成功！');                           
+                                }else {
                                     $.messager.alert('Warning', '删除不成功！'); 
                                 }
                             }
-                        }); --%>
+                        });
                     } 
              }
       });
+}
+
+function shows(){
+	var row = $('#dataBox').datagrid('getSelected');	//单选的记录
+	var rows = $('#dataBox').datagrid('getSelections');	//多选的记录
+	if (row == undefined||row == null||row == "") {
+         $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+         return false;
+    }
+    if(rows.length > 1){
+         $.messager.alert('操作提示', "只能查看一条数据", 'warning');
+         return false;
+    }
+	var rowstr = JSON.stringify(row);
+	window.location.href="<%=basePath%>console/framework/jporder/lookInfo.jsp?strRow="+rowstr;
+}
+
+//查找的方法
+function query(){
+	var Info = $("#countryNameIdBox").val();	 
+	$('#dataBox').datagrid({
+		height: '100%',
+		fit:true,
+		url: '<%=basePath %>framework/order/findOrder.action?Info='+Info,
+		method: 'POST',
+		striped: true,
+		nowrap: true,
+		pageSize: 10,
+		pageNumber:1, 
+		pageList: [10, 20, 50, 100, 150, 200],
+		showFooter: true, 
+		loadMsg : '数据加载中请稍后……',
+		pagination : true,
+		toolbar:"#tb",
+		singleSelect: false,
+		rownumbers:true,
+		columns: [[
+	        { field: 'ck', checkbox: true },
+	        { field: 'orderNum', title: '预约编号', width: 150},
+	        { field: 'linkName', title: '用户姓名', width: 150},
+	        { field: 'linkPhoneNum', title: '联系电话', width: 120},
+	        { field: 'stutisPay', title: '付款状态', width: 100,
+	        	 formatter:function(value,rec,index){  
+                     if(value == '0'){
+							return "未支付";
+					 }else if(value == '1'){
+							return "已支付";
+					 }else {
+							return "未识别支付类型";
+					 }
+                 }	
+	        },
+	        { field: 'hangbanNum', title: '航班号', width: 50},
+	        { field: 'chufDate', title: '出发日期', width: 100},
+	        { field: 'chufTime', title: '出发时间', width: 200},
+	        { field: 'idcase', title: '证件号码', width: 250}
+	    ]],
+	    onDblClickRow :function(rowIndex,rowData){
+	    	details(rowData);
+	   	}
+	});
 }
 </script>
 </body>
