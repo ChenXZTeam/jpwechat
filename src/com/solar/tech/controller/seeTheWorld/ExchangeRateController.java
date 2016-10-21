@@ -49,11 +49,14 @@ public class ExchangeRateController {
 	@RequestMapping("/queryExchangeRate.action")
 	@ResponseBody
 	public Map<String, Object> queryExchangeRate(String fromCurrency,String toCurrency,String amount){
+		
 		String httpArg = "fromCurrency="+fromCurrency+"&toCurrency="+toCurrency+"&amount="+amount;
 		//String httpArg = "fromCurrency=CNY&toCurrency=USD&amount=2";
 		Map<String, Object> map = new HashMap<String, Object>();
 		String changeMoney = exchangeRateService.requestMoney(httpArg);
+		
 		map.put("data", changeMoney);
+		System.out.println("data");
 		return map;
 	}
 }

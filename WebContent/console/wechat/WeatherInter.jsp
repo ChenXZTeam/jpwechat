@@ -79,7 +79,7 @@
 
 <body>
 <div class="lanrenzhijia">
- 
+ <!-- 查找城市名部分 -->
   <div class="product-wrap">
     <div class="find" style="width:100%;height:40px;background:gray;">
          <div class="search-citys">				
@@ -182,68 +182,67 @@
       
        <p style="float:left;height:20px; font-size:17px;margin-top:80px;margin-left:10px; color:#888888;">生活指数</p>
        
-       <div class="product-2" style="margin-top:150px;">
+       <div class="product-2" style="margin-top:110px;">
             <div class="left" style="width:49%;margin:80px 0%">
              <div class="product-2-1"  >
-                  <div class="pict" style="width:32%;margin-top:-30px;">
+                  <div class="pict" style="width:35%;">
                        <img src="<%=basePath %>console/images/uv_new.png" style="width:37px;height:37px;margin-top:24px;">
                        <p style="color:#0270E3;">紫外线指数</p>
                   </div>
-                  <div class="write" style="float:right;margin:-70px 1%;width:60%;">
-                       <p style="font-size:16px;" id="uv">中等</p>
+                  <div class="write" style="float:right;margin:-60px 1%;width:55%;">
+                       <p style="font-size:16px;margin:0 auto;" id="uv">中等</p>
                        <p style="margin-top:10px;text-align:left;" id="sj1">涂抹防晒SPF大于15,PA+防晒产品</p>
                   </div>
             </div>
            <div class="product-2-2" style="margin-top:10px;" >
-                <div class="pict" style="width:32%;top:100px;">
+                <div class="pict" style="width:35%;">
                        <img src="<%=basePath %>console/images/wash_new.png" style="width:40px;height:40px;margin-top:30px;">
                        <p style="color:#0270E3;">洗车指数</p>
                   </div>
-                  <div class="write" style="float:right;margin:-80px 1%;width:60%; ">
-                       <p style="font-size:16px;margin-left:-20%;" id="wc">不宜</p>
+                  <div class="write" style="float:right;margin:-70px 1%;width:55%; ">
+                       <p style="font-size:16px;margin:0 auto;" id="wc">不宜</p>
                        <p style="margin-top:10px;text-align:left;" id="sj2">春雨，雨水和泥水会弄脏爱车您的</p>
                   </div>
             </div>
             <div class="product-2-3" style="margin-top:10px;" >
-                 <div class="pict" style="width:32%;top:100px;">
+                 <div class="pict" style="width:35%;">
                        <img src="<%=basePath %>console/images/cold_new.png" style="width:40px;height:40px;margin-top:30px;">
                        <p style="color:#0270E3;">感冒指数</p>
                   </div>
-                  <div class="write" style="float:right;margin:-75px 0%;width:67%;">
-                       <p style="font-size:16px;" id="cd">少发</p>
+                  <div class="write" style="float:right;margin:-65px 1%;width:55%;">
+                       <p style="font-size:16px;margin:0 auto;" id="cd">少发</p>
                        <p style="margin-top:10px;text-align:left;" id="sj3">感冒机率较低，避免长期处于空调屋中。</p>
                   </div>
             </div>
           </div>
           <div class="right" style="width:48%; float:right;margin-top:-600px; margin-right:0%;">
-              <div class="product-2-4" style="border:1px solid #ECECEC
-" >
-                   <div class="pict" style="width:32%;margin-top:-13px;">
+              <div class="product-2-4" style="border:1px solid #ECECEC">
+                   <div class="pict" style="width:35%;margin-top:-12px;">
                        <img src="<%=basePath %>console/images/sport_new.png" style="width:40px;height:40px;margin-top:35px;">
                        <p style="color:#0270E3;">运动指数</p>
                   </div>
-                  <div class="write" style="float:right;margin:-70px 1%;width:60%;">
-                       <p style="font-size:16px;margin-left:-20px;" id="sp">较不宜</p>
+                  <div class="write" style="float:right;margin:-64px 1%;width:55%;">
+                       <p style="font-size:16px;margin:0 auto;" id="sp">较不宜</p>
                        <p style="margin-top:10px;text-align:left;" id="sj4">有降水，推荐您在室内进行休闲的运动</p>
                   </div>
               </div>
               <div class="product-2-5" style="margin-top:10px;" >
-                   <div class="pict" style="width:32%;top:100px;">
+                   <div class="pict" style="width:35%;">
                        <img src="<%=basePath %>console/images/cloth_new.png" style="width:40px;height:40px;margin-top:30px;">
                        <p style="color:#0270E3;">穿衣指数</p>
                   </div>
-                  <div class="write" style="float:right;margin:-80px 1%;width:60%;">
-                       <p style="font-size:16px;margin-left:-5px;" id="ct">舒适</p>
+                  <div class="write" style="float:right;margin:-70px 1%;width:55%;">
+                       <p style="font-size:16px;margin:0 auto;" id="ct">舒适</p>
                        <p style="margin-top:10px;text-align:left;" id="sj5">建议穿长袖衬衫单裤等服装</p>
                   </div>
               </div>
               <div class="product-2-6" style="margin-top:10px;" >
-                  <div class="pict" style="width:32%;top:100px;">
-                       <img src="<%=basePath %>console/images/air.png" style="width:40px;height:40px;margin-top:30px;">
+                  <div class="pict" style="width:35%;">
+                       <img src="<%=basePath %>console/images/3.png" style="width:40px;height:40px;margin-top:30px;">
                        <p style="color:#0270E3;">空气指数</p>
                   </div>
-                  <div class="write" style="float:right;margin:-75px 1%;width:60%;">
-                       <p style="font-size:16px;margin-left:-10px;" id="ai">较差</p>
+                  <div class="write" style="float:right;margin:-65px 1%;width:55%;">
+                       <p style="font-size:16px;margin:0 auto;" id="ai">较差</p>
                        <p style="margin-top:10px;text-align:left;" id="sj6">涂抹防晒SPF大于15,PA+防晒产品</p>
                   </div>
               </div>
@@ -295,7 +294,7 @@
 				  
 				 
 				  var data = JSON.parse(res.strDate);
-				  console.log(data);
+				  console.log(data);//打印输出data
 				  
 				  document.getElementById("h").innerHTML=data.showapi_res_body.now.sd;//获取空气湿度
 				  document.getElementById("d1").innerHTML=data.showapi_res_body.now.aqi;//获取空气质量指数
@@ -313,7 +312,7 @@
 				  document.getElementById("ct").innerHTML=data.showapi_res_body.f1.index.clothes.title; //获取穿衣指数
 				  document.getElementById("sj5").innerHTML=data.showapi_res_body.f1.index.clothes.desc; //获取穿衣建议
 				  document.getElementById("ai").innerHTML=data.showapi_res_body.f1.index.aqi.title;//获取空气指数
-				  document.getElementById("sj6").innerHTML=data.showapi_res_body.f1.index.aqi.desc;//获取空气指数
+				  document.getElementById("sj6").innerHTML=data.showapi_res_body.f1.index.aqi.desc;//获取空气指数的建议
 				  document.getElementById("pm").innerHTML=data.showapi_res_body.now.aqiDetail.pm2_5; //获取pm2.5的指数
 				  document.getElementById("week2").innerHTML=data.showapi_res_body.f2.weekday;//获取f2的日期
 				  document.getElementById("week3").innerHTML=data.showapi_res_body.f3.weekday;//获取f3的日期

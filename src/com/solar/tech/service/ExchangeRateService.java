@@ -69,7 +69,7 @@ public class ExchangeRateService {
 	    String result = null;
 	    StringBuffer sbf = new StringBuffer();
 	    httpUrl = httpUrl + "?" + httpArg;
-
+	    
 	    try {
 	        URL url = new URL(httpUrl);
 	        HttpURLConnection connection = (HttpURLConnection) url

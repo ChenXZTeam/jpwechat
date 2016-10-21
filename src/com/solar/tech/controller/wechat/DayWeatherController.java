@@ -41,6 +41,7 @@ public class DayWeatherController {
 					.addTextPara("needMoreDay", "1")
 					.addTextPara("needIndex", "1")
 					.get();
+			System.out.println(str);
 			map.put("strDate", str);
 		} catch (Exception e) {
 			e.printStackTrace();

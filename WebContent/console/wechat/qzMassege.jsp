@@ -55,26 +55,20 @@
 	</div>
 	
 	<!--轮播图-->
-	<div class="qzBackImg">
-		<div class="banner"> 
-		  <div class="b-img">
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner0.jpg" style="width:100%;"/></div>
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner1.jpg" style="width:100%;"/></div>
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner2.jpg" style="width:100%;"/></div>
-		  </div>
-		
-		  <div class="b-list"></div>
-			<!--
-		  <a class="bar-left" href="#"><em></em></a>
-		  <a class="bar-right" href="#"><em></em></a> 
-		  --->
-		<!--end 全屏滚动-->
-		</div> 
-	</div>
+  <div class="banner"> 
+  <div class="b-img">
+  	<div class="runDiv"><img src="<%=basePath %>console/images/banner0.jpg" style="width:100%;"/></div>
+	<div class="runDiv"><img src="<%=basePath %>console/images/banner1.jpg" style="width:100%;"/></div>
+	<div class="runDiv"><img src="<%=basePath %>console/images/banner2.jpg" style="width:100%;"/></div>
+  </div>
+
+  <div class="b-list"></div>
+   
+<!--end 全屏滚动-->
 	
 	<!--热门国家地区标题-->
 	<div class="cityTitle">
-		<div style="background-color:#0079FE; width:5px; height:20px; float:left; overflow:hidden;"></div>
+		
 		<div style="line-height:20px; margin-left:5px; float:left; font-size:12px;"><span>热门国家/地区</span></div>
 		<div style="line-height:20px; float:right;">＞</div>
 		<div style="line-height:20px; float:right; font-size:12px;"><span>更多</span></div>

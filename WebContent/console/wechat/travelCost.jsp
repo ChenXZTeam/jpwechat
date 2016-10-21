@@ -23,6 +23,7 @@
 	.bigcontent .contentText{width:95%; margin-left:auto; margin-right:auto; text-align:left; font-size:37px; font-family:Microsoft YaHei,"微软雅黑",MicrosoftJhengHei,"华文细黑",STHeiti,MingLiu;}
 	.bigcontent .contentImg{position:fixed; /*or前面的是absolute就可以用*/ bottom:0px;}
 </style>
+
 </head>
 
 <body>
@@ -31,29 +32,31 @@
 		<div class="banner"> 
 		  <div class="b-img">
 			<div class="runDiv" style="padding-top:10%; text-align:center;">
-				<span style="color:#CB160F;">国内航班</span>
-				<span style="color:#F2CE09;">行李规定</span>
-				<span style="color:#09608A;">转起留存</span>
+				<p style="color:#CB160F;margin-top:-68px;font-size:42px;" >国内航班</p>
+				<p style="color:#F2CE09;margin-top:40px;font-size:31px;" >1、行李规定</p>
+				<p style="color:#09608A;margin-top:40px;font-size:31px;" >2、转起留存</p>
 			</div>
 			
 			<div class="runDiv">
-				<span style="color:#C70901; font-size:25px; line-height:60px;">托运行李限额</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">①每件托运行李不得低于2公斤</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">②每件托运的行李的最大重量不得超过45公斤</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">③每件托运行李的长、宽、高之和不得超过203厘米，不得小于60厘米。</span><br/>
+				<span style="color:#C70901;  font-size:25px; line-height:80px;">托运行李限额:(须知)</span><br/>
+				<span style="font-size:15px; text-align:left; color:#666666; line-height:35px;">①每件托运行李不得低于2公斤</span><br/>
+				<span style="font-size:15px; text-align:left; color:#666666; line-height:35px;">②每件托运的行李的最大重量不得超过45公斤</span><br/>
+				<span style="font-size:15px; text-align:left; color:#666666; line-height:35px;">③每件托运行李的长、宽、高之和不得超过203厘米，不得小于60厘米。</span><br/>
+			    
 			</div>
 			
 			<div class="runDiv">
-				<span style="color:#C70901; font-size:25px; line-height:60px;">免费托运行李限额</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">重量：20公斤</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">大小：100×40×40（单位：厘米）</span><br/>
-				<span style="color:#C70901; font-size:25px; line-height:60px;">随行行李限重</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">5公斤（一件）</span><br/>
-				<span style="font-size:18px; text-align:left; color:#666666; line-height:30px;">大小：55×40×20（单位：厘米）</span><br/>
+				
+				<span style="color:#C70901; font-size:25px; line-height:80px;">免费托运行李限额:(须知)</span><br/>
+			    <span style="font-size:15px; text-align:left; color:#666666; line-height:10px;">重量：20公斤</span><br/>
+				<span style="font-size:15px; text-align:left; color:#666666; line-height:40px;">大小：100×40×40（单位：厘米）</span><br/>
+				<span style="color:#C70901; font-size:25px; line-height:80px;">随行行李限重:(须知)</span><br/>
+				<span style="font-size:15px; text-align:left; color:#666666; line-height:10px;">5公斤（一件）</span><br/>
+				<span style="font-size:15px; text-align:left; color:#666666; line-height:40px;">大小：55×40×20（单位：厘米）</span><br/>
 			</div>
 		  </div>
 		
-		  <div class="b-list"></div>
+		  <div class="b-list" style="margin-top:210px;"></div>
 		  <!-- <a class="bar-left" href="#"><em></em></a>
 		  <a class="bar-right" href="#"><em></em></a> -->
 		<!--end 全屏滚动-->

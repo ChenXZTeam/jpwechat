@@ -226,6 +226,7 @@
 					success:function(res){
 						var dateList=JSON.parse(res.data);
 						var retaDa = dateList.retData;
+						console.log(retaDa);
 						$("#resCountMoney").text(retaDa.amount);
 						$("#resqishBizh").text($("#fromChangebz").val());
 						$("#resbudiBizh").text($("#toChangebz").val());

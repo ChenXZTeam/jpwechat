@@ -41,21 +41,21 @@ public class MenuManger {
 				planeButton.setName("机票(国内)");
 				planeButton.setType(WxConsts.BUTTON_VIEW);
 				planeButton.setUrl(buildAuthorizationUrl(
-						"http://gzyhinc.com/BookTicketsys/wechatController/page/planTek.action",
+						"http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/planTek.action",
 						WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton inviteButton = new WxMenuButton();
 				inviteButton.setName("我的邀请");
 				inviteButton.setType(WxConsts.BUTTON_VIEW);
 				inviteButton.setUrl(buildAuthorizationUrl(
-						"http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						"http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 						WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton inewsButton = new WxMenuButton();
 				inewsButton.setType(WxConsts.BUTTON_VIEW);
 				inewsButton.setName("最近资讯(国内)");
 				inewsButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 
 				orderButton.getSubButtons().add(planeButton);
@@ -71,28 +71,28 @@ public class MenuManger {
 				wnewsButton.setType(WxConsts.BUTTON_VIEW);
 				wnewsButton.setName("最近资讯(国际)");
 				wnewsButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton visaButton = new WxMenuButton();
 				visaButton.setType(WxConsts.BUTTON_VIEW);
 				visaButton.setName("签证信息");
 				visaButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/visaMessage.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/visaMessage.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton featureButton = new WxMenuButton();
 				featureButton.setType(WxConsts.BUTTON_VIEW);
 				featureButton.setName("特色线路");
 				featureButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton rateButton = new WxMenuButton();
 				rateButton.setType(WxConsts.BUTTON_VIEW);
 				rateButton.setName("汇率查询");
 				rateButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/huilvSearch.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/huilvSearch.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				worldButton.getSubButtons().add(wnewsButton);
@@ -108,35 +108,35 @@ public class MenuManger {
 				myOrderButton.setType(WxConsts.BUTTON_VIEW);
 				myOrderButton.setName("我的订单");
 				myOrderButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/myPlaneTickek.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/myPlaneTickek.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton weatherButton = new WxMenuButton();
 				weatherButton.setType(WxConsts.BUTTON_VIEW);
 				weatherButton.setName("城市天气");
 				weatherButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/dayWeath.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/dayWeath.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton typeButton = new WxMenuButton();
 				typeButton.setType(WxConsts.BUTTON_VIEW);
 				typeButton.setName("飞机机型");
 				typeButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/fjModel.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/fjModel.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton packingButton = new WxMenuButton();
 				packingButton.setType(WxConsts.BUTTON_VIEW);
 				packingButton.setName("行李须知");
 				packingButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/travelCost.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/travelCost.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton serviceButton = new WxMenuButton();
 				serviceButton.setType(WxConsts.BUTTON_VIEW);
 				serviceButton.setName("联系客服");
 				serviceButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/callKeFu.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/callKeFu.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				tourButton.getSubButtons().add(myOrderButton);
@@ -162,21 +162,21 @@ public class MenuManger {
 				planeButton.setName("机票(国内)");
 				planeButton.setType(WxConsts.BUTTON_VIEW);
 				planeButton.setUrl(buildAuthorizationUrl(
-						"http://gzyhinc.com/BookTicketsys/wechatController/page/planTek.action",
+						"http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/planTek.action",
 						WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton inviteButton = new WxMenuButton();
 				inviteButton.setName("我的邀请");
 				inviteButton.setType(WxConsts.BUTTON_VIEW);
 				inviteButton.setUrl(buildAuthorizationUrl(
-						"http://gzyhinc.com/BookTicketsys/wechatController/page/yqUser.action",
+						"http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/yqUser.action",
 						WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton inewsButton = new WxMenuButton();
 				inewsButton.setType(WxConsts.BUTTON_VIEW);
 				inewsButton.setName("最近资讯(国内)");
 				inewsButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 
 				orderButton.getSubButtons().add(planeButton);
@@ -192,28 +192,28 @@ public class MenuManger {
 				wnewsButton.setType(WxConsts.BUTTON_VIEW);
 				wnewsButton.setName("最近资讯(国际)");
 				wnewsButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton visaButton = new WxMenuButton();
 				visaButton.setType(WxConsts.BUTTON_VIEW);
 				visaButton.setName("签证信息");
 				visaButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/visaMessage.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/visaMessage.action?dd=2131",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton featureButton = new WxMenuButton();
 				featureButton.setType(WxConsts.BUTTON_VIEW);
 				featureButton.setName("特色线路");
 				featureButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/kaifing.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton rateButton = new WxMenuButton();
 				rateButton.setType(WxConsts.BUTTON_VIEW);
 				rateButton.setName("汇率查询");
 				rateButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/huilvSearch.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/huilvSearch.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				worldButton.getSubButtons().add(wnewsButton);
@@ -229,35 +229,35 @@ public class MenuManger {
 				myOrderButton.setType(WxConsts.BUTTON_VIEW);
 				myOrderButton.setName("我的订单");
 				myOrderButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/myPlaneTickek.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/myPlaneTickek.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton weatherButton = new WxMenuButton();
 				weatherButton.setType(WxConsts.BUTTON_VIEW);
 				weatherButton.setName("城市天气");
 				weatherButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/dayWeath.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/dayWeath.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton typeButton = new WxMenuButton();
 				typeButton.setType(WxConsts.BUTTON_VIEW);
 				typeButton.setName("飞机机型");
 				typeButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/fjModel.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/fjModel.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton packingButton = new WxMenuButton();
 				packingButton.setType(WxConsts.BUTTON_VIEW);
 				packingButton.setName("行李须知");
 				packingButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/travelCost.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/travelCost.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton serviceButton = new WxMenuButton();
 				serviceButton.setType(WxConsts.BUTTON_VIEW);
 				serviceButton.setName("联系客服");
 				serviceButton.setUrl(
-						buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/callKeFu.action",
+						buildAuthorizationUrl("http://nvsm7.ngrok.natapp.cn/BookTicketsys/wechatController/page/callKeFu.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				tourButton.getSubButtons().add(myOrderButton);
@@ -301,7 +301,7 @@ public class MenuManger {
 	 */
 	public static void main(String[] args) {
 		MenuManger mm = new MenuManger();
-		String url = mm.buildAuthorizationUrl("http://gzyhinc.com/BookTicketsys/wechatController/page/mine.action",
+		String url = mm.buildAuthorizationUrl("http://11c804df.ngrok.natapp.cn/BookTicketsys/wechatController/page/mine.action",
 				WxConsts.OAUTH2_SCOPE_BASE, null);
 		System.out.println(url);
 	}

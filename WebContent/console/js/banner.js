@@ -83,7 +83,7 @@ $(function(){
 			$(".b-img:last").animate({"left":"0"},500);
 			var setTime0=setTimeout(function () {
             	$(".banner .b-img:first").remove();
-            }, 1000000);
+            }, 1000);
 			n=0;
 			$(".b-list span:eq(0)").addClass("spcss").siblings("span").removeClass("spcss");
 		}
@@ -95,8 +95,8 @@ $(function(){
 		}
 	}
 	
-	var slidesetInterval=setInterval(rollEnvent,4000000);
-	//$(".banner").hover(function(){clearInterval(slidesetInterval);},function(){slidesetInterval=setInterval(rollEnvent,4000);});
+	var slidesetInterval=setInterval(rollEnvent,1000);
+  //  $(".banner").hover(function(){clearInterval(slidesetInterval);},function(){slidesetInterval=setInterval(rollEnvent,1000);});
 	
 	//鼠标移动到左切换图标上时
 	$(".bar-left").mouseover(function(){
