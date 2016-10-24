@@ -19,6 +19,7 @@ import com.solar.tech.service.PlanTekService;
 import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.SeatUtils;
+import com.travelsky.sbeclient.obe.response.AVDoubleResponse;
 import com.travelsky.sbeclient.obe.response.AvSegment;
 import com.travelsky.sbeclient.obe.response.PATFareItem;
 import com.travelsky.sbeclient.obe.response.PataFareResponse;
@@ -39,8 +40,9 @@ public class PlanTekController {
 		System.out.println(daodCity);
 		System.out.println(cangW);
 		System.out.println(dateTime);
-		List<FlightInfo> fliL = PlanTekServ.findHB(chufCity, daodCity, "CZ", dateTime, null);
-		List<FlightInfo> tempFlil = PlanTekServ.removeRepeat(fliL);
+		List<FlightInfo> fliL = PlanTekServ.findHB(chufCity, daodCity, null, dateTime, null, null, null); //出发城市、到达城市、航空公司、出发时间、航班号、是否直达、是否有经停点
+		List<FlightInfo> tempFlil = PlanTekServ.removeRepeat(fliL); //剔除重复的数据
+		List<FlightInfo> newFlil = new ArrayList<FlightInfo>();  //剔除座位为空的数据
 		if(tempFlil != null && tempFlil.size() > 0){
 			for(FlightInfo f : tempFlil){
 				if(f.getSeatList().size()!=0){
@@ -55,20 +57,22 @@ public class PlanTekController {
 						}
 					}
 					System.out.println(cangW+"剩余的票数：" + SumTecikNum);
+					newFlil.add(f);  //将符合的航班加入新的数组链表里面
 				}
 			}
 		}
-		if(tempFlil != null && tempFlil.size() > 0){
-			System.out.println("列表的长度："+tempFlil.size());
+		if(newFlil != null && newFlil.size() > 0){
+			System.out.println("列表的长度："+newFlil.size());
 			if(tempFlil.size()==0){
 				map.put("msg", 0);
 			}else{
 				map.put("msg", 1);
-				map.put("listDate", tempFlil);
+				map.put("listDate", newFlil);
 			}
 		}
 		return map;
 	}
+	
 	
 
 	//支付前得确认是否还有空座位
@@ -94,7 +98,7 @@ public class PlanTekController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String airCode = fildNo.substring(0, 2);
 		System.out.println(airCode);
-		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, chufDate, airCode, null);
+		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, chufDate, airCode, null, "true", "true");
 		List<FlightInfo> tempFlil = PlanTekServ.removeRepeat(list); //这个链表剔除重复数据
 		List<FlightInfo> canbinList = new ArrayList<FlightInfo>();//这个链表是保存所有含有与 变量（canbin）相同的航班数据
 		if(tempFlil != null && tempFlil.size() > 0){
@@ -113,18 +117,19 @@ public class PlanTekController {
 	}
 	
 	//查询国内运价
-	/*@RequestMapping("/find/patPNR.action")
+	@RequestMapping("/find/patPNR.action")
 	@ResponseBody
-	public Map<String, Object> patPNR(String pnrNo){
+	public Map<String, Object> patPNR(String org, String dst, String date, String returnDate, String airline, Integer page/*String pnrNo*/){
 		Map<String, Object> map=new HashMap<String, Object>();
-		PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", null, 1, null, null, null, null);
-		System.out.println("长度："+segmentInfos.length);
-		map.put("SEG", segmentInfos); 
+		//PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", null, 1, null, null, null, null);
+		AVDoubleResponse passAVR = new ECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
+		//System.out.println("长度："+segmentInfos.length);
+		map.put("SEG", passAVR); 
 		return map;
 	}
 	
 	//删除单个中航信pnrNo的方法（程序调试时使用）
-	@RequestMapping("/deletes/PNRno.action")
+	/*@RequestMapping("/deletes/PNRno.action")
 	@ResponseBody
 	public Map<String, Object> deletePnrNo(String pnrNo){
 		Map<String, Object> map = new HashMap<String, Object>();

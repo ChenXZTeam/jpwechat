@@ -8,9 +8,9 @@ import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.service.PlanTekService;
 
 public class saveCost {
-	public String getpay(String chufCity, String daodCity, String dateTime, String airCode, String filgNo, String cabin,String paycost){
+	public String getpay(String chufCity, String daodCity, String dateTime, String airCode, String filgNo, String cabin,String paycost, String direct, String noStop){
 		PlanTekService PlanTekServ = new PlanTekService();
-		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, dateTime, "CZ", filgNo); // 传入出发城市、到达城市、日期及航空公司代码及航班号
+		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, dateTime, "CZ", filgNo , direct, noStop); // 传入出发城市、到达城市、日期及航空公司代码、航班号、是否直飞、是否有经停点
 		List<FlightInfo> newList = PlanTekServ.removeRepeat(list);
 		for(int i = 0; i<newList.size(); i++){
 			if((newList.get(i).getFlightNo()).equals(filgNo)){

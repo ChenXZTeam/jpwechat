@@ -36,6 +36,7 @@ import com.travelsky.sbeclient.obe.book.SSRInfo;
 import com.travelsky.sbeclient.obe.book.SegmentInfo;
 import com.travelsky.sbeclient.obe.exceptions.ObeException;
 import com.travelsky.sbeclient.obe.request.AVRequest;
+import com.travelsky.sbeclient.obe.request.AVRoundTripRequest;
 import com.travelsky.sbeclient.obe.request.BookingInfoRequest;
 import com.travelsky.sbeclient.obe.request.ChildInfPassenger;
 import com.travelsky.sbeclient.obe.request.DFSQRequest;
@@ -62,6 +63,7 @@ import com.travelsky.sbeclient.obe.request.RefundFormRequest;
 import com.travelsky.sbeclient.obe.request.RefundTktRequest;
 import com.travelsky.sbeclient.obe.request.SKRequest;
 import com.travelsky.sbeclient.obe.request.XSFSDRequest;
+import com.travelsky.sbeclient.obe.response.AVDoubleResponse;
 import com.travelsky.sbeclient.obe.response.AVResponse;
 import com.travelsky.sbeclient.obe.response.AvItem;
 import com.travelsky.sbeclient.obe.response.AvSegment;
@@ -267,6 +269,31 @@ public class ECUtils {
 			e.printStackTrace(); 
 		}
 		return null;
+	}
+	
+	//查询往返的方法
+	public AVDoubleResponse roundtripAv(String org, String dst, String date, String returnDate, String airline, Integer page){
+			AVRoundTripRequest request = new AVRoundTripRequest ();
+			request.setOfficeNo(OFFICENO);
+			request.setToken(token);
+
+			request.setOrg(org);     // 出发城市
+			request.setDst(dst);	// 抵达城市
+			request.setDepartDate(date);	// 查询日期，格式 yyy-MM-dd
+			request.setReturnDate(returnDate);   // 返回日期，格式 yyy-MM-dd
+			request.setAirline(airline);	// 航空公司（可选）
+			if(page != null){
+				request.setPage(page); 	// 限制最大翻页次数（可选，默认20）
+			}
+			
+			AVClient avClient=new AVClient();
+			try { 
+				AVDoubleResponse avResponse = avClient.avForRoundTrip(request);
+				return avResponse;
+			} catch (ObeException e) { 
+				e.printStackTrace(); 
+			} 
+			return null;
 	}
 	
 	// 查询显示指定日期的航段上的航班信息(根据PNR号)

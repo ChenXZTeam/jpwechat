@@ -45,6 +45,7 @@ public class InvitationCodeImpl implements InviteCodeService {
     		flag = this.gDao.findById(InvitationCode.class, code);
     	}
     	invitationCode.setInvitationCode(code);
+    	System.out.println(code); 
     	System.out.println(deadline_);
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     	Date deadline;
@@ -53,7 +54,6 @@ public class InvitationCodeImpl implements InviteCodeService {
 				System.out.println(deadline);
 				invitationCode.setDeadline(deadline);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	this.gDao.save(invitationCode);

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.User;
 import com.solar.tech.bean.UserInGroup;
+import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.users.AbstractUserService;
 
@@ -53,7 +54,7 @@ public class UserService extends AbstractUserService{
 //		}
 	}
 	
-	public List<User> findAllUser(){
-		return this.gDao.findAll(User.class);
+	public List<RD_wechatUser> findAllUser(){
+		return this.gDao.findAll(RD_wechatUser.class);
 	}
 }

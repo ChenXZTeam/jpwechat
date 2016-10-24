@@ -176,7 +176,6 @@
 			if(rows.length==1){
                  $("#tt").form('clear'); 
                  $("input[name='invitationCode']").attr("value",rows[0].invitationCode);
-                 $("input[name='type']").attr("disabled",true);
                  $("input[value='"+rows[0].type+"']").attr("checked","checked");
                  $("#remarks").textbox("setValue",rows[0].remarks);
                  var date = new Date(rows[0].deadline);
@@ -245,7 +244,7 @@
 				$('#ftitle-send').html("发送邀请码");
 				$("#users").combobox({
 				    url:'<%= basePath%>framework/user/findAllUser.action',
-				    valueField:'userUID',
+				    valueField:'phoneNum',
 				    textField:'userName'
 				});
 			}
@@ -260,6 +259,7 @@
 		function addEentry(){			
 				var tel = $("#users").combobox('getValue');
 				var userName = $("#users").combobox('getText');
+				alert(tel+"/"+userName);
 				if((tel!=null&&tel!='')&&(userName!=null&&userName!='')){
 					var obj = $("#table-send input[value='"+tel+"']");
 					console.log(obj.length);
@@ -287,6 +287,8 @@
 			$(".fitem").eq(1).find("input").attr("name","discount");
 			console.log("discount");
 		}
+		
+		//发送短信邀请码的方法
 		function send(){
 			
 		}
@@ -347,7 +349,7 @@
 	padding: 10px 20px" closed="true" buttons="#dlg-buttons">
 		<div class="ftitle" id="ftitle-send"></div>
 		<div class="fitem" id="test">
-			<input id="users" name="users" >
+			<input id="users" name="users">
 			<a type="button" onclick="addEentry()" iconCls="icon-add" class="easyui-linkbutton">添加用户</a>
 			<a type="button" onclick="delEentry()" iconCls="icon-remove" class="easyui-linkbutton">删除用户</a>
 		</div>
@@ -366,7 +368,7 @@
 	<!-- 发短信对话框内的按钮 -->
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton c6"
-			iconCls="icon-ok" onclick="sendCode()" style="width: 90px" id="btn">发送</a> 
+			iconCls="icon-ok" onclick="send()" style="width: 90px" id="btn">发送</a> 
 		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" 
 		onclick="javascript:$('#dlg-send').dialog('close')" style="width: 90px">取消</a>
 	</div>

@@ -67,7 +67,7 @@
 		$.ajax({ 
 	    	type: "post",
 	    	url: "<%=basePath%>wechatController/find/patPNR.action",
-	    	data: {"pnrNo":"HE2MMF"},
+	    	data: {"org":"PEK","dst":"CAN","date":"2016-10-30","returnDate":"2016-11-15","airline":"CZ","page":"20"},
 	   	 	dataType: "json",//后台处理后返回的数据格式
 	  		success: function (data) {
 	  			console.log(data.SEG);

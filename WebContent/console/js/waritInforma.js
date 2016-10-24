@@ -1,4 +1,4 @@
-﻿// JavaScript Document
+﻿﻿// JavaScript Document
 $(function(){
 	//性别选择
 	$("#sexIpnt").click(function(){

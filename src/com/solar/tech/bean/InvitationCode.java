@@ -19,7 +19,8 @@ public class InvitationCode {
 	//邀请码
 	private String invitationCode;
 	
-	@Column(name="userName", length=50)
+	//使用邀请码的用户
+	@Column(name="userName", length=50) 
 	private String userName;
 	
 	//邀请码类型
@@ -31,15 +32,19 @@ public class InvitationCode {
 	private String remarks;
 	
 	//优惠金额
+	@Column(name="sum", length=10)
 	private double sum;
 	
 	//折扣
+	@Column(name="discount", length=10)
 	private double discount;
 	
 	//到期时间
+	@Column(name="deadline", length=10)
 	private Date deadline;
 	
 	//使用次数
+	@Column(name="times", length=10)
 	private int times;
 	
 	public int getTimes() {

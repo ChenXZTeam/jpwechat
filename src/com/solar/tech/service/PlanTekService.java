@@ -28,10 +28,10 @@ public class PlanTekService {
 	 * @title 传入出发城市、到达城市、日期、航班号及舱位，返回该舱位可用座位数 
 	 */
 	//传入出发城市、到达城市、日期及航空公司代码  例如："CAN", "PEK", "2016-12-01", "CZ"
-	public List<FlightInfo> findHB(String chufCity,String daodCity,String airCode, String dateTime, String filgNo){//cancelPnr
+	public List<FlightInfo> findHB(String chufCity,String daodCity,String airCode, String dateTime, String filgNo, String direct, String noStop){//cancelPnr
 		//SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		//String startDate = fmt.format(new Date());
-		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, dateTime, airCode , filgNo); // 传入出发城市、到达城市、日期及航空公司代码
+		List<FlightInfo> list = new OptimizeECUtils().query(chufCity, daodCity, dateTime, airCode , filgNo, direct, noStop); // 传入出发城市、到达城市、日期、航空公司代码是否直达、是否有经停点
 		return list;
 	}
 	

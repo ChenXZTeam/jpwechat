@@ -11,10 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.solar.tech.bean.User;
+import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.controller.AbstractUserController;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.users.UserService;
 
+/**
+ * 用户注册类
+ * @author solarpc1
+ *
+ */
 @Controller
 @RequestMapping("/framework/user")
 public class UserController extends AbstractUserController{
@@ -53,7 +59,7 @@ public class UserController extends AbstractUserController{
 
 	@RequestMapping("/findAllUser.action")
 	@ResponseBody
-	public List<User> findAllUser(){
+	public List<RD_wechatUser> findAllUser(){
 		return userService.findAllUser();
 	}
 }

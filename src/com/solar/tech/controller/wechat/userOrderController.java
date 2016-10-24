@@ -49,7 +49,7 @@ public class userOrderController {
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
 		oderInfo.setCuntTime(lishiTime);
-		//String lastpayCout=getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay);
+		//String lastpayCout=getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay ,"true", "true");
 		//System.out.println("执行吧皮卡丘："+lastpayCout);
 		oderInfo.setCostMoney(CostPay);
 		oderInfo.setLinkName(LinkName);

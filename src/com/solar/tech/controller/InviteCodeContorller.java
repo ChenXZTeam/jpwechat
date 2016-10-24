@@ -9,7 +9,7 @@ import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.service.InviteCodeService;
 
 /**
- * 类名：InviteCodeContorller 
+ * 类名：InviteCodeContorller  
  *
  * 功能描述：此类为邀请码模块的Controller类，负责接收、处理和分发邀请码功能模块的请求
  *
