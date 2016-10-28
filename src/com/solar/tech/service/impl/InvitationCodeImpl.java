@@ -87,4 +87,18 @@ public class InvitationCodeImpl implements InviteCodeService {
 			}
 			this.gDao.update(invitationCode);
 	}
+	
+	/*
+	 * 更新数据库*/
+	public int updateinvatecode(String invitationCode,String PhoneNum) {
+		try {
+			if(invitationCode != null){
+				String sql = "UPDATE rd_wechatuser SET InCode = '"+invitationCode+"' WHERE PhoneNum = '"+PhoneNum+"'";
+				gDao.executeJDBCSql(sql);
+			}
+			return 1; 
+		}catch (Exception e) {
+			return 0;
+		}
+	}
 }

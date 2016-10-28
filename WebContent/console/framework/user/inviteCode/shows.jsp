@@ -72,6 +72,7 @@
 
 		$(function(){
 			var lastIndex;
+			var vac;
 			$('#tt').datagrid({
 				height: '100%',
 			    fit:true,
@@ -239,6 +240,9 @@
 		
 		function sendCode(){
 			var rows = $("#tt").datagrid("getChecked");
+			console.log(rows);
+			
+			vac = rows[0].invitationCode;
 			if(rows.length==1){	
 				$("#dlg-send").dialog("open").dialog('setTitle',' ');
 				$('#ftitle-send').html("发送邀请码");
@@ -264,7 +268,7 @@
 					var obj = $("#table-send input[value='"+tel+"']");
 					console.log(obj.length);
 					if(obj.length==0){
-						var input = '<tr><td><input name="users" type="checkbox" value="'+tel+'" /></td><td><label>'+userName+'</label></td></tr>';				
+						var input = '<tr><td><input name="users" type="checkbox" value="'+tel+'" class="ck" /></td><td><label>'+userName+'</label></td></tr>';				
 						$("#table-send").append(input);
 					}
 				}else {
@@ -290,14 +294,46 @@
 		
 		//发送短信邀请码的方法
 		function send(){
+			var arr =($(".ck"))
+			console.log(arr);
+			for(i=0;i<arr.length;i++){
+				var user=($(arr[i]).prop("checked"));
+				
+				var tel =($(arr[i]).val());
+				
+				if(user==true){
+					
+					$.ajax({
+		                url: "<%=basePath%>framework/invite/send.action",
+		                type: "POST",
+		                dataType: "json",
+		                data: { "telnumber": tel ,"invitationCode":vac},
+		                success: function (res) {
+		                    if(res==1){
+		                 	   
+		                 	   $.messager.alert("提示消息","发送成功！");
+		                    }
+		                 },
+		                 error: function (error) {
+		                     $.messager.alert("提示消息","发送失败!");
+		                 }
+					    });
+			}
+			else
+			{
+			      alert("请您先选择一位用户");
+			}
+			}
 			
-		}
+
+		
+		};	
+		
 	</script>
 </head>	
 <body>
 	<!-- 数据表格 -->
 	<div id="tt" style="width: 100%;height:100%"></div>
-
 	<!-- 功能按钮 -->
 	<div id="toolbar">
 		<a href="javascript:void(0)" class="easyui-linkbutton"
@@ -342,7 +378,7 @@
 			iconCls="icon-ok" onclick="saveBean()" style="width: 90px" id="btn">保存</a> 
 		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" 
 		onclick="javascript:$('#dlg').dialog('close')" style="width: 90px">取消</a>
-	</div>
+	</div> 
 	
 	<!-- 发送短信对话框 -->
 	<div id="dlg-send" class="easyui-dialog" style="width: 40%; height: 400px; 

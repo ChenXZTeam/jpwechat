@@ -50,4 +50,13 @@ public interface InviteCodeService {
 	 * @return void
 	 */
 	void updateCode(InvitationCode invitationCode,String deadline_);
+	
+	/**
+	 * 
+	 * @param invitationCode
+	 * @param PhoneNum
+	 * @return 
+	 */
+	
+	int updateinvatecode(String invitationCode,String PhoneNum);
 }

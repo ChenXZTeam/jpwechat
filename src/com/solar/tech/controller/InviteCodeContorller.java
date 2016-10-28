@@ -1,12 +1,20 @@
 package com.solar.tech.controller;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.service.InviteCodeService;
+import com.solar.tech.service.impl.InvitationCodeImpl;
+import com.solar.tech.utils.Send106msg;
 
 /**
  * 类名：InviteCodeContorller  
@@ -75,5 +83,35 @@ public class InviteCodeContorller {
 	@ResponseBody
 	public void update(InvitationCode invitationCode,String deadline_){
 		this.inviteCodeService.updateCode(invitationCode, deadline_);
+		
 	}
+	
+	
+	/*
+	 * 功能描述：把折扣信息发送到选中的用户当中去
+	 * @param telnumber
+	 * @param invitationCode
+	 * return 1
+	 * */
+	@RequestMapping("/send.action")
+	@ResponseBody
+	public int send(String telnumber, String invitationCode){
+		Send106msg sender = new Send106msg();
+		String resultNum = null;
+		int i = this.inviteCodeService.updateinvatecode(invitationCode, telnumber);
+		if(i==1){
+			try {
+				resultNum = sender.SendMSGtoPhone("【微信】邀请码为："+invitationCode, telnumber);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return 1;
+		}else{
+			return 0;
+		}
+	
+	}
+	
 }
