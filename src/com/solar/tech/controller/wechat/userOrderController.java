@@ -31,20 +31,21 @@ public class userOrderController {
 	
 	@RequestMapping("/add/order.action")
 	@ResponseBody
-	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,String birthday,String menType,String age, HttpSession session){
+	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,String birthday,String menType,String age, String chufCode, String daodCode, HttpSession session){
 		saveCost getCost = new saveCost();
 		Map<String, Object> map = new HashMap<String, Object>();
 		userOrderInfo oderInfo = new userOrderInfo();
 		oderInfo.setChufDate(ChufDate);
 		oderInfo.setChufTime(ChufTime);
 		oderInfo.setDaodTime(DaodTime);
-		oderInfo.setChufCity(ChufCity);
 		oderInfo.setDaodCity(DaodCity);
 		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
 		oderInfo.setOpenID((String) session.getAttribute("openId"));
-		oderInfo.setQishiPlaneCode((String) session.getAttribute("qishiPlanCode"));//在查找订单中的方法就已经定义了 PlanTekController.java 中能找到
-		oderInfo.setDaodPlaneCode((String) session.getAttribute("daodPlanCode"));//在查找订单中的方法就已经定义了 PlanTekController.java 中能找到
+		oderInfo.setQishiPlaneCode(chufCode);
+		oderInfo.setDaodPlaneCode(daodCode);
+		oderInfo.setChufCity(OrderService.findCity(chufCode));
+		oderInfo.setDaodCity(OrderService.findCity(daodCode));
 		oderInfo.setQishiPlane(QishiPlan);
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
@@ -66,11 +67,18 @@ public class userOrderController {
 		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
-		int MaxNum = Integer.parseInt(OrderService.fingMaxNum());
+		String maxNum = OrderService.fingMaxNum();
+		int MaxNum=0;
+		if(maxNum==null||maxNum.equals("")||maxNum.equals(" ")){
+			MaxNum = 0;
+		}else{
+			MaxNum = Integer.parseInt(maxNum);
+		}
 		oderInfo.setIntNum((MaxNum+1)+"");
 		String maxOrderNum = OrderService.fingMaxOrderNum();
 		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
 		oderInfo.setOrderNum(orderNum);
+		System.out.println("===>>>>预约编号："+oderInfo.getOrderNum());
 		System.out.println(
 				"出发日期："+oderInfo.getChufDate()+
 				"，出发时间："+oderInfo.getChufTime()+

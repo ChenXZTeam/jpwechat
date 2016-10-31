@@ -8,7 +8,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>机票预定</title>
+	<link href="<%=basePath %>console/css/hDate.css" rel="stylesheet" />
 	<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+	<script src="<%=basePath%>console/js/hDate.js"></script>
 <style>
 	#radioClassBox{}
 	#radioClassBox span{ display:block;}
@@ -37,6 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	#ulBox li .infoContent .timeClass{font-size:20px; font-weight:bold;}
 	#ulBox li .infoContent .planeNameText{}
 	#ulBox li .infoContent .btnclass{ padding:8px 13px; margin-top:7px; cursor:pointer; background-color:#0099CC; outline:none; color:#FFFFFF; border:none; border-radius:5px;}
+	#ulBox li .infoContent .btnclass:hover{background-color:#0080ab;}
 	#ulBox li .otherCang{overflot:hidden;}
 	.InfoTure{ position:fixed; display:none; top:15%; left:35%; background-color:#FFFFFF; border:#00CCCC solid 1px; border-radius:5px; width:30%; color:#666666;}
 	.InfoTure .infoTitle{ font-size:18px; border-bottom:#00CCCC solid 1px; padding:25px; text-align:center; font-family:'微软雅黑'; background-color:#00CCCC; border-radius:5px 5px 0px 0px; color:#FFFFFF;}
@@ -47,7 +50,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.goWhere{position:fixed; top:30%; display:none; left:37%; width:300px; border:1px solid #e1e1e1; background-color:#FFFFFF; border-radius:5px; font-size:16px; color:#666666;font-family:'微软雅黑';}
 	.goWhere .colseImg{display:block; width:20px; height:20px; line-height:20px; float:right; text-align:center; cursor:pointer; font-size:12px; color:#999; font-family:'微软雅黑';}
 	.goWhere .goWhereBtn{width:52%; margin-left:0px; border:none; padding:15px; cursor:pointer; outline:none; margin:0px; background-color:#FFFFFF;}
-	
+	.zaClass{text-decoration:none; padding:8px 13px; display:block; width:65px; margin-left: 30px; margin-top:7px; cursor:pointer; background-color:#0099CC; outline:none; color:#FFFFFF; border:none; border-radius:5px;}
+	.zaClass:hover{background-color:#0080ab;}
 	
 	/*城市选择切换css*/
 	a,img{border:0;}
@@ -115,11 +119,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div>
 			<span>出发日期</span>
-			<input id="gofaTime"/>
+			<input id="gofaTime" onclick="calendar.show({ id: this })"/>
 		</div>
 		<div>
 			<span>返程日期</span>
-			<input id="fancDate" disabled="disabled"/>
+			<input id="fancDate" disabled="disabled" onclick="calendar.show({ id: this })"/>
 		</div>
 		<div>
 			<button id="findBtn" onclick="ajaxjson()">搜索航班</button>
@@ -617,8 +621,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 索引结果 -->
 	<div id="pipeiValue"></div>
 	<!-- 加载等待界面 -->	
-	<div id="loading" style="display:none;">
-		数据加载中...
+	<div id="loading" style="display:none; position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+		<div style="color:#fff; text-align:center; margin-top:20%;">搜 索 中...</div> 
 	</div>
 	<script>
 		$(function(){
@@ -734,7 +738,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script>
 	//机票搜索的js
-		function ajaxjson(){
+	function ajaxjson(){
 			var chufCityCode = $("#gofaCity").val();
 			var daodCityCode = $("#arrCity").val();
 			var cangW = $("#cangwei").val();
@@ -751,9 +755,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					complete:function(){$("#loading").css("display","none");},
 					success:function(data){
 						if(data.msg==1){
-							console.log(data.listDate);
-							var dataList = data.listDate;
+							var dataList = data.listDate;//直达的航班
+							var zzDataList = data.zzListDate; //中转的航班
+							console.log(zzDataList);
 							$("#ulBox").html("");
+							//直达的航班
 							for(var i=0;i<dataList.length;i++){
 								var teickNum = (dataList[i].seatList)[(dataList[i].seatList.length)-1].cangwei_data; //舱位剩余的票数
 								var arrTime = changeType(dataList[i].arrTime); //到达时间
@@ -762,7 +768,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								var cangweiType = (dataList[i].seatList)[(dataList[i].seatList.length)-1].cangwei; //舱位
 								var gofaPlane = $("#gofaPlane").val();
 								var arrPlane = $("#arrPlane").val();
-								var liList='<li class="resultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">南方航空('+dataList[i].airCode+')</div><div class="filetNo">'+dataList[i].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText">'+gofaPlane+'</div></div><div class="infoContent"><div style="line-height:50px;"><img src="<%=basePath%>console/images/bigtip1.png"/></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText">'+arrPlane+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costPay+'</span></div><div class="infoContent"><button class="btnclass" onclick="pointBtn(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="otherCang"></div></li>';
+								var liList='<li class="resultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(dataList[i].airCode)+dataList[i].airCode+'</div><div class="filetNo">'+dataList[i].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+dataList[i].deplaneName+'</div></div><div class="infoContent"><div style="line-height:50px;"><img src="<%=basePath%>console/images/bigtip1.png"/></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+dataList[i].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costPay+'</span></div><div class="infoContent"><button class="btnclass" onclick="pointBtn(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="otherCang"></div></li>';
 								$("#ulBox").append(liList);	
 								
 								//动态加载针对该航班的其他舱位的信息
@@ -779,11 +785,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										if(basicCabin==cangweiName){
 											var cangwei_type = dataList[i].seatList[j].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
 											onewayPrice = dataList[i].seatList[j].onewayPrice;//价钱
-											var listDiv='<div class="childBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+basicCabin+'：</span><span class="cangweiNum">'+cangwei_type+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+onewayPrice+'</span></div><div class="yudingBtn"><button class="trueYuBtn" onclick="yudingTicket(this)">预　定</button></div><div style="clear:both;"></div></div>';
+											var listDiv='<div class="childBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+basicCabin+'：</span><span class="cangweiNum">'+cangwei_type+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+onewayPrice+'</span></div><div class="yudingBtn"><button class="trueYuBtn" onclick="yudingTicket(this)">预　定</button><a class="orgCity" style="display:none;">'+dataList[i].orgCity+'</a><a class="dstCity" style="display:none;">'+dataList[i].dstCity+'</a></div><div style="clear:both;"></div></div>';
 											$(".resultListBox:eq("+i+") .otherCang").append(listDiv);
 										}
 								}
 								$(".otherCang").slideUp("fast");
+							}
+							
+							//中转的航班
+							for(var i=0; i<zzDataList.length; i++){
+								var liList;
+								for(var j=zzDataList.length-1; j>i; j--){
+									if(zzDataList[i].arrPlaneName==zzDataList[j].deplaneName&&MathTime(zzDataList[i].arrTime,zzDataList[j].depTime)>3600&&(zzDataList[i].airCode==zzDataList[j].airCode)){
+										//console.log(zzDataList[i].airCode+"-"+zzDataList[i].deplaneName+"-"+zzDataList[i].arrPlaneName+"-"+zzDataList[i].arrTime+" / "+zzDataList[j].airCode+"-"+zzDataList[j].deplaneName+"-"+zzDataList[j].arrPlaneName+"-"+zzDataList[j].depTime);
+										//console.log(stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime)));
+										var rowstr1 = JSON.stringify(zzDataList[i]); //第一段航班(字符串)
+										var rowstr2 = JSON.stringify(zzDataList[j]); //第二段航班(字符串)
+										var rowseatInfo1 = zzDataList[i].seatList; //第一航段的座位
+										var rowseatInfo2 = zzDataList[j].seatList; //第一航段的座位
+										var chufDate = $("#gofaTime").val(); //出发日期
+										var arrTime = changeType(zzDataList[j].arrTime); //到达时间
+										var depTime = changeType(zzDataList[i].depTime); //出发时间
+										var onePay,twoPay;
+										for(var k=0; k<rowseatInfo1.length; k++){  //第一段航班的对应舱位的价格
+											if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
+												onePay = rowseatInfo1[k].onewayPrice;
+											}
+										}
+										
+										for(var k=0; k<rowseatInfo2.length; k++){	//第二段航班的对应舱位的价格
+											if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
+												twoPay = rowseatInfo2[k].onewayPrice;
+											}
+										}
+										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+zzDataList[i].airCode+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+zzDataList[i].deplaneName+'</div></div><div class="infoContent"><div><div>'+zzDataList[i].arrPlaneName+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+zzDataList[j].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)+'</span></div><div class="infoContent"><a class="zaClass" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate='+chufDate+'&cang='+$("#cangwei").val()+'&rowstr1='+rowstr1+'&rowstr2='+rowstr2+'\'>预定航班</a></div><div style="clear:both;"></div></li>';
+										$("#ulBox").append(liList);	
+									}
+								}
 							}
 						}
 					},error:function(){
@@ -809,7 +847,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#tab1 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity");
 				$("#tab2 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
 			}
-			//$(".zimuResult>.cityUL>li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
 			$("#pipeiValue").text("");
 			for(var i=0; i<$(".chCity").length&&i!=6; i++){
 				var cityname = $(".chCity:eq("+i+")").text();
@@ -837,11 +874,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function pointBtn(inc){
 				$(inc).parent().siblings(".otherCang").slideToggle("fast");
 		}		
+		
 		//获取（）括号里面内容的方法
 		function getText(str){
 			var str2=str;
 			var userName = str2.substring((str.indexOf("(")+1),str.indexOf(")"));
 			return userName;
+		}
+		
+		//格式化舱位
+		function cnCang(basicCabin){
+			if(basicCabin=="公务舱"){
+				basicCabin="C";
+			}else if(basicCabin=="头等舱"){
+				basicCabin="F";
+			}else if(basicCabin=="经济舱"){
+				basicCabin="Y";
+			}
+			return basicCabin;
 		}
 		
 		//改变出发时间和到达时间的类型
@@ -861,58 +911,115 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function yudingTicket(inc){
 			var chufaTime = $(inc).parents(".resultListBox").children(".planeName").children(".newttime").text(); //出发时间
 			var arrTimes = $(inc).parents(".resultListBox").children(".planeName").children(".arrTimenews").text(); //到达时间
-			var planAndFildNo = $("#arrPlane").val()+" "+$(inc).parents(".resultListBox").children(".infoContent").children(".filetNo").text(); //出发机场和航班号
-			var mudiPlaneAndtime = $("#gofaPlane").val()+" "+cuntTime(chufaTime.replace(":",""),arrTimes.replace(":","")); //到达机场个历时多长时间
+			var deplaneName = $(inc).parents(".resultListBox").children(".planeName").children(".deplaneName").text();
+			var arrPlaneName = $(inc).parents(".resultListBox").children(".planeName").children(".arrPlaneName").text();
+			var planAndFildNo = deplaneName+" "+$(inc).parents(".resultListBox").children(".infoContent").children(".filetNo").text(); //出发机场和航班号
+			var mudiPlaneAndtime = arrPlaneName+" "+cuntTime(chufaTime.replace(":",""),arrTimes.replace(":","")); //到达机场个历时多长时间
 			var payMoney = $(inc).parents(".childBoxClass").children(".jiagePay").children(".payMoneyBox").text(); //价格
 			var zhekou = "85折" //折扣
 			var cangwei = $(inc).parents(".childBoxClass").children(".otherCangweiClass").children(".cangweiNum").text() //舱位
 			var chufCity = getoutText($("#gofaCity").val());//出发城市
 			var arryCity = getoutText($("#arrCity").val()); //到达城市
 			var chufaDate = $("#gofaTime").val(); //出发日期
+			var chufCode =  $(inc).next().text();
+			var daodCode = $(inc).next().next().text();
 			//alert(chufaTime+"/"+arrTimes+"/"+planAndFildNo+"/"+mudiPlaneAndtime+"/"+payMoney+"/"+zhekou+"/"+cangwei+"/"+chufCity+"/"+arryCity+"/"+chufaDate);
-			window.location.href="<%=basePath%>console/framework/jporder/writeInfo.jsp?chufTime="+chufaTime+"&arrDTime="+arrTimes+"&shiPlace="+planAndFildNo+"&zhongPlace="+mudiPlaneAndtime+"&cost="+payMoney+"&zhekou="+zhekou+"&cangweiType="+cangwei+"&chufCityID="+chufCity+"&daodCityID="+arryCity+"&chufDate="+chufaDate;
+			window.location.href="<%=basePath%>console/framework/jporder/writeInfo.jsp?chufTime="+chufaTime+"&arrDTime="+arrTimes+"&shiPlace="+planAndFildNo+"&zhongPlace="+mudiPlaneAndtime+"&cost="+payMoney+"&zhekou="+zhekou+"&cangweiType="+cangwei+"&chufCityID="+chufCity+"&daodCityID="+arryCity+"&chufDate="+chufaDate+"&chufCode="+chufCode+"&daodCode="+daodCode;
 		}
 		
 		//计算历经多长时间到达
 		function cuntTime(depTime,arrTime){
-			//alert(depTime+"/"+arrTime);
-			if(4<arrTime.length){	
-				var firstTime=arrTime.substring(0,4);	
-				var arrTime01 = parseInt(firstTime);
-				var depTime01 = parseInt(depTime);
-				var oneDayTime = 2400;
-				var resultTime = (oneDayTime-depTime01)+arrTime01+'';
-				if(resultTime.length==4){		
-					var firstTime=resultTime.substring(0,2);
-					var lastTime=resultTime.substring(2,resultTime.length);
-					resultTime = firstTime+"时"+lastTime+"分";		
-				}else if(resultTime.length==3){			
-					var firstTime=resultTime.substring(0,1);
-					var lastTime=resultTime.substring(1,resultTime.length);
-					resultTime = firstTime+"时"+lastTime+"分";
-				}
-				return resultTime;
+			var sTime = changesTime(depTime); //出发时间的秒
+			var oTime = changesTime(arrTime); //到达时间的秒
+			var chaTime = oTime-sTime; //两个时间相差的秒
+			var liTime = parseInt(chaTime/3600)+"时"+parseInt((chaTime%3600)/60)+"分";
+			//alert(depTime+"->"+changesTime(depTime)+"/"+arrTime+"->"+changesTime(arrTime)+"/"+liTime);
+			return liTime;
+		}
+		
+		//根据时间参数进行大小比较
+		function MathTime(starTime,overTime){
+			//将时间转换成秒来比较
+			var shh = starTime.substring(0,2);
+			var smm = starTime.substring(2,starTime.length);
+			var scount,ocount; //定义总时间的两个变量
+			scount = shh*3600+smm*60; //开始的总秒数
+			var ohh,omm,odd;
+			if(overTime.indexOf("+")>0){
+				ohh = overTime.substring(0,2);
+				omm = overTime.substring(2,4);
+				odd = overTime.substring(4,overTime.length);
+				ocount = ohh*3600+omm*60+24*3600;
 			}else{
-				var arrTime01 = parseInt(arrTime);
-				var depTime01 = parseInt(depTime);
-				var numTime = (arrTime01-depTime01)+'';//将数字转化成字符型
-				if(numTime.length==4){		
-					var firstTime=numTime.substring(0,2);
-					var lastTime=numTime.substring(2,numTime.length);
-					numTime = firstTime+"时"+lastTime+"分";		
-				}else if(numTime.length==3){			
-					var firstTime=numTime.substring(0,1);
-					var lastTime=numTime.substring(1,numTime.length);
-					numTime = firstTime+"时"+lastTime+"分";
-				}		
-				return numTime;
+				ohh = overTime.substring(0,2);
+				omm = overTime.substring(2,overTime.length);
+				odd = "0";
+				ocount = ohh*3600+omm*60;
 			}
+			return ocount-scount;
+		}
+		
+		//根据时间参数化成秒
+		function changesTime(time){
+			var ohh,omm,ocount;
+			if(time.indexOf("+")>0){
+				ohh = time.substring(0,2);
+				omm = time.substring(2,4);
+				ocount = ohh*3600+omm*60+24*3600;
+			}else{
+				ohh = time.substring(0,2);
+				omm = time.substring(2,time.length);
+				ocount = ohh*3600+omm*60;
+			}
+			return ocount;
 		}
 		
 		//获取括号外面的城市名的方法
 		function getoutText(str){
 			var userName = str.substring(0,str.indexOf("("));
 			return userName;
+		}
+		
+		//将秒化成    天/时/分
+		function stos(s){
+			var ss;
+			if(24>parseInt(s/3600)>0){
+				ss = parseInt(s/3600)+"小时"+parseInt((s%3600)/60)+"分";
+			}else if(parseInt(s/3600)>=24){
+				if(parseInt(s/3600)-24>1){
+					ss = parseInt(parseInt(s/3600)/24)+"天"+(parseInt(s/3600)-24)+"小时";
+				}else{
+					ss = parseInt(parseInt(s/3600)/24)+"天"+((s/3600)-24)*60+"分";
+				}
+			}
+			return ss;
+		}
+		
+		//预定中转航班
+		function yuPlan(planOne,planTwo){
+			console.log(planOne);
+			console.log(planTwo);
+		}
+		
+		//根据航空公司的二字码查找对应的航空公司
+		function findByCode(code){
+			var cnName;
+			var value1 = {
+							"HU":"海南省航空",
+							"CZ":"中国南方航空",
+							"CA":"中国国际航空",
+							"MU":"中国东方航空",
+							"3U":"四川航空",
+							"SC":"山东航空",
+							"ZH":"深圳航空公司",
+							"HO":"吉祥航空"
+			};
+			for(var key in value1) {
+				if(key==code){
+					cnName = value1[key];
+				}
+			}
+			return cnName;
 		}
 	</script>
 </body>

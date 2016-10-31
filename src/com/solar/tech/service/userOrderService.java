@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.entity.airport;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 
@@ -57,7 +58,13 @@ public class userOrderService {
 	public String fingMaxOrderNum(){ 
 		 String hql = "SELECT (uOrder.orderNum) FROM userOrderInfo as uOrder WHERE intNum = (SELECT MAX(uinfo.intNum) FROM userOrderInfo as uinfo)";
 		 List<String> MaxorderNum = this.gDao.find(hql);
-		 String MaxNum = MaxorderNum.get(0);
+		 String MaxNum = null;
+		 if(MaxorderNum.size()==0){
+			 MaxNum = "YHOD20151205000001";
+		 }else{
+			 MaxNum = MaxorderNum.get(0);
+		 }
+		System.out.println("=======>>>>>>");
 		 return MaxNum;
 	}
 	
@@ -219,4 +226,25 @@ public class userOrderService {
 			}
 			return null;
 		}
+		
+		public String findCity(String code){
+			String cityName = null;
+			//String sql="select * from b_airport where AIRPORTCODE = '"+code+"'";
+			//List<Object> list = new ArrayList<Object>();
+			List<Object> params = new ArrayList<Object>();
+			params.add(code);
+			String sql="from airport ai where ai.AIRPORTCODE= ?";
+			List<airport> list = gDao.getListByHql(airport.class, sql, params);
+			//list = this.gDao.executeJDBCSqlQuery(sql);
+			if(list.size()>0){
+				for(int i=0; i<list.size(); i++){
+					cityName = list.get(i).getCITYNAMECN();
+				}
+				return cityName;
+			}
+			else{
+				return null;
+			}
+		}
+		
 }

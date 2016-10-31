@@ -11,6 +11,8 @@ public class FlightInfo {
 	private String orgCity; // 起始城市
 	private String arrTime; // 到达时间
 	private String dstCity; // 到达城市
+	private String deplaneName; //起始机场名
+	private String arrPlaneName; //到达机场名
 	
 	private List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 可用舱位信息
 	
@@ -77,4 +79,22 @@ public class FlightInfo {
 	public void setDstCity(String dstCity) {
 		this.dstCity = dstCity;
 	}
+
+	public String getDeplaneName() {
+		return deplaneName;
+	}
+
+	public void setDeplaneName(String deplaneName) {
+		this.deplaneName = deplaneName;
+	}
+
+	public String getArrPlaneName() {
+		return arrPlaneName;
+	}
+
+	public void setArrPlaneName(String arrPlaneName) {
+		this.arrPlaneName = arrPlaneName;
+	}
+	
+	
 }

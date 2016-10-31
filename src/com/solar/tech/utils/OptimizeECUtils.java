@@ -90,6 +90,9 @@ public class OptimizeECUtils {
 		return list;
 	}	
 	
+	//返回往返的全部航班信息
+	
+	
 	// 支付前再确认该舱位是否还有空余座位
 	public Integer confirmCabin(String org, String dst, String date, String flightNo, String cabin){
 		List<AvSegment> avList = new ECUtils().av(null, null, date, null, null, null, null, null, flightNo); // 查询座位可用 

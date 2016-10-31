@@ -14,6 +14,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	String chufCityID=new String(request.getParameter("chufCityID").getBytes("ISO-8859-1"),"utf-8");
 	String daodCityID=new String(request.getParameter("daodCityID").getBytes("ISO-8859-1"),"utf-8");
 	String chufDate = request.getParameter("chufDate");
+	String chufCode=new String(request.getParameter("chufCode").getBytes("ISO-8859-1"),"utf-8");
+	String daodCode=new String(request.getParameter("daodCode").getBytes("ISO-8859-1"),"utf-8");
 	System.out.println(chufTime+"/"+arrDTime+"/"+shiPlace+"/"+zhongPlace+"/"+cost+"/"+zhekou+"/"+cangweiType+"/"+chufCityID+"/"+daodCityID+"/"+chufDate);
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -298,7 +300,9 @@ function nextPat(){
 				"birthday":birthDay,
 				"menType":menType,
 				"airCode":airCode,
-				"age":age
+				"age":age,
+				"daodCode":"<%=daodCode%>",
+				"chufCode":"<%=chufCode%>"
 			};
 			if(fals==true){
 				$.ajax({
