@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import com.solar.tech.utils.HttpUtils;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,15 +51,33 @@ public class ExchangeRateController {
 	 */
 	@RequestMapping("/queryExchangeRate.action")
 	@ResponseBody
-	public Map<String, Object> queryExchangeRate(String fromCurrency,String toCurrency,String amount){
-		
-		String httpArg = "fromCurrency="+fromCurrency+"&toCurrency="+toCurrency+"&amount="+amount;
-		//String httpArg = "fromCurrency=CNY&toCurrency=USD&amount=2";
-		Map<String, Object> map = new HashMap<String, Object>();
-		String changeMoney = exchangeRateService.requestMoney(httpArg);
-		
-		map.put("data", changeMoney);
-		System.out.println("data");
-		return map;
+	public Map<String, String> queryExchangeRate(String fromCurrency,String amount,String toCurrency){
+		String host = "http://ali-waihui.showapi.com";
+	    String path = "/waihui-transform";
+	    String method = "GET";
+	    Map<String, String> headers = new HashMap<String, String>();
+	    Map<String, String> map = new HashMap<String, String>();
+	    //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
+	    headers.put("Authorization", "APPCODE 62f05b64dc8a4662a5b99bf84f2c0cb9");
+	    Map<String, String> querys = new HashMap<String, String>();
+	    querys.put("fromCode", fromCurrency);
+	    querys.put("money", amount);
+	    querys.put("toCode", toCurrency);
+        System.out.println(querys);
+        System.out.println(host);
+        String resut = null;
+	    try {
+	    	HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
+	    	//获取response的body
+	    	//System.out.println(EntityUtils.toString(response.getEntity()));
+	    	resut = EntityUtils.toString(response.getEntity());
+	    	System.out.println(resut);
+	    	map.put("date",resut);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return map;  
 	}
+	
+
 }
