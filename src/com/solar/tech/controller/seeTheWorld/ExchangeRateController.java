@@ -66,7 +66,7 @@ public class ExchangeRateController {
         System.out.println(querys);
         System.out.println(host);
         String resut = null;
-	    try {
+	    try { 
 	    	HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
 	    	//获取response的body
 	    	//System.out.println(EntityUtils.toString(response.getEntity()));

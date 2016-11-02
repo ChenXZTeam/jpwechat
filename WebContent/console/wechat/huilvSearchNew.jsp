@@ -219,7 +219,7 @@
 				var toCode=$("#toChangebz").val();
 				toCode=toCode.substring(toCode.length-3,toCode.length);
 				//alert(toCode)
-				$.ajax({
+				$.ajax({ 
 					url:"<%=basePath%>framework/exchangeRate/queryExchangeRate.action",
 					type:"POST",
 					data:{"fromCurrency":fromCode,"toCurrency":toCode,"amount":money},
