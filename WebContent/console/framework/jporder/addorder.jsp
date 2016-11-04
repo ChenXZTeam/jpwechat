@@ -77,6 +77,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	#pipeiValue{display:none; border:1px solid #e1e1e1; position:absolute; top:100px; background-color:#fff; left:0px; z-index:9; height:auto; width:300px;}
 	#pipeiValue .pipeiChildren{padding:10px 0px; padding-left:20px; cursor:pointer;}
 	#pipeiValue .pipeiChildren:hover{background-color:#e1e1e1;}
+	
+	/* 往返 */
+	ul .wfresListBox{overflow:hidden; border-bottom:#e1e1e1 solid 1px;}
+	.wfresListBox .zuheFildClass{ float:left;}
+	.hangbanbtn{float:left; margin-top:60px; margin-left:30px;}
+	.hangbanbtn button{background-color:#0099CC; border-radius:5px; border:none; color:#FFFFFF; padding:8px 13px; cursor:pointer; outline:none;}
+	.countMoney{float:left; margin-top:45px;}
+	.countMoney .countNumPay{ display:block; text-align:center; font-size:12px; color:#999999;}
+	.countMoney .deoole{float:left; width:10px; font-family:'微软雅黑'; line-height:55px; margin-left:15px;}
+	.countMoney .payMoey{ font-size:25px; color:#FF9900; text-align:left;line-height:45px;float:left; width:110px;}
+	.countMoney .qiClass{float:left; width:20px; line-height:55px; font-size:12px;}
+	.hangbanInfo{padding:5px;}
+	.hangbanInfo .childBox .depDateClass{float: left; margin-left:-175px; margin-top:23px;}
+	.hangbanInfo .childBox{float:left; text-align:center;}
+	.spanClass{display:block; width:175px;}
+	.arrTime,.depTime{font-size:25px; font-weight:bold;}
+	.depPlane,.arrPlane{font-size:13px; color:#666666;}
+	.airName,.filgNo{line-height:23px;}
+	
+	.childBoxCang{ padding:0px 0px 15px 0px;}
+	.childBoxCang .wfchildBoxClass{margin-top:10px;}
+	.childBoxCang .wfchildBoxClass .kongBox{float:left; width:400px; height:30px;}
+	.childBoxCang .wfchildBoxClass .otherCangweiClass{float:left; width:300px; height:30px; line-height: 30px;}
+	.childBoxCang .wfchildBoxClass .otherCangweiClass .cangweiNum{color:#f00;}
+	.childBoxCang .wfchildBoxClass .jiagePay{float:left; width:165px; height:30px; line-height: 30px;}
+	.childBoxCang .wfchildBoxClass .jiagePay .payMoneyBox{color:#FF9900; font-size: 20px;}
+	.childBoxCang .wfchildBoxClass .yudingBtn{float:left; height:30px;}
+	.childBoxCang .wfchildBoxClass .yudingBtn .trueYuBtn{padding: 8px 20px;background-color: #0099CC;color: #fff;border: none;border-radius: 5px;}
 </style>
 </head>
 
@@ -184,7 +212,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="menudiv">
 			<!--热门推荐-->
 			<div id="con_one_1">
-				<ul><li><span class="cityName">北京</span><span class="planeNameNew">北京首都国际机场</span><span class="airportCode">PEK</span></li><li><span class="cityName">广州</span><span class="planeNameNew">广州新白云国际机场</span><span class="airportCode">CAN</span></li><li><span class="cityName">海口</span><span class="planeNameNew">海口美兰国际机场</span><span class="airportCode">HAK</span></li><li><span class="cityName">三亚</span><span class="planeNameNew">三亚凤凰国际机场</span><span class="airportCode">SYX</span></li><li><span class="cityName">贵阳</span><span class="planeNameNew">贵阳龙洞堡国际机场</span><span class="airportCode">KWE</span></li><li><span class="cityName">大同</span><span class="planeNameNew">大同怀仁机场</span><span class="airportCode">DAT</span></li><li><span class="cityName">安庆</span><span class="planeNameNew">安庆大龙山机场</span><span class="airportCode">AQG</span></li><li><span class="cityName">上海</span><span class="planeNameNew">上海浦东机场</span><span class="airportCode">PVG</span></li><li><span class="cityName">青岛</span><span class="planeNameNew">青岛流亭国际机场</span><span class="airportCode">TAO</span></li><li><span class="cityName">深圳</span><span class="planeNameNew">深圳宝安国际机场</span><span class="airportCode">SZX</span></li><li><span class="cityName">石家庄</span><span class="planeNameNew">石家庄正定国际机场</span><span class="airportCode">SJW</span></li></ul>
+				<ul><li><span class="cityName">北京</span><span class="planeNameNew">北京首都国际机场</span><span class="airportCode">PEK</span></li><li><span class="cityName">广州</span><span class="planeNameNew">广州新白云国际机场</span><span class="airportCode">CAN</span></li><li><span class="cityName">海口</span><span class="planeNameNew">海口美兰国际机场</span><span class="airportCode">HAK</span></li><li><span class="cityName">三亚</span><span class="planeNameNew">三亚凤凰国际机场</span><span class="airportCode">SYX</span></li><li><span class="cityName">贵阳</span><span class="planeNameNew">贵阳龙洞堡国际机场</span><span class="airportCode">KWE</span></li><li><span class="cityName">大同</span><span class="planeNameNew">大同怀仁机场</span><span class="airportCode">DAT</span></li><li><span class="cityName">安庆</span><span class="planeNameNew">安庆大龙山机场</span><span class="airportCode">AQG</span></li><li><span class="cityName">上海</span><span class="planeNameNew">上海浦东机场</span><span class="airportCode">PVG</span></li><li><span class="cityName">青岛</span><span class="planeNameNew">青岛流亭国际机场</span><span class="airportCode">TAO</span></li><li><span class="cityName">深圳</span><span class="planeNameNew">深圳宝安国际机场</span><span class="airportCode">SZX</span></li><li><span class="cityName">石家庄</span><span class="planeNameNew">石家庄正定国际机场</span><span class="airportCode">SJW</span></li><li><span class="cityName">太原</span><span class="planeNameNew">太原武宿国际机场</span><span class="airportCode">TYN</span></li></ul>
 			</div>
 			<div id="con_one_2" style="display:none;">
 				<div class="zimuBox">
@@ -739,6 +767,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script>
 	//机票搜索的js
 	function ajaxjson(){
+		$("#ulBox").html("");
+		if($("#danAndFan").val()=="1"){  //单程
 			var chufCityCode = $("#gofaCity").val();
 			var daodCityCode = $("#arrCity").val();
 			var cangW = $("#cangwei").val();
@@ -758,17 +788,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							var dataList = data.listDate;//直达的航班
 							var zzDataList = data.zzListDate; //中转的航班
 							console.log(zzDataList);
-							$("#ulBox").html("");
 							//直达的航班
 							for(var i=0;i<dataList.length;i++){
 								var teickNum = (dataList[i].seatList)[(dataList[i].seatList.length)-1].cangwei_data; //舱位剩余的票数
 								var arrTime = changeType(dataList[i].arrTime); //到达时间
 								var depTime = changeType(dataList[i].depTime); //出发时间
-								var costPay = (dataList[i].seatList)[(dataList[i].seatList.length)-1].onewayPrice; //花费价格
-								var cangweiType = (dataList[i].seatList)[(dataList[i].seatList.length)-1].cangwei; //舱位
-								var gofaPlane = $("#gofaPlane").val();
-								var arrPlane = $("#arrPlane").val();
-								var liList='<li class="resultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(dataList[i].airCode)+dataList[i].airCode+'</div><div class="filetNo">'+dataList[i].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+dataList[i].deplaneName+'</div></div><div class="infoContent"><div style="line-height:50px;"><img src="<%=basePath%>console/images/bigtip1.png"/></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+dataList[i].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costPay+'</span></div><div class="infoContent"><button class="btnclass" onclick="pointBtn(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="otherCang"></div></li>';
+								for(var j=0; j<dataList[i].seatList.length; j++){ //没有对应的舱位
+									if((dataList[i].seatList)[j].basicCabin==cnCang($("#cangwei").val())){
+										var costPay = (dataList[i].seatList)[j].onewayPrice; //花费价格
+										var cangweiType = (dataList[i].seatList)[j].cangwei; //舱位
+										var gofaPlane = $("#gofaPlane").val();
+										var arrPlane = $("#arrPlane").val();
+									}
+								}
+								var liList='<li class="resultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(dataList[i].airCode)+'</div><div class="filetNo">'+dataList[i].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+dataList[i].deplaneName+'</div></div><div class="infoContent"><div style="line-height:50px;"><img src="<%=basePath%>console/images/bigtip1.png"/></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+dataList[i].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costPay+'</span></div><div class="infoContent"><button class="btnclass" onclick="pointBtn(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="otherCang"></div></li>';
 								$("#ulBox").append(liList);	
 								
 								//动态加载针对该航班的其他舱位的信息
@@ -818,17 +851,93 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												twoPay = rowseatInfo2[k].onewayPrice;
 											}
 										}
-										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+zzDataList[i].airCode+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+zzDataList[i].deplaneName+'</div></div><div class="infoContent"><div><div>'+zzDataList[i].arrPlaneName+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+zzDataList[j].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)+'</span></div><div class="infoContent"><a class="zaClass" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate='+chufDate+'&cang='+$("#cangwei").val()+'&rowstr1='+rowstr1+'&rowstr2='+rowstr2+'\'>预定航班</a></div><div style="clear:both;"></div></li>';
+										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+zzDataList[i].deplaneName+'</div></div><div class="infoContent"><div><div>'+zzDataList[i].arrPlaneName+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+zzDataList[j].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)+'</span></div><div class="infoContent"><a class="zaClass" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate='+chufDate+'&cang='+$("#cangwei").val()+'&rowstr1='+rowstr1+'&rowstr2='+rowstr2+'\'>预定航班</a></div><div style="clear:both;"></div></li>';
 										$("#ulBox").append(liList);	
 									}
 								}
 							}
+						}else{
+							$("#ulBox").html("<li style='color:#999;font-size:20px; font-weight:bold; text-align:center;'>没有找到符合条件的航班</li>");
 						}
 					},error:function(){
 						
 					}
 			});
+		}else if($("#danAndFan").val()=="2"){ //往返
+			var chufCityCode = getText($("#gofaCity").val());
+			var daodCityCode = getText($("#arrCity").val());
+			var dateTime = $("#gofaTime").val();
+			var returnTime = $("#fancDate").val();
+			date1 = new Date(dateTime); //出发时间
+			date2 = new Date(returnTime); //返程时间
+			if(Date.parse(date1)>Date.parse(date2)){
+				alert("订当天往返的机票，推荐分开来订单程航班。");
+				return false;
+			}
+			var airline = "";
+			var page = "";
+			$.ajax({
+					url:"<%=basePath%>wechatController/find/planTekTo.action",
+					type:"POST",
+					data:{"org":chufCityCode,"dst":daodCityCode,"date":dateTime,"returnDate":returnTime,"airline":airline,"page":page},
+					dataType:"json",
+					beforeSend:function(){$("#loading").css("display","block");},
+					complete:function(){$("#loading").css("display","none");},
+					success:function(data){
+						var depart = data.departAv; //去程的航班
+						var returnf = data.returnAv; //回程的航班
+						//console.log(depart);
+						//console.log(returnf);
+						var countwf = 0;
+						for(var i=0; i<depart.length; i++){
+							var airName = findByCode(depart[i].airCode);
+							//console.log(depart[i].seatList);
+							for(var j=0; j<returnf.length; j++){
+								var airName2 = findByCode(returnf[j].airCode); 
+								//console.log(returnf[j].seatList);
+								var liList='<li class="wfresListBox"><div class="zuheFildClass"><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName+'</span><span class="spanClass filgNo">'+depart[i].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(depart[i].depTime)+'</span><span class="spanClass depPlane">'+depart[i].deplaneName+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#gofaTime").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(depart[i].arrTime)+'</span><span class="spanClass arrPlane">'+depart[i].arrPlaneName+'</span></div><div style="clear:both;"></div></div><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName2+'</span><span class="spanClass filgNo">'+returnf[j].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(returnf[j].depTime)+'</span><span class="spanClass depPlane">'+returnf[j].deplaneName+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#fancDate").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(returnf[j].arrTime)+'</span><span class="spanClass arrPlane">'+returnf[j].arrPlaneName+'</span></div><div style="clear:both;"></div></div></div><div class="countMoney"><span class="countNumPay">往返总价</span><span class="spanClass deoole">￥</span><span class="spanClass payMoey"></span><span class="spanClass qiClass">起</span></div><div class="hangbanbtn"><button onclick="pointBtnwf(this)">预定该组合▼</button></div><div style="clear:both;"></div><div class="childBoxCang"></div></li>';
+								$("#ulBox").append(liList);
+								
+								for(var k=0; k<depart[i].seatList.length; k++){
+									var GcangType = (depart[i].seatList)[k].basicCabin;
+									if(GcangType=="C"){
+										GcangType="公务舱"
+									}else if(GcangType=="F"){
+										GcangType="头等舱";
+									}else if(GcangType=="Y"){
+										GcangType="经济舱";
+									}
+									var GcangPont = (depart[i].seatList)[k].cangwei;
+									var depart_moneyCost = (depart[i].seatList)[k].onewayPrice;
+									for(var h=0; h<returnf[j].seatList.length; h++){
+										var RcangType = (returnf[j].seatList)[h].basicCabin;
+										if(RcangType=="C"){
+											RcangType="公务舱"
+										}else if(RcangType=="F"){
+											RcangType="头等舱";
+										}else if(RcangType=="Y"){
+											RcangType="经济舱";
+										}
+										var RcangPont = (returnf[j].seatList)[h].cangwei;
+										var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
+										var dr_countPay = (parseFloat(depart_moneyCost)+parseFloat(return_moneyCost)).toFixed(2);
+										if(GcangType == RcangType && GcangPont == RcangPont){
+											var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><button class="trueYuBtn">预　定</button></div><div style="clear:both;"></div></div>';
+											$(".wfresListBox:eq("+countwf+") .childBoxCang").append(listDiv);
+											$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(dr_countPay);
+										}
+									}
+								}
+								countwf++;
+							}
+						}
+						$(".childBoxCang").slideUp("fast");
+					},error:function(){
+						
+					}
+			});
 		}
+	}
 		
 		//输入关键字的时候自动索引
 		function myFunction(inc) {
@@ -873,6 +982,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//预定航班的按钮（含有箭头的那个）
 		function pointBtn(inc){
 				$(inc).parent().siblings(".otherCang").slideToggle("fast");
+		}
+		
+		//预定航班的按钮（含有箭头的那个）往返
+		function pointBtnwf(inc){
+				$(inc).parent().siblings(".childBoxCang").slideToggle("fast");
 		}		
 		
 		//获取（）括号里面内容的方法

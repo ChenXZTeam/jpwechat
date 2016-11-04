@@ -35,11 +35,14 @@ public class CityUtils {
 	
 	// 通过三字码获取机场名称
 	public static String getAirportNameByCode(String code){
+		if(code.equals("")||code==null){
+			return "";
+		}
 		return StringUtils.isEmpty(code)?null:pro.getProperty(code.toUpperCase().toString());
 	}
 	
 	public static String huoquPlane(String plane){
-		if(plane.indexOf("机场")<0){
+		if(plane.indexOf("机场")<0&&!plane.equals("")){
 			plane+="机场";
 		}
 		return plane;

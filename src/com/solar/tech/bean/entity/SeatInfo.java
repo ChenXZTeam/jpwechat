@@ -47,4 +47,12 @@ public class SeatInfo {
 	public void setCangwei(String cangwei) {
 		this.cangwei = cangwei;
 	}
+
+	@Override
+	public String toString() {
+		return "SeatInfo [cangwei=" + cangwei + ", cangwei_data="
+				+ cangwei_data + ", basicCabin=" + basicCabin
+				+ ", onewayPrice=" + onewayPrice + ", roundtripPrice="
+				+ roundtripPrice + "]";
+	}
 }

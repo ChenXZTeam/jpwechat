@@ -276,12 +276,14 @@ public class ECUtils {
 			AVRoundTripRequest request = new AVRoundTripRequest ();
 			request.setOfficeNo(OFFICENO);
 			request.setToken(token);
-
+			System.out.println(org+", "+dst+", "+date+", "+returnDate+", "+airline+", "+page);
 			request.setOrg(org);     // 出发城市
 			request.setDst(dst);	// 抵达城市
 			request.setDepartDate(date);	// 查询日期，格式 yyy-MM-dd
 			request.setReturnDate(returnDate);   // 返回日期，格式 yyy-MM-dd
-			request.setAirline(airline);	// 航空公司（可选）
+			if(!airline.equals("")||!airline.equals(" ")||airline!=null){
+				request.setAirline(airline);	// 航空公司（可选）
+			}
 			if(page != null){
 				request.setPage(page); 	// 限制最大翻页次数（可选，默认20）
 			}

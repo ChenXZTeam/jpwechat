@@ -67,7 +67,15 @@ public class PlanTekController {
 						}
 					}
 					System.out.println(cangW+"剩余的票数：" + SumTecikNum);*/
-					newFlil.add(f);  //将符合的航班加入新的数组链表里面
+					int hasNum = 0;
+					for(SeatInfo info : f.getSeatList()){
+						if(SeatUtils.getSeatType(info.getBasicCabin()).equals(cangW)){
+							if(hasNum==0){
+								newFlil.add(f);  //将符合的航班加入新的数组链表里面
+								hasNum++;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -75,7 +83,6 @@ public class PlanTekController {
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo fli : newFlil){
 				if(fli.getOrgCity().equals(chufCity)&&fli.getDstCity().equals(daodCity)){
-					System.out.println("直达的航班"+fli.getFlightNo());
 					zhidFil.add(fli);  //重构直达的链表
 				}
 			}
@@ -101,15 +108,26 @@ public class PlanTekController {
 						+"）, 出发时间："+zhongzFil.get(i).getDepTime()+", 到达时间:"+zhongzFil.get(i).getArrTime());
 			}*/
 		}			
-		
-		System.out.println("数组的长度："+zhongzFil.size());
-		map.put("msg", 1);
-		map.put("listDate", zhidFil);
-		map.put("zzListDate", zhongzFil);
+		System.out.println("中转航班数组的长度："+zhongzFil.size());
+		if(zhidFil.size()==0&&zhongzFil.size()==0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 1);
+			map.put("listDate", zhidFil);
+			map.put("zzListDate", zhongzFil);
+		}
 		return map;
 	}
 	
-	
+	//查询往返的机票
+	@RequestMapping("/find/planTekTo.action")
+	@ResponseBody
+	public Map<String, Object> planTekTo(String org, String dst, String date, String returnDate, String airline, Integer page){
+		Map<String, Object> map = new OptimizeECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
+		//System.out.println("去程航班的数量："+avd.getDepartItemsCount());
+		//System.out.println("返程航班的数量："+avd.getReturnItemsCount());
+		return map;
+	}
 
 	//支付前得确认是否还有空座位
 	@RequestMapping("/confirmCabin/seatInfo.action")
@@ -153,16 +171,16 @@ public class PlanTekController {
 	}
 	
 	//查询国内运价
-	@RequestMapping("/find/patPNR.action")
+	/*@RequestMapping("/find/patPNR.action")
 	@ResponseBody
-	public Map<String, Object> patPNR(String org, String dst, String date, String returnDate, String airline, Integer page/*String pnrNo*/){
+	public Map<String, Object> patPNR(String org, String dst, String date, String returnDate, String airline, Integer pageString pnrNo){
 		Map<String, Object> map=new HashMap<String, Object>();
 		//PATFareItem[] segmentInfos = new ECUtils().patPNR(pnrNo, "A", null, 1, null, null, null, null);
 		AVDoubleResponse passAVR = new ECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
 		//System.out.println("长度："+segmentInfos.length);
 		map.put("SEG", passAVR); 
 		return map;
-	}
+	}*/
 	
 	//删除单个中航信pnrNo的方法（程序调试时使用）
 	/*@RequestMapping("/deletes/PNRno.action")
