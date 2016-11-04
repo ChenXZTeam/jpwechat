@@ -211,27 +211,34 @@
 			}); --%>
 			
 			$("#btnChange").click(function(){
-				var changeMoney=$("#changeMoney").val();
-				var fromChangebz=$("#fromChangebz").val();
-					fromChangebz=fromChangebz.substring(fromChangebz.length-3,fromChangebz.length);
-				var toChangebz=$("#toChangebz").val();
-					toChangebz=toChangebz.substring(toChangebz.length-3,toChangebz.length);
-				$.ajax({
+				var money=$("#changeMoney").val();
+				
+				var fromCode=$("#fromChangebz").val();
+				fromCode=fromCode.substring(fromCode.length-3,fromCode.length);
+				//alert(fromCode)
+				var toCode=$("#toChangebz").val();
+				toCode=toCode.substring(toCode.length-3,toCode.length);
+				//alert(toCode)
+				$.ajax({ 
 					url:"<%=basePath%>framework/exchangeRate/queryExchangeRate.action",
 					type:"POST",
-					data:{"fromCurrency":fromChangebz,"toCurrency":toChangebz,"amount":changeMoney},
+					data:{"fromCurrency":fromCode,"toCurrency":toCode,"amount":money},
 					dataType:"json",
 					beforeSend:function(){$("#jiazaiBox").css("display","block");},
 					complete:function(){$("#jiazaiBox").css("display","none");},
-					success:function(res){
-						var dateList=JSON.parse(res.data);
-						var retaDa = dateList.retData;
-						console.log(retaDa);
-						$("#resCountMoney").text(retaDa.amount);
+					success:function(resut){
+				
+						
+						var dateList=JSON.parse(resut.date);
+						
+						var retaDa = dateList.showapi_res_body.money;
+						$("#resCountMoney").text($("#changeMoney").val());
+						var sum=0;
+						sum=retaDa/money;
 						$("#resqishBizh").text($("#fromChangebz").val());
 						$("#resbudiBizh").text($("#toChangebz").val());
-						$("#nowHuilv").text(retaDa.currency);
-						$("#resultId").text(retaDa.convertedamount);
+						$("#nowHuilv").text(sum);
+						$("#resultId").text(dateList.showapi_res_body.money);
 					},error:function(){
 						alert("请求失败");
 					}
