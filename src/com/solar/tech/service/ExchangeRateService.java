@@ -9,7 +9,7 @@ import java.net.URL;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.solar.tech.util.ConfigHuilvKeyAndUrl;
+import com.solar.tech.util.ConfigHuilvKeyAndUrl; 
 
 /**
  * 接口名：ExchangeRateService 

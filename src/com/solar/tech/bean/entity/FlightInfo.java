@@ -96,13 +96,5 @@ public class FlightInfo {
 		this.arrPlaneName = arrPlaneName;
 	}
 	
-	@Override
-	public String toString() {
-		return "FlightInfo [airCode=" + airCode + ", flightNo=" + flightNo
-				+ ", planeStyle=" + planeStyle + ", depTime=" + depTime
-				+ ", orgCity=" + orgCity + ", arrTime=" + arrTime
-				+ ", dstCity=" + dstCity + ", deplaneName=" + deplaneName
-				+ ", arrPlaneName=" + arrPlaneName + ", seatList=" + seatList
-				+ "]";
-	}
+	
 }
