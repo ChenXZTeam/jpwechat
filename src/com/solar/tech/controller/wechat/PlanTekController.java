@@ -40,8 +40,8 @@ public class PlanTekController {
 	public Map<String, Object> FindPlanTek(String chufCity,String daodCity,String cangW,String dateTime, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		//CityUtils p1=new CityUtils();
-		//session.setAttribute("qishiPlanCode", chufCity);
-		//session.setAttribute("daodPlanCode", daodCity);
+		session.setAttribute("qishiPlanCode", chufCity);
+		session.setAttribute("daodPlanCode", daodCity);
 		System.out.println(chufCity);
 		System.out.println(daodCity);
 		System.out.println(cangW);
@@ -87,6 +87,7 @@ public class PlanTekController {
 				}
 			}
 		}
+		System.out.println("直达航班的数量："+zhidFil.size());
 		//初步获得中转的链表
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){

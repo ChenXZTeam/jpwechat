@@ -38,14 +38,21 @@ public class userOrderController {
 		oderInfo.setChufDate(ChufDate);
 		oderInfo.setChufTime(ChufTime);
 		oderInfo.setDaodTime(DaodTime);
-		oderInfo.setDaodCity(DaodCity);
+		//oderInfo.setDaodCity(DaodCity);
 		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
 		oderInfo.setOpenID((String) session.getAttribute("openId"));
-		oderInfo.setQishiPlaneCode(chufCode);
-		oderInfo.setDaodPlaneCode(daodCode);
-		oderInfo.setChufCity(OrderService.findCity(chufCode));
-		oderInfo.setDaodCity(OrderService.findCity(daodCode));
+		if(null==chufCode||"".equals(chufCode)){
+			oderInfo.setQishiPlaneCode((String) session.getAttribute("qishiPlanCode"));
+			oderInfo.setDaodPlaneCode((String) session.getAttribute("daodPlanCode"));
+			oderInfo.setChufCity(ChufCity);
+			oderInfo.setDaodCity(DaodCity);
+		}else{
+			oderInfo.setQishiPlaneCode(chufCode);
+			oderInfo.setDaodPlaneCode(daodCode);
+			oderInfo.setChufCity(OrderService.findCity(chufCode));
+			oderInfo.setDaodCity(OrderService.findCity(daodCode));
+		}
 		oderInfo.setQishiPlane(QishiPlan);
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);

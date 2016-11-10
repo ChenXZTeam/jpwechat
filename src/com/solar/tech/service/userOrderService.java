@@ -64,7 +64,6 @@ public class userOrderService {
 		 }else{
 			 MaxNum = MaxorderNum.get(0);
 		 }
-		System.out.println("=======>>>>>>");
 		 return MaxNum;
 	}
 	

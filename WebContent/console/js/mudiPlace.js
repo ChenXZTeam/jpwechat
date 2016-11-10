@@ -5,14 +5,29 @@ $(function(){
 	//点击列表的方法
 	$(".notTjTicketDiv").click(function(){ 
 		$(".banner").fadeOut();
+		$(".wfbanner").fadeOut();
 		$(".cangweiClass").fadeOut();
 		$(this).next(".banner").fadeIn();
+	});
+	
+	//点击列表的方法(中转)
+	$(".zhzChildBox").click(function(){ 
+		$(".banner").fadeOut();
+		$(".wfbanner").fadeOut();
+		$(".cangweiClass").fadeOut();
+		$(this).next(".wfbanner").fadeIn();
 	});
 	
 	//点击“对应舱位其他票价”时
 	$(".piaojia").click(function(){
 		$(".cangweiClass").fadeOut();
 		$(this).parents(".banner").next(".cangweiClass").fadeIn();
+	});
+	
+	//点击“对应舱位其他票价”时(中转)
+	$(".wfpiaojia").click(function(){
+		$(".cangweiClass").fadeOut();
+		$(this).parents(".wfbanner").next(".cangweiClass").fadeIn();
 	});
 	
 	//预定的方法

@@ -1,7 +1,4 @@
-﻿﻿﻿/*
- *
- */
-jQuery.fn.extend({
+﻿jQuery.fn.extend({
     calendar: function(c) {
         function r() {
             $("#" + c.controlId).find(".tabD a").mouseup(function() {

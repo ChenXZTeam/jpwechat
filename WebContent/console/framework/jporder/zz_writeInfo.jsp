@@ -126,7 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <span>飞行历时:</span>
             <span id="countTime2"></span>
           </div>
-          <div><span>费用：</span><span id="countMoney2"></span></div>
+          <div><span>费用：</span><span id="countMoney2"></span><span id="TurecostPay" style="display:none;"></span></div>
       </div>
       <div style="clear:both;"></div>
   </div>
@@ -186,8 +186,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	console.log(obj2);
 	var cangwei = "<%=cangdate%>";
 	var chufDate = "<%=chufDate%>";
+	var chufDateTaO = chufDate.split(",");
+	if(chufDateTaO.length>1){
+		$("#ChufDate").text(chufDateTaO[0]);
+		$("#ChufDate2").text(chufDateTaO[1]);
+	}else{
+		$("#ChufDate").text(chufDate);
+		$("#ChufDate2").text(gsDate(obj2.depTime,chufDate));
+	}
 	//第一航段信息
-	$("#ChufDate").text(chufDate);
 	$("#ChufTime").text(gTime(obj1.depTime));
 	$("#DaodTime").text(gTime(obj1.arrTime));
 	$("#ChufCity").text(obj1.orgCity);
@@ -199,7 +206,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	$("#countTime").text(cuntTime(obj1.depTime,obj1.arrTime));
 	
 	//第二航段信息
-	$("#ChufDate2").text(gsDate(obj2.depTime,chufDate));
 	$("#ChufTime2").text(gTime(obj2.depTime));
 	$("#DaodTime2").text(gTime(obj2.arrTime));
 	$("#ChufCity2").text(obj2.orgCity);
@@ -215,19 +221,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	var rowseatInfo1 = obj1.seatList;
 	var rowseatInfo2 = obj2.seatList;
 	for(var k=0; k<rowseatInfo1.length; k++){  //第一段航班的对应舱位的价格
-		if(rowseatInfo1[k].basicCabin == cnCang(cangwei)){
+		if(rowseatInfo1[k].cangwei == cangwei){
 			onePay = rowseatInfo1[k].onewayPrice;
 			oneCang = rowseatInfo1[k].cangwei; //第一段航班的舱位
 		}
 	}
 	for(var k=0; k<rowseatInfo2.length; k++){	//第二段航班的对应舱位的价格
-		if(rowseatInfo1[k].basicCabin == cnCang(cangwei)){
+		if(rowseatInfo2[k].cangwei == cangwei){
 			twoPay = rowseatInfo2[k].onewayPrice;
 			twoCang = rowseatInfo2[k].cangwei; //第二段航班的舱位
 		}
 	}
 	
+	console.log("第一航段的价格："+onePay+", 第二航段价格："+twoPay+", 第一航段的舱位："+oneCang+", 第二航段的舱位："+twoCang);
+	
 	$("#costPay").text((parseFloat(onePay)+parseFloat(twoPay)).toFixed(2));
+	$("#TurecostPay").text((parseFloat(onePay)+parseFloat(twoPay)).toFixed(2));
 	$("#countMoney").text(onePay);
 	$("#countMoney2").text(twoPay);
 	
@@ -242,6 +251,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				alert("订票失败");
 			}
 		}
+	});
+	
+	//保险的计算价格
+	$(".flindYw").click(function(){
+		var SubPayMoney = $("#TurecostPay").text();
+		var newPayMoney = 0;
+		if($(this).attr("checked")=="checked"){
+			newPayMoney = (parseFloat(SubPayMoney)+parseFloat(60)).toFixed(2);
+			$("#costPay").text(newPayMoney);
+			$("#TurecostPay").text(newPayMoney);
+		}else{
+			if(newPayMoney!=SubPayMoney){
+				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(60)).toFixed(2);
+			}
+			$("#costPay").text(newPayMoney);
+			$("#TurecostPay").text(newPayMoney);	
+		}	
+	});
+	
+	$(".delayBx").click(function(){
+		var SubPayMoney = $("#TurecostPay").text();
+		var newPayMoney = 0;
+		if($(this).attr("checked")=="checked"){
+			newPayMoney = (parseFloat(SubPayMoney)+parseFloat(40)).toFixed(2);
+			$("#costPay").text(newPayMoney);
+			$("#TurecostPay").text(newPayMoney);
+		}else{
+			if(newPayMoney!=SubPayMoney){
+				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(40)).toFixed(2);
+			}
+			$("#costPay").text(newPayMoney);
+			$("#TurecostPay").text(newPayMoney);	
+		}	
 	});
 
 	//创建订单的方法
@@ -307,7 +349,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						console.log(result.planMsg);
+						//console.log(result.planMsg);
 						alert("第一程机票预定成功");
 						a = result.c;
 						fals=false;
@@ -374,7 +416,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						console.log(result.planMsg);
+						//console.log(result.planMsg);
 						alert("第二程机票预定成功");
 						a = result.c;
 						fals=false;

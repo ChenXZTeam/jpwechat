@@ -50,9 +50,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.goWhere{position:fixed; top:30%; display:none; left:37%; width:300px; border:1px solid #e1e1e1; background-color:#FFFFFF; border-radius:5px; font-size:16px; color:#666666;font-family:'微软雅黑';}
 	.goWhere .colseImg{display:block; width:20px; height:20px; line-height:20px; float:right; text-align:center; cursor:pointer; font-size:12px; color:#999; font-family:'微软雅黑';}
 	.goWhere .goWhereBtn{width:52%; margin-left:0px; border:none; padding:15px; cursor:pointer; outline:none; margin:0px; background-color:#FFFFFF;}
-	.zaClass{text-decoration:none; padding:8px 13px; display:block; width:65px; margin-left: 30px; margin-top:7px; cursor:pointer; background-color:#0099CC; outline:none; color:#FFFFFF; border:none; border-radius:5px;}
+	.zaClass{text-decoration:none; padding:8px 13px; display:block; width:92px; margin-left: 30px; margin-top:7px; cursor:pointer; background-color:#0099CC; outline:none; color:#FFFFFF; border:none; border-radius:5px;}
 	.zaClass:hover{background-color:#0080ab;}
-	
+	#ulBox li .zhzfildBox{margin-top:15px;}
+	#ulBox li .zhzfildBox .childBoxClass{border-top:#e1e1e1 solid 1px; overflow:hidden;}
+	#ulBox li .zhzfildBox .kongBox{width:500px; height:46px;}
+	#ulBox li .zhzfildBox .otherCangweiClass{width:200px; height:46px; text-align:left; line-height:46px;}
+	#ulBox li .zhzfildBox .otherCangweiClass span{ color:#666666; font-family:'微软雅黑';}
+	#ulBox li .zhzfildBox .otherCangweiClass .cangweiNum{ color:#FF0000; font-size:14px;}
+	#ulBox li .zhzfildBox .jiagePay{width:179px; height:39px; padding-top:7px; text-align:right; font-family:'微软雅黑';}
+	#ulBox li .zhzfildBox .jiagePay .payMoneyBox{ font-size:25px; color:#FF9900; font-weight:bold;}
+	#ulBox li .zhzfildBox .yudingBtn{width:250px; text-align:center;}
+	#ulBox li .zhzfildBox .yudingBtn>a{display: block; width: 50px; margin-left: 75px; padding:8px 20px; margin-top:7px; margin-bottom:7px; cursor:pointer; background-color:#0099CC; color:#FFFFFF; border:none; border-radius:5px;}
+	#ulBox li .zhzfildBox .kongBox,.zhzfildBox .otherCangweiClass,.zhzfildBox .jiagePay,.zhzfildBox .yudingBtn{ float:left;}
 	/*城市选择切换css*/
 	a,img{border:0;}
 	body{font:12px Arial, Helvetica, sans-serif, "新宋体";}
@@ -104,7 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.childBoxCang .wfchildBoxClass .jiagePay{float:left; width:165px; height:30px; line-height: 30px;}
 	.childBoxCang .wfchildBoxClass .jiagePay .payMoneyBox{color:#FF9900; font-size: 20px;}
 	.childBoxCang .wfchildBoxClass .yudingBtn{float:left; height:30px;}
-	.childBoxCang .wfchildBoxClass .yudingBtn .trueYuBtn{padding: 8px 20px;background-color: #0099CC;color: #fff;border: none;border-radius: 5px;}
+	.childBoxCang .wfchildBoxClass .yudingBtn .trueYuBtn{padding: 8px 20px;background-color: #0099CC;color: #fff;border: none;border-radius: 5px; cursor:pointer;}
 </style>
 </head>
 
@@ -826,6 +836,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							}
 							
 							//中转的航班
+							var countDivNum = 0; //计数器
 							for(var i=0; i<zzDataList.length; i++){
 								var liList;
 								for(var j=zzDataList.length-1; j>i; j--){
@@ -851,11 +862,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 												twoPay = rowseatInfo2[k].onewayPrice;
 											}
 										}
-										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+zzDataList[i].deplaneName+'</div></div><div class="infoContent"><div><div>'+zzDataList[i].arrPlaneName+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+zzDataList[j].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)+'</span></div><div class="infoContent"><a class="zaClass" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate='+chufDate+'&cang='+$("#cangwei").val()+'&rowstr1='+rowstr1+'&rowstr2='+rowstr2+'\'>预定航班</a></div><div style="clear:both;"></div></li>';
+										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+zzDataList[i].deplaneName+'</div></div><div class="infoContent"><div><div>'+zzDataList[i].arrPlaneName+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+zzDataList[j].arrPlaneName+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)+'</span></div><div class="infoContent"><button class="zaClass" onclick="pointBtnzhz(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="zhzfildBox"></div></li>';
 										$("#ulBox").append(liList);	
+										
+										for(var k=0; k<rowseatInfo1.length; k++){
+											for(var h=0; h<rowseatInfo2.length; h++){
+												if(rowseatInfo1[k].cangwei == rowseatInfo2[h].cangwei){
+													var fildNumOnePaice = rowseatInfo1[k].onewayPrice;
+													var fildNumTwoPaice = rowseatInfo2[h].onewayPrice;
+													var basicCabinzhz = rowseatInfo1[k].basicCabin;
+													if(basicCabinzhz=="C"){
+														basicCabinzhz="公务舱";
+													}else if(basicCabinzhz=="F"){
+														basicCabinzhz="头等舱";
+													}else if(basicCabinzhz=="Y"){
+														basicCabinzhz="经济舱";
+													}
+													var listDiv='<div class="childBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+basicCabinzhz+'：</span><span class="cangweiNum">'+rowseatInfo1[k].cangwei+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+(parseFloat(fildNumOnePaice)+parseFloat(fildNumTwoPaice)).toFixed(2)+'</span></div><div class="yudingBtn"><a class="trueYuBtn" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate='+chufDate+'&cang='+rowseatInfo1[k].cangwei+'&rowstr1='+rowstr1+'&rowstr2='+rowstr2+'\' >预　定</a></div><div style="clear:both;"></div></div>';
+													$(".zzresultListBox:eq("+countDivNum+") .zhzfildBox").append(listDiv);
+												}
+											}
+										}
+										countDivNum++;
 									}
 								}
 							}
+							$(".zhzfildBox").slideUp("fast");
 						}else{
 							$("#ulBox").html("<li style='color:#999;font-size:20px; font-weight:bold; text-align:center;'>没有找到符合条件的航班</li>");
 						}
@@ -886,9 +918,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					success:function(data){
 						var depart = data.departAv; //去程的航班
 						var returnf = data.returnAv; //回程的航班
-						//console.log(depart);
-						//console.log(returnf);
-						var countwf = 0;
+						//console.log(departRows);
+						//console.log(returnRows);
+						var countwf = 0; //计数参数
 						for(var i=0; i<depart.length; i++){
 							var airName = findByCode(depart[i].airCode);
 							//console.log(depart[i].seatList);
@@ -922,7 +954,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
 										var dr_countPay = (parseFloat(depart_moneyCost)+parseFloat(return_moneyCost)).toFixed(2);
 										if(GcangType == RcangType && GcangPont == RcangPont){
-											var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><button class="trueYuBtn">预　定</button></div><div style="clear:both;"></div></div>';
+											var departRows = JSON.stringify(depart[i]); //第一段航班(字符串)
+											var returnRows = JSON.stringify(returnf[j]); //第二段航班(字符串)
+											var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><a class="trueYuBtn" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate=2016-11-19,2016-11-21&cang='+GcangPont+'&rowstr1='+departRows+'&rowstr2='+returnRows+'\'>预　定</a></div><div style="clear:both;"></div></div>';
 											$(".wfresListBox:eq("+countwf+") .childBoxCang").append(listDiv);
 											$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(dr_countPay);
 										}
@@ -979,7 +1013,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#pipeiValue").css("display","none");
 		}
 		
-		//预定航班的按钮（含有箭头的那个）
+		//预定航班的按钮（含有箭头的那个）直达
 		function pointBtn(inc){
 				$(inc).parent().siblings(".otherCang").slideToggle("fast");
 		}
@@ -987,7 +1021,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//预定航班的按钮（含有箭头的那个）往返
 		function pointBtnwf(inc){
 				$(inc).parent().siblings(".childBoxCang").slideToggle("fast");
-		}		
+		}	
+		
+		//预定航班的按钮（含有箭头的那个）中转
+		function pointBtnzhz(inc){
+				$(inc).parent().siblings(".zhzfildBox").slideToggle("fast");
+		}	
 		
 		//获取（）括号里面内容的方法
 		function getText(str){
