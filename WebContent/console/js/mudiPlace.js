@@ -64,7 +64,7 @@ $(function(){
 		var chufCityID = $("#chufCityID").text();//出发城市
 		var daodCityID = $("#daodCityID").text();//到达城市
 		var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
-		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&zhekou="+zhekou+"&cangweiType="+cangweiType+"&chufDate"+chufDate+"&chufCityID="+chufCityID+"&daodCityID="+daodCityID;
+		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&zhekou="+zhekou+"&cangweiType="+cangweiType+"&chufDate="+chufDate+"&chufCityID="+chufCityID+"&daodCityID="+daodCityID;
 	});
 });
 
