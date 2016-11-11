@@ -64,6 +64,15 @@ public class WechatPageControlle {
 	}
 	
 	/**
+	 * @title 机票查找结果界面(往返)
+	 * @return
+	 */
+	@RequestMapping("/mudiPlacewf.action")
+	public String mudiPlacewf() {
+		return "wechat/mudiPlacewf";
+	}
+	
+	/**
 	 * @title 邀请用户界面跳转
 	 * @return
 	 */

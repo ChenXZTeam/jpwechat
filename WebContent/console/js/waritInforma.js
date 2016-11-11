@@ -105,14 +105,14 @@
 			$("#moneyPay").text(newPayMoney);
 			$("#CostPay").text(newPayMoney);
 			newoneMoney = (parseFloat(oneMoney)+parseFloat(30)).toFixed(2);
-			newtwoMoney = (parseFloat(oneMoney)+parseFloat(30)).toFixed(2);
+			newtwoMoney = (parseFloat(twoMoney)+parseFloat(30)).toFixed(2);
 			$("#oneMoney").val(newoneMoney);
 			$("#twoMoney").val(newtwoMoney);
 		}else{
 			if(newPayMoney!=SubPayMoney){
 				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(60)).toFixed(2);
 				newoneMoney = (parseFloat(oneMoney)-parseFloat(30)).toFixed(2);
-				newtwoMoney = (parseFloat(oneMoney)-parseFloat(30)).toFixed(2);
+				newtwoMoney = (parseFloat(twoMoney)-parseFloat(30)).toFixed(2);
 			}
 			$("#timess_m").val(newPayMoney);
 			$("#moneyPay").text(newPayMoney);
@@ -139,14 +139,14 @@
 			$("#moneyPay").text(newPayMoney);
 			$("#CostPay").text(newPayMoney);
 			newoneMoney = (parseFloat(oneMoney)+parseFloat(20)).toFixed(2);
-			newtwoMoney = (parseFloat(oneMoney)+parseFloat(20)).toFixed(2);
+			newtwoMoney = (parseFloat(twoMoney)+parseFloat(20)).toFixed(2);
 			$("#oneMoney").val(newoneMoney);
 			$("#twoMoney").val(newtwoMoney);
 		}else{
 			if(newPayMoney!=SubPayMoney){
 				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(40)).toFixed(2);
 				newoneMoney = (parseFloat(oneMoney)-parseFloat(20)).toFixed(2);
-				newtwoMoney = (parseFloat(oneMoney)-parseFloat(20)).toFixed(2);
+				newtwoMoney = (parseFloat(twoMoney)-parseFloat(20)).toFixed(2);
 			}
 			$("#timess_m").val(newPayMoney);
 			$("#moneyPay").text(newPayMoney);

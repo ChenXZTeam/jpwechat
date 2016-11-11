@@ -133,7 +133,12 @@
 	   <!--时间-->
 	   <div class="ziDiv gotime">
 	   		<div class="goDay">出发日期</div>
-			<div class="goTimeDiv"><input type="text" class="jcDate jcD02" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD02" id="gofaTime" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
+			<div style="clear:both;"></div>
+	   </div>
+	   <div class="ziDiv gotime">
+	   		<div class="goDay">返程日期</div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" id="fancDate" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--舱位-->
@@ -655,23 +660,28 @@
 	}
 	
 	function bb(){
-		var chufCity= $("#shif02").text();
+		/* var chufCity= $("#shif02").text();
 		var daodCity = $("#zhongf02").text();
 		var chufPlan = $("#shif03").text();
 		var daodPlan = $("#zhongf03").text();
 		var chufCityCode = $("#shif04").text();
 		var daodCityCode = $("#zhongf04").text();
-		var cangW = $(".cang1.on").text();
-		var dateTime = $(".jcD02").val();
-		if(dateTime==""){
-			alert("请选择出发日期");
+		var cangW = $(".cang1.on").text();*/
+		var dateTime = $(".jcD02").val(); 
+		
+		var chufCityCode = $("#shif04").text();
+		var daodCityCode = $("#zhongf04").text();
+		var dateTime = $("#gofaTime").val();
+		var returnTime = $("#fancDate").val();
+		if(dateTime==""||returnTime==""){
+			alert("请选择日期");
 			gofind=false;
 			return false;
 		}else{
 			gofind=true;
 		}
 		if(gofind==true){
-			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&chufPlan="+chufPlan+"&daodPlan="+daodPlan;
+			window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime;
 		}
 	}
 </script>
