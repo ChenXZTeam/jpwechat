@@ -11,6 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link href="<%=basePath %>console/css/hDate.css" rel="stylesheet" />
 	<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 	<script src="<%=basePath%>console/js/hDate.js"></script>
+	<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	#radioClassBox{}
 	#radioClassBox span{ display:block;}
@@ -1146,33 +1147,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 			return ss;
-		}
-		
-		//预定中转航班
-		function yuPlan(planOne,planTwo){
-			console.log(planOne);
-			console.log(planTwo);
-		}
-		
-		//根据航空公司的二字码查找对应的航空公司
-		function findByCode(code){
-			var cnName;
-			var value1 = {
-							"HU":"海南省航空",
-							"CZ":"中国南方航空",
-							"CA":"中国国际航空",
-							"MU":"中国东方航空",
-							"3U":"四川航空",
-							"SC":"山东航空",
-							"ZH":"深圳航空公司",
-							"HO":"吉祥航空"
-			};
-			for(var key in value1) {
-				if(key==code){
-					cnName = value1[key];
-				}
-			}
-			return cnName;
 		}
 	</script>
 </body>

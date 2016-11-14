@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 	<script src="<%=basePath%>console/js/hDate.js"></script>
 	<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
+	<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style type="text/css">
     body{margin: 20px 13px;}
     .head{color:#429EFF;}
@@ -247,8 +248,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var ChufDate1 = $("#ChufDate").text();//出发日期
 		var ChufTime1 = $("#ChufTime").text();//出发时间
 		var DaodTime1 = $("#DaodTime").text();//到达时间
-		var ChufCity1 = "";//出发城市
-		var DaodCity1 = "";//到达城市
+		var ChufCity1 = findByCity(obj1.orgCity);//出发城市
+		var DaodCity1 = findByCity(obj1.dstCity);//到达城市
 		var QishiPlan1 = $("#QishiPlan").text();//起始机场
 		var hangbanNum1 = $("#fildNumfly").text(); //航班号
 		var airCode1 = $(".firstair").text(); //航空公司
@@ -260,8 +261,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var ChufDate2 = $("#ChufDate2").text();//出发日期
 		var ChufTime2 = $("#ChufTime2").text();//出发时间
 		var DaodTime2 = $("#DaodTime2").text();//到达时间
-		var ChufCity2 = "";//出发城市
-		var DaodCity2 = "";//到达城市
+		var ChufCity2 = findByCity(obj2.orgCity);//出发城市
+		var DaodCity2 = findByCity(obj2.dstCity);//到达城市
 		var QishiPlan2 = $("#QishiPlan2").text();//起始机场
 		var hangbanNum2 = $("#fildNumfly2").text(); //航班号
 		var airCode2 = $(".scondair").text(); //航空公司
@@ -392,27 +393,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				ocount = ohh*3600+omm*60;
 			}
 			return ocount;
-		}
-		
-		//根据航空公司的二字码查找对应的航空公司
-		function findByCode(code){
-			var cnName;
-			var value1 = {
-							"HU":"海南省航空",
-							"CZ":"中国南方航空",
-							"CA":"中国国际航空",
-							"MU":"中国东方航空",
-							"3U":"四川航空",
-							"SC":"山东航空",
-							"ZH":"深圳航空公司",
-							"HO":"吉祥航空"
-			};
-			for(var key in value1) {
-				if(key==code){
-					cnName = value1[key];
-				}
-			}
-			return cnName;
 		}
 		
 		//格式化时间

@@ -64,10 +64,10 @@ public class PlanTekService {
 		
 		return resultList;
 	}
-	/*
-	//临时方法
+	
+	/*//临时方法
 	public List getPlanList(){
-		String sql = "select AIRPORTNAMECN,AIRPORTCODE,CITYNAMECN,ISDOMESTIC from b_airport";
+		String sql = "select CODE,cn_name from b_airways";
 		return this.gDao.executeJDBCSqlQuery(sql);
 	}*/
 }

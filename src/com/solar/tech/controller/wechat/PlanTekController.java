@@ -193,16 +193,13 @@ public class PlanTekController {
 		return map;
 	}*/
 	
-	/*
+	
 	//临时使用的方法
-	@RequestMapping("/find/getplanCode.action")
+	/*@RequestMapping("/find/getplanCode.action")
 	@ResponseBody
 	public Map<String, Object> getplanCode(){
 		Map<String, Object> map = new HashMap<String, Object>();
-		//List<Test> cList = PlanTekServ.getPlanList();
-		//System.out.println(cList.toString());
-		map.put("cList",PlanTekServ.getPlanList());
-		//map.put("msg",1);
+		map.put("c", PlanTekServ.getPlanList());
 		return map;
 	}*/
 }

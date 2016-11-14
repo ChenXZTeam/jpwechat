@@ -23,6 +23,7 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script>
+<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	body{ background-color:#e5e5e5;}
 	.fildBox{padding:12px; margin-left:auto; margin-right:auto; border-radius:5px; font-size:13px; font-family:Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
@@ -202,8 +203,8 @@ $(function(){
 		var ChufDate1 = $(".depday").text();//出发日期
 		var ChufTime1 = $(".depTimefirst").text();//出发时间
 		var DaodTime1 = $(".depTimesecond").text();//到达时间
-		var ChufCity1 = "";//出发城市
-		var DaodCity1 = "";//到达城市
+		var ChufCity1 = findByCity(onezhzDateJson.orgCity);//出发城市
+		var DaodCity1 = findByCity(onezhzDateJson.dstCity);//到达城市
 		var QishiPlan1 = $(".depAirPlanfirst").text();//起始机场
 		var hangbanNum1 = $(".flindNum").text(); //航班号
 		var airCode1 = $(".firstair").text(); //航空公司
@@ -215,8 +216,8 @@ $(function(){
 		var ChufDate2 = $("#ChufDatetwo").text();//出发日期
 		var ChufTime2 = $("#ChufTimetwo").text();//出发时间
 		var DaodTime2 = $("#DaodTimetwo").text();//到达时间
-		var ChufCity2 = "";//出发城市
-		var DaodCity2 = "";//到达城市
+		var ChufCity2 = findByCity(twozhzDateJson.orgCity);//出发城市
+		var DaodCity2 = findByCity(twozhzDateJson.dstCity);;//到达城市
 		var QishiPlan2 = $(".depPlane_numt").text();//起始机场
 		var hangbanNum2 = $(".flindNumch").text(); //航班号
 		var airCode2 = $(".scondair").text(); //航空公司
@@ -530,52 +531,6 @@ $(function () {
 	
 	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['default']));
 });
-
-//根据城市三字码查找对应的城市
-function findByCity(code){
-		var cnName;
-		var value1 = {
-						"PEK":"北京",
-						"CAN":"广州",
-						"HAK":"海口",
-						"SZX":"深圳",
-						"CSX":"长沙",
-						"SYX":"三亚",
-						"HET":"呼和浩特",
-						"WNZ":"温州",
-						"PVG":"上海",
-						"CGO":"郑州",
-						"TAO":"青岛",
-						"TYN":"太原"
-		};
-		for(var key in value1) {
-			if(key==code){
-				cnName = value1[key];
-			}
-		}
-		return cnName;
-}
-
-//根据航空公司的二字码查找对应的航空公司
-function findByCode(code){
-		var cnName;
-		var value1 = {
-						"HU":"海南省航空",
-						"CZ":"中国南方航空",
-						"CA":"中国国际航空",
-						"MU":"中国东方航空",
-						"3U":"四川航空",
-						"SC":"山东航空",
-						"ZH":"深圳航空公司",
-						"HO":"吉祥航空"
-		};
-		for(var key in value1) {
-			if(key==code){
-				cnName = value1[key];
-			}
-		}
-		return cnName;
-}
 </script>
 </body>
 </html>

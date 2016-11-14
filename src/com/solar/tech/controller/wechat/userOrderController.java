@@ -46,17 +46,10 @@ public class userOrderController {
 		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
 		oderInfo.setOpenID((String) session.getAttribute("openId"));
-		if(null==chufCode||"".equals(chufCode)){
-			oderInfo.setQishiPlaneCode((String) session.getAttribute("qishiPlanCode"));
-			oderInfo.setDaodPlaneCode((String) session.getAttribute("daodPlanCode"));
-			oderInfo.setChufCity(ChufCity);
-			oderInfo.setDaodCity(DaodCity);
-		}else{
-			oderInfo.setQishiPlaneCode(chufCode);
-			oderInfo.setDaodPlaneCode(daodCode);
-			oderInfo.setChufCity(OrderService.findCity(chufCode));
-			oderInfo.setDaodCity(OrderService.findCity(daodCode));
-		}
+		oderInfo.setQishiPlaneCode((String) session.getAttribute("qishiPlanCode"));
+		oderInfo.setDaodPlaneCode((String) session.getAttribute("daodPlanCode"));
+		oderInfo.setChufCity(ChufCity);
+		oderInfo.setDaodCity(DaodCity);
 		oderInfo.setQishiPlane(QishiPlan);
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
@@ -225,8 +218,8 @@ public class userOrderController {
 		oderInfo.setOpenID((String) session.getAttribute("openId"));
 		oderInfo.setQishiPlaneCode(depcityCode1); //起始机场的三字码
 		oderInfo.setDaodPlaneCode(arrcityCode1); //到达机场的三字码
-		oderInfo.setChufCity(OrderService.findCity(depcityCode1)); //起始城市
-		oderInfo.setDaodCity(OrderService.findCity(arrcityCode1)); //到达城市
+		oderInfo.setChufCity(firstFildlist.get("ChufCity")+""); //起始城市
+		oderInfo.setDaodCity(firstFildlist.get("DaodCity")+""); //到达城市
 		oderInfo.setQishiPlane(firstFildlist.get("QishiPlan")+"");
 		oderInfo.setHangbanNum(firstFildlist.get("hangbanNum")+"");
 		oderInfo.setDaodPlane(firstFildlist.get("DaodPlan")+"");
@@ -319,8 +312,8 @@ public class userOrderController {
 				oderInfo.setOpenID((String) session.getAttribute("openId"));
 				oderInfo.setQishiPlaneCode(depcityCode2); //起始机场的三字码
 				oderInfo.setDaodPlaneCode(arrcityCode2); //到达机场的三字码
-				oderInfo.setChufCity(OrderService.findCity(depcityCode2)); //起始城市
-				oderInfo.setDaodCity(OrderService.findCity(arrcityCode2)); //到达城市
+				oderInfo.setChufCity(sconedFildlist.get("ChufCity")+""); //起始城市
+				oderInfo.setDaodCity(sconedFildlist.get("DaodCity")+""); //到达城市
 				oderInfo.setQishiPlane(sconedFildlist.get("QishiPlan")+"");
 				oderInfo.setHangbanNum(sconedFildlist.get("hangbanNum")+"");
 				oderInfo.setDaodPlane(sconedFildlist.get("DaodPlan")+"");
