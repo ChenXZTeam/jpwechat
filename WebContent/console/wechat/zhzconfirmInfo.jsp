@@ -118,7 +118,8 @@ $(function(){
 	$(".plandep").text(findByCity(onezhzDateJson.orgCity));
 	$(".planarr").text(findByCity(twozhzDateJson.dstCity));
 	$(".time").text(cuntTime(onezhzDateJson.depTime,twozhzDateJson.arrTime));
-	
+	$(".firstair").text(onezhzDateJson.airCode);
+	$(".scondair").text(twozhzDateJson.airCode);
 	$(".depTimefirst").html(changeType(onezhzDateJson.depTime));
 	$(".depTimesecond").html(changeType(onezhzDateJson.arrTime));
 	$(".depAirPlanfirst").text(onezhzDateJson.deplaneName);
@@ -152,6 +153,7 @@ $(function(){
 		}
 	}
 	$("#moneyPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
+	
 	//下一步的按钮点击事件
 	$(".aBtn").click(function(){
 		//航班信息
@@ -194,20 +196,63 @@ $(function(){
 			$("#YanwuBX").text($(".delayBxzhz").val());
 		}else{
 			$("#YanwuBX").text("无");
-		}	
+		}
 		
-		//创建订单
-		for(var i=1; i<=2; i++){
-			if(i==1){
-				nextPat(onezhzDateJson,cangwei);
-			}else if(i==2){
-				nextPat(twozhzDateJson,cangwei);
-			}else{
-				alert("订票失败");
-			}
-		} 
-			
-		$("#trueOrderInfo").css("display","block");
+		//第一航段的信息
+		var ChufDate1 = $(".depday").text();//出发日期
+		var ChufTime1 = $(".depTimefirst").text();//出发时间
+		var DaodTime1 = $(".depTimesecond").text();//到达时间
+		var ChufCity1 = "";//出发城市
+		var DaodCity1 = "";//到达城市
+		var QishiPlan1 = $(".depAirPlanfirst").text();//起始机场
+		var hangbanNum1 = $(".flindNum").text(); //航班号
+		var airCode1 = $(".firstair").text(); //航空公司
+		var DaodPlan1 = $(".depAirPlansecond").text();//到达机场
+		var lishiTime1 = $(".lishiTime").text(); //历时多长时间
+		var CostPay1 = $("#oneMoney").val();//该付金额
+		
+		//第二航段的信息
+		var ChufDate2 = $("#ChufDatetwo").text();//出发日期
+		var ChufTime2 = $("#ChufTimetwo").text();//出发时间
+		var DaodTime2 = $("#DaodTimetwo").text();//到达时间
+		var ChufCity2 = "";//出发城市
+		var DaodCity2 = "";//到达城市
+		var QishiPlan2 = $(".depPlane_numt").text();//起始机场
+		var hangbanNum2 = $(".flindNumch").text(); //航班号
+		var airCode2 = $(".scondair").text(); //航空公司
+		var DaodPlan2 = $(".arrPlane_numt").text();//到达机场
+		var lishiTime2 = $(".lishiTime_two").text(); //历时多长时间
+		var CostPay2 = $("#twoMoney").val();//该付金额
+		
+		//乘机人资料
+		var LinkName=$("#linkName").val();//乘机人
+		var Sex=$("#sexIpnt").val();//性别
+		var iDcaseType=$("#caseIpnt").text();//证件类型
+		var iDcase=$("#IDcase").val();//证件号码
+		var PhoneNum=$("#phoneNum").val();//手机号码
+		var YiwaiBX = $("#YiwaiBX").text();//意外保险
+		var YanwuBX = $("#YanwuBX").text();//延误险
+		var cangweiType = cangwei;
+		var birthDay = $("#birthIpnt").val();//生日
+		var age = ageFunc(birthDay);//年龄
+		var menType = $("#personIpnt").val();//乘机人类型
+		
+		//将航班数据打包到json数据里面
+		var jsondatastr = '{"firstFild":[{"ChufDate":"'+ChufDate1+'","ChufTime":"'+ChufTime1+'","DaodTime":"'+DaodTime1+'","ChufCity":"'+ChufCity1+'","DaodCity":"'+DaodCity1+'","QishiPlan":"'+QishiPlan1+'","hangbanNum":"'+hangbanNum1+'","airCode":"'+airCode1+'","DaodPlan":"'+DaodPlan1+'","lishiTime":"'+lishiTime1+'","CostPay":"'+CostPay1+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode1":"'+onezhzDateJson.orgCity+'","arrcityCode1":"'+onezhzDateJson.dstCity+'"}],"sconedFild":[{"ChufDate":"'+ChufDate2+'","ChufTime":"'+ChufTime2+'","DaodTime":"'+DaodTime2+'","ChufCity":"'+ChufCity2+'","DaodCity":"'+DaodCity2+'","QishiPlan":"'+QishiPlan2+'","hangbanNum":"'+hangbanNum2+'","airCode":"'+airCode2+'","DaodPlan":"'+DaodPlan2+'","lishiTime":"'+lishiTime2+'","CostPay":"'+CostPay2+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode2":"'+twozhzDateJson.orgCity+'","arrcityCode2":"'+twozhzDateJson.dstCity+'"}]}';
+		//var jsondata = JSON.parse(jsondatastr);
+		$.ajax({
+					url:"<%=basePath%>userOrderController/add/zrorder.action",
+					type:"POST",
+					data:{"jsStr":jsondatastr},
+					dataType:"json",
+					beforeSend:function(){$(".loadingBox").css("display","block");},
+					complete:function(){$(".loadingBox").css("display","none");},
+					success:function(result){
+						alert(result);
+					},
+					error:function(result){
+					}
+			});		
 	});
 	$("#timess_m").val((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
 	$("#CostPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
@@ -298,150 +343,6 @@ function gsDate(detTime, chufDate){
 	return chufDate;
 }
 
-//创建订单的方法
-	function nextPat(obj,cangwei){
-		if(obj.sign==1){
-			var ChufDate = $(".depday").text();//出发日期
-			var ChufTime = $(".depTimefirst").text();//出发时间
-			var DaodTime=$(".depTimesecond").text();//到达时间
-			var ChufCity="";//出发城市
-			var DaodCity="";//到达城市
-			var QishiPlan=$(".depAirPlanfirst").text();//起始机场
-			var hangbanNum=$(".flindNum").text(); //航班号
-			var airCode = obj.airCode; //航空公司
-			var DaodPlan=$(".depAirPlansecond").text();//到达机场
-			var lishiTime=$(".lishiTime").text(); //历时多长时间
-			
-			var CostPay = $("#oneMoney").val();//该付金额
-			
-			var LinkName=$("#linkName").val();//乘机人
-			var Sex=$("#sexIpnt").val();//性别
-			var iDcaseType=$("#caseIpnt").text();//证件类型
-			var iDcase=$("#IDcase").val();//证件号码
-			var PhoneNum=$("#phoneNum").val();//手机号码
-			var YiwaiBX = $("#YiwaiBX").text();//意外保险
-			var YanwuBX = $("#YanwuBX").text();//延误险
-			var cangweiType = cangwei;
-			var birthDay = $("#birthIpnt").val();//生日
-			var age = ageFunc(birthDay);//年龄
-			var menType = $("#personIpnt").val();//乘机人类型
-			console.log(ChufDate+"/"+ChufTime+"/"+DaodTime+"/"+QishiPlan+"/"+hangbanNum+"/"+DaodPlan+"/"+lishiTime+"/"+CostPay+"/"+LinkName+"/"+Sex+"/"+iDcaseType+"/"+iDcase+"/"+PhoneNum+"/"+YiwaiBX+"/"+YanwuBX+"/"+cangweiType+"/"+birthDay+"/"+menType+"/"+airCode+"/"+age+"/"+obj.dstCity+"/"+obj.orgCity);
-			var date={
-				"ChufDate":ChufDate,
-				"ChufTime":ChufTime,
-				"DaodTime":DaodTime,
-				"ChufCity":"",
-				"DaodCity":"",
-				"QishiPlan":QishiPlan,
-				"hangbanNum":hangbanNum,
-				"DaodPlan":DaodPlan,
-				"lishiTime":lishiTime,
-				
-				"CostPay":CostPay,
-				"LinkName":LinkName,
-				"Sex":Sex,
-				"iDcaseType":iDcaseType,
-				"iDcase":iDcase,
-				"PhoneNum":PhoneNum,
-				"YiwaiBX":YiwaiBX,
-				"YanwuBX":YanwuBX,
-				"cabin":cangweiType,
-				"birthday":birthDay,
-				"menType":menType,
-				"airCode":airCode,
-				"age":age,
-				"daodCode":obj.dstCity,
-				"chufCode":obj.orgCity
-			};
-			$.ajax({
-					url:"<%=basePath%>userOrderController/add/order.action",
-					type:"POST",
-					data:date,
-					dataType:"json",
-					beforeSend:function(){$(".loadingBox").css("display","block");},
-					complete:function(){$(".loadingBox").css("display","none");},
-					success:function(result){
-						//console.log(result.planMsg);
-						alert("第一程机票预定成功");
-						a = result.c;
-						fals=false;
-					},
-					error:function(result){
-					}
-			});			
-		}else if(obj.sign==2){
-			var ChufDate = $("#ChufDatetwo").text();//出发日期
-			var ChufTime = $("#ChufTimetwo").text();//出发时间
-			var DaodTime = $("#DaodTimetwo").text();//到达时间
-			var ChufCity="";//出发城市
-			var DaodCity="";//到达城市
-			var QishiPlan=$(".depPlane_numt").text();//起始机场
-			var hangbanNum=$(".flindNumch").text(); //航班号
-			var airCode = obj.airCode; //航空公司
-			var DaodPlan=$(".arrPlane_numt").text();//到达机场
-			var lishiTime=$(".lishiTime_two").text(); //历时多长时间
-			
-			var CostPay = $("#twoMoney").val();//该付金额
-			
-			var LinkName=$("#linkName").val();//乘机人
-			var Sex=$("#sexIpnt").val();//性别
-			var iDcaseType=$("#caseIpnt").text();//证件类型
-			var iDcase=$("#IDcase").val();//证件号码
-			var PhoneNum=$("#phoneNum").val();//手机号码
-			var YiwaiBX = $("#YiwaiBX").text();//意外保险
-			var YanwuBX = $("#YanwuBX").text();//延误险
-			var cangweiType = cangwei;
-			var birthDay = $("#birthIpnt").val();//生日
-			var age = ageFunc(birthDay);//年龄
-			var menType = $("#personIpnt").val();//乘机人类型
-			console.log(ChufDate+"/"+ChufTime+"/"+DaodTime+"/"+QishiPlan+"/"+hangbanNum+"/"+DaodPlan+"/"+lishiTime+"/"+CostPay+"/"+LinkName+"/"+Sex+"/"+iDcaseType+"/"+iDcase+"/"+PhoneNum+"/"+YiwaiBX+"/"+YanwuBX+"/"+cangweiType+"/"+birthDay+"/"+menType+"/"+airCode+"/"+age+"/"+obj.dstCity+"/"+obj.orgCity);
-			var date={
-				"ChufDate":ChufDate,
-				"ChufTime":ChufTime,
-				"DaodTime":DaodTime,
-				"ChufCity":ChufCity,
-				"DaodCity":DaodCity,
-				"QishiPlan":QishiPlan,
-				"hangbanNum":hangbanNum,
-				"DaodPlan":DaodPlan,
-				"lishiTime":lishiTime,
-				"CostPay":CostPay,
-				"LinkName":LinkName,
-				"Sex":Sex,
-				"iDcaseType":iDcaseType,
-				"iDcase":iDcase,
-				"PhoneNum":PhoneNum,
-				"YiwaiBX":YiwaiBX,
-				"YanwuBX":YanwuBX,
-				"cabin":cangweiType,
-				"birthday":birthDay,
-				"menType":menType,
-				"airCode":airCode,
-				"age":age,
-				"daodCode":obj.dstCity,
-				"chufCode":obj.orgCity
-			};
-			$.ajax({
-					url:"<%=basePath%>userOrderController/add/order.action",
-					type:"POST",
-					data:date,
-					dataType:"json",
-					beforeSend:function(){$(".loadingBox").css("display","block");},
-					complete:function(){$(".loadingBox").css("display","none");},
-					success:function(result){
-						//console.log(result.planMsg);
-						alert("第二程机票预定成功");
-						a = result.c;
-						fals=false;
-					},
-					error:function(result){
-					}
-			});			
-		}else{
-			alert("未知航班");
-		}
-	}
-	
 function ageFunc(birthday){
 	var age = 0;
 	var birth = birthday.split("-");	//对生日进行拆分
@@ -560,6 +461,7 @@ function ageFunc(birthday){
 			</div>
 			<div class="aboutTime" style="float:right; margin-right:0px; text-align:right;"><span style="text-align:right;" id="ChufDateone">2016-11-18</span><span id="ChufTimeone" style="margin-left:5px;">06:45</span></div>
 		</div>
+		<div style="display:none;"><span class="firstair"></span><span class="scondair"></span></div>
 		<div class="wanfDivBox">
 			<img src="<%=basePath %>console/images/zhzImg.png"/>
 			<span id="CountTimeone">2h25m</span>

@@ -2,10 +2,14 @@ package com.solar.tech.controller.wechat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -85,7 +89,7 @@ public class userOrderController {
 		String maxOrderNum = OrderService.fingMaxOrderNum();
 		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
 		oderInfo.setOrderNum(orderNum);
-		System.out.println("===>>>>预约编号："+oderInfo.getOrderNum());
+		//System.out.println("===>>>>预约编号："+oderInfo.getOrderNum());
 		System.out.println(
 				"出发日期："+oderInfo.getChufDate()+
 				"，出发时间："+oderInfo.getChufTime()+
@@ -195,6 +199,220 @@ public class userOrderController {
 		}
 		//new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
 		return map;
+	}
+	
+	/**
+	 * 预定中转和往返航班
+	 */
+	@RequestMapping("/add/zrorder.action")
+	@ResponseBody
+	public int addzhz_res(String jsStr,String firstFild,String sconedFild,HttpSession session){
+		JSONObject jsonObject=JSONObject.fromObject(jsStr);
+        firstFild = jsonObject.get("firstFild")+"";
+        sconedFild = jsonObject.get("sconedFild")+"";
+        firstFild = firstFild.substring(1,firstFild.length()-1);
+        sconedFild = sconedFild.substring(1,sconedFild.length()-1);
+        JSONObject firstFildlist = JSONObject.fromObject(firstFild);
+        JSONObject sconedFildlist = JSONObject.fromObject(sconedFild);
+        userOrderInfo oderInfo = new userOrderInfo();
+        String depcityCode1 = firstFildlist.get("depcityCode1")+"";
+        String arrcityCode1 = firstFildlist.get("arrcityCode1")+"";
+		oderInfo.setChufDate(firstFildlist.get("ChufDate")+"");
+		oderInfo.setChufTime(firstFildlist.get("ChufTime")+"");
+		oderInfo.setDaodTime(firstFildlist.get("DaodTime")+"");
+		oderInfo.setCabin(firstFildlist.get("cangweiType")+"");
+		oderInfo.setUserName((String) session.getAttribute("userName"));
+		oderInfo.setOpenID((String) session.getAttribute("openId"));
+		oderInfo.setQishiPlaneCode(depcityCode1); //起始机场的三字码
+		oderInfo.setDaodPlaneCode(arrcityCode1); //到达机场的三字码
+		oderInfo.setChufCity(OrderService.findCity(depcityCode1)); //起始城市
+		oderInfo.setDaodCity(OrderService.findCity(arrcityCode1)); //到达城市
+		oderInfo.setQishiPlane(firstFildlist.get("QishiPlan")+"");
+		oderInfo.setHangbanNum(firstFildlist.get("hangbanNum")+"");
+		oderInfo.setDaodPlane(firstFildlist.get("DaodPlan")+"");
+		oderInfo.setCuntTime(firstFildlist.get("lishiTime")+"");
+		oderInfo.setCostMoney(firstFildlist.get("CostPay")+"");
+		oderInfo.setLinkName(firstFildlist.get("LinkName")+"");
+		oderInfo.setLinkPhoneNum(firstFildlist.get("PhoneNum")+"");
+		oderInfo.setLinkSex(firstFildlist.get("Sex")+""); 
+		oderInfo.setBirthday(firstFildlist.get("birthDay")+"");
+		oderInfo.setAge(firstFildlist.get("age")+"");//乘机人年龄
+		oderInfo.setPsgType(firstFildlist.get("menType")+"");//乘机人类型
+		oderInfo.setIDcase(firstFildlist.get("iDcase")+"");
+		oderInfo.setIDcaseType(firstFildlist.get("iDcaseType")+"");
+		oderInfo.setYiwaiBX(firstFildlist.get("YiwaiBX")+"");
+		oderInfo.setYanwuBX(firstFildlist.get("YanwuBX")+"");
+		oderInfo.setAirCode(firstFildlist.get("airCode")+"");//航空公司的二字码 
+		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
+		oderInfo.setStutisPay("0");//未支付
+		oderInfo.setTakePlane("0");//未登机
+		String maxNum = OrderService.fingMaxNum();
+		int MaxNum=0;
+		if(maxNum==null||maxNum.equals("")||maxNum.equals(" ")){
+			MaxNum = 0;
+		}else{
+			MaxNum = Integer.parseInt(maxNum);
+		}
+		oderInfo.setIntNum((MaxNum+1)+"");
+		String maxOrderNum = OrderService.fingMaxOrderNum();
+		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+		oderInfo.setOrderNum(orderNum);
+		
+		//联系组实体类
+		BookContact bookContact = new BookContact();
+		bookContact.setCity(oderInfo.getQishiPlaneCode());//城市
+		bookContact.setContact(oderInfo.getLinkPhoneNum());//联系电话
+		bookContact.setPsgId("Zhang/Hong");//旅客序号
+				
+		//航段组实体类
+		SegmentInfo s = new SegmentInfo();
+		s.setDeparture(oderInfo.getQishiPlaneCode());//起飞城市
+		s.setArrival(oderInfo.getDaodPlaneCode());//到达城市
+		s.setFlightNo(oderInfo.getHangbanNum());//航班号	
+		s.setCabin(oderInfo.getCabin());//舱位
+		s.setDepartureDate(oderInfo.getChufDate());//起飞日期，格式如：yyyy-MM-dd
+		s.setDepartureTime(oderInfo.getChufTime());//起飞时间，格式如：HH:mm
+		s.setActionCode("NN");//行动代码
+		s.setType("HK");//航线类型(国内/国际)	
+		SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
+				
+		//旅客组实体类（是否可以添加多个旅客）
+		PassengerInfo psg = new PassengerInfo();
+		psg.setName(oderInfo.getLinkName());//旅客姓名
+		psg.setAge(Integer.parseInt(oderInfo.getAge()));//年龄
+		psg.setGender(oderInfo.getLinkSex()); //性别
+		psg.setBirthDay(oderInfo.getBirthday());//出生日期
+		psg.setPsgType(oderInfo.getPsgType());//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
+		psg.setCertNo(oderInfo.getIDcase());//证件号码
+		psg.setCertType(oderInfo.getIDcaseType());//证件类型PP,NI		
+		PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
+				
+		//OSI组实体类 
+		OSIInfo osi = new OSIInfo();
+		//osi.setIdx("");
+		osi.setAirCode(oderInfo.getAirCode());//航空公司代码
+		osi.setOsi("CTCT18729034712");//OSI内容
+		OSIInfo[] osis = new OSIInfo[]{osi};
+
+		//RMK组实体类
+		RMKInfo rmk = new RMKInfo();
+		rmk.setPsgName(oderInfo.getLinkName());//旅客姓名
+		rmk.setRmkType("");//RMK类型
+		rmk.setRmkInfo("rmk 仁德机票出售中心");//RMK内容
+		RMKInfo[] rmks = new RMKInfo[]{rmk};
+		
+		//开始在中信航系统产生订票的订单
+		//PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, osis, rmks, null, null, null);
+		//if(response.getPnrNo()==""||response.getPnrNo().equals("")||response.getPnrNo()==null){
+		//	System.out.println("中信航第一段航班订票失败 userOrderController.java");
+		//	return 0;
+		//}else{
+			int num=OrderService.addOrder(oderInfo);
+			if(num==1){ //第一航班入库成功之后再将第二航班入库
+		        String depcityCode2 = sconedFildlist.get("depcityCode2")+"";
+		        String arrcityCode2 = sconedFildlist.get("arrcityCode2")+"";
+				oderInfo.setChufDate(sconedFildlist.get("ChufDate")+"");
+				oderInfo.setChufTime(sconedFildlist.get("ChufTime")+"");
+				oderInfo.setDaodTime(sconedFildlist.get("DaodTime")+"");
+				oderInfo.setCabin(sconedFildlist.get("cangweiType")+"");
+				oderInfo.setUserName((String) session.getAttribute("userName"));
+				oderInfo.setOpenID((String) session.getAttribute("openId"));
+				oderInfo.setQishiPlaneCode(depcityCode2); //起始机场的三字码
+				oderInfo.setDaodPlaneCode(arrcityCode2); //到达机场的三字码
+				oderInfo.setChufCity(OrderService.findCity(depcityCode2)); //起始城市
+				oderInfo.setDaodCity(OrderService.findCity(arrcityCode2)); //到达城市
+				oderInfo.setQishiPlane(sconedFildlist.get("QishiPlan")+"");
+				oderInfo.setHangbanNum(sconedFildlist.get("hangbanNum")+"");
+				oderInfo.setDaodPlane(sconedFildlist.get("DaodPlan")+"");
+				oderInfo.setCuntTime(sconedFildlist.get("lishiTime")+"");
+				oderInfo.setCostMoney(sconedFildlist.get("CostPay")+"");
+				oderInfo.setLinkName(sconedFildlist.get("LinkName")+"");
+				oderInfo.setLinkPhoneNum(sconedFildlist.get("PhoneNum")+"");
+				oderInfo.setLinkSex(sconedFildlist.get("Sex")+""); 
+				oderInfo.setBirthday(sconedFildlist.get("birthDay")+"");
+				oderInfo.setAge(sconedFildlist.get("age")+"");//乘机人年龄
+				oderInfo.setPsgType(sconedFildlist.get("menType")+"");//乘机人类型
+				oderInfo.setIDcase(sconedFildlist.get("iDcase")+"");
+				oderInfo.setIDcaseType(sconedFildlist.get("iDcaseType")+"");
+				oderInfo.setYiwaiBX(sconedFildlist.get("YiwaiBX")+"");
+				oderInfo.setYanwuBX(sconedFildlist.get("YanwuBX")+"");
+				oderInfo.setAirCode(sconedFildlist.get("airCode")+"");//航空公司的二字码 
+				oderInfo.setAdminDel("0");//0代表不删除 1代表删除
+				oderInfo.setStutisPay("0");//未支付
+				oderInfo.setTakePlane("0");//未登机
+				maxNum = OrderService.fingMaxNum();
+				MaxNum=0;
+				if(maxNum==null||maxNum.equals("")||maxNum.equals(" ")){
+					MaxNum = 0;
+				}else{
+					MaxNum = Integer.parseInt(maxNum);
+				}
+				oderInfo.setIntNum((MaxNum+1)+"");
+				maxOrderNum = OrderService.fingMaxOrderNum();
+				orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+				oderInfo.setOrderNum(orderNum);
+				
+				//联系组实体类
+				BookContact bookContact2 = new BookContact();
+				bookContact2.setCity(oderInfo.getQishiPlaneCode());//城市
+				bookContact2.setContact(oderInfo.getLinkPhoneNum());//联系电话
+				bookContact2.setPsgId("Zhang/Hong");//旅客序号
+						
+				//航段组实体类
+				SegmentInfo s2 = new SegmentInfo();
+				s2.setDeparture(oderInfo.getQishiPlaneCode());//起飞城市
+				s2.setArrival(oderInfo.getDaodPlaneCode());//到达城市
+				s2.setFlightNo(oderInfo.getHangbanNum());//航班号	
+				s2.setCabin(oderInfo.getCabin());//舱位
+				s2.setDepartureDate(oderInfo.getChufDate());//起飞日期，格式如：yyyy-MM-dd
+				s2.setDepartureTime(oderInfo.getChufTime());//起飞时间，格式如：HH:mm
+				s2.setActionCode("NN");//行动代码
+				s2.setType("HK");//航线类型(国内/国际)	
+				SegmentInfo[] segmentInfos2 = new SegmentInfo[]{s2};
+						
+				//旅客组实体类（是否可以添加多个旅客）
+				PassengerInfo psg2 = new PassengerInfo();
+				psg2.setName(oderInfo.getLinkName());//旅客姓名
+				psg2.setAge(Integer.parseInt(oderInfo.getAge()));//年龄
+				psg2.setGender(oderInfo.getLinkSex()); //性别
+				psg2.setBirthDay(oderInfo.getBirthday());//出生日期
+				psg2.setPsgType(oderInfo.getPsgType());//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
+				psg2.setCertNo(oderInfo.getIDcase());//证件号码
+				psg2.setCertType(oderInfo.getIDcaseType());//证件类型PP,NI		
+				PassengerInfo[] passengerInfos2 = new PassengerInfo[]{psg2};
+						
+				//OSI组实体类 
+				OSIInfo osi2 = new OSIInfo();
+				//osi.setIdx("");
+				osi.setAirCode(oderInfo.getAirCode());//航空公司代码
+				osi.setOsi("CTCT18729034712");//OSI内容
+				OSIInfo[] osis2 = new OSIInfo[]{osi2};
+
+				//RMK组实体类
+				RMKInfo rmk2 = new RMKInfo();
+				rmk2.setPsgName(oderInfo.getLinkName());//旅客姓名
+				rmk2.setRmkType("");//RMK类型
+				rmk2.setRmkInfo("rmk 仁德机票出售中心");//RMK内容
+				RMKInfo[] rmks2 = new RMKInfo[]{rmk2};
+				
+				//开始在中信航系统产生订票的订单
+				//PnrResponse response2 = new ECUtils().booking(bookContact2, segmentInfos2, passengerInfos2, "2017-01-30 09:00:00", null, osis2, rmks2, null, null, null);
+				//if(response2.getPnrNo()==""||response2.getPnrNo().equals("")||response2.getPnrNo()==null){
+				//	System.out.println("中信航第二段航班订票失败 userOrderController.java"); 
+					//return 0;
+				//}else{
+					num=OrderService.addOrder(oderInfo);
+					if(num==1){
+						return 1;
+					}else{
+						return 0;
+					}
+				//}
+			}else{
+				return 0;
+			}
+			
+		//}
 	}
 	
 	/**

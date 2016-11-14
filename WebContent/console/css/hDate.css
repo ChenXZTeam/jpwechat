@@ -1,4 +1,4 @@
-﻿ul, li, a, dd, dt, dl, i, em{ margin:0px;padding:0px;list-style:none;text-decoration:none;list-style:none;font-style:normal;font-style:normal;}
+ul, li, a, dd, dt, dl, i, em{ margin:0px;padding:0px;list-style:none;text-decoration:none;list-style:none;font-style:normal;font-style:normal;}
 /*www.sucaijiayuan.com*/
 /* calendar */
 .calendar{width:210px;position:absolute;background-color:#f9f9f9;border:1px solid #ddd;color:#333!important;font-size:12px;}
@@ -16,7 +16,7 @@
 .festival{color:#ff6a00!important;}
 ._selDay{background-color:#ff9900;color:#fff;font-family:'Microsoft YaHei';}
 .calYear{border:1px solid #f5d2ba;width:50px;width:80%;position:absolute;z-index:2000;left:5%;background-color:#eee;border-collapse:collapse;}
-.calYear td{text-align:center;cursor:pointer;}
+.calYear td{text-align:center;cursor:pointer;padding: 0px 5px;}
 .calYear td:hover{color:#ff6a00;}
 .calMonth{border:1px solid #f5d2ba;width:50px;width:70%;position:absolute;z-index:2000;right:10%;background-color:#eee;border-collapse:collapse;}
 .calMonth td{text-align:center;cursor:pointer;}
