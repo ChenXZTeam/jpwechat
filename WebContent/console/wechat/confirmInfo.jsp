@@ -45,7 +45,6 @@
 <body>
 <script>
 var fals=true;//防止重复提交
-var a = "";
 $(function(){
 	//获取上个界面传过来的值
 	var chufTime = "<%=chufTime%>"; //出发时间
@@ -275,9 +274,9 @@ function nextPat(){
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						console.log(result.planMsg);
-						a = result.c;
+						alert(result.planMsg);
 						fals=false;
+						window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action";
 					},
 					error:function(result){
 					}

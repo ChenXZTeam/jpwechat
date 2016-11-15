@@ -153,6 +153,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
 </div>
 <script>
+	window.history.forward(1); //禁止后退
 	var fals=true;//防止重复提交
 	//获取上个界面传过来的值
 	var chufTime = "<%=chufTime%>"; //出发时间
@@ -225,8 +226,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#YanwuBX").text("无");
 			}	
 			nextPat(); //创建订单表		
-			$(document).attr("title","机票预定_确认信息");
-			$("#trueOrderInfo").css("display","block");
+			/* $(document).attr("title","机票预定_确认信息");
+			$("#trueOrderInfo").css("display","block"); */
 		});
 		
 		//检查手机格式是否正确
@@ -313,10 +314,9 @@ function nextPat(){
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						console.log(result.planMsg);
-						alert("机票预定成功，请付款！！！");
-						a = result.c;
+						alert(result.planMsg);
 						fals=false;
+						window.location.href="<%=basePath%>console/framework/jporder/index.jsp";
 					},
 					error:function(result){
 					}

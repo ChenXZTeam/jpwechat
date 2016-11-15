@@ -104,6 +104,7 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <body>
 <script>
 $(function(){
+	window.history.forward(1);//禁止后退
 	var onezhzDate = '<%=onezhzDate%>';
 	var twozhzDate = '<%=twozhzDate%>';
 	var dateTime = '<%= dateTime%>';
@@ -246,7 +247,7 @@ $(function(){
 		var menType = $("#personIpnt").val();//乘机人类型
 			
 		//将提交的订单打包成json数据
-		var jsondatastr = '{"firstFild":[{"ChufDate":"'+ChufDate1+'","ChufTime":"'+ChufTime1+'","DaodTime":"'+DaodTime1+'","ChufCity":"'+ChufCity1+'","DaodCity":"'+DaodCity1+'","QishiPlan":"'+QishiPlan1+'","hangbanNum":"'+hangbanNum1+'","airCode":"'+airCode1+'","DaodPlan":"'+DaodPlan1+'","lishiTime":"'+lishiTime1+'","CostPay":"'+CostPay1+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode1":"'+onezhzDateJson.orgCity+'","arrcityCode1":"'+onezhzDateJson.dstCity+'"}],"sconedFild":[{"ChufDate":"'+ChufDate2+'","ChufTime":"'+ChufTime2+'","DaodTime":"'+DaodTime2+'","ChufCity":"'+ChufCity2+'","DaodCity":"'+DaodCity2+'","QishiPlan":"'+QishiPlan2+'","hangbanNum":"'+hangbanNum2+'","airCode":"'+airCode2+'","DaodPlan":"'+DaodPlan2+'","lishiTime":"'+lishiTime2+'","CostPay":"'+CostPay2+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode2":"'+twozhzDateJson.orgCity+'","arrcityCode2":"'+twozhzDateJson.dstCity+'"}]}';
+		var jsondatastr = '{"sign":"WFF","firstFild":[{"ChufDate":"'+ChufDate1+'","ChufTime":"'+ChufTime1+'","DaodTime":"'+DaodTime1+'","ChufCity":"'+ChufCity1+'","DaodCity":"'+DaodCity1+'","QishiPlan":"'+QishiPlan1+'","hangbanNum":"'+hangbanNum1+'","airCode":"'+airCode1+'","DaodPlan":"'+DaodPlan1+'","lishiTime":"'+lishiTime1+'","CostPay":"'+CostPay1+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode1":"'+onezhzDateJson.orgCity+'","arrcityCode1":"'+onezhzDateJson.dstCity+'"}],"sconedFild":[{"ChufDate":"'+ChufDate2+'","ChufTime":"'+ChufTime2+'","DaodTime":"'+DaodTime2+'","ChufCity":"'+ChufCity2+'","DaodCity":"'+DaodCity2+'","QishiPlan":"'+QishiPlan2+'","hangbanNum":"'+hangbanNum2+'","airCode":"'+airCode2+'","DaodPlan":"'+DaodPlan2+'","lishiTime":"'+lishiTime2+'","CostPay":"'+CostPay2+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode2":"'+twozhzDateJson.orgCity+'","arrcityCode2":"'+twozhzDateJson.dstCity+'"}]}';
 		//创建订单
 		$.ajax({
 					url:"<%=basePath%>userOrderController/add/zrorder.action",
@@ -256,7 +257,14 @@ $(function(){
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						alert(result);
+						if(result=="1"||result==1){
+							alert("机票预定成功");
+							window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action";
+						}else if(result=="0"||result==0){
+							alert("机票预定失败1，请稍后再试");
+						}else{
+							alert("机票预定失败2，请稍后再试");
+						}
 					},
 					error:function(result){
 					}

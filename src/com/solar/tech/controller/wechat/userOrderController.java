@@ -71,16 +71,7 @@ public class userOrderController {
 		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
-		String maxNum = OrderService.fingMaxNum();
-		int MaxNum=0;
-		if(maxNum==null||maxNum.equals("")||maxNum.equals(" ")){
-			MaxNum = 0;
-		}else{
-			MaxNum = Integer.parseInt(maxNum);
-		}
-		oderInfo.setIntNum((MaxNum+1)+"");
-		String maxOrderNum = OrderService.fingMaxOrderNum();
-		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+		String orderNum = OrderService.createOrderNum("RDOD", 8);
 		oderInfo.setOrderNum(orderNum);
 		//System.out.println("===>>>>预约编号："+oderInfo.getOrderNum());
 		System.out.println(
@@ -182,13 +173,12 @@ public class userOrderController {
 			num=OrderService.addOrder(oderInfo);//保存信息到数据库		
 		//}
 		if(num==1){
-			System.out.println("数据插入成功");
-			map.put("c", orderNum);
 			//map.put("planMsg", response.toJson());
+			map.put("planMsg","订单生成成功");
 		}else if(num==0){
-			System.out.println("数据插入失败");
+			map.put("planMsg","订单生成失败，系统出错");
 		}else{
-			System.out.println("数据错误");
+			map.put("planMsg","订单生成失败，系统出错");
 		}
 		//new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
 		return map;
@@ -201,6 +191,7 @@ public class userOrderController {
 	@ResponseBody
 	public int addzhz_res(String jsStr,String firstFild,String sconedFild,HttpSession session){
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);
+		String sing = jsonObject.get("sign")+""; //接收标志 就能传进来的数据是中转数据或者往返数据
         firstFild = jsonObject.get("firstFild")+"";
         sconedFild = jsonObject.get("sconedFild")+"";
         firstFild = firstFild.substring(1,firstFild.length()-1);
@@ -208,6 +199,14 @@ public class userOrderController {
         JSONObject firstFildlist = JSONObject.fromObject(firstFild);
         JSONObject sconedFildlist = JSONObject.fromObject(sconedFild);
         userOrderInfo oderInfo = new userOrderInfo();
+		String codesign = "";
+		if(sing.equals("ZHZ")){
+			codesign = OrderService.getRandomString(sing);
+			oderInfo.setZzsign(codesign);
+		}else if(sing.equals("WFF")){
+			codesign = OrderService.getRandomString(sing);
+			oderInfo.setWfsign(codesign);
+		}
         String depcityCode1 = firstFildlist.get("depcityCode1")+"";
         String arrcityCode1 = firstFildlist.get("arrcityCode1")+"";
 		oderInfo.setChufDate(firstFildlist.get("ChufDate")+"");
@@ -239,16 +238,7 @@ public class userOrderController {
 		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
-		String maxNum = OrderService.fingMaxNum();
-		int MaxNum=0;
-		if(maxNum==null||maxNum.equals("")||maxNum.equals(" ")){
-			MaxNum = 0;
-		}else{
-			MaxNum = Integer.parseInt(maxNum);
-		}
-		oderInfo.setIntNum((MaxNum+1)+"");
-		String maxOrderNum = OrderService.fingMaxOrderNum();
-		String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+		String orderNum = OrderService.createOrderNum("RDOD", 8);
 		oderInfo.setOrderNum(orderNum);
 		
 		//联系组实体类
@@ -333,16 +323,7 @@ public class userOrderController {
 				oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 				oderInfo.setStutisPay("0");//未支付
 				oderInfo.setTakePlane("0");//未登机
-				maxNum = OrderService.fingMaxNum();
-				MaxNum=0;
-				if(maxNum==null||maxNum.equals("")||maxNum.equals(" ")){
-					MaxNum = 0;
-				}else{
-					MaxNum = Integer.parseInt(maxNum);
-				}
-				oderInfo.setIntNum((MaxNum+1)+"");
-				maxOrderNum = OrderService.fingMaxOrderNum();
-				orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+				orderNum = OrderService.createOrderNum("RDOD", 8);
 				oderInfo.setOrderNum(orderNum);
 				
 				//联系组实体类

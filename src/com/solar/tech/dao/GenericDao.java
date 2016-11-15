@@ -358,6 +358,25 @@ public class GenericDao{
 		Query q = getSession().createQuery(hql);
 		return getRows(q);
 	}
+	
+	/**调用存储过程的方法*/
+	@SuppressWarnings("unchecked")  
+	public <T> List<T> getListByCall(String hql, List<Object> sqlParams) {
+		Session session=sessionFactory.getCurrentSession();
+		Query query=session.createSQLQuery(hql);
+		for(int i=0;i<sqlParams.size();i++){
+			if(sqlParams.get(i) instanceof Integer){
+				query.setInteger(i,(Integer)sqlParams.get(i));
+			}
+			if(sqlParams.get(i) instanceof Boolean){
+				query.setBoolean(i,(Boolean)sqlParams.get(i));
+			}
+			if(sqlParams.get(i) instanceof String){
+				query.setString(i,(String)sqlParams.get(i));
+			}
+		}
+		return query.list();
+	}
 
 	/**
 	 * 鑾峰彇鏈夊灏戦〉鏁�

@@ -169,6 +169,14 @@ public class userOrderInfo {
 	//票号
 	@Column(name = "telNum")
 	private Timestamp telNum;
+	
+	//标识两个订单之间是否是往返
+	@Column(name = "wfsign")
+	private String wfsign;
+	
+	//标识两个订单之间是否是中转
+	@Column(name = "zzsign")
+	private String zzsign;
 
 	public String getGetTeickTime() {
 		return getTeickTime;
@@ -457,7 +465,29 @@ public class userOrderInfo {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
-	
-	
-	
+
+	public Timestamp getTelNum() {
+		return telNum;
+	}
+
+	public void setTelNum(Timestamp telNum) {
+		this.telNum = telNum;
+	}
+
+	public String getWfsign() {
+		return wfsign;
+	}
+
+	public void setWfsign(String wfsign) {
+		this.wfsign = wfsign;
+	}
+
+	public String getZzsign() {
+		return zzsign;
+	}
+
+	public void setZzsign(String zzsign) {
+		this.zzsign = zzsign;
+	}
+
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -65,6 +66,41 @@ public class userOrderService {
 			 MaxNum = MaxorderNum.get(0);
 		 }
 		 return MaxNum;
+	}
+	
+	/**
+	 * 
+	 * @Title: createOrderNum
+	 * @Description: 生成预约号
+	 * @param PreString
+	 * @param length
+	 * @return: String
+	 */
+	public String createOrderNum(String PreString, int length) {
+
+		List<Object> params = new ArrayList<Object>();
+		params.add(PreString);
+		params.add(length);
+		String sql = "{Call generate_orderNo(?,?,@orderNo)}";
+		List list = gDao.getListByCall(sql, params);
+
+		return list.get(0).toString();
+	}
+	
+	/**
+	 * 产生随机且唯一的标识，标识关联两条数据的标志
+	 * @return
+	 */
+	public String getRandomString(String sign){
+		long time = System.currentTimeMillis();//加上时间戳
+		String[] storeChars = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		Random random = new Random();
+		String codesign = "";
+		for(int i=0; i<10; i++){
+			int index = random.nextInt(35);
+			codesign += storeChars[index];
+		}
+		return sign+codesign+time;
 	}
 	
 	/**
