@@ -203,10 +203,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	$("#DaodTime").text(gTime(obj1.arrTime));
 	$("#ChufCity").text(obj1.orgCity);
 	$("#DaodCity").text(obj1.dstCity);
-	$("#QishiPlan").text(obj1.deplaneName);
+	$("#QishiPlan").text(findByplaneName(obj1.orgCity));
 	$("#fildNumfly").text(obj1.flightNo);
 	$("#airCode").text(findByCode(obj1.airCode));//航空公司
-	$("#DaodPlan").text(obj1.arrPlaneName);
+	$("#DaodPlan").text(findByplaneName(obj1.dstCity));
 	$("#countTime").text(cuntTime(obj1.depTime,obj1.arrTime));
 	$(".firstair").text(obj1.airCode);
 	
@@ -215,10 +215,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	$("#DaodTime2").text(gTime(obj2.arrTime));
 	$("#ChufCity2").text(obj2.orgCity);
 	$("#DaodCity2").text(obj2.dstCity);
-	$("#QishiPlan2").text(obj2.deplaneName);
+	$("#QishiPlan2").text(findByplaneName(obj2.orgCity));
 	$("#fildNumfly2").text(obj2.flightNo);
 	$("#airCode2").text(findByCode(obj2.airCode));//航空公司
-	$("#DaodPlan2").text(obj2.arrPlaneName);
+	$("#DaodPlan2").text(findByplaneName(obj2.dstCity));
 	$("#countTime2").text(cuntTime(obj2.depTime,obj2.arrTime));
 	$(".scondair").text(obj2.airCode);
 	//价格显示

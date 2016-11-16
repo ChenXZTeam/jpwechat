@@ -124,8 +124,8 @@ $(function(){
 	$(".scondair").text(twozhzDateJson.airCode);
 	$(".depTimefirst").html(changeType(onezhzDateJson.depTime));
 	$(".depTimesecond").html(changeType(onezhzDateJson.arrTime));
-	$(".depAirPlanfirst").text(onezhzDateJson.deplaneName);
-	$(".depAirPlansecond").text(onezhzDateJson.arrPlaneName);
+	$(".depAirPlanfirst").text(findByplaneName(onezhzDateJson.orgCity));
+	$(".depAirPlansecond").text(findByplaneName(onezhzDateJson.dstCity));
 	$(".lishiTime").text(cuntTime(onezhzDateJson.depTime,onezhzDateJson.arrTime));
 	$(".airNameTypech").text(findByCode(onezhzDateJson.airCode));
 	$(".flindNum").text(onezhzDateJson.flightNo);
@@ -135,9 +135,9 @@ $(function(){
 	
 	$(".depTimenumt").html(changeType(twozhzDateJson.depTime));
 	$(".arrTimenumt").html(changeType(twozhzDateJson.arrTime));
-	$(".depPlane_numt").text(twozhzDateJson.deplaneName);
+	$(".depPlane_numt").text(findByplaneName(twozhzDateJson.orgCity));
 	$(".lishiTime_two").text(cuntTime(twozhzDateJson.depTime,twozhzDateJson.arrTime));
-	$(".arrPlane_numt").text(twozhzDateJson.arrPlaneName);
+	$(".arrPlane_numt").text(findByplaneName(twozhzDateJson.dstCity));
 	$(".airNameTypechch").text(findByCode(twozhzDateJson.airCode));
 	$(".flindNumch").text(twozhzDateJson.flightNo);
 	
@@ -161,8 +161,8 @@ $(function(){
 		//航班信息
 		$("#ChufCityone").text(findByCity(onezhzDateJson.orgCity));
 		$("#DaodCityone").text(findByCity(onezhzDateJson.dstCity));
-		$("#QishiPlanone").text(onezhzDateJson.deplaneName);
-		$("#DaodPlanone").text(onezhzDateJson.arrPlaneName);
+		$("#QishiPlanone").text(findByplaneName(onezhzDateJson.orgCity));
+		$("#DaodPlanone").text(findByplaneName(onezhzDateJson.dstCity));
 		$("#fildNumflyone").text(onezhzDateJson.flightNo);
 		$("#CountTimeone").text(cuntTime(onezhzDateJson.depTime,onezhzDateJson.arrTime));
 		$("#ChufDateone").text(dateTime);
@@ -172,8 +172,8 @@ $(function(){
 		
 		$("#ChufCitytwo").text(findByCity(twozhzDateJson.orgCity));
 		$("#DaodCitytwo").text(findByCity(twozhzDateJson.dstCity));
-		$("#QishiPlantwo").text(twozhzDateJson.deplaneName);
-		$("#DaodPlantwo").text(twozhzDateJson.arrPlaneName);
+		$("#QishiPlantwo").text(findByplaneName(twozhzDateJson.orgCity));
+		$("#DaodPlantwo").text(findByplaneName(twozhzDateJson.dstCity));
 		$("#fildNumflytwo").text(twozhzDateJson.flightNo);
 		$("#CountTimetwo").text(cuntTime(twozhzDateJson.depTime,twozhzDateJson.arrTime));
 		$("#ChufDatetwo").text(gsDate(twozhzDateJson.depTime, dateTime));

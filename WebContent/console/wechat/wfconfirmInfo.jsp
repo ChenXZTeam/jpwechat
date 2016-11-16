@@ -131,8 +131,8 @@ $(function(){
 	
 	$(".depTimefirst").html(changeType(onezhzDateJson.depTime));
 	$(".depTimesecond").html(changeType(onezhzDateJson.arrTime));
-	$(".depAirPlanfirst").text(onezhzDateJson.deplaneName);
-	$(".depAirPlansecond").text(onezhzDateJson.arrPlaneName);
+	$(".depAirPlanfirst").text(findByplaneName(onezhzDateJson.orgCity));
+	$(".depAirPlansecond").text(findByplaneName(onezhzDateJson.dstCity));
 	$(".lishiTime").text(cuntTime(onezhzDateJson.depTime,onezhzDateJson.arrTime));
 	$(".airNameTypech").text(findByCode(onezhzDateJson.airCode));
 	$(".flindNum").text(onezhzDateJson.flightNo);
@@ -142,9 +142,9 @@ $(function(){
 	
 	$(".depTimenumt").html(changeType(twozhzDateJson.depTime));
 	$(".arrTimenumt").html(changeType(twozhzDateJson.arrTime));
-	$(".depPlane_numt").text(twozhzDateJson.deplaneName);
+	$(".depPlane_numt").text(findByplaneName(twozhzDateJson.orgCity));
 	$(".lishiTime_two").text(cuntTime(twozhzDateJson.depTime,twozhzDateJson.arrTime));
-	$(".arrPlane_numt").text(twozhzDateJson.arrPlaneName);
+	$(".arrPlane_numt").text(findByplaneName(twozhzDateJson.dstCity));
 	$(".airNameTypechch").text(findByCode(twozhzDateJson.airCode));
 	$(".flindNumch").text(twozhzDateJson.flightNo);
 	

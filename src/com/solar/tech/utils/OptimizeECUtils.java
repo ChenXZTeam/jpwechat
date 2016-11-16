@@ -245,6 +245,7 @@ public class OptimizeECUtils {
 		}
 		map.put("departAv", departAv); //去程的列表
 		map.put("returnAv", returnAv); //回程的列表
+		//map.put("AVDouble", AVDouble); //回程的列表
 		return map;
 	}
 	

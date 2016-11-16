@@ -20,6 +20,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title><%=chufCity %>--><%=daodCity %></title>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
+<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style type="text/css">
 	*{padding:0px;margin:0px;}
 	body{text-align:center; font-size:13px; font:normal Helvetica, Arial, sans-serif; background-color:#ffffff; font-family:Microsoft JhengHei;}
@@ -76,11 +77,11 @@
 	.zhzLiBox .flidNameBox .qishiPlanNa{ overflow:hidden;}
 	.zhzLiBox .flidNameBox .zhongPlanNa{ overflow:hidden; padding-top:4px;}
 	.zhzLiBox .flidNameBox .qishiPlanNa img{ display:block; float:left;}
-	.zhzLiBox .flidNameBox .qishiPlanNa .qishiSpan{ display:block; float:left; line-height:22px;}
-	.zhzLiBox .zhzPlanName{ text-align:center; float:left; margin-left:10px;}
+	.zhzLiBox .flidNameBox .qishiPlanNa .qishiSpan{ display:block; float:left; line-height:22px; width:95px; overflow:hidden; height: 20px; white-space: nowrap; text-overflow: ellipsis;}
+	.zhzLiBox .zhzPlanName{ text-align:center; float:left; margin-left:5px;}
 	.zhzLiBox .zhzPlanName .zhuanICO{color:#648bff; font-size:10px; display:block; margin-top:15px;}
 	.zhzLiBox .zhzPlanName .zhuanName{color:#648bff; font-size:10px; margin-top:0px;}
-	.zhzLiBox .flidNameBox .zhongPlanNa .zhzSpan{ display:block; float:left; line-height:22px; color:#999999;}
+	.zhzLiBox .flidNameBox .zhongPlanNa .zhzSpan{ display:block; float:left; line-height:22px; color:#999999; width:95px; overflow:hidden; height: 20px; white-space: nowrap; text-overflow: ellipsis;}
 	.zhzLiBox .flidNameBox .zhongPlanNa img{display:block; float:left;}
 	.zhzLiBox .monAndtick{ float:right; }
 	.zhzLiBox .monAndtick .moneyCPY{line-height:33px; font-family:'微软雅黑'; margin-top:10px;}
@@ -196,7 +197,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 					for(var i=0; i<zhzDate.length; i++){
 						var liList;
 						for(var j=zhzDate.length-1; j>i; j--){
-							if(zhzDate[i].arrPlaneName==zhzDate[j].deplaneName&&MathTime(zhzDate[i].arrTime,zhzDate[j].depTime)>3600&&(zhzDate[i].airCode==zhzDate[j].airCode)){
+							if(zhzDate[i].dstCity==zhzDate[j].orgCity&&MathTime(zhzDate[i].arrTime,zhzDate[j].depTime)>3600&&(zhzDate[i].airCode==zhzDate[j].airCode)){
 								var onezhzDate = JSON.stringify(zhzDate[i]); //第一航段
 								var twozhzDate = JSON.stringify(zhzDate[j]); //第二航段
 								var rowseatInfo1 = zhzDate[i].seatList; //第一航段的座位
@@ -220,7 +221,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 										}
 									}
 								}
-								var liBox = '<li class="zhzLiBox"><div class="zhzChildBox"><div class="feiTimeBox"><div class="staTimeBox">'+changeType(zhzDate[i].depTime)+'</div><div class="arrTimeBox">'+changeType(zhzDate[j].arrTime)+'</div></div><div class="flidNameBox"><div class="qishiPlanNa"><img src="<%=basePath %>console/images/shi.png" style="width:20px;"><span class="qishiSpan">'+zhzDate[i].deplaneName+'</span><span style="clear:both;"></span></div><div class="zhongPlanNa"><img src="<%=basePath %>console/images/zhong.png" style="width:20px;"><span class="zhzSpan">'+zhzDate[j].arrPlaneName+'</span><span style="clear:both;"></span></div></div><div class="zhzPlanName"><span class="zhuanICO">转</span><span class="zhuanName">'+findByCity(zhzDate[i].dstCity)+'</span></div><div class="monAndtick"><div class="moneyCPY"><span style="color:#FF8201;font-size:14px;">￥</span><span class="oneMoneyHouse">'+(parseFloat(onePriceMoney)+parseFloat(twoPriceMobey)).toFixed(2)+'</span></div>	<div class="tickNum">经济舱'+sumTemk+'张</div></div><div style="clear:both;"></div><div class="infoMessgBox"><div class="infoChBox" style="border-right:1px solid #ccc;">'+findByCode(zhzDate[i].airCode)+'</div><div class="infoChBox"><img src="<%=basePath%>console/images/TIMEiMG.png" style="width:13px;"/><span>'+cuntTime(zhzDate[i].depTime,zhzDate[j].arrTime)+'</span><span style="clear:both;"></span></div><div class="infoChBox"></div></div></div><div class="wfbanner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangType_bas+'</span><a class="zhzaYuding" href=\'<%=basePath%>console/wechat/zhzconfirmInfo.jsp?dateTime='+dateTime+'&cangwei='+cangType_csw+'&onezhzDate='+onezhzDate+'&twozhzDate='+twozhzDate+'\'>预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseFloat(onePriceMoney)+parseFloat(twoPriceMobey)).toFixed(2)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="wfpiaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';
+								var liBox = '<li class="zhzLiBox"><div class="zhzChildBox"><div class="feiTimeBox"><div class="staTimeBox">'+changeType(zhzDate[i].depTime)+'</div><div class="arrTimeBox">'+changeType(zhzDate[j].arrTime)+'</div></div><div class="flidNameBox"><div class="qishiPlanNa"><img src="<%=basePath %>console/images/shi.png" style="width:20px;"><span class="qishiSpan">'+findByplaneName(zhzDate[i].orgCity)+'</span><span style="clear:both;"></span></div><div class="zhongPlanNa"><img src="<%=basePath %>console/images/zhong.png" style="width:20px;"><span class="zhzSpan">'+findByplaneName(zhzDate[j].dstCity)+'</span><span style="clear:both;"></span></div></div><div class="zhzPlanName"><span class="zhuanICO">转</span><span class="zhuanName">'+findByCity(zhzDate[i].dstCity)+'</span></div><div class="monAndtick"><div class="moneyCPY"><span style="color:#FF8201;font-size:14px;">￥</span><span class="oneMoneyHouse">'+(parseFloat(onePriceMoney)+parseFloat(twoPriceMobey)).toFixed(2)+'</span></div>	<div class="tickNum">经济舱'+sumTemk+'张</div></div><div style="clear:both;"></div><div class="infoMessgBox"><div class="infoChBox" style="border-right:1px solid #ccc;">'+findByCode(zhzDate[i].airCode)+'</div><div class="infoChBox"><img src="<%=basePath%>console/images/TIMEiMG.png" style="width:13px;"/><span>'+cuntTime(zhzDate[i].depTime,zhzDate[j].arrTime)+'</span><span style="clear:both;"></span></div><div class="infoChBox"></div></div></div><div class="wfbanner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangType_bas+'</span><a class="zhzaYuding" href=\'<%=basePath%>console/wechat/zhzconfirmInfo.jsp?dateTime='+dateTime+'&cangwei='+cangType_csw+'&onezhzDate='+onezhzDate+'&twozhzDate='+twozhzDate+'\'>预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseFloat(onePriceMoney)+parseFloat(twoPriceMobey)).toFixed(2)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span><span class="jiantou" style="float:right;">＞</span><span class="wfpiaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';
 								$("#TicketList").append(liBox);
 								
 								//加载舱位

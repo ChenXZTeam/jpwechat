@@ -92,9 +92,11 @@ public class PlanTekController {
 		}
 		System.out.println("直达航班的数量："+zhidFil.size());
 		//初步获得中转的链表
+		System.out.println("中转模块："+chufCity+", "+daodCity); 
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班
+					System.out.println(zfli);
 					zhongzFil.add(zfli);  //重构直达的链表
 				}
 			}
