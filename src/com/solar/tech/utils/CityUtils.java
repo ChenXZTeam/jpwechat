@@ -16,9 +16,9 @@ public class CityUtils {
 	static{
 		InputStream is = null;
 		try {
-			String ss = "D:/GitHome/git/jpwechat/src/city.properties";
+			//String ss = "D:/GitHome/git/jpwechat/src/city.properties";
 			String s1 = "src/city.properties";
-			is = new FileInputStream(new File(ss));
+			is = new FileInputStream(new File(s1));
 			//File file = new File("src/city.properties");
 			//System.out.println(file.getAbsolutePath());
 		} catch (FileNotFoundException e1) {

@@ -58,8 +58,8 @@ public class PlanTekController {
 		if(tempFlil != null && tempFlil.size() > 0){
 			for(FlightInfo f : tempFlil){
 				if(f.getSeatList().size()!=0){
-					f.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(f.getOrgCity()))); //设置出发机场
-					f.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(f.getDstCity()))); //设置到达机场
+					//f.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(f.getOrgCity()))); //设置出发机场
+					//f.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(f.getDstCity()))); //设置到达机场
 					/*System.out.println("航班号：" + f.getFlightNo() + "， 出发城市：" + f.getOrgCity() + " ( 起飞时间：" + f.getDepTime() + " ) " + "， 到达城市: " + f.getDstCity() + " ( 到达时间：" + f.getArrTime() + " ) ，机型：" + f.getPlaneStyle());				
 					int SumTecikNum=0;
 					for(SeatInfo info : f.getSeatList()){	

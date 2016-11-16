@@ -111,8 +111,8 @@ public class OptimizeECUtils {
 					FlightInfo bean = new FlightInfo(); // 航班信息
 					bean.setFlightNo(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getAirline());
 					bean.setAirCode((bean.getFlightNo()).substring(0,2));
-					bean.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getOrgcity())));
-					bean.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDstcity())));
+					//bean.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getOrgcity())));
+					//bean.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDstcity())));
 					bean.setPlaneStyle(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getPlanestyle());
 					bean.setDepTime(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDepTime());
 					bean.setArrTime(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getArriTime());
@@ -181,8 +181,8 @@ public class OptimizeECUtils {
 					FlightInfo bean = new FlightInfo(); // 航班信息
 					bean.setFlightNo(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getAirline());
 					bean.setAirCode((bean.getFlightNo()).substring(0,2));
-					bean.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getOrgcity())));
-					bean.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDstcity())));
+					//bean.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getOrgcity())));
+					//bean.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDstcity())));
 					bean.setPlaneStyle(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getPlanestyle());
 					bean.setDepTime(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDepTime());
 					bean.setArrTime(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getArriTime());
