@@ -252,6 +252,24 @@ public class VisaService {
 	}
 	
 	/**
+	 * 
+	 * @Title: createOrderNum
+	 * @Description: 生成预约号
+	 * @param PreString
+	 * @param length
+	 * @return: String
+	 */
+	public String createOrderNum(String PreString, int length) {
+		List<Object> params = new ArrayList<Object>();
+		params.add(PreString);
+		params.add(length);
+		String sql = "{Call visa_orderNo(?,?,@orderNo)}";
+		List list = gDao.getListByCall(sql, params);
+
+		return list.get(0).toString();
+	}
+	
+	/**
 	 * @title 查找最大的编号
 	 * @return map
 	 */

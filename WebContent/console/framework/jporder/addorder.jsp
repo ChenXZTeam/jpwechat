@@ -8,15 +8,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>机票预定</title>
-	<link href="<%=basePath %>console/css/hDate.css" rel="stylesheet" />
+	<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/BeatPicker.min.css"/>
 	<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
-	<script src="<%=basePath%>console/js/hDate.js"></script>
+	<script src="<%=basePath %>console/js/BeatPicker.min.js"></script>
 	<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	#radioClassBox{}
 	#radioClassBox span{ display:block;}
 	#conditionId{ font-size:13px; overflow:hidden;}
-	#conditionId div{float:left; margin-left:10px; margin-top:10px;/*  border:1px solid #ff0000; */}
+	#conditionId>div{float:left; margin-left:10px; margin-top:10px;/*  border:1px solid #ff0000; */}
 	#conditionId>div input{width:137px;}
 	.planeTitle{ background:#f0f0f0; color:#666666; margin-top:15px; padding-left:2px;}
 	.planeTitle .planeTitleCh{ float:left; width:150px; text-align:center; height:30px; margin-left:15px; line-height:30px;}
@@ -116,6 +116,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.childBoxCang .wfchildBoxClass .jiagePay .payMoneyBox{color:#FF9900; font-size: 20px;}
 	.childBoxCang .wfchildBoxClass .yudingBtn{float:left; height:30px;}
 	.childBoxCang .wfchildBoxClass .yudingBtn .trueYuBtn{padding: 8px 20px;background-color: #0099CC;color: #fff;border: none;border-radius: 5px; cursor:pointer;}
+	
+	/*日期控件*/
+	.input-parent.input-container{float:left; margin-left:5px;}
 </style>
 </head>
 
@@ -157,12 +160,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<input type="hidden" class="planeInpt" id="arrPlane"/>
 		</div>
 		<div>
-			<span>出发日期</span>
-			<input id="gofaTime" onclick="calendar.show({ id: this })"/>
+			<span style="float:left; display:block; margin-top:3px;">出发日期</span>
+			<input id="gofaTime" data-beatpicker="true"/>
 		</div>
 		<div>
-			<span>返程日期</span>
-			<input id="fancDate" disabled="disabled" onclick="calendar.show({ id: this })"/>
+			<span style="float:left; display:block; margin-top:3px;">返程日期</span>
+			<input id="fancDate" disabled="disabled" data-beatpicker="true"/>
 		</div>
 		<div>
 			<button id="findBtn" onclick="ajaxjson()">搜索航班</button>

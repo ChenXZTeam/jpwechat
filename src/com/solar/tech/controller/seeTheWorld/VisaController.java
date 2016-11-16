@@ -369,14 +369,7 @@ public class VisaController {
 	       if(key.equals("paystatus"))visaOrder.setPaystatus(value);//支付状态
 	       if(key.equals("progress"))visaOrder.setProgress(value);//申请进度
 	    } 
-	    int MaxNum = visaService.fingMaxNum();
-	    MaxNum = (MaxNum==0)?1:(MaxNum+1);
-	    visaOrder.setNewOrderNum(MaxNum);
-		String maxOrderNum = visaService.fingMaxOrderNum();
-		if(maxOrderNum==null){
-			maxOrderNum = "RDOD201608020001";
-		}
-	    String orderNum = OrderService.getNum("RDOD", maxOrderNum);//生成预约编号
+	    String orderNum = visaService.createOrderNum("RDOD",8);
 	    visaOrder.setOrderNum(orderNum);
 	    if(visaOrder.getTotalCost()==null||visaOrder.getTotalCost().equals("")){ //价格等于空这说明是从后台管理员输入的订单，因为后台没有输入价格的输入框
 	    	String cost = visaService.fingCostByCounryId(visaOrder.getVisaID());
@@ -386,9 +379,7 @@ public class VisaController {
 		    visaOrder.setProgress("0");//预约中
 	    }
 	    visaOrder.setDeleteSige("1");//默认不删除
-	    System.out.println("====>>>111");	    
 	    visaOrder.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
-	    System.out.println("====>>>333"+visaOrder.getCreateTime());
 	    int i = visaService.addVisaOrder(visaOrder);
 	    System.out.println("i="+i);
 	    if(i==1){

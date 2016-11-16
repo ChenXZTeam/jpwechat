@@ -174,11 +174,14 @@ public class userOrderController {
 		//}
 		if(num==1){
 			//map.put("planMsg", response.toJson());
+			map.put("msg","1");
 			map.put("planMsg","订单生成成功");
 		}else if(num==0){
-			map.put("planMsg","订单生成失败，系统出错");
+			map.put("msg","0");
+			map.put("planMsg","订单生成失败1，系统出错");
 		}else{
-			map.put("planMsg","订单生成失败，系统出错");
+			map.put("msg","3");
+			map.put("planMsg","订单生成失败2，系统出错");
 		}
 		//new ECUtils().cancelPnr(response.getPnrNo());//删除中航信系统中刚刚预定的数据
 		return map;

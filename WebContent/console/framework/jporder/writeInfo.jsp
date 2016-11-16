@@ -23,7 +23,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>填写信息</title>
+	<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/BeatPicker.min.css"/>
 	<script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+	<script src="<%=basePath %>console/js/BeatPicker.min.js"></script>
 	<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
 	<style>
 		body{ font-size:14px; color:#333;}
@@ -80,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<ul>
 		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><span style="clear:both;"></span></li>
 		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly" style="cursor:pointer;"/><span style="margin-top:7px; margin-left:-20px; cursor:pointer;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><span style="clear:both;"></span></li>
-		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" style="cursor:pointer;"/><span style="float:left; margin-top:7px; margin-left:-20px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span><span style="clear:both;"></span></li>
+		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" style="cursor:pointer;" data-beatpicker="true"/><span style="float:left; margin-top:7px; margin-left:-20px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span><span style="clear:both;"></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/><span style="clear:both;"></span></li>
 		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly" style="cursor:pointer;"/><span style="margin-top:7px; margin-left:-20px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><span style="clear:both;"></span></li>
 		<li><span class="spanTit" id="caseIpnt" style="width:68px; cursor:pointer;">证件类型</span><span style="width:15px; padding-top:4px;"><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/><span style="clear:both;"></span></li>
@@ -275,6 +277,12 @@ function nextPat(){
 			var PhoneNum=$("#PhoneNum").text();//手机号码
 			var YiwaiBX=$("#YiwaiBX").text();//意外保险
 			var YanwuBX=$("#YanwuBX").text();//延误险
+			if(YiwaiBX=="undefined"||YiwaiBX==""||YiwaiBX==null){
+				YiwaiBX = "无";
+			}
+			if(YanwuBX=="undefined"||YanwuBX==""||YanwuBX==null){
+				YanwuBX = "无";
+			}
 			var cangweiType=$(".cangweiType").text();
 			var birthDay = $("#birthIpnt").val();//生日
 			var age = ageFunc(birthDay);//年龄
@@ -314,9 +322,15 @@ function nextPat(){
 					beforeSend:function(){$(".loadingBox").css("display","block");},
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
-						alert(result.planMsg);
-						fals=false;
-						window.location.href="<%=basePath%>console/framework/jporder/index.jsp";
+						if(result.msg=="1"||result.msg==1){
+							alert(result.planMsg);
+							fals=false;
+							window.location.href="<%=basePath%>console/framework/jporder/index.jsp";
+						}else if(result.msg=="0"||result.msg==0){
+							alert(result.planMsg);
+						}else{
+							alert(result.planMsg);
+						}
 					},
 					error:function(result){
 					}
