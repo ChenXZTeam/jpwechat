@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ import com.travelsky.sbeclient.obe.response.PataFareResponse;
 @Controller
 @RequestMapping("/wechatController")
 public class PlanTekController {
+	private static Logger log = Logger.getLogger(PlanTekController.class);
 	@Autowired
 	private PlanTekService PlanTekServ;
 	@Autowired
@@ -46,6 +48,7 @@ public class PlanTekController {
 		System.out.println(daodCity);
 		System.out.println(cangW);
 		System.out.println(dateTime);
+		log.info(chufCity+", "+daodCity+", "+cangW+", "+dateTime); 
 		List<FlightInfo> fliL = PlanTekServ.findHB(chufCity, daodCity, null, dateTime, null, null, null); //出发城市、到达城市、航空公司、出发时间、航班号、是否直达、是否有经停点
 		List<FlightInfo> tempFlil = PlanTekServ.removeRepeat(fliL); //剔除重复的数据
 		List<FlightInfo> newFlil = new ArrayList<FlightInfo>();  //剔除座位为空的数据
@@ -125,6 +128,7 @@ public class PlanTekController {
 	@ResponseBody
 	public Map<String, Object> planTekTo(String org, String dst, String date, String returnDate, String airline, Integer page){
 		Map<String, Object> map = new OptimizeECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
+		log.info(org+", "+dst+", "+date+", "+returnDate+", "+airline+", "+page); 
 		//System.out.println("去程航班的数量："+avd.getDepartItemsCount());
 		//System.out.println("返程航班的数量："+avd.getReturnItemsCount());
 		return map;
