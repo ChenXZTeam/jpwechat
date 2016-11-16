@@ -127,8 +127,8 @@ public class PlanTekController {
 	@RequestMapping("/find/planTekTo.action")
 	@ResponseBody
 	public Map<String, Object> planTekTo(String org, String dst, String date, String returnDate, String airline, Integer page){
-		Map<String, Object> map = new OptimizeECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
 		log.info(org+", "+dst+", "+date+", "+returnDate+", "+airline+", "+page); 
+		Map<String, Object> map = new OptimizeECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
 		//System.out.println("去程航班的数量："+avd.getDepartItemsCount());
 		//System.out.println("返程航班的数量："+avd.getReturnItemsCount());
 		return map;
