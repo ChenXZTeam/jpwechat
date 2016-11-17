@@ -103,9 +103,11 @@ public class OptimizeECUtils {
 	public Map<String, Object> roundtripAv(String org, String dst, String date, String returnDate, String airline, Integer page){
 		Map<String, Object> map = new HashMap<String, Object>();
 		AVDoubleResponse AVDouble  = new ECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
+		if(AVDouble==null||null==AVDouble){map.put("msg", 0);return map;}
 		List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null); // 查询运价
+		if(fdList==null||fdList.size()<1){map.put("msg", 0);return map;}
 		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, null, null, null, null, null); // 查询座位可用
-		
+		if(avList==null||avList.size()<1){map.put("msg", 0);return map;}
 		List<FlightInfo> departAv = new ArrayList<FlightInfo>(); //去程航班的链表
 		List<FlightInfo> returnAv = new ArrayList<FlightInfo>(); //回程航班的链表
 		//处理去程的航班，重构去程航班链表
@@ -115,8 +117,6 @@ public class OptimizeECUtils {
 					FlightInfo bean = new FlightInfo(); // 航班信息
 					bean.setFlightNo(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getAirline());
 					bean.setAirCode((bean.getFlightNo()).substring(0,2));
-					//bean.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getOrgcity())));
-					//bean.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDstcity())));
 					bean.setPlaneStyle(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getPlanestyle());
 					bean.setDepTime(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDepTime());
 					bean.setArrTime(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getArriTime());
@@ -185,8 +185,6 @@ public class OptimizeECUtils {
 					FlightInfo bean = new FlightInfo(); // 航班信息
 					bean.setFlightNo(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getAirline());
 					bean.setAirCode((bean.getFlightNo()).substring(0,2));
-					//bean.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getOrgcity())));
-					//bean.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDstcity())));
 					bean.setPlaneStyle(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getPlanestyle());
 					bean.setDepTime(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDepTime());
 					bean.setArrTime(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getArriTime());

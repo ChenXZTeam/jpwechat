@@ -300,9 +300,10 @@ public class ECUtils {
 				AVDoubleResponse avResponse = avClient.avForRoundTrip(request);
 				return avResponse;
 			} catch (ObeException e) { 
-				e.printStackTrace(); 
+				System.out.println("=======>>>>捕获到往返航班搜索结果的异常");
+				//e.printStackTrace(); 
+				return null;
 			} 
-			return null;
 	}
 	
 	// 查询显示指定日期的航段上的航班信息(根据PNR号)

@@ -920,57 +920,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					beforeSend:function(){$("#loading").css("display","block");},
 					complete:function(){$("#loading").css("display","none");},
 					success:function(data){
-						var depart = data.departAv; //去程的航班
-						var returnf = data.returnAv; //回程的航班
-						//console.log(data.AVDouble);
-						//console.log(departRows);
-						//console.log(returnRows);
-						var countwf = 0; //计数参数
-						for(var i=0; i<depart.length; i++){
-							var airName = findByCode(depart[i].airCode);
-							//console.log(depart[i].seatList);
-							for(var j=0; j<returnf.length; j++){
-								var airName2 = findByCode(returnf[j].airCode); 
-								//console.log(returnf[j].seatList);
-								var liList='<li class="wfresListBox"><div class="zuheFildClass"><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName+'</span><span class="spanClass filgNo">'+depart[i].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(depart[i].depTime)+'</span><span class="spanClass depPlane">'+findByplaneName(depart[i].orgCity)+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#gofaTime").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(depart[i].arrTime)+'</span><span class="spanClass arrPlane">'+findByplaneName(depart[i].dstCity)+'</span></div><div style="clear:both;"></div></div><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName2+'</span><span class="spanClass filgNo">'+returnf[j].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(returnf[j].depTime)+'</span><span class="spanClass depPlane">'+findByplaneName(returnf[j].orgCity)+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#fancDate").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(returnf[j].arrTime)+'</span><span class="spanClass arrPlane">'+findByplaneName(returnf[j].dstCity)+'</span></div><div style="clear:both;"></div></div></div><div class="countMoney"><span class="countNumPay">往返总价</span><span class="spanClass deoole">￥</span><span class="spanClass payMoey"></span><span class="spanClass qiClass">起</span></div><div class="hangbanbtn"><button onclick="pointBtnwf(this)">预定该组合▼</button></div><div style="clear:both;"></div><div class="childBoxCang"></div></li>';
-								$("#ulBox").append(liList);
-								
-								for(var k=0; k<depart[i].seatList.length; k++){
-									var GcangType = (depart[i].seatList)[k].basicCabin;
-									if(GcangType=="C"){
-										GcangType="公务舱"
-									}else if(GcangType=="F"){
-										GcangType="头等舱";
-									}else if(GcangType=="Y"){
-										GcangType="经济舱";
-									}
-									var GcangPont = (depart[i].seatList)[k].cangwei;
-									var depart_moneyCost = (depart[i].seatList)[k].onewayPrice;
-									for(var h=0; h<returnf[j].seatList.length; h++){
-										var RcangType = (returnf[j].seatList)[h].basicCabin;
-										if(RcangType=="C"){
-											RcangType="公务舱"
-										}else if(RcangType=="F"){
-											RcangType="头等舱";
-										}else if(RcangType=="Y"){
-											RcangType="经济舱";
+						if(data.msg==0){
+							return;
+						}else{
+							var depart = data.departAv; //去程的航班
+							var returnf = data.returnAv; //回程的航班
+							//console.log(data.AVDouble);
+							//console.log(departRows);
+							//console.log(returnRows);
+							var countwf = 0; //计数参数
+							for(var i=0; i<depart.length; i++){
+								var airName = findByCode(depart[i].airCode);
+								//console.log(depart[i].seatList);
+								for(var j=0; j<returnf.length; j++){
+									var airName2 = findByCode(returnf[j].airCode); 
+									//console.log(returnf[j].seatList);
+									var liList='<li class="wfresListBox"><div class="zuheFildClass"><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName+'</span><span class="spanClass filgNo">'+depart[i].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(depart[i].depTime)+'</span><span class="spanClass depPlane">'+findByplaneName(depart[i].orgCity)+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#gofaTime").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(depart[i].arrTime)+'</span><span class="spanClass arrPlane">'+findByplaneName(depart[i].dstCity)+'</span></div><div style="clear:both;"></div></div><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName2+'</span><span class="spanClass filgNo">'+returnf[j].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(returnf[j].depTime)+'</span><span class="spanClass depPlane">'+findByplaneName(returnf[j].orgCity)+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#fancDate").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(returnf[j].arrTime)+'</span><span class="spanClass arrPlane">'+findByplaneName(returnf[j].dstCity)+'</span></div><div style="clear:both;"></div></div></div><div class="countMoney"><span class="countNumPay">往返总价</span><span class="spanClass deoole">￥</span><span class="spanClass payMoey"></span><span class="spanClass qiClass">起</span></div><div class="hangbanbtn"><button onclick="pointBtnwf(this)">预定该组合▼</button></div><div style="clear:both;"></div><div class="childBoxCang"></div></li>';
+									$("#ulBox").append(liList);
+									
+									for(var k=0; k<depart[i].seatList.length; k++){
+										var GcangType = (depart[i].seatList)[k].basicCabin;
+										if(GcangType=="C"){
+											GcangType="公务舱"
+										}else if(GcangType=="F"){
+											GcangType="头等舱";
+										}else if(GcangType=="Y"){
+											GcangType="经济舱";
 										}
-										var RcangPont = (returnf[j].seatList)[h].cangwei;
-										var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
-										var dr_countPay = (parseFloat(depart_moneyCost)+parseFloat(return_moneyCost)).toFixed(2);
-										if(GcangType == RcangType && GcangPont == RcangPont){
-											var departRows = JSON.stringify(depart[i]); //第一段航班(字符串)
-											var returnRows = JSON.stringify(returnf[j]); //第二段航班(字符串)
-											var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><a class="trueYuBtn" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate=2016-11-19,2016-11-21&cang='+GcangPont+'&rowstr1='+departRows+'&rowstr2='+returnRows+'\'>预　定</a></div><div style="clear:both;"></div></div>';
-											$(".wfresListBox:eq("+countwf+") .childBoxCang").append(listDiv);
-											$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(dr_countPay);
+										var GcangPont = (depart[i].seatList)[k].cangwei;
+										var depart_moneyCost = (depart[i].seatList)[k].onewayPrice;
+										for(var h=0; h<returnf[j].seatList.length; h++){
+											var RcangType = (returnf[j].seatList)[h].basicCabin;
+											if(RcangType=="C"){
+												RcangType="公务舱"
+											}else if(RcangType=="F"){
+												RcangType="头等舱";
+											}else if(RcangType=="Y"){
+												RcangType="经济舱";
+											}
+											var RcangPont = (returnf[j].seatList)[h].cangwei;
+											var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
+											var dr_countPay = (parseFloat(depart_moneyCost)+parseFloat(return_moneyCost)).toFixed(2);
+											if(GcangType == RcangType && GcangPont == RcangPont){
+												var departRows = JSON.stringify(depart[i]); //第一段航班(字符串)
+												var returnRows = JSON.stringify(returnf[j]); //第二段航班(字符串)
+												var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><a class="trueYuBtn" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate=2016-11-19,2016-11-21&cang='+GcangPont+'&rowstr1='+departRows+'&rowstr2='+returnRows+'\'>预　定</a></div><div style="clear:both;"></div></div>';
+												$(".wfresListBox:eq("+countwf+") .childBoxCang").append(listDiv);
+												$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(dr_countPay);
+											}
 										}
 									}
+									countwf++;
 								}
-								countwf++;
 							}
+							$(".childBoxCang").slideUp("fast");
 						}
-						$(".childBoxCang").slideUp("fast");
 					},error:function(){
 						
 					}
