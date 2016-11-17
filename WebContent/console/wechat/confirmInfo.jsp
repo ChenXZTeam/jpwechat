@@ -122,6 +122,30 @@ $(function(){
 		
 		//下一步的点击事件
 		$(".aBtn").click(function(){
+			if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
+				alert("请填写姓名");
+				return;
+			}
+			if($("#sexIpnt").val()==""||$("#sexIpnt").val()==" "||$("#sexIpnt").val()=="null"||$("#sexIpnt").val()==null){
+				alert("请填写性别");
+				return;
+			}
+			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
+				alert("请填写手机号码");
+				return;
+			}
+			if($("#personIpnt").val()==""||$("#personIpnt").val()==" "||$("#personIpnt").val()==null||$("#personIpnt").val()=="null"){
+				alert("请选择旅客类型");
+				return;
+			}
+			if($("#caseIpnt").text()==""||$("#caseIpnt").text()==" "||$("#caseIpnt").text()==null||$("#caseIpnt").text()=="null"){
+				alert("请选择证件类型");
+				return;
+			}
+			if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()==null||$("#IDcase").val()=="null"){
+				alert("请填写证件号码");
+				return;
+			}
 			$("#ChufDate").text(chufDate);
 			$("#ChufDateTwo").text(chufDate);
 			$("#ChufTime").text(chufTime);
@@ -134,10 +158,6 @@ $(function(){
 			$("#DaodPlan").text(zhongPlace);
 			$("#CostPay").text($(".cost").text());
 			
-			if($("#linkName").val()==""||$("#sexIpnt").val()==""||$("#caseIpnt").text()==""||$("#personIpnt").val()==""||$("#IDcase").val()==""||$("#phoneNum").val()==""){
-				alert("信息填写未完成");
-				return false;
-			}
 			$("#LinkName").text($("#linkName").val());
 			$("#Sex").text($("#sexIpnt").val());
 			$("#iDcaseType").text($("#caseIpnt").text());
@@ -157,7 +177,7 @@ $(function(){
 			}else{
 				$("#YanwuBX").text("无");
 			}	
-			nextPat(); //创建订单表		
+			if(nextPat()==false){return;}
 			$(document).attr("title","机票预定_确认信息");
 			$("#trueOrderInfo").css("display","block");
 		});
@@ -240,6 +260,9 @@ function nextPat(){
 			var cangweiType=$(".cangweiType").text();
 			var birthDay = $("#birthIpnt").val();//生日
 			var age = ageFunc(birthDay);//年龄
+			if(age==""||age==" "||age==null||age=="null"){
+				return false;
+			}
 			var menType = $("#personIpnt").val();//乘机人类型
 			var date={
 				"ChufDate":ChufDate,
@@ -294,7 +317,7 @@ function ageFunc(birthday){
 	    	age = ageNum;
 	    }else{
 	    	alert("年龄选择错误，请重新选择！");
-	    	return false;
+	    	return "";
 	    }
 		return age;
 	}

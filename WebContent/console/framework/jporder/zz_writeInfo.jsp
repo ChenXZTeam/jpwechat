@@ -245,6 +245,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	//提交订单按钮的点击事件
 	$(".aBtn").click(function(){
+		if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
+				alert("请填写姓名");
+				return;
+			}
+			if($("#sexIpnt").val()==""||$("#sexIpnt").val()==" "||$("#sexIpnt").val()=="null"||$("#sexIpnt").val()==null){
+				alert("请选择性别");
+				return;
+			}
+			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()=="null"||$("#phoneNum").val()==null){
+				alert("请输入电话号码");
+				return;
+			}
+			if($("#personIpnt").val()==""||$("#personIpnt").val()==" "||$("#personIpnt").val()=="null"||$("#personIpnt").val()==null){
+				alert("请选择旅客类型");
+				return;
+			}
+			if($("#caseIpnt").text()=="证件类型"){
+				alert("请选择证件类型");
+				return;
+			}
+			if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()=="null"||$("#IDcase").val()==null){
+				alert("请输入证件号码");
+				return;
+			}
+			
 		//第一段航班
 		var ChufDate1 = $("#ChufDate").text();//出发日期
 		var ChufTime1 = $("#ChufTime").text();//出发时间
@@ -288,6 +313,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var cangweiType=oneCang;
 		var birthDay = $("#birthIpnt").val();//生日
 		var age = ageFunc(birthDay);//年龄
+		if(age==""||age==" "||age==null||age=="null"){return;}
 		var menType = $("#personIpnt").val();//乘机人类型
 		var jsondatastr = "";
 		//将航班数据打包到json数据里面
@@ -318,6 +344,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					error:function(result){
 					}
 		});	
+	});
+	
+	//判断是否选择了证件类型
+	$("#IDcase").focus(function(){
+		if($("#caseIpnt").text()=="证件类型"){
+			alert("请选择证件类型");
+			$("#IDcase").blur();
+			return false;
+		}
+	});
+	
+	//判断证件号码是否符合
+	$("#IDcase").change(function(){
+		if($("#caseIpnt").text()=="身份证"){
+			var fidNum = $(this).val();
+			var IDCALE = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+			if(!IDCALE.test(fidNum)){
+			   	alert("输入正确的身份证号码");
+			    this.focus(); //强制焦点回到输入框
+			   	return;  
+			}
+		}else{
+			if($("#IDcase").val().length<5){
+				alert("请输入正确的证件号码");
+				return;
+			}
+		}
+	});
+		
+	//检查手机格式是否正确
+	$("#phoneNum").blur(function(){
+		var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+		if(!phone.test($("#phoneNum").val())){
+			alert("请输入正确的手机号码");
+			$("#phoneNum").focus();
+			return false;
+		}
 	});
 	
 	//保险的计算价格
@@ -464,7 +527,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	age = ageNum;
 	    }else{
 	    	alert("年龄选择错误，请重新选择！");
-	    	return false;
+	    	return "";
 	    }
 		return age;
 	}

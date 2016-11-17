@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +36,8 @@ import com.solar.tech.util.XMLUtil;
 @Controller
 @RequestMapping("/wechatController/payCost")
 public class WXpayorder {
+	private static Logger log = Logger.getLogger(log4Test.class); //一般操作日志
+	private static Log paymessage = LogFactory.getLog("paymessage"); //支付操作日志
 	@Autowired
 	private WXpayorderSer PayService;
 	

@@ -19,7 +19,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title><%=chufCity %>--><%=daodCity %></title>
+<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
+<script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style type="text/css">
 	*{padding:0px;margin:0px;}
@@ -92,7 +96,6 @@
 	.infoChBox img,.infoChBox span{display:block; float:left;}
 	.infoChBox span{ margin-top:1px; margin-left:5px;}
 </style>
-<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script>
 
 $(function(){ 
@@ -245,7 +248,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 					}
 					loadjs();//加载js外部文件
 				}else{
-					alert("没有查找到该航班的信息");
+					$.alert("没有查找到该航班的信息");
 				}
 			},error:function(){
 			}

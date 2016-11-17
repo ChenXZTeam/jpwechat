@@ -50,6 +50,9 @@ public class PlanTekController {
 		System.out.println(dateTime);
 		log.info(chufCity+", "+daodCity+", "+cangW+", "+dateTime); 
 		List<FlightInfo> fliL = PlanTekServ.findHB(chufCity, daodCity, null, dateTime, null, null, null); //出发城市、到达城市、航空公司、出发时间、航班号、是否直达、是否有经停点
+		if(fliL.size()<1||fliL==null){
+			map.put("msg", 0);
+		}
 		List<FlightInfo> tempFlil = PlanTekServ.removeRepeat(fliL); //剔除重复的数据
 		List<FlightInfo> newFlil = new ArrayList<FlightInfo>();  //剔除座位为空的数据
 		List<FlightInfo> zhidFil = new ArrayList<FlightInfo>();  //直达的航班
@@ -116,7 +119,7 @@ public class PlanTekController {
 		}			
 		System.out.println("中转航班数组的长度："+zhongzFil.size());
 		if(zhidFil.size()==0&&zhongzFil.size()==0){
-			map.put("msg", 1);
+			map.put("msg", 0);
 		}else{
 			map.put("msg", 1);
 			map.put("listDate", zhidFil);

@@ -158,6 +158,30 @@ $(function(){
 	
 	//下一步的按钮点击事件
 	$(".aBtn").click(function(){
+		if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
+				alert("请填写姓名");
+				return;
+			}
+			if($("#sexIpnt").val()==""||$("#sexIpnt").val()==" "||$("#sexIpnt").val()=="null"||$("#sexIpnt").val()==null){
+				alert("请填写性别");
+				return;
+			}
+			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
+				alert("请填写手机号码");
+				return;
+			}
+			if($("#personIpnt").val()==""||$("#personIpnt").val()==" "||$("#personIpnt").val()==null||$("#personIpnt").val()=="null"){
+				alert("请选择旅客类型");
+				return;
+			}
+			if($("#caseIpnt").text()==""||$("#caseIpnt").text()==" "||$("#caseIpnt").text()==null||$("#caseIpnt").text()=="null"){
+				alert("请选择证件类型");
+				return;
+			}
+			if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()==null||$("#IDcase").val()=="null"){
+				alert("请填写证件号码");
+				return;
+			}
 		//航班信息
 		$("#ChufCityone").text(findByCity(onezhzDateJson.orgCity));
 		$("#DaodCityone").text(findByCity(onezhzDateJson.dstCity));
@@ -237,6 +261,9 @@ $(function(){
 		var cangweiType = cangwei;
 		var birthDay = $("#birthIpnt").val();//生日
 		var age = ageFunc(birthDay);//年龄
+		if(age==""||age==" "||age==null||age=="null"){
+			return;
+		}
 		var menType = $("#personIpnt").val();//乘机人类型
 		
 		//将航班数据打包到json数据里面
@@ -267,6 +294,26 @@ $(function(){
 	$("#CostPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
 	$("#oneMoney").val(one_monTimey);
 	$("#twoMoney").val(two_monTimey);
+	
+	
+	//判断是否选择了证件类型
+	$("#IDcase").focus(function(){
+		if($("#caseIpnt").text()=="证件类型"){
+			alert("请选择证件类型");
+			$("#IDcase").blur();
+			return false;
+		}
+	});
+		
+	//检查手机格式是否正确
+	$("#phoneNum").change(function(){
+		var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+		if(!phone.test($("#phoneNum").val())){
+			alert("请输入正确的手机号码");
+			$("#phoneNum").focus();
+			return false;
+		}
+	});
 });
 
 //根据时间获取星期
@@ -362,7 +409,7 @@ function ageFunc(birthday){
 	    age = ageNum;
 	}else{
 	    alert("年龄选择错误，请重新选择！");
-	    return false;
+	    return "";
 	}
 	return age;
 }
