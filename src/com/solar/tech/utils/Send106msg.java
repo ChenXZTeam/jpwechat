@@ -12,7 +12,7 @@ import com.solar.tech.dbutil.Encode;
 
 public class Send106msg {
 	public String SendMSGtoPhone(String msgText,String phoneNum) throws MalformedURLException, IOException{
-		String password = Encode.MD5("gzrdyh2016");//对密码加密MD5
+		String password = "5BC4066C0BEE64E62B14B3F4B7E98AE3";//对密码加密MD5
 		//发送内容
 		String msg = msgText; //"【永弘支付短信提醒】您办理的业务费用支付成功，感谢您对永弘的支持。约定编号：334412315 请妥善保管" 
 		
@@ -20,7 +20,7 @@ public class Send106msg {
 		StringBuffer sb = new StringBuffer("http://api.106msg.com/TXTJK.aspx?");
 
 		// 向StringBuffer追加用户名
-		sb.append("type=send&ua=gzyhinc.com");
+		sb.append("type=send&ua=guangzhourende");
 
 		// 向StringBuffer追加密码 
 		sb.append("&pwd="+password);
