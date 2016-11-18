@@ -61,4 +61,8 @@
     <description>系统初始化监听器</description>
     <listener-class>com.solar.tech.listener.InitListener</listener-class>
   </listener>
+  <!-- 配置session监听 -->
+  <listener>  
+	     <listener-class>com.solar.tech.listener.sessionLister</listener-class>          
+  </listener>
 </web-app>

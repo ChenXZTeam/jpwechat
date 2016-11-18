@@ -32,7 +32,9 @@ $(document).ready(function(){
 			 // alert(data.msg);
 			  // alert(data.url);
 				if(data.msg)$("#msg").html(data.msg);
-				 
+				if((data.chrdlogin)=="1"||(data.chrdlogin)==1){
+					alert("您的账号正在登录，如不是本人登录请修改密码!");
+				}
 				if(data.url)window.location.href=data.url;
 			},
 			error:function(rq, status, e){

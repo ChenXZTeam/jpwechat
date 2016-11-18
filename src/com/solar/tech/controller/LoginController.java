@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.solar.tech.listener.sessionLister;
  
  @Controller
  public class LoginController
@@ -22,38 +24,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
    @RequestMapping({"/login.action"})
    @ResponseBody
    @Transactional
-   public Map<String, String> authenticate(@RequestParam("userName") String userName, @RequestParam("password") String password, HttpServletRequest httpReq, HttpSession sess)
+   public Map<String, Object> authenticate(@RequestParam("userName") String userName, @RequestParam("password") String password, HttpServletRequest httpReq, HttpSession sess)
    {
-     HashMap result = new HashMap();
-     if ((userName == null) || 
-       (password == null) || 
-       (userName.trim().isEmpty()) || 
-       (password.trim().isEmpty()))
+	 Map<String, Object> result = new HashMap<String, Object>();
+     sessionLister sesslis = new sessionLister();
+	 String ss = sesslis.userLogin(userName,password,httpReq,sess);
+     
+     if ((userName == null)||(password == null)||(userName.trim().isEmpty())||(password.trim().isEmpty()))
        throw new RuntimeException("用户名或密码不能为空");
-    // System.out.println("jdskjsd");
-   /**  UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
-     token.setRememberMe(true);
-     Subject subject = SecurityUtils.getSubject();
-     subject.login(token);
-     Object savedReqKey = sess.getAttribute("shiroSavedRequest");
-     String savedRequestUrl = savedReqKey == null ? null : ((SavedRequest)savedReqKey).getRequestUrl();
-     result.put("url",  savedRequestUrl == null ? httpReq.getContextPath() : savedRequestUrl);
-     return result;
-     */
-     UsernamePasswordToken token = new UsernamePasswordToken(userName, password);   
+
+     /*UsernamePasswordToken token = new UsernamePasswordToken(userName, password);   
      token.setRememberMe(true);    
      Subject subject = SecurityUtils.getSubject();     
-     subject.login(token);     
-//     Object savedReqKey = sess.getAttribute("shiroSavedRequest");
+     subject.login(token);     */
     
      String path = httpReq.getContextPath();
      String basePath = httpReq.getScheme() + "://" + httpReq.getServerName() + ":" + httpReq.getServerPort() + path + "/";
-//     String savedRequestUrl = (savedReqKey.toString().indexOf("console"))!= -1  ? ((SavedRequest)savedReqKey).getRequestUrl() :basePath+ "console/login.jsp";
-    // String savedRequestUrl = savedReqKey != null ? ((SavedRequest)savedReqKey).getRequestUrl() : null;
-    // System.out.println("url: "+savedRequestUrl);
-    // String savedRequestUrl =basePath+ "console/login.jsp";
      String savedRequestUrl =basePath+ "framework/index.action";
      result.put("url", savedRequestUrl != null ? ((Object) (savedRequestUrl)) : ((Object) (httpReq.getContextPath())));
+     result.put("chrdlogin", ss);
      return result;
    }
  
