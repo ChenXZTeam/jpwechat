@@ -160,7 +160,7 @@ public class ECUtils {
 				}
 				
 				if(resultList != null && resultList.size() > 0){
-					System.out.println("航班座位可利用:"+resultList.size()+","+resultList.get(0).getStopNumber());
+					System.out.println("航班座位可利用:"+resultList.size());
 					return resultList;
 				}
 			}

@@ -203,6 +203,7 @@ $(function(){
 		
 		//确认付款
 		$(".truePayBtn").click(function(){
+			var a = $("#turmonp").text();
 			$.ajax({
 					url:"<%=basePath%>wechatController/payCost/orderPay.action",
 					type:"POST",
@@ -298,8 +299,9 @@ function nextPat(){
 					complete:function(){$(".loadingBox").css("display","none");},
 					success:function(result){
 						alert(result.planMsg);
-						fals=false;
-						window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action";
+						$("#turmonp").text(result.order);
+						//fals=false;
+						<%-- window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action"; --%>
 					},
 					error:function(result){
 					}
@@ -398,6 +400,7 @@ function ageFunc(birthday){
 				<span id="fildNumfly" style="margin-left:5px; display:block; float:right;"></span>
 				<span id="QishiPlan" style="width:60px; height:25px; display:block; float:right; overflow:hidden;"></span>
 				<span style="clear:both"></span>
+				<span id="turmonp" style="display:none;"></span>
 			</div>
 			<div class="aboutTime" style="float:right; margin-right:0px; text-align:right;"><span style="text-align:right;" id="ChufDate"></span><span id="ChufTime" style="margin-left:5px;"></span></div>
 		</div>

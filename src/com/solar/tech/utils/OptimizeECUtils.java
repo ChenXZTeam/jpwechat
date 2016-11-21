@@ -21,11 +21,11 @@ public class OptimizeECUtils {
 	// 复合查询，返回完整的航班信息
 	public List<FlightInfo> query(String org, String dst, String date, String airCode ,String filgNo, String direct, String noStop){
 		List<SkSegment> skList = new ECUtils().sk(org, dst, date, airCode, direct, noStop); // 查询飞行周期
-		if(skList.size()<1){return null;}//没有查找查询飞行周期就结束掉不执行下面的操作
+		//if(skList.size()<1){return null;}//没有查找查询飞行周期就结束掉不执行下面的操作
 		List<FDItem> fdList = new ECUtils().fd(org, dst, date, airCode, null, null, null); // 查询运价
-		if(fdList.size()<1){return null;}//没有查找查询查询运价就结束掉不执行下面的操作
+		//if(fdList.size()<1){return null;}//没有查找查询查询运价就结束掉不执行下面的操作
 		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, airCode, direct, noStop, null, filgNo); // 查询座位可用
-		if(avList.size()<1){return null;}//没有查找查询座位可用就结束掉不执行下面的操作
+		//if(avList.size()<1){return null;}//没有查找查询座位可用就结束掉不执行下面的操作
 		List<FlightInfo> list = new ArrayList<FlightInfo>(); // 整合数据结果
 		
 		if(skList != null && skList.size() > 0){ 

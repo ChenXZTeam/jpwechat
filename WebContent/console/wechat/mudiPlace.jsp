@@ -385,29 +385,8 @@ function nextTime(time){
 //重新加载指定js文件
 function loadjs(){
 	var jsElem = document.createElement('script');
-	jsElem.src='<%=basePath%>console/js/mudiPlace.js';
+	jsElem.src='<%=basePath%>console/js/mudiPlace.js?time=20160503';
 	document.getElementsByTagName('head')[0].appendChild(jsElem);
-}
-
-//根据航空公司的二字码查找对应的航空公司
-function findByCode(code){
-		var cnName;
-		var value1 = {
-						"HU":"海南省航空",
-						"CZ":"中国南方航空",
-						"CA":"中国国际航空",
-						"MU":"中国东方航空",
-						"3U":"四川航空",
-						"SC":"山东航空",
-						"ZH":"深圳航空公司",
-						"HO":"吉祥航空"
-		};
-		for(var key in value1) {
-			if(key==code){
-				cnName = value1[key];
-			}
-		}
-		return cnName;
 }
 
 //格式化舱位
@@ -422,30 +401,13 @@ function cnCang(basicCabin){
 		return basicCabin;
 }
 
-//根据城市三字码查找对应的城市
-function findByCity(code){
-		var cnName;
-		var value1 = {
-						"PEK":"北京",
-						"CAN":"广州",
-						"HAK":"海口",
-						"SZX":"深圳",
-						"CSX":"长沙",
-						"SYX":"三亚",
-						"HET":"呼和浩特",
-						"WNZ":"温州",
-						"PVG":"上海",
-						"CGO":"郑州",
-						"TAO":"青岛",
-						"TYN":"太原"
-		};
-		for(var key in value1) {
-			if(key==code){
-				cnName = value1[key];
-			}
-		}
-		return cnName;
-}
+//
+/* function notTickDiv(inc){
+	$("body .banner").css("display","none");
+	$("body .wfbanner").css("display","none");
+	$("body .cangweiClass").css("display","none");
+	$(inc).siblings(".banner").css("display","block");
+} */
 </script>
 </head>
 

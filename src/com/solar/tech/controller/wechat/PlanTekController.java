@@ -44,11 +44,7 @@ public class PlanTekController {
 		//CityUtils p1=new CityUtils();
 		session.setAttribute("qishiPlanCode", chufCity);
 		session.setAttribute("daodPlanCode", daodCity);
-		System.out.println(chufCity);
-		System.out.println(daodCity);
-		System.out.println(cangW);
-		System.out.println(dateTime);
-		log.info(chufCity+", "+daodCity+", "+cangW+", "+dateTime); 
+		System.out.println(chufCity+", "+daodCity+", "+cangW+", "+dateTime);
 		List<FlightInfo> fliL = PlanTekServ.findHB(chufCity, daodCity, null, dateTime, null, null, null); //出发城市、到达城市、航空公司、出发时间、航班号、是否直达、是否有经停点
 		if(fliL.size()<1||fliL==null){
 			map.put("msg", 0);
@@ -95,7 +91,6 @@ public class PlanTekController {
 		}
 		System.out.println("直达航班的数量："+zhidFil.size());
 		//初步获得中转的链表
-		System.out.println("中转模块："+chufCity+", "+daodCity); 
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班

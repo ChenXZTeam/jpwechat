@@ -4,30 +4,30 @@
 $(function(){
 	//点击列表的方法
 	$(".notTjTicketDiv").click(function(){ 
-		$(".banner").fadeOut();
-		$(".wfbanner").fadeOut();
-		$(".cangweiClass").fadeOut();
-		$(this).next(".banner").fadeIn();
+		$("body .banner").css("display","none");
+		$("body .wfbanner").css("display","none");
+		$("body .cangweiClass").css("display","none");
+		$(this).siblings(".banner").css("display","block");
 	});
 	
 	//点击列表的方法(中转)
 	$(".zhzChildBox").click(function(){ 
-		$(".banner").fadeOut();
-		$(".wfbanner").fadeOut();
-		$(".cangweiClass").fadeOut();
-		$(this).next(".wfbanner").fadeIn();
+		$("body .banner").css("display","none");
+		$("body .wfbanner").css("display","none");
+		$("body .cangweiClass").css("display","none");
+		$(this).siblings(".wfbanner").css("display","block");
 	});
 	
 	//点击“对应舱位其他票价”时
 	$(".piaojia").click(function(){
-		$(".cangweiClass").fadeOut();
-		$(this).parents(".banner").next(".cangweiClass").fadeIn();
+		$(".cangweiClass").css("display","none");
+		$(this).parents(".banner").next(".cangweiClass").css("display","block");
 	});
 	
 	//点击“对应舱位其他票价”时(中转)
 	$(".wfpiaojia").click(function(){
-		$(".cangweiClass").fadeOut();
-		$(this).parents(".wfbanner").next(".cangweiClass").fadeIn();
+		$(".cangweiClass").css("display","none");
+		$(this).parents(".wfbanner").next(".cangweiClass").css("display","block");
 	});
 	
 	//预定的方法
