@@ -8,7 +8,7 @@ public class ConfigUtils {
 	public static final String BODY="仁德机票预定公众号";//商品描述
 //	public static final String SPBILL_CREATE_IP=propertiesUtil.getProperties("spbill_create_ip");//支付IP地址
 	public static final String SIGNTYPE="MD5";//加密方式
-	public static final String NOTIFY_URL="http://www.gzyhinc.com/YHsys/wechatController/payCost/payNotify.action";//回调地址
+	public static final String NOTIFY_URL="http://jp.gzyhinc.com/BookTicketsys/wechatController/payCost/payNotify.action";//回调地址
 	public static final String TRADE_TYPE_JS="JSAPI";//交易类型
 	public static final String INPUT_CHARSET="UTF-8";//编码
 	public static final String PREPAY_ID_URL="https://api.mch.weixin.qq.com/pay/unifiedorder";//统一支付接口
