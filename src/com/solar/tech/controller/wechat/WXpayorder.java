@@ -36,7 +36,7 @@ import com.solar.tech.util.XMLUtil;
 @Controller
 @RequestMapping("/wechatController/payCost")
 public class WXpayorder {
-	private static Logger log = Logger.getLogger(log4Test.class); //一般操作日志
+	private static Logger log = Logger.getLogger(WXpayorder.class); //一般操作日志
 	private static Log paymessage = LogFactory.getLog("paymessage"); //支付操作日志
 	@Autowired
 	private WXpayorderSer PayService;
