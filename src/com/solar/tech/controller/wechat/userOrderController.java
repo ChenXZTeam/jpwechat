@@ -39,11 +39,11 @@ public class userOrderController {
 		saveCost getCost = new saveCost();
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
-		if("".equals(openID)||null==openID){
+		/*if("".equals(openID)||null==openID){
 			map.put("msg","0");
-			map.put("planMsg","订单生成失败1，系统出错");
+			map.put("planMsg","订单生成失败3，系统出错");
 			return map;
-		}
+		}*/
 		userOrderInfo oderInfo = new userOrderInfo();
 		oderInfo.setChufDate(ChufDate);
 		oderInfo.setChufTime(ChufTime);

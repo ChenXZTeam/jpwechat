@@ -1,6 +1,8 @@
 package com.solar.tech.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.solar.tech.bean.InvitationCode;
 
 /**
@@ -30,7 +32,7 @@ public interface InviteCodeService {
 	 *
 	 * @return List<InvitationCode>
 	 */
-	List<InvitationCode> getCodeList();
+	Map<String, Object> getCodeList(int page, int rows);
 	
 	/**
 	 * 功能描述：根据id删除对应的邀请码
@@ -53,10 +55,15 @@ public interface InviteCodeService {
 	
 	/**
 	 * 
+	 * */
+	Map<String, Object> findByid(String id);
+	
+	/**
+	 * 
 	 * @param invitationCode
 	 * @param PhoneNum
 	 * @return 
 	 */
 	
-	int updateinvatecode(String invitationCode,String PhoneNum);
+	int updateinvatecode(String invitationCode,String PhoneNum,String ivID);
 }

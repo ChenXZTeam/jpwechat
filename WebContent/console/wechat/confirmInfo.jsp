@@ -6,6 +6,7 @@
 <%	
 	//session.invalidate();
 	String username=(String) session.getAttribute("userName");
+	String jin = (String) session.getAttribute("invId");
 	String chufTime=new String(request.getParameter("chufTime").getBytes("ISO-8859-1"),"utf-8");
 	String arrDTime=new String(request.getParameter("arrDTime").getBytes("ISO-8859-1"),"utf-8");
 	String shiPlace=new String(request.getParameter("shiPlace").getBytes("ISO-8859-1"),"utf-8");
@@ -26,6 +27,8 @@
 <title>填写信息_订票</title>
 <link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/normalize3.0.2.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/style.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
@@ -33,6 +36,7 @@
 <script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
+<script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <style>
 	body{-webkit-text-size-adjust:none;}
 	.ChoosClassBox{width:80.5%; height:0px; overflow:hidden; border:1px solid #e1e1e1; position:absolute; top:400px; left:20px; background-color:#FFFFFF; padding:5px 10px; display:none; z-index:1;}
@@ -80,12 +84,12 @@ $(function(){
 	
 	//判断是否登录
 	var username="<%=username%>";
-	if(username==""||username=="null"){
+	var jin = "<%=jin%>"
+	if(username==""||username=="null"||jin==""||jin=="null"){
 		alert("登录才能订票");
 		$("#touMbackground").css("display","block");
 	}else{
-		<%-- window.location.href="<%=basePath%>console/wechat/logo.jsp"; --%>
-		alert("我已经登录了"+username);
+		getcode("<%=jin%>");
 	}
 	
 	//登录
@@ -100,6 +104,8 @@ $(function(){
 					},
 					dataType: "json",
 					success: function(result) {
+						var ivid = (result.userInfo)[0].inCodeId;
+						getcode(ivid);
 						if(result.msg==1){						
 							//上面的条件正确时候改变按钮格式
 							$(".loginBtn").css("background-color","#dddddd");
@@ -309,6 +315,41 @@ function nextPat(){
 			}
 }
 
+//获取邀请码
+function getcode(inc){
+	$.ajax({
+			url:"<%=basePath%>framework/invite/findByid.action",
+			type:"POST",
+			data:{"id":inc},
+			dataType:"json",
+			success:function(result){
+				var date = result.rows;
+				console.log(date);
+				if(date.length>0){
+					$("#zhekouType").text(date[0].type);
+					alert("您有优惠券可以使用哟！");
+					if(date[0].type=="discount"){
+						$(".youhuiText").text(date[0].remarks);
+						$(".youhuiBx").val(date[0].discount);
+						$(".youhuiBox").css("display","block");
+					}else if(date[0].type=="preferential"){
+						$(".youhuiText").text(date[0].remarks);
+						$(".youhuiBx").val(date[0].sum);
+						$(".youhuiBox").css("display","block");
+					}else{
+						alert("未知类型的优惠券，不能使用");
+						$(".youhuiBox").remove();
+					}
+				}else{
+					$(".youhuiBox").remove();
+				}
+			},
+			error:function(result){
+	
+			}
+	});
+}
+
 function ageFunc(birthday){
 		var age = 0;
 		var birth = birthday.split("-");	//对生日进行拆分
@@ -351,7 +392,8 @@ function ageFunc(birthday){
 <div class="baoxianBox">
 	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="购买"/><span class="spanTitBX">航空意外险</span></div>
 	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="购买"/><span class="spanTitBX">延误取消险</span></div>
-	<div style="clear:both;"></div>
+	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBx" value="500"/><span class="spanTitBX youhuiText"></span></div>
+	<div style="clear:both;"><span id="zhekouType" style="display:none;"></span></div>
 </div>
 
 <!--性别选择-->

@@ -3,14 +3,20 @@ package com.solar.tech.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.service.InviteCodeService;
+
 import net.sf.json.JSONArray;
 
 /**
@@ -59,9 +65,15 @@ public class InvitationCodeImpl implements InviteCodeService {
     	this.gDao.save(invitationCode);
 	}
 
-	public List<InvitationCode> getCodeList(){
-		List<InvitationCode> list = (List<InvitationCode>) this.gDao.findAll(InvitationCode.class);
-		return list;
+	public Map<String, Object> getCodeList(int page, int rows){
+		Map<String,Object> map = new HashMap<String,Object>();
+		String hql = "FROM InvitationCode";
+		List<InvitationCode> cList = this.gDao.findByPage(hql, Integer.valueOf(page), Integer.valueOf(rows));
+		Long total = this.gDao.count(InvitationCode.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		//List<InvitationCode> list = (List<InvitationCode>) this.gDao.findAll(InvitationCode.class);
+		return map;
 	}
 
 	@Override
@@ -90,15 +102,23 @@ public class InvitationCodeImpl implements InviteCodeService {
 	
 	/*
 	 * 更新数据库*/
-	public int updateinvatecode(String invitationCode,String PhoneNum) {
+	public int updateinvatecode(String invitationCode,String PhoneNum, String ivID) {
 		try {
 			if(invitationCode != null){
-				String sql = "UPDATE rd_wechatuser SET InCode = '"+invitationCode+"' WHERE PhoneNum = '"+PhoneNum+"'";
+				String sql = "UPDATE rd_wechatuser SET InCode = '"+invitationCode+"',InCodeId = '"+ivID+"' WHERE PhoneNum = '"+PhoneNum+"'";
 				gDao.executeJDBCSql(sql);
 			}
 			return 1; 
 		}catch (Exception e) {
 			return 0;
 		}
+	}
+
+	public Map<String, Object> findByid(String id) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		String hql = "FROM InvitationCode WHERE ID = '" + id+"'";
+		List<InvitationCode> cList = this.gDao.find(hql);
+		map.put("rows", cList);
+		return map;
 	}
 }

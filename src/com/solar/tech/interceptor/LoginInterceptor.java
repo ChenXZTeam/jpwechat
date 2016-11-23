@@ -47,6 +47,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			String userName = (String) session.getAttribute("userName");
 			String openId = (String) session.getAttribute("openId");
 			String phoneNumber = (String) session.getAttribute("phoneNumber");
+			String invId = "";
 			System.out.println("newCode的值："+newCode);
 			
 			//先不强制注册
@@ -70,13 +71,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 						RD_wechatUser yHopenID = RDUserService.findbyOpenids(openId);
 						userName = yHopenID.getUserName();
 						phoneNumber = yHopenID.getPhoneNum();
+						invId = yHopenID.getInCodeId();
 						session.setAttribute("userName", userName);
 						session.setAttribute("phoneNumber", phoneNumber);
+						session.setAttribute("invId", invId);
 					}
-					System.out.println("(LoginInterceptor类中)openId的值："+openId+" userName:"+userName+" phoneNumber:"+phoneNumber);
+					System.out.println("(LoginInterceptor类中)openId的值："+openId+" userName:"+userName+" phoneNumber:"+phoneNumber+", 邀请码id:"+invId);
 				}
 			} else {
-				System.out.println("pageurl:" + pageurl +" userName:"+userName+" openId:" + openId+" phoneNumber:"+phoneNumber);
+				System.out.println("pageurl:" + pageurl +" userName:"+userName+" openId:" + openId+" phoneNumber:"+phoneNumber+", 邀请码id:"+invId);
 			}
 
 		}

@@ -18,7 +18,9 @@ $(function(){
 	
 	//城市子类信息选择(热门)
 	$("#CityCH>#remenCity>ul>li>.remenLi").click(function(){
-		$(".CityC").text($(this).text());
+		$(".CityC").text($(this).children(".cityName").text());
+		$(".CityC").next().text($(this).children(".planeName").text());
+		$(".CityC").next().next().text($(this).children(".airportCode").text());
 		$(".CityChoose").removeClass("CityC");
 		$(document).attr("title","机票查询");
 		$("#CityCH").fadeOut();

@@ -72,7 +72,7 @@
 
 		$(function(){
 			var lastIndex;
-			var vac;
+			var vac,ivID,timeNums;
 			$('#tt').datagrid({
 				height: '100%',
 			    fit:true,
@@ -83,12 +83,15 @@
 			    pageSize: 10,
 			    pageNumber:1, 
 			    pageList: [10, 20, 50, 100, 150, 200],
-			    showFooter: true,
-				loadMsg : '数据加载中请稍后……',
 				pagination : true,
-				toolbar:"#toolbar",
-				 columns: [[
+			    showFooter: true, 
+				loadMsg : '数据加载中请稍后……',
+			    toolbar:"#tb",
+			    singleSelect: false,
+				rownumbers:true,
+				columns: [[
 					        { field: 'ck', checkbox: true },
+					        { field: 'id', title: '编号ID', width: 70},
 					        { field: 'invitationCode', title: '邀请码', width: 70},
 					        { field: 'type', title: '类型', width: 50},
 					        { field: 'sum', title: '优惠金额', width: 80},
@@ -96,16 +99,7 @@
 					        { field: 'deadline', title: '到期时间', width: 100,formatter: formatDatebox},
 					        { field: 'times', title: '使用次数', width: 80},
 					        { field: 'remarks', title: '备注', width: 200},
-				]],	        
-			    checkOnSelect:false,
-			    selectOnCheck:false,
-				onClickRow:function(rowIndex){
-					if (lastIndex != rowIndex){
-						$('#tt').datagrid('endEdit', lastIndex);
-						$('#tt').datagrid('beginEdit', rowIndex);
-					}
-					lastIndex = rowIndex;
-				}
+				]]
 			});
 			
 		});
@@ -243,6 +237,8 @@
 			console.log(rows);
 			
 			vac = rows[0].invitationCode;
+			ivID = rows[0].id;
+			timeNums = rows[0].times;
 			if(rows.length==1){	
 				$("#dlg-send").dialog("open").dialog('setTitle',' ');
 				$('#ftitle-send').html("发送邀请码");
@@ -263,7 +259,6 @@
 		function addEentry(){			
 				var tel = $("#users").combobox('getValue');
 				var userName = $("#users").combobox('getText');
-				alert(tel+"/"+userName);
 				if((tel!=null&&tel!='')&&(userName!=null&&userName!='')){
 					var obj = $("#table-send input[value='"+tel+"']");
 					console.log(obj.length);
@@ -307,7 +302,7 @@
 		                url: "<%=basePath%>framework/invite/send.action",
 		                type: "POST",
 		                dataType: "json",
-		                data: { "telnumber": tel ,"invitationCode":vac},
+		                data: { "telnumber": tel, "invitationCode":vac, "ivID":ivID, "timeNums":timeNums},
 		                success: function (res) {
 		                    if(res==1){
 		                 	   
@@ -332,8 +327,6 @@
 	</script>
 </head>	
 <body>
-	<!-- 数据表格 -->
-	<div id="tt" style="width: 100%;height:100%"></div>
 	<!-- 功能按钮 -->
 	<div id="toolbar">
 		<a href="javascript:void(0)" class="easyui-linkbutton"
@@ -345,6 +338,8 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton"
 			iconCls="icon-redo" plain="true" onclick="sendCode()">发送</a>	
 	</div>
+	<!-- 数据表格 -->
+	<div id="tt" style="width: 100%;height:100%"></div>
 	
 	<!-- 对话框 -->
 	<div id="dlg" class="easyui-dialog" style="width: 40%; height: 400px; 

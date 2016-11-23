@@ -54,8 +54,9 @@ public class InviteCodeContorller {
 	 */
 	@RequestMapping("/getAllInvitCode.action")
 	@ResponseBody
-	public List<InvitationCode> getAllInvitationCode(){
-		return this.inviteCodeService.getCodeList();
+	public Map<String, Object> getAllInvitationCode(int page, int rows){
+		System.out.println(page+", "+rows);
+		return this.inviteCodeService.getCodeList(page,rows);
 	}
 	
 	/**
@@ -83,7 +84,16 @@ public class InviteCodeContorller {
 	@ResponseBody
 	public void update(InvitationCode invitationCode,String deadline_){
 		this.inviteCodeService.updateCode(invitationCode, deadline_);
-		
+	}
+	
+	/**
+	 * 根据邀请码的id查找邀请码数据
+	 * @param id
+	 */
+	@RequestMapping("/findByid.action")
+	@ResponseBody
+	public Map<String, Object> findByid(String id){
+		return this.inviteCodeService.findByid(id);
 	}
 	
 	
@@ -95,10 +105,11 @@ public class InviteCodeContorller {
 	 * */
 	@RequestMapping("/send.action")
 	@ResponseBody
-	public int send(String telnumber, String invitationCode){
+	public int send(String telnumber, String invitationCode, String ivID){
+		System.out.println(telnumber+", "+invitationCode+", "+ivID); 
 		Send106msg sender = new Send106msg();
 		String resultNum = null;
-		int i = this.inviteCodeService.updateinvatecode(invitationCode, telnumber);
+		int i = this.inviteCodeService.updateinvatecode(invitationCode, telnumber, ivID);
 		if(i==1){
 			try {
 				resultNum = sender.SendMSGtoPhone("【微信】邀请码为："+invitationCode, telnumber);

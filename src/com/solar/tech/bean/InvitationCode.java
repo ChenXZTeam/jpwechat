@@ -4,8 +4,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -14,7 +17,13 @@ public class InvitationCode {
 	public static final String PREFERENTIAL = "preferential";
 	public static final String DISCOUNT = "discount";
 	
+	//邀请码id
 	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@Column(name = "ID", length=100)
+	private String ID;
+		
     @Column(name="invitationCode", length=50)
 	//邀请码
 	private String invitationCode;
@@ -95,11 +104,20 @@ public class InvitationCode {
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
 	}
+	
+	public String getID() {
+		return ID;
+	}
+	public void setID(String iD) {
+		ID = iD;
+	}
 	@Override
 	public String toString() {
-		return "InvitationCode [invitationCode=" + invitationCode + ", userName=" + userName + ", type=" + type
-				+ ", remarks=" + remarks + ", sum=" + sum + ", discount=" + discount + ", deadline=" + deadline
-				+ ", times=" + times + "]";
+		return "InvitationCode [ID=" + ID + ", invitationCode="
+				+ invitationCode + ", userName=" + userName + ", type=" + type
+				+ ", remarks=" + remarks + ", sum=" + sum + ", discount="
+				+ discount + ", deadline=" + deadline + ", times=" + times
+				+ "]";
 	}
 	
 }

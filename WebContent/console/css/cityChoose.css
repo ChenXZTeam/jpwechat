@@ -10,17 +10,20 @@
 #CityCH #remenCity>#remenTitle{margin-left:1%; border-bottom:#dddddd solid 1px; margin-bottom:4px; padding-bottom:5px;}
 #CityCH #remenCity>#remenTitle>span{font-size:13px; color:#666666;}
 #CityCH #remenCity>ul{list-style-type:none; padding:0px; margin:0px; overflow:hidden;}
-#CityCH #remenCity>ul>li{width:19.2222%; font-size:13px; display:block; float:left; margin-top:5px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0); text-align:center;}
+#CityCH #remenCity>ul>li{width:19.2222%; font-size:15px; display:block; float:left; margin-top:5px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0); text-align:center;}
 #CityCH #remenCity>ul>li>.remenLi{width:50px; height:20px; line-height:22px; overflow:hidden; border-radius:3px; border:#dddddd solid 1px; margin-left:auto; margin-right:auto;}
+#CityCH #remenCity>ul>li>.remenLi>.planeName{display:none;}
+#CityCH #remenCity>ul>li>.remenLi>.airportCode{display:none;}
 #CityCH #pipeiValue{display:none; border:1px solid #e1e1e1; border-top:none; position:absolute; top:42px; left:5px; z-index:9999; height:auto; width:74%; background-color:#ffffff;}
 #CityCH #pipeiValue .pipeiChildren{border-bottom:1px solid #e1e1e1; padding:7px 10px;}
 #CityCH #pipeiValue .pipeiChildren:last-child{border-bottom:none;}
 #CityCH #CityList{}
 #CityCH #CityList>.zimuResult{}
 #CityCH #CityList>.zimuResult>.zimuTitle{background:#eeeeee; padding:3px 0px 3px 10px; /*border-bottom:#CCCCCC solid 1px;*/}
-#CityCH #CityList>.zimuResult>.zimuTitle>span{ font-size:12px; color:#999999;}
+#CityCH #CityList>.zimuResult>.zimuTitle>span{ font-size:16px; color:#999999;}
 #CityCH #CityList>.zimuResult>.cityUL{ padding:0px; margin:0px; list-style-type:none;}
-#CityCH #CityList>.zimuResult>.cityUL>li{color:#999999; font-size:13px; padding:10px 5px 0px 10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);}
+#CityCH #CityList>.zimuResult>.cityUL>li{color:#999999; font-size:16px; padding:10px 5px 0px 10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0);}
+#CityCH #CityList>.zimuResult>.cityUL>li:last-child{padding-bottom:10px;}
 #CityCH #CityList>.zimuResult>.cityUL>li>.cityName{display:block;}
 #CityCH #CityList>.zimuResult>.cityUL>li>.planeName{display:none;}
 #CityCH #CityList>.zimuResult>.cityUL>li>.airportCode{display:none;}

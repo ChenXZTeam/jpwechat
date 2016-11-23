@@ -47,10 +47,18 @@ public class RD_wechatUser {
 	@Column(name = "PhoneNum", length=20)
 	private String PhoneNum;
 	
+	//邀请码id
+	@Column(name="InCodeId",length=100)
+	private String InCodeId;
+	
 	//邀请码
-	@Column(name="InCode",length=10)
+	@Column(name="InCode",length=50)
 	private String InCode;
-
+	
+	//使用次数
+	@Column(name="times", length=10)
+	private int times;
+	
 	public String getID() {
 		return ID;
 	}
@@ -99,6 +107,14 @@ public class RD_wechatUser {
 		PhoneNum = phoneNum;
 	}
 
+	public String getInCodeId() {
+		return InCodeId;
+	}
+
+	public void setInCodeId(String inCodeId) {
+		InCodeId = inCodeId;
+	}
+
 	public String getInCode() {
 		return InCode;
 	}
@@ -106,6 +122,13 @@ public class RD_wechatUser {
 	public void setInCode(String inCode) {
 		InCode = inCode;
 	}
-	
+
+	public int getTimes() {
+		return times;
+	}
+
+	public void setTimes(int times) {
+		this.times = times;
+	}
 	
 }

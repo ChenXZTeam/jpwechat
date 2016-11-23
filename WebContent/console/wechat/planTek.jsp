@@ -10,14 +10,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>机票预订</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css?time=123"/>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/banner.css"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=123"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
-<script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js"></script>
+<script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js?time=123"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
 <style>
 	body{margin:0px; padding:0px;}
@@ -173,16 +173,16 @@
 			<span>热门城市</span>
 		</div>
 		<ul>
-			<li><div class="remenLi">海口</div></li>
-			<li><div class="remenLi">三亚</div></li>
-			<li><div class="remenLi">儋州</div></li>
-			<li><div class="remenLi">东方</div></li>
-			<li><div class="remenLi">万宁</div></li>
-			<li><div class="remenLi">临高</div></li>
-			<li><div class="remenLi">陵水</div></li>
-			<li><div class="remenLi">琼海</div></li>
-			<li><div class="remenLi">文昌</div></li>
-			<li><div class="remenLi">八所</div></li>
+			<li><div class="remenLi"><span class="cityName">海口</span><span class="planeName">海口美兰国际机场</span><span class="airportCode">HAK</span></div></li>
+			<li><div class="remenLi"><span class="cityName">北京</span><span class="planeName">北京首都国际机场</span><span class="airportCode">PEK</span></div></li>
+			<li><div class="remenLi"><span class="cityName">青岛</span><span class="planeName">青岛流亭国际机场</span><span class="airportCode">TAO</span></div></li>
+			<li><div class="remenLi"><span class="cityName">三亚</span><span class="planeName">三亚凤凰国际机场</span><span class="airportCode">SYX</span></div></li>
+			<li><div class="remenLi"><span class="cityName">太原</span><span class="planeName">太原武宿国际机场</span><span class="airportCode">TYN</span></div></li>
+			<li><div class="remenLi"><span class="cityName">上海</span><span class="planeName">上海浦东机场</span><span class="airportCode">PVG</span></div></li>
+			<li><div class="remenLi"><span class="cityName">深圳</span><span class="planeName">深圳宝安国际机场</span><span class="airportCode">SZX</span></div></li>
+			<li><div class="remenLi"><span class="cityName">石家庄</span><span class="planeName">石家庄正定国际机场</span><span class="airportCode">SJW</span></div></li>
+			<li><div class="remenLi"><span class="cityName">广州</span><span class="planeName">广州新白云国际机场</span><span class="airportCode">CAN</span></div></li>
+			<li><div class="remenLi"><span class="cityName">长沙</span><span class="planeName">长沙黄花国际机场</span><span class="airportCode">CSX</span></div></li>
 		</ul>
 		<div style="clear:both;"></div>
 	</div>

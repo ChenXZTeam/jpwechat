@@ -88,6 +88,35 @@
 		}
 	});
 	
+	//多选的单击按钮（优惠选择）
+	$(".youhuiBx").click(function(){			
+		var payMoney = $(".payMoney").text();
+		var SubPayMoney = payMoney.substring(1,payMoney.length);
+		var newPayMoney = 0;
+		var youhuiType = $("#zhekouType").text();
+		var youhuiMoney = $(this).val();
+		if($(this).attr("checked")=="checked"){
+			$(this).prev().css("display","block");
+			if(youhuiType == "preferential"){
+				newPayMoney = (parseFloat(SubPayMoney)+parseFloat(youhuiMoney)).toFixed(2);
+				$(".payMoney").text("￥"+newPayMoney);
+			}else if(youhuiType == "discount"){
+				newPayMoney = (parseFloat(SubPayMoney)*parseFloat((youhuiMoney/10))).toFixed(2);
+				$(".payMoney").text("￥"+newPayMoney);
+			}
+		}else{
+			if(newPayMoney!=SubPayMoney){
+				if(youhuiType == "preferential"){
+					newPayMoney = (parseFloat(SubPayMoney)-parseFloat(youhuiMoney)).toFixed(2);
+				}else if(youhuiType == "discount"){
+					newPayMoney = (parseFloat(SubPayMoney)/parseFloat((youhuiMoney/10))).toFixed(2);
+				}
+			}
+			$(".payMoney").text("￥"+newPayMoney);
+			$(this).prev().css("display","none");	
+		}
+	});
+	
 	//多选的单击按钮（订购航空意外险）
 	$(".flindYwzhz").click(function(){	
 		//(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)

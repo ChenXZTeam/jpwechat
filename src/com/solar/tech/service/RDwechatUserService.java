@@ -61,13 +61,13 @@ public class RDwechatUserService {
 	 * @param password
 	 * @return
 	 */
-	public boolean  loginService(String userName,String password){
+	public List<RD_wechatUser> loginService(String userName,String password){
 		String hql="from RD_wechatUser u where (u.UserName='"+userName+"' OR u.PhoneNum='"+userName+"') AND u.PassWord='"+password+"'";
-		List list=gDao.find(hql);
+		List<RD_wechatUser> list=gDao.find(hql);
 		if(list.size()>0){
-			return true;
+			return list;
 		}
-		return false;
+		return null;
 	}
 	
 	/**

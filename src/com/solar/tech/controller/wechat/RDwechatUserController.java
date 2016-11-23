@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -55,6 +56,7 @@ public class RDwechatUserController {
 		RD_User.setOpenID(openId);
 		RD_User.setID(UUID.randomUUID().toString().replace("-", ""));
 		RD_User.setBindTime(new Timestamp(new Date().getTime()));
+		RD_User.setTimes(0);
 		
 		int i = RDUserService.addUser(RD_User);
 		if(i == 1) {
@@ -127,13 +129,15 @@ public class RDwechatUserController {
 	public Map<String, Object> wechatLogo(String userName,String PassWord,HttpServletRequest httpReq, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String PassWords=Current.md5(PassWord);
-		boolean YesOrNo = RDUserService.loginService(userName,PassWords);  
-		if(YesOrNo==true){
+		List<RD_wechatUser> YesOrNo = RDUserService.loginService(userName,PassWords);  
+		if(YesOrNo.size()>0){
 			session.setAttribute("userName", userName);
+			session.setAttribute("invId", YesOrNo.get(0).getInCodeId());
 			String path = httpReq.getContextPath();
 		    String basePath = httpReq.getScheme() + "://" + httpReq.getServerName() + ":" + httpReq.getServerPort() + path + "/";
 		    map.put("url", basePath+"wechatController/page/index.action");//传递地址到前台，实现页面的跳转
-			map.put("msg", 1);
+			map.put("userInfo", YesOrNo);
+		    map.put("msg", 1);
 		}else{
 			map.put("msg", 0);
 		}		   

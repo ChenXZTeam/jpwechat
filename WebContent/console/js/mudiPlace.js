@@ -45,6 +45,9 @@ $(function(){
 		var chufDate = $("#dateTimeID").text();//出发时间
 		var chufCityID = $("#chufCityID").text();//出发城市
 		var daodCityID = $("#daodCityID").text();//到达城市
+		var jsd = $(this).next(".choDate").text();
+		alert(jsd);
+		return false;
 		//alert(chufDate+"/"+chufCityID+"/"+daodCityID);
 		window.location.href = basePath+"wechatController/page/YDticket.action?chufTime="+chufTime+"&arrDTime="+arrDTime+"&shiPlace="+shiPlace+"&zhongPlace="+zhongPlace+"&cost="+cost+"&cangweiType="+cangweiType+"&zhekou="+zhekou+"&chufDate="+chufDate+"&chufCityID="+chufCityID+"&daodCityID="+daodCityID;         
 	});
