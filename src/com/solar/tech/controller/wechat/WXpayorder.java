@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.bean.entity.WX_PayCost;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.service.WXpayorderSer;
@@ -27,6 +28,7 @@ import com.solar.tech.util.ConfigUtils;
 import com.solar.tech.util.SHA1Util;
 import com.solar.tech.util.WeiXinSignAndPackage;
 import com.solar.tech.util.XMLUtil;
+import com.solar.tech.utils.saveCost;
 
 /**
  * 微信支付的控制器
@@ -41,15 +43,45 @@ public class WXpayorder {
 	@Autowired
 	private WXpayorderSer PayService;
 	
-	@SuppressWarnings("null")
 	@RequestMapping(value = "/orderPay.action", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> orderPay(String a, String money, HttpServletRequest request, HttpSession session) throws Exception {
-		money = "0.1";
+	public Map<String, Object> orderPay(String a, int yiwai, int yanwu, int youhui, String activType, String depCity, String arrCity, String depDate, String airCode, String hangbanNum, String canbin, HttpServletRequest request, HttpSession session) throws Exception {
+		System.out.println(a+", "+yiwai+", "+yanwu+", "+youhui+", "+activType+", "+depCity+", "+arrCity+", "+depDate+", "+airCode+", "+hangbanNum+", "+canbin);
+		String money = "0.1";
 		Map<String, Object> res = new HashMap<String, Object>();
+		saveCost getCost = new saveCost();
 		String openId = (String) session.getAttribute("openId");
 		String phoneNumber = (String) session.getAttribute("phoneNumber");
 		System.out.println(openId+"/"+phoneNumber);
+		//获取到后台查询到的价格
+		double lastpayCout = getCost.getpay(depCity, arrCity, depDate, airCode, hangbanNum, canbin ,"true", "true");
+		if(lastpayCout==0.0){
+			res.put("msg", "价格支付出错，请稍后再试");
+			return res;
+		}
+		
+		//通过前台传过来的id查找相应的邀请码活动
+		if(youhui!=0){
+			List<InvitationCode> invt = PayService.findactivByid(activType);
+			if(invt.get(0).getType().equals("discount")){
+				lastpayCout = lastpayCout * invt.get(0).getDiscount();
+			}else if(invt.get(0).getType().equals("preferential")){
+				lastpayCout = lastpayCout - invt.get(0).getSum();
+			}
+		}
+		
+		//是否购买航空意外险
+		if(yiwai != 0){
+			lastpayCout = lastpayCout + 30;
+		}
+		
+		//是否购买延误险
+		if(yanwu != 0){
+			lastpayCout = lastpayCout + 20;
+		}
+		
+		System.out.println(lastpayCout);
+		
 		if(openId==null||openId.equals("")||phoneNumber==null||phoneNumber.equals("")){
 			res.put("msg", "系统出错，请稍后再试");
 			return res;
@@ -72,7 +104,7 @@ public class WXpayorder {
 			String noceStr = SHA1Util.getNonceStr();// 随机字符串
 			String timeStamp = SHA1Util.getTimeStamp();// 时间戳
 			// 金额转化为分为单位
-			float sessionmoney = Float.parseFloat(money);
+			float sessionmoney = Float.parseFloat(Double.toString(lastpayCout));
 			String finalmoney = String.format("%.2f", sessionmoney);
 			finalmoney = finalmoney.replace(".", "");
 			
@@ -112,7 +144,7 @@ public class WXpayorder {
 			wxPayParamMap.put("signType", ConfigUtils.SIGNTYPE);
 			String paySign = WeiXinSignAndPackage.createPaySign(wxPayParamMap);// 支付得到的签名
 			wxPayParamMap.put("paySign", paySign);
-			wxPayParamMap.put("payMoney", money);// 到前端显示使用，支付不需要此参数
+			wxPayParamMap.put("payMoney", finalmoney);// 到前端显示使用，支付不需要此参数
 			
 			//创建数据表
 			wxpay.setTradeNum(out_trade_num); //本地生成商品号

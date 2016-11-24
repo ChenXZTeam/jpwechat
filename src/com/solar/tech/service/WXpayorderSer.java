@@ -1,13 +1,16 @@
 package com.solar.tech.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.bean.entity.WX_PayCost;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
@@ -49,5 +52,16 @@ public class WXpayorderSer {
 			return list.get(0);
 		}
 		return null;
+	}
+	
+	/**
+	 * 查找活动
+	 * @param id
+	 * @return
+	 */
+	public List<InvitationCode> findactivByid(String id) {
+		String hql = "FROM InvitationCode WHERE ID = '" + id+"'";
+		List<InvitationCode> cList = this.gDao.find(hql);
+		return cList;
 	}
 }

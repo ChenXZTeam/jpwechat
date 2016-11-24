@@ -60,7 +60,7 @@ public class userOrderController {
 		oderInfo.setHangbanNum(hangbanNum);
 		oderInfo.setDaodPlane(DaodPlan);
 		oderInfo.setCuntTime(lishiTime);
-		//String lastpayCout=getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay ,"true", "true");
+		//String lastpayCout = getCost.getpay("CAN", "PEK", ChufDate, airCode, hangbanNum, cabin, CostPay ,"true", "true");
 		//System.out.println("执行吧皮卡丘："+lastpayCout);
 		oderInfo.setCostMoney(CostPay);
 		oderInfo.setLinkName(LinkName);
@@ -199,7 +199,8 @@ public class userOrderController {
 	 */
 	@RequestMapping("/add/zrorder.action")
 	@ResponseBody
-	public int addzhz_res(String jsStr,String firstFild,String sconedFild,HttpSession session){
+	public Map<String, Object> addzhz_res(String jsStr,String firstFild,String sconedFild,HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);
 		String sing = jsonObject.get("sign")+""; //接收标志 就能传进来的数据是中转数据或者往返数据
         firstFild = jsonObject.get("firstFild")+"";
@@ -248,8 +249,8 @@ public class userOrderController {
 		oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 		oderInfo.setStutisPay("0");//未支付
 		oderInfo.setTakePlane("0");//未登机
-		String orderNum = OrderService.createOrderNum("RDOD", 8);
-		oderInfo.setOrderNum(orderNum);
+		String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
+		oderInfo.setOrderNum(orderNumFirst);
 		
 		//联系组实体类
 		BookContact bookContact = new BookContact();
@@ -333,8 +334,8 @@ public class userOrderController {
 				oderInfo.setAdminDel("0");//0代表不删除 1代表删除
 				oderInfo.setStutisPay("0");//未支付
 				oderInfo.setTakePlane("0");//未登机
-				orderNum = OrderService.createOrderNum("RDOD", 8);
-				oderInfo.setOrderNum(orderNum);
+				String orderNumScond = OrderService.createOrderNum("RDOD", 8);
+				oderInfo.setOrderNum(orderNumScond);
 				
 				//联系组实体类
 				BookContact bookContact2 = new BookContact();
@@ -387,13 +388,18 @@ public class userOrderController {
 				//}else{
 					num=OrderService.addOrder(oderInfo);
 					if(num==1){
-						return 1;
+						map.put("msg", 1);
+						map.put("of", orderNumFirst);
+						map.put("sc", orderNumScond);
+						return map;
 					}else{
-						return 0;
+						map.put("msg", 0);
+						return map;
 					}
 				//}
 			}else{
-				return 0;
+				map.put("msg", 0);
+				return map;
 			}
 			
 		//}

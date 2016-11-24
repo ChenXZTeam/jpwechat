@@ -115,7 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.childBoxCang .wfchildBoxClass .jiagePay{float:left; width:165px; height:30px; line-height: 30px;}
 	.childBoxCang .wfchildBoxClass .jiagePay .payMoneyBox{color:#FF9900; font-size: 20px;}
 	.childBoxCang .wfchildBoxClass .yudingBtn{float:left; height:30px;}
-	.childBoxCang .wfchildBoxClass .yudingBtn .trueYuBtn{padding: 8px 20px;background-color: #0099CC;color: #fff;border: none;border-radius: 5px; cursor:pointer;}
+	.childBoxCang .wfchildBoxClass .yudingBtn .trueYuBtn{padding: 8px 20px;background-color: #0099CC;color: #fff;border: none;border-radius: 5px; cursor:pointer;text-decoration:none}
 	
 	/*日期控件*/
 	.input-parent.input-container{float:left; margin-left:5px;}
@@ -126,8 +126,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--搜索条件-->
 	<div id="conditionId" style="border:1px solid #e1e1e1; padding:10px 8px;">
 		<div id="radioClassBox" style="margin-top:0px;">
-			<span><input type="radio" value="1" name="cityArea" class="checkBox" style="width:20px;" checked="checked"/>国内</span>
-			<span><input type="radio" value="2" name="cityArea" class="checkBox" style="width:20px;"/>国际</span>
+			<input type="radio" value="1" name="cityArea" class="checkBox" style="width:20px;" checked="checked"/>国内
+			<input type="radio" value="2" name="cityArea" class="checkBox" style="width:20px;"/>国际
+		</div>
+		<div>
+				 <%for (int i = 0; i < 200; i++)
+	   	 	{ %>
+	       		 <tr>
+	            	&nbsp;
+	          	</tr>
+			<%} %>
 		</div>
 		<div>
 			<select id="danAndFan" style="width:70px;">
@@ -135,6 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<option value="2">往返</option>
 			</select>
 		</div>
+		
 		<div>
 			<select id="cangwei" style="width:70px;">
 				<option value="经济舱">经济舱</option>
@@ -142,9 +151,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<option value="公务舱">公务舱</option>
 			</select>
 		</div>
+		
+		<div>
+				 <%for (int i = 0; i < 200; i++)
+	   	 	{ %>
+	       		 <tr>
+	            	&nbsp;
+	          	</tr>
+			<%} %>
+		</div>
+		
 		<div>
 			<span>出发城市</span>
-			<input class="cityIpnt" id="gofaCity" oninput="myFunction(this)"/>
+			<input class="cityIpnt" id="gofaCity"  oninput="myFunction(this)"/>
 		</div>
 		<div>
 			<input type="hidden" class="planeInpt" id="gofaPlane"/>
@@ -154,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div>
 			<span>到达城市</span>
-			<input class="cityIpnt" id="arrCity" oninput="myFunction(this)"/>
+			<input class="cityIpnt1" id="arrCity" oninput="myFunction(this)"/>
 		</div>
 		<div>
 			<input type="hidden" class="planeInpt" id="arrPlane"/>
@@ -697,8 +716,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			});
 			
-			//城市选择输入框
+			//出发城市选择输入框
 			$(".cityIpnt").click(function(){
+				document.getElementById("gofaCity").value="";
 				$(this).addClass("chooseIpnt");
 				$(this).parent().next().children(".planeInpt").addClass("tempPlane");
 				var top = $(this).offset().top;
@@ -713,7 +733,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#tab2").css("display","block");
 				}
 			});
-			
+			//到达城市选择输入框
+			$(".cityIpnt1").click(function(){
+				document.getElementById("arrCity").value="";
+				$(this).addClass("chooseIpnt");
+				$(this).parent().next().children(".planeInpt").addClass("tempPlane");
+				var top = $(this).offset().top;
+				var left = $(this).offset().left;
+				if($(".checkBox:checked").val()=="1"){ //国内城市的选择框
+					$("#tab1").css("top",top+20);
+					$("#tab1").css("left",left);
+					$("#tab1").css("display","block");
+				}else{ //国际城市的选择框
+					$("#tab2").css("top",top+20);
+					$("#tab2").css("left",left);
+					$("#tab2").css("display","block");
+				}
+			});
 			//交换城市的方法
 			$("#changeBtn").click(function(){
 				var foo=$("#gofaCity").val(), bar=$("#arrCity").val();
@@ -763,6 +799,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$(".chooseIpnt").val(cityName+"("+planeCode+")");
 				$(".tempPlane").val(planeName);
 				$(".cityIpnt").removeClass("chooseIpnt");
+				$(".cityIpnt1").removeClass("chooseIpnt");
 				$(".planeInpt").removeClass("tempPlane");
 				$("#tab1").css("display","none");
 				$("#tab2").css("display","none");
@@ -785,6 +822,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		if($("#danAndFan").val()=="1"){  //单程
 			var chufCityCode = $("#gofaCity").val();
 			var daodCityCode = $("#arrCity").val();
+			if(chufCityCode==daodCityCode){
+				alert("填写内容有误！");
+				return;
+			}
 			var cangW = $("#cangwei").val();
 			var dateTime = $("#gofaTime").val();
 			chufCityCode = getText(chufCityCode);
@@ -801,7 +842,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						if(data.msg==1){
 							var dataList = data.listDate;//直达的航班
 							var zzDataList = data.zzListDate; //中转的航班
-							console.log(zzDataList);
+							console.log(dataList);
 							//直达的航班
 							for(var i=0;i<dataList.length;i++){
 								var teickNum = (dataList[i].seatList)[(dataList[i].seatList.length)-1].cangwei_data; //舱位剩余的票数
@@ -809,12 +850,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								var depTime = changeType(dataList[i].depTime); //出发时间
 								for(var j=0; j<dataList[i].seatList.length; j++){ //没有对应的舱位
 									if((dataList[i].seatList)[j].basicCabin==cnCang($("#cangwei").val())){
-										var costPay = (dataList[i].seatList)[j].onewayPrice; //花费价格
+										//var costPay = (dataList[i].seatList)[j].onewayPrice; //花费价格
+										//var costPay = (dataList[i].seatList)[2].onewayPrice; //花费价格
+										//var min=(dataList[i].seatList)[0].onewayPrice;
+										/* if(min>(dataList[i].seatList)[j].onewayPrice){
+											min=(dataList[i].seatList)[j].onewayPrice;
+											alert((dataList[i].seatList)[j].onewayPrice);
+										} */
+										
+										  /* for(var n=1;n<=(dataList[i].seatList).length;n++){
+												if(min>(dataList[i].seatList)[n].onewayPrice){
+													min=(dataList[i].seatList)[n].onewayPrice;
+												}  
+												console.log(min+","+(dataList[i].seatList)[n].onewayPrice);
+											}   */
+										//alert(Math.min(20,30));
+											
+										var b=new Array(dataList[i].seatList.length);
+										for(var n=0,t=0;n<dataList[i].seatList.length;n++){
+											b[t++]=(dataList[i].seatList)[n].onewayPrice;
+										}
+										//alert(parseInt(b[dataList[i].seatList.length-1]));
+										//alert(parseInt("980"));
+										
+										//alert(Math.min(parseInt(b[0]),parseInt(b[dataList[i].seatList.length-1])));
+										//alert(b);
+										//alert(Math.min(parseInt(b[0]),Math.min(parseInt(b[4]));
+										//console.log(b);
+										var costPay=Math.min.apply( Math, b);
 										var cangweiType = (dataList[i].seatList)[j].cangwei; //舱位
 										var gofaPlane = $("#gofaPlane").val();
 										var arrPlane = $("#arrPlane").val();
 									}
 								}
+								
 								var liList='<li class="resultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(dataList[i].airCode)+'</div><div class="filetNo">'+dataList[i].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+findByplaneName(dataList[i].orgCity)+'</div></div><div class="infoContent"><div style="line-height:50px;"><img src="<%=basePath%>console/images/bigtip1.png"/></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+findByplaneName(dataList[i].dstCity)+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costPay+'</span></div><div class="infoContent"><button class="btnclass" onclick="pointBtn(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="otherCang"></div></li>';
 								$("#ulBox").append(liList);	
 								
@@ -857,16 +926,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										var onePay,twoPay;
 										for(var k=0; k<rowseatInfo1.length; k++){  //第一段航班的对应舱位的价格
 											if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
-												onePay = rowseatInfo1[k].onewayPrice;
+												//onePay = rowseatInfo1[k].onewayPrice;
+												
+												var b=new Array(rowseatInfo1.length);
+												for(var n=0,t=0;n<rowseatInfo1.length;n++){
+													b[t++]=rowseatInfo1[n].onewayPrice;
+												}
+												//alert(parseInt(b[dataList[i].seatList.length-1]));
+												//alert(parseInt("980"));
+												
+												//alert(Math.min(parseInt(b[0]),parseInt(b[dataList[i].seatList.length-1])));
+												//alert(b);
+												//alert(Math.min(parseInt(b[0]),Math.min(parseInt(b[4]));
+												var onePay=Math.min.apply( Math, b);
 											}
 										}
 										
 										for(var k=0; k<rowseatInfo2.length; k++){	//第二段航班的对应舱位的价格
 											if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
-												twoPay = rowseatInfo2[k].onewayPrice;
+												//twoPay = rowseatInfo2[k].onewayPrice;
+												
+												var c=new Array(rowseatInfo2.length);
+												for(var n=0,t=0;n<rowseatInfo2.length;n++){
+													c[t++]=rowseatInfo2[n].onewayPrice;
+												}
+												//alert(parseInt(b[dataList[i].seatList.length-1]));
+												//alert(parseInt("980"));
+												
+												//alert(Math.min(parseInt(b[0]),parseInt(b[dataList[i].seatList.length-1])));
+												//alert(b);
+												//alert(Math.min(parseInt(b[0]),Math.min(parseInt(b[4]));
+												var twoPay=Math.min.apply( Math, c);
 											}
 										}
-										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+findByplaneName(zzDataList[i].orgCity)+'</div></div><div class="infoContent"><div><div>'+findByCity(zzDataList[i].dstCity)+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+findByplaneName(zzDataList[j].dstCity)+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2)+'</span></div><div class="infoContent"><button class="zaClass" onclick="pointBtnzhz(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="zhzfildBox"></div></li>';
+										var costpayzhuang=(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2);
+										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+findByplaneName(zzDataList[i].orgCity)+'</div></div><div class="infoContent"><div><div>'+findByCity(zzDataList[i].dstCity)+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+findByplaneName(zzDataList[j].dstCity)+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costpayzhuang+'</span></div><div class="infoContent"><button class="zaClass" onclick="pointBtnzhz(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="zhzfildBox"></div></li>';
 										$("#ulBox").append(liList);	
 										
 										for(var k=0; k<rowseatInfo1.length; k++){
@@ -902,6 +996,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}else if($("#danAndFan").val()=="2"){ //往返
 			var chufCityCode = getText($("#gofaCity").val());
 			var daodCityCode = getText($("#arrCity").val());
+			if(chufCityCode==daodCityCode){
+				alert("填写内容有误！");
+				return;
+			}
 			var dateTime = $("#gofaTime").val();
 			var returnTime = $("#fancDate").val();
 			date1 = new Date(dateTime); //出发时间
@@ -928,17 +1026,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							//console.log(data.AVDouble);
 							//console.log(departRows);
 							//console.log(returnRows);
+							var c=new Array();
+							
+							var z=new Array();
+							
+						
+							
 							var countwf = 0; //计数参数
 							for(var i=0; i<depart.length; i++){
+								//console.log("depart.length:"+depart.length);
 								var airName = findByCode(depart[i].airCode);
 								//console.log(depart[i].seatList);
 								for(var j=0; j<returnf.length; j++){
+									//console.log("returnf.length:"+returnf.length);
+									var d=new Array();
 									var airName2 = findByCode(returnf[j].airCode); 
 									//console.log(returnf[j].seatList);
 									var liList='<li class="wfresListBox"><div class="zuheFildClass"><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName+'</span><span class="spanClass filgNo">'+depart[i].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(depart[i].depTime)+'</span><span class="spanClass depPlane">'+findByplaneName(depart[i].orgCity)+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#gofaTime").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(depart[i].arrTime)+'</span><span class="spanClass arrPlane">'+findByplaneName(depart[i].dstCity)+'</span></div><div style="clear:both;"></div></div><div class="hangbanInfo"><div class="childBox"><span class="spanClass airName">'+airName2+'</span><span class="spanClass filgNo">'+returnf[j].flightNo+'</span></div><div class="childBox"><span class="spanClass depTime">'+changeType(returnf[j].depTime)+'</span><span class="spanClass depPlane">'+findByplaneName(returnf[j].orgCity)+'</span></div><div class="childBox"><span class="spanClass" style="line-height:36px;float:left;"><img src="<%=basePath%>console/images/bigtip1.png" style="height:35px;"/></span><span class="spanClass depDateClass">'+$("#fancDate").val()+'</span></div><div class="childBox"><span class="spanClass arrTime">'+changeType(returnf[j].arrTime)+'</span><span class="spanClass arrPlane">'+findByplaneName(returnf[j].dstCity)+'</span></div><div style="clear:both;"></div></div></div><div class="countMoney"><span class="countNumPay">往返总价</span><span class="spanClass deoole">￥</span><span class="spanClass payMoey"></span><span class="spanClass qiClass">起</span></div><div class="hangbanbtn"><button onclick="pointBtnwf(this)">预定该组合▼</button></div><div style="clear:both;"></div><div class="childBoxCang"></div></li>';
 									$("#ulBox").append(liList);
-									
+									var p=0;
+									var min=666666;
 									for(var k=0; k<depart[i].seatList.length; k++){
+										//console.log("depart[i].seatList.length:"+depart[i].seatList.length);
 										var GcangType = (depart[i].seatList)[k].basicCabin;
 										if(GcangType=="C"){
 											GcangType="公务舱"
@@ -948,8 +1057,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											GcangType="经济舱";
 										}
 										var GcangPont = (depart[i].seatList)[k].cangwei;
-										var depart_moneyCost = (depart[i].seatList)[k].onewayPrice;
+										 var depart_moneyCost = (depart[i].seatList)[k].onewayPrice;
+										//alert(depart_moneyCost);
+										//console.log(depart_moneyCost);
+										 var c=new Array(depart[i].seatList.length);
+										for(var n=0,t=0;n<depart[i].seatList.length;n++){
+											
+											c[t++]=(depart[i].seatList)[n].onewayPrice;
+										}
+										
+										var depart1_moneyCost=Math.min.apply( Math, c); 
+										var n=0;
+										var l=0;
+										//alert("vvgfg:"+j);
 										for(var h=0; h<returnf[j].seatList.length; h++){
+											//console.log("returnf[j].seatList.length:"+returnf[j].seatList.length);
 											var RcangType = (returnf[j].seatList)[h].basicCabin;
 											if(RcangType=="C"){
 												RcangType="公务舱"
@@ -958,21 +1080,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											}else if(RcangType=="Y"){
 												RcangType="经济舱";
 											}
+											
 											var RcangPont = (returnf[j].seatList)[h].cangwei;
+											
 											var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
+											//alert(return_moneyCost);
+											/* var b=new Array((returnf[j].seatList).length);
+											for(var n=0,t=0;n<(returnf[j].seatList).length;n++){
+												b[t++]=(returnf[j].seatList)[n].onewayPrice;
+											}
+											var return1_moneyCost=Math.min.apply( Math, b);  */
+											//console.log(return_moneyCost);
 											var dr_countPay = (parseFloat(depart_moneyCost)+parseFloat(return_moneyCost)).toFixed(2);
+											
+											//console.log(dr_countPay);
+											
 											if(GcangType == RcangType && GcangPont == RcangPont){
 												var departRows = JSON.stringify(depart[i]); //第一段航班(字符串)
 												var returnRows = JSON.stringify(returnf[j]); //第二段航班(字符串)
+												d[h++]=parseInt(dr_countPay);
+												//var dr_countPay1 = Math.min.apply(Math,d);
+												if(min>parseInt(dr_countPay)){
+													min=dr_countPay;
+												}
+												var dr_countPay1 = d.sort(function(x,y){
+													if(x>y){
+														return -1;
+													}else{
+														return 1;
+													}
+												});
+												dr_countPay1=Math.min.apply(Math,dr_countPay1);
+												//alert(dr_countPay1);
+												console.log(dr_countPay1);
+												//c[l++]=dr_countPay1;
 												var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><a class="trueYuBtn" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate=2016-11-19,2016-11-21&cang='+GcangPont+'&rowstr1='+departRows+'&rowstr2='+returnRows+'\'>预　定</a></div><div style="clear:both;"></div></div>';
 												$(".wfresListBox:eq("+countwf+") .childBoxCang").append(listDiv);
-												$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(dr_countPay);
+												$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(min);
 											}
+											
 										}
+										//z[p++]=c[0];
+										//console.log(c);
+										
 									}
 									countwf++;
 								}
+								
 							}
+							
 							$(".childBoxCang").slideUp("fast");
 						}
 					},error:function(){
@@ -984,33 +1140,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		//输入关键字的时候自动索引
 		function myFunction(inc) {
-			$("#tab1").css("display","none");
-			$("#tab2").css("display","none");
-			var top = $(".chooseIpnt").offset().top;
-			var left = $(".chooseIpnt").offset().left;
-			$("#pipeiValue").css("top",top+20);
-			$("#pipeiValue").css("left",left);
-			$("#pipeiValue").css("display","block");
-			var keyVal = $(inc).val();
-			if($(".checkBox:checked").val()=="1"){
-				$("#tab2 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity");
-				$("#tab1 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
-			}else{
-				$("#tab1 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity");
-				$("#tab2 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
-			}
-			$("#pipeiValue").text("");
-			for(var i=0; i<$(".chCity").length&&i!=6; i++){
-				var cityname = $(".chCity:eq("+i+")").text();
-				var palnename = $(".chCity:eq("+i+")").next().text();
-				var airCodeName = $.trim($(".chCity:eq("+i+")").next().next().text());
-				var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span>(<span class="palneName01">'+palnename+'</span>)<span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
-				$("#pipeiValue").append(dateList);
-			}
+		
+				
+				$("#tab1").css("display","none");
+				$("#tab2").css("display","none");
+				var top = $(".chooseIpnt").offset().top;
+				var left = $(".chooseIpnt").offset().left;
+				$("#pipeiValue").css("top",top+20);
+				$("#pipeiValue").css("left",left);
+				$("#pipeiValue").css("display","block");
+				var keyVal = $(inc).val();
+				if($(".checkBox:checked").val()=="1"){
+					$("#tab2 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity");
+					$("#tab1 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
+				}else{
+					$("#tab1 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity");
+					$("#tab2 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
+				}
+				$("#pipeiValue").text("");
+				for(var i=0; i<$(".chCity").length&&i!=6; i++){
+					var cityname = $(".chCity:eq("+i+")").text();
+					var palnename = $(".chCity:eq("+i+")").next().text();
+					var airCodeName = $.trim($(".chCity:eq("+i+")").next().next().text());
+					var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span>(<span class="palneName01">'+palnename+'</span>)<span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
+					$("#pipeiValue").append(dateList);
+				}
+			
 		}
 		
 		//索引出来的结果的点击事件
 		function chaRes(inc){
+			
 			var cityName = $(inc).children(".cityName01").text();
 			planeName = $(inc).children(".palneName01").text();
 			var planeCode = $(inc).children(".airCode01").text();

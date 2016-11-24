@@ -7,17 +7,20 @@
 	//session.invalidate();
 	String username=(String) session.getAttribute("userName");
 	String jin = (String) session.getAttribute("invId");
-	String chufTime=new String(request.getParameter("chufTime").getBytes("ISO-8859-1"),"utf-8");
-	String arrDTime=new String(request.getParameter("arrDTime").getBytes("ISO-8859-1"),"utf-8");
-	String shiPlace=new String(request.getParameter("shiPlace").getBytes("ISO-8859-1"),"utf-8");
-	String zhongPlace=new String(request.getParameter("zhongPlace").getBytes("ISO-8859-1"),"utf-8");
-	String cost=new String(request.getParameter("cost").getBytes("ISO-8859-1"),"utf-8");
-	String zhekou=new String(request.getParameter("zhekou").getBytes("ISO-8859-1"),"utf-8");
+	//String chufTime=new String(request.getParameter("chufTime").getBytes("ISO-8859-1"),"utf-8");
+	//String arrDTime=new String(request.getParameter("arrDTime").getBytes("ISO-8859-1"),"utf-8");
+	//String shiPlace=new String(request.getParameter("shiPlace").getBytes("ISO-8859-1"),"utf-8");
+	//String zhongPlace=new String(request.getParameter("zhongPlace").getBytes("ISO-8859-1"),"utf-8");
+	//String cost=new String(request.getParameter("cost").getBytes("ISO-8859-1"),"utf-8");
+	//String zhekou=new String(request.getParameter("zhekou").getBytes("ISO-8859-1"),"utf-8");
 	String cangweiType=new String(request.getParameter("cangweiType").getBytes("ISO-8859-1"),"utf-8");
-	String chufCityID=new String(request.getParameter("chufCityID").getBytes("ISO-8859-1"),"utf-8");
-	String daodCityID=new String(request.getParameter("daodCityID").getBytes("ISO-8859-1"),"utf-8");
+	//String chufCityID=new String(request.getParameter("chufCityID").getBytes("ISO-8859-1"),"utf-8");
+	//String daodCityID=new String(request.getParameter("daodCityID").getBytes("ISO-8859-1"),"utf-8");
 	String chufDate = request.getParameter("chufDate");
-	System.out.println(chufTime+"/"+arrDTime+"/"+shiPlace+"/"+zhongPlace+"/"+cost+"/"+zhekou+"/"+cangweiType+"/"+chufCityID+"/"+daodCityID+"/"+chufDate);
+	String jsd = new String(request.getParameter("jsd").getBytes("ISO-8859-1"),"utf-8");
+	// System.out.println(chufTime+"/"+arrDTime+"/"+shiPlace+"/"+zhongPlace+"/"+cost+"/"+zhekou+"/"+cangweiType+"/"+chufCityID+"/"+daodCityID+"/"+chufDate);
+	System.out.println(cangweiType+"/"+chufDate);
+	System.out.println(jsd);
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -37,6 +40,7 @@
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
+<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	body{-webkit-text-size-adjust:none;}
 	.ChoosClassBox{width:80.5%; height:0px; overflow:hidden; border:1px solid #e1e1e1; position:absolute; top:400px; left:20px; background-color:#FFFFFF; padding:5px 10px; display:none; z-index:1;}
@@ -49,34 +53,44 @@
 <body>
 <script>
 var fals=true;//防止重复提交
+var ivid = "<%=jin%>";
 $(function(){
+	var strRow = '<%= jsd%>';
+	var obj = JSON.parse(strRow);
+	console.log(obj);
 	//获取上个界面传过来的值
-	var chufTime = "<%=chufTime%>"; //出发时间
-	var arrDTime = "<%=arrDTime%>"; //到达时间
-	var shiPlace = "<%=shiPlace%>";	//起始机场和航班（集合）
+	var chufTime = changeType(obj.depTime); //出发时间
+	var arrDTime = changeType(obj.arrTime); //到达时间
+	var shiPlace = findByplaneName(obj.orgCity)+" "+obj.flightNo;	//起始机场和航班（集合）
 	var chufPlane = shiPlace.split(" "); //拆分shiPlace
 	shiPlace = chufPlane[0]; //起始机场
 	var flidNum = chufPlane[1];//航班
-	var zhongPlace = "<%=zhongPlace%>"; //终止机场和历时（集合）
+	var zhongPlace = findByplaneName(obj.dstCity)+" "+cuntTime(obj.depTime,obj.arrTime); //终止机场和历时（集合）
 	var mudiPlane = zhongPlace.split(" ");//拆分zhongPlace
 	zhongPlace = mudiPlane[0];//终止机场
 	var countTime = mudiPlane[1];//历时多长时间
-	var cost = "<%=cost%>"; //价格
-	var zhekou = "<%=zhekou%>"; //折扣
+	var cost = ""; //价格
+	<%-- var zhekou = "<%=zhekou%>"; //折扣 --%>
 	var cangweiType = "<%=cangweiType%>"; //舱位类型
-	var chufCityID = "<%=chufCityID%>"; //出发城市
-	var daodCityID = "<%=daodCityID%>"; //目的城市
+	var chufCityID = findByCity(obj.orgCity); //出发城市
+	var daodCityID = findByCity(obj.dstCity); //目的城市
 	var chufDate = "<%=chufDate%>"; //出发日期
+	var seInfo = obj.seatList;
+	for(var i=0; i<seInfo.length; i++){
+		if(seInfo[i].cangwei == cangweiType){
+			cost = seInfo[i].onewayPrice;
+		}
+	}
 	//为信息框赋值
-	console.log(chufTime+","+arrDTime+","+shiPlace+","+flidNum+","+zhongPlace+","+countTime+","+cost+","+zhekou+","+cangweiType+","+chufCityID+","+daodCityID+","+chufDate); 
+	console.log(chufTime+","+arrDTime+","+shiPlace+","+flidNum+","+zhongPlace+","+countTime+","+cost+","+cangweiType+","+chufCityID+","+daodCityID+","+chufDate); 
 	$(".chufTime").text(chufTime);
 	$(".arrDTime").text(arrDTime);
 	$(".shiPlace").text(shiPlace);
 	$(".flidNum").text(flidNum);
 	$(".zhongPlace").text(zhongPlace);
 	$(".countTime").text(countTime);
-	$(".cost").text(cost);
-	$(".zhekou").text(zhekou);
+	$(".cost").text("￥"+cost);
+	//$(".zhekou").text(zhekou);
 	$(".cangweiType").text(cangweiType);
 	$(".chufCityID").text(chufCityID);
 	$(".daodCityID").text(daodCityID);
@@ -104,9 +118,9 @@ $(function(){
 					},
 					dataType: "json",
 					success: function(result) {
-						var ivid = (result.userInfo)[0].inCodeId;
-						getcode(ivid);
-						if(result.msg==1){						
+						if(result.msg==1){	
+							ivid = (result.userInfo)[0].inCodeId;
+							getcode(ivid);					
 							//上面的条件正确时候改变按钮格式
 							$(".loginBtn").css("background-color","#dddddd");
 							$(".loginBtn").css("color","#666666");
@@ -210,13 +224,31 @@ $(function(){
 		//确认付款
 		$(".truePayBtn").click(function(){
 			var a = $("#turmonp").text();
+			var yiwai = 0,yanwu = 0,youhui = 0;
+			if($(".flindYw").attr("checked")=="checked")yiwai = 1;
+			if($(".delayBx").attr("checked")=="checked")yanwu = 1;
+			if($(".youhuiBx").attr("checked")=="checked")youhui = 1;
+			var activType = ivid;
+			//var yiwai = $(".flindYw")
 			$.ajax({
 					url:"<%=basePath%>wechatController/payCost/orderPay.action",
 					type:"POST",
-					data:{"a":a},
+					data:{
+						"a":a,
+						"yiwai":yiwai,
+						"yanwu":yanwu,
+						"youhui":youhui,
+						"activType":activType,
+						"depCity":obj.orgCity,
+						"arrCity":obj.dstCity,
+						"depDate":chufDate,
+						"airCode":obj.airCode,
+						"hangbanNum":obj.flightNo,
+						"canbin":cangweiType
+					},
 					dataType:"json",
 					success:function(result){
-						var obj = JSON.parse(result);
+						//var obj = JSON.parse(result);
 						if(obj.state==1){
 							WeixinJSBridge.invoke('getBrandWCPayRequest',{
 								"appId" : obj.appId, //公众号名称，由商户传入
@@ -228,7 +260,7 @@ $(function(){
 							},function(res){
 								if (res.err_msg == "get_brand_wcpay_request:ok") {
 										<%-- window.location.href = "<%=basePath%>/wechatController/business/paySncyNotify.action?time=" + obj.time; --%>
-										window.location.href = "<%=basePath %>console/wechat/StepFour.jsp?companyTypeJS="+companyTypeJS+"&typeCode="+typeCode;
+										<%-- window.location.href = "<%=basePath %>console/wechat/StepFour.jsp?companyTypeJS="+companyTypeJS+"&typeCode="+typeCode; --%>
 								} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
 												
 								} else if (res.err_msg == "get_brand_wcpay_request:fail") {
@@ -364,6 +396,45 @@ function ageFunc(birthday){
 	    }
 		return age;
 	}
+	
+	//计算历经多长时间到达
+	function cuntTime(depTime,arrTime){
+		var sTime = changesTime(depTime); //出发时间的秒
+		var oTime = changesTime(arrTime); //到达时间的秒
+		var chaTime = oTime-sTime; //两个时间相差的秒
+		var liTime = parseInt(chaTime/3600)+"h"+parseInt((chaTime%3600)/60)+"m";
+		//alert(depTime+"->"+changesTime(depTime)+"/"+arrTime+"->"+changesTime(arrTime)+"/"+liTime);
+		return liTime;
+	}
+	
+	//改变出发时间和到达时间的类型
+	function changeType(GoTime){	
+		if(4<GoTime.length){
+			var firstTime=GoTime.substring(0,2);
+			var conterTime=GoTime.substring(2,4);
+			var lastTime=GoTime.substring(4,GoTime.length);
+			return firstTime+":"+conterTime+"<span style='color:#ff0000; font-size:10px;'>"+lastTime+"</span>";
+		}else{			
+			var firstTime=GoTime.substring(0,2);
+			var lastTime=GoTime.substring(2,GoTime.length);
+			return firstTime+":"+lastTime;
+		}
+	}
+	
+	//根据时间参数化成秒
+	function changesTime(time){
+		var ohh,omm,ocount;
+		if(time.indexOf("+")>0){
+			ohh = time.substring(0,2);
+			omm = time.substring(2,4);
+			ocount = ohh*3600+omm*60+24*3600;
+		}else{
+			ohh = time.substring(0,2);
+			omm = time.substring(2,time.length);
+			ocount = ohh*3600+omm*60;
+		}
+		return ocount;
+	}
 </script>
 <div class="massInfoBox">
 	<ul>
@@ -373,7 +444,7 @@ function ageFunc(birthday){
 		<li><span class="spanTit">到达城市：</span><span class="spanCont daodCityID"></span></li>
 		<li><span class="spanTit">起始机场：</span><span class="spanCont shiPlace"></span><span class="flidNum" style="margin-left:5px;"></span></li>
 		<li><span class="spanTit">到达机场：</span><span class="spanCont zhongPlace"></span></li>
-		<li><span class="spanTit">飞行历时：</span><span class="spanCont countTime"></span><span class="cangweiType" style="display:none;"></span><span class="zhekou" style="display:none;"></span></li>
+		<li><span class="spanTit">飞行历时：</span><span class="spanCont countTime"></span><span class="cangweiType" style="display:none;"></span><!-- <span class="zhekou" style="display:none;"></span> --></li>
 	</ul>
 	<div class="trueCost"><span class="spanTit">实付价格：</span><span class="payMoney cost"></span></div>
 </div>

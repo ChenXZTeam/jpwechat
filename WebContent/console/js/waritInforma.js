@@ -98,7 +98,7 @@
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
 			if(youhuiType == "preferential"){
-				newPayMoney = (parseFloat(SubPayMoney)+parseFloat(youhuiMoney)).toFixed(2);
+				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(youhuiMoney)).toFixed(2);
 				$(".payMoney").text("￥"+newPayMoney);
 			}else if(youhuiType == "discount"){
 				newPayMoney = (parseFloat(SubPayMoney)*parseFloat((youhuiMoney/10))).toFixed(2);
@@ -107,7 +107,7 @@
 		}else{
 			if(newPayMoney!=SubPayMoney){
 				if(youhuiType == "preferential"){
-					newPayMoney = (parseFloat(SubPayMoney)-parseFloat(youhuiMoney)).toFixed(2);
+					newPayMoney = (parseFloat(SubPayMoney)+parseFloat(youhuiMoney)).toFixed(2);
 				}else if(youhuiType == "discount"){
 					newPayMoney = (parseFloat(SubPayMoney)/parseFloat((youhuiMoney/10))).toFixed(2);
 				}
@@ -186,4 +186,61 @@
 		}
 	});
 	
+	//多选的单击按钮（优惠选择）
+	$(".youhuiBxzhz").click(function(){			
+		var payMoney = $("#timess_m").val();
+		var payMoneyTrue = $("#truess_m").val();
+		var oneMoney = $("#oneMoney").val();
+		var twoMoney = $("#twoMoney").val();
+		var newPayMoney = 0;
+		var youhuiType = $("#zhekouType").text();
+		var youhuiMoney = $(this).val();
+		payMoneyTrue = payMoneyTrue-(payMoneyTrue*(youhuiMoney/10));
+		if($(this).attr("checked")=="checked"){
+			$(this).prev().css("display","block");
+			if(youhuiType == "preferential"){
+				newPayMoney = (parseFloat(payMoney)-parseFloat(youhuiMoney)).toFixed(2);
+				$("#timess_m").val(newPayMoney);
+				$("#moneyPay").text(newPayMoney);
+				$("#CostPay").text(newPayMoney);
+				newoneMoney = (parseFloat(oneMoney)-parseFloat(youhuiMoney/2)).toFixed(2);
+				newtwoMoney = (parseFloat(twoMoney)-parseFloat(youhuiMoney/2)).toFixed(2);
+				$("#oneMoney").val(newoneMoney);
+				$("#twoMoney").val(newtwoMoney);
+			}else if(youhuiType == "discount"){
+				newPayMoney = (parseFloat(payMoney)-parseFloat(payMoneyTrue)).toFixed(2);
+				$("#timess_m").val(newPayMoney);
+				$("#moneyPay").text(newPayMoney);
+				$("#CostPay").text(newPayMoney);
+				newoneMoney = (parseFloat(oneMoney)-parseFloat((payMoneyTrue/2))).toFixed(2);
+				newtwoMoney = (parseFloat(twoMoney)-parseFloat((payMoneyTrue/2))).toFixed(2);
+				$("#oneMoney").val(newoneMoney);
+				$("#twoMoney").val(newtwoMoney);
+			}
+		}else{
+			if(newPayMoney!=payMoney){
+				if(youhuiType == "preferential"){
+					newPayMoney = (parseFloat(payMoney)+parseFloat(youhuiMoney)).toFixed(2);
+					$("#timess_m").val(newPayMoney);
+					$("#moneyPay").text(newPayMoney);
+					$("#CostPay").text(newPayMoney);
+					newoneMoney = (parseFloat(oneMoney)+parseFloat(youhuiMoney/2)).toFixed(2);
+					newtwoMoney = (parseFloat(twoMoney)+parseFloat(youhuiMoney/2)).toFixed(2);
+					$("#oneMoney").val(newoneMoney);
+					$("#twoMoney").val(newtwoMoney);
+				}else if(youhuiType == "discount"){
+					newPayMoney = (parseFloat(payMoney)+parseFloat(payMoneyTrue)).toFixed(2);
+					$("#timess_m").val(newPayMoney);
+					$("#moneyPay").text(newPayMoney);
+					$("#CostPay").text(newPayMoney);
+					newoneMoney = (parseFloat(oneMoney)+parseFloat((payMoneyTrue/2))).toFixed(2);
+					newtwoMoney = (parseFloat(twoMoney)+parseFloat((payMoneyTrue/2))).toFixed(2);
+					$("#oneMoney").val(newoneMoney);
+					$("#twoMoney").val(newtwoMoney);
+				}
+			}
+			$(".payMoney").text("￥"+newPayMoney);
+			$(this).prev().css("display","none");	
+		}
+	});
 });

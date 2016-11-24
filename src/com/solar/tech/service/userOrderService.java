@@ -82,7 +82,7 @@ public class userOrderService {
 		params.add(PreString);
 		params.add(length);
 		String sql = "{Call generate_orderNo(?,?,@orderNo)}";
-		List list = gDao.getListByCall(sql, params);
+		List<String> list = gDao.getListByCall(sql, params);
 
 		return list.get(0).toString();
 	}
