@@ -343,7 +343,8 @@ $(function(){
 					beforeSend:function(){$("#loading").css("display","block");},
 					complete:function(){$("#loading").css("display","none");},
 					success:function(result){
-						alert(result.of+", "+result.sc);
+						$("#firNumorder").val(result.of);
+						$("#secdNumorder ").val(result.sc);
 						if(result.msg=="1"||result.msg==1){
 							alert("机票预定成功");
 							$("#trueOrderInfo").css("display","block");
@@ -360,30 +361,22 @@ $(function(){
 	});
 	
 	//确认付款
-		$(".truePayBtn").click(function(){
+	$(".truePayBtn").click(function(){
 			var a = $("#turmonp").text();
 			var yiwai = 0,yanwu = 0,youhui = 0;
 			if($(".flindYwzhz").attr("checked")=="checked")yiwai = 1;
 			if($(".delayBxzhz").attr("checked")=="checked")yanwu = 1;
 			if($(".youhuiBxzhz").attr("checked")=="checked")youhui = 1;
+			var firNumorder = $("#firNumorder").val();
+			var secdNumorder = $("#secdNumorder ").val();
 			var activType = ivid;
+			var subDateJson = '{"sign":"1","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","youhui":"'+youhui+'","activType":"'+activType+'","firt":[{"a":"'+firNumorder+'","depCity":"'+onezhzDateJson.orgCity+'","arrCity":"'+onezhzDateJson.dstCity+'","depDate":"'+dateTime+'","airCode":"'+onezhzDateJson.airCode+'","canbin":"'+cangwei+'"}],"secd":[{"a":"'+secdNumorder+'","depCity":"'+twozhzDateJson.orgCity+'","arrCity":"'+twozhzDateJson.dstCity+'","depDate":"'+returnTime+'","airCode":"'+twozhzDateJson.airCode+'","canbin":"'+cangwei+'"}]}'
+			//return false;
 			//var yiwai = $(".flindYw")
 			$.ajax({
 					url:"<%=basePath%>wechatController/payCost/orderPay.action",
 					type:"POST",
-					data:{
-						"a":a,
-						"yiwai":yiwai,
-						"yanwu":yanwu,
-						"youhui":youhui,
-						"activType":activType,
-						"depCity":obj.orgCity,
-						"arrCity":obj.dstCity,
-						"depDate":chufDate,
-						"airCode":obj.airCode,
-						"hangbanNum":obj.flightNo,
-						"canbin":cangweiType
-					},
+					data:{"subDateJson":subDateJson},
 					dataType:"json",
 					success:function(result){
 						//var obj = JSON.parse(result);
@@ -605,8 +598,8 @@ function getcode(inc){
 <!-- 填写资料 -->
 <div class="writInfoBox">
 	<ul>
-		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><input type="hidden" id="firNumorder"/></li>
+		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
 		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:10px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
 		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>

@@ -28,7 +28,7 @@ public class OptimizeECUtils {
 		//if(avList.size()<1){return null;}//没有查找查询座位可用就结束掉不执行下面的操作
 		List<FlightInfo> list = new ArrayList<FlightInfo>(); // 整合数据结果
 		
-		if(skList != null && skList.size() > 0){ 
+		if(skList != null && skList.size() > 0){
 			for(SkSegment s : skList){
 				// 剔除掉补班的航班
 				if(!"A".equals(s.getAirline().substring(s.getAirline().length() - 1, s.getAirline().length()))){
@@ -90,7 +90,6 @@ public class OptimizeECUtils {
 						}
 					}
 					bean.setSeatList(seatList);
-					System.out.println(bean);
 					list.add(bean);
 				}
 			}
@@ -104,10 +103,19 @@ public class OptimizeECUtils {
 		Map<String, Object> map = new HashMap<String, Object>();
 		AVDoubleResponse AVDouble  = new ECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
 		if(AVDouble==null||null==AVDouble){map.put("msg", 0);return map;}
-		List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null); // 查询运价
+		
+		List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null); // 查询运价（去程）
 		if(fdList==null||fdList.size()<1){map.put("msg", 0);return map;}
-		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, null, null, null, null, null); // 查询座位可用
+		
+		List<FDItem> rdList = new ECUtils().fd(dst, org, returnDate, null, null, null, null); // 查询运价（回程）
+		if(rdList==null||rdList.size()<1){map.put("msg", 0);return map;}
+		
+		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, null, null, null, null, null); // 查询座位可用（去程）
 		if(avList==null||avList.size()<1){map.put("msg", 0);return map;}
+		
+		List<AvSegment> rvList = new ECUtils().av(dst, org, returnDate, null, null, null, null, null, null); // 查询座位可用（回程）
+		if(rvList==null||rvList.size()<1){map.put("msg", 0);return map;}
+		
 		List<FlightInfo> departAv = new ArrayList<FlightInfo>(); //去程航班的链表
 		List<FlightInfo> returnAv = new ArrayList<FlightInfo>(); //回程航班的链表
 		//处理去程的航班，重构去程航班链表
@@ -192,11 +200,11 @@ public class OptimizeECUtils {
 					bean.setDstCity(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDstcity()); 
 
 					List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 航班座位信息
-					String[] data = avList.get(0).getCangwei_data(); // 初始化座位数据
-					char[] index = avList.get(0).getCangwei_index(); // 初始化座位信息
+					String[] data = rvList.get(0).getCangwei_data(); // 初始化座位数据
+					char[] index = rvList.get(0).getCangwei_index(); // 初始化座位信息
 					
 					AvSegment avSeg = null;
-					for(AvSegment as : avList){
+					for(AvSegment as : rvList){
 						// 根据当前航班号、起始城市及到达城市，得到对应的座位信息
 						if(bean.getFlightNo().equals(as.getAirline()) && org.equals(as.getOrgcity()) && dst.equals(as.getDstcity())){
 							avSeg = as;
@@ -216,8 +224,8 @@ public class OptimizeECUtils {
 							seatInfo.setCangwei_data(data[k]); // 设置舱位信息
 							
 							if(SeatUtils.getSeatNum(data[k]) != null){
-								if(fdList != null && fdList.size() > 0){
-									for(FDItem item : fdList){
+								if(rdList != null && rdList.size() > 0){
+									for(FDItem item : rdList){
 										// 根据当前航司代码、及舱位获取对应的运价信息
 										if(bean.getAirCode().equals(item.getAirline()) && (index[k] + "").equals(item.getCabin())){
 											if(!StringUtils.isEmpty(item.getOnewayPrice())){

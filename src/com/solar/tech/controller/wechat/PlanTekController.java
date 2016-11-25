@@ -1,6 +1,9 @@
 package com.solar.tech.controller.wechat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,7 @@ import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.SeatUtils;
 import com.solar.tech.utils.CityUtils;
+import com.solar.tech.utils.saveCost;
 import com.travelsky.sbeclient.obe.response.AVDoubleResponse;
 import com.travelsky.sbeclient.obe.response.AvSegment;
 import com.travelsky.sbeclient.obe.response.PATFareItem;
@@ -57,18 +61,6 @@ public class PlanTekController {
 		if(tempFlil != null && tempFlil.size() > 0){
 			for(FlightInfo f : tempFlil){
 				if(f.getSeatList().size()!=0){
-					//f.setDeplaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(f.getOrgCity()))); //设置出发机场
-					//f.setArrPlaneName(CityUtils.huoquPlane(CityUtils.getAirportNameByCode(f.getDstCity()))); //设置到达机场
-					/*System.out.println("航班号：" + f.getFlightNo() + "， 出发城市：" + f.getOrgCity() + " ( 起飞时间：" + f.getDepTime() + " ) " + "， 到达城市: " + f.getDstCity() + " ( 到达时间：" + f.getArrTime() + " ) ，机型：" + f.getPlaneStyle());				
-					int SumTecikNum=0;
-					for(SeatInfo info : f.getSeatList()){	
-						if(SeatUtils.getSeatType(info.getBasicCabin()).equals(cangW)){
-							System.out.println("座位类型："+info.getCangwei() + " (" + SeatUtils.getSeatType(info.getBasicCabin()) + ")" + "， 剩余座位: " + SeatUtils.getSeatNum(info.getCangwei_data()) +"， 单程: " + info.getOnewayPrice() + "元\t\t 往返: " + info.getRoundtripPrice()+"元");
-							int TecikNum=SeatUtils.getSeatNum(info.getCangwei_data());
-							SumTecikNum+=TecikNum;
-						}
-					}
-					System.out.println(cangW+"剩余的票数：" + SumTecikNum);*/
 					int hasNum = 0;
 					for(SeatInfo info : f.getSeatList()){
 						if(SeatUtils.getSeatType(info.getBasicCabin()).equals(cangW)){
@@ -86,33 +78,23 @@ public class PlanTekController {
 			for(FlightInfo fli : newFlil){
 				if(fli.getOrgCity().equals(chufCity)&&fli.getDstCity().equals(daodCity)){
 					zhidFil.add(fli);  //重构直达的链表
+					System.out.println("直达航班："+zhidFil);
 				}
 			}
 		}
 		System.out.println("直达航班的数量："+zhidFil.size());
+		
 		//初步获得中转的链表
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班
-					System.out.println(zfli);
-					zhongzFil.add(zfli);  //重构直达的链表
+					zhongzFil.add(zfli);  //重构中转的链表
+					System.out.println("中转航班："+zfli);
 				}
 			}
-			/*for(int i=0; i<zhongzFil.size(); i++){
-				for(int j=zhongzFil.size()-1; j>i; j--){ //int j=0; j<zhongzFil.size(); j++
-					String chufI = zhongzFil.get(i).getOrgCity(); //第I个出发的城市
-					String daodJ = zhongzFil.get(j).getDstCity(); //第J个到达的城市
-					if(!chufI.equals(chufCity)&&!chufI.equals(daodJ)){
-						System.out.println("应该剔除的："+chufI+", 中转的航班："+zhongzFil.get(i).getFlightNo());
-					}
-				}
-				System.out.println("中转的航班："+zhongzFil.get(i).getFlightNo()
-						+", 起始城市："+zhongzFil.get(i).getOrgCity()+"（"+OrderService.findCity(zhongzFil.get(i).getOrgCity())
-						+"）, 到达城市："+zhongzFil.get(i).getDstCity()+"（"+OrderService.findCity(zhongzFil.get(i).getDstCity())
-						+"）, 出发时间："+zhongzFil.get(i).getDepTime()+", 到达时间:"+zhongzFil.get(i).getArrTime());
-			}*/
 		}			
 		System.out.println("中转航班数组的长度："+zhongzFil.size());
+		
 		if(zhidFil.size()==0&&zhongzFil.size()==0){
 			map.put("msg", 0);
 		}else{

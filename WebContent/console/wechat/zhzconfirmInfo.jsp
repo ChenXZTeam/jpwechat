@@ -4,6 +4,8 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <%
+String username=(String) session.getAttribute("userName");
+String jin = (String) session.getAttribute("invId");
 String onezhzDate=new String(request.getParameter("onezhzDate").getBytes("ISO-8859-1"),"utf-8");
 String twozhzDate=new String(request.getParameter("twozhzDate").getBytes("ISO-8859-1"),"utf-8");
 String dateTime=new String(request.getParameter("dateTime").getBytes("ISO-8859-1"),"utf-8");
@@ -19,6 +21,7 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <link rel="stylesheet" href="<%=basePath %>console/css/style.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
@@ -77,6 +80,16 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 
 	.aBtn{margin-top:15px; display:block; padding:7px 0px; background-color:#007AFF; border-radius:5px; color:#FBFDFF; font-size:12px; text-align:center; width:88.55%; margin-left:auto; margin-right:auto;}
 
+	/*登录*/
+	#touMbackground{ position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; display:block; display:none;}
+	#touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:78%; height:150px; left:10%; top:25%; position:absolute; padding-top:10px;}
+	#touMbackground .loginBox .inputBoxLogin{ border:#e1e1e1 solid 1px; height:30px; width:78%; margin-left:auto; margin-right:auto; margin-top:10px; border-radius:3px;}
+	#touMbackground .loginBox .inputBoxLogin .loginImgBox{float:left;}
+	#touMbackground .loginBox .inputBoxLogin .loginImgBox img{border-right:#e1e1e1 solid 1px; padding-right:5px; width:25px; margin-top:5px; margin-left:3px;}
+	#touMbackground .loginBox .inputBoxLogin .logininpBox{float:left;}
+	#touMbackground .loginBox .inputBoxLogin .logininpBox input{margin-top:5px; margin-left:10px; border:none;}
+	#touMbackground .loginBox .loginBtn{ text-align:center; line-height:28px; color:#FFFFFF; background-color:#004F92;}
+
 	/*确认订单*/
 	#trueOrderInfo{position:absolute; top:0px; left:0px; width:100%; height:100%; background-color:#f1f1f1; z-index:1; display:none;}
 	#trueOrderInfo .flidNoNumBox{width:90%; margin:15px auto 15px auto; padding-bottom:20px; background-color:#FFFFFF; border:#e1e1e1 solid 1px; overflow:hidden;}
@@ -104,6 +117,7 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <script>
 $(function(){
 	window.history.forward(1);//禁止后退
+	var ivid = "<%=jin%>";
 	var onezhzDate = '<%=onezhzDate%>';
 	var twozhzDate = '<%=twozhzDate%>';
 	var dateTime = '<%= dateTime%>';
@@ -155,6 +169,51 @@ $(function(){
 		}
 	}
 	$("#moneyPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
+	$("#truess_m").val((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
+	
+	//判断是否登录
+	var username="<%=username%>";
+	var jin = "<%=jin%>"
+	if(username==""||username=="null"||jin==""||jin=="null"){
+		alert("登录才能订票");
+		$("#touMbackground").css("display","block");
+	}else{
+		getcode("<%=jin%>");
+	}
+	
+	//登录
+	$(".loginBtn").click(function(){
+			var userN=$("#userN").val();
+			var passW=$("#passW").val();
+			$.ajax({
+					url: "<%=basePath %>wechatController/wechat/login.action",
+					type: "POST",
+					data: {
+							"userName":userN, "PassWord":passW
+					},
+					dataType: "json",
+					success: function(result) {
+						if(result.msg==1){	
+							ivid = (result.userInfo)[0].inCodeId;
+							getcode(ivid);					
+							//上面的条件正确时候改变按钮格式
+							$(".loginBtn").css("background-color","#dddddd");
+							$(".loginBtn").css("color","#666666");
+							$(".loginBtn").css("border","#cccccc solid 1px");
+							$(".loginBtn").html("");
+							$(".loginBtn").html("加载中...");
+							alert("登录成功，可以订票咯^_^");
+							$("#touMbackground").css("display","none");
+						}else{
+							alert("登录失败");
+							$("#touMbackground").css("display","block");
+						}							
+					},
+					error: function() {
+						//alert("登录失败");
+					}
+			});
+	});
 	
 	//下一步的按钮点击事件
 	$(".aBtn").click(function(){
@@ -274,13 +333,16 @@ $(function(){
 					type:"POST",
 					data:{"jsStr":jsondatastr},
 					dataType:"json",
-					beforeSend:function(){$(".loadingBox").css("display","block");},
-					complete:function(){$(".loadingBox").css("display","none");},
+					beforeSend:function(){$("#loading").css("display","block");},
+					complete:function(){$("#loading").css("display","none");},
 					success:function(result){
-						if(result=="1"||result==1){
+						$("#firNumorder").val(result.of);
+						$("#secdNumorder ").val(result.sc);
+						if(result.msg=="1"||result.msg==1){
 							alert("机票预定成功");
-							window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action";
-						}else if(result=="0"||result==0){
+							$("#trueOrderInfo").css("display","block");
+							<%-- window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action"; --%>
+						}else if(result.msg=="0"||result.msg==0){
 							alert("机票预定失败1，请稍后再试");
 						}else{
 							alert("机票预定失败2，请稍后再试");
@@ -290,11 +352,58 @@ $(function(){
 					}
 			});		
 	});
+	
+	//确认付款
+	$(".truePayBtn").click(function(){
+			var a = $("#turmonp").text();
+			var yiwai = 0,yanwu = 0,youhui = 0;
+			if($(".flindYwzhz").attr("checked")=="checked")yiwai = 1;
+			if($(".delayBxzhz").attr("checked")=="checked")yanwu = 1;
+			if($(".youhuiBxzhz").attr("checked")=="checked")youhui = 1;
+			var firNumorder = $("#firNumorder").val();
+			var secdNumorder = $("#secdNumorder ").val();
+			var sconddate = $("#ChufDatetwo").text();
+			var activType = ivid;
+			var subDateJson = '{"sign":"1","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","youhui":"'+youhui+'","activType":"'+activType+'","firt":[{"a":"'+firNumorder+'","depCity":"'+onezhzDateJson.orgCity+'","arrCity":"'+onezhzDateJson.dstCity+'","depDate":"'+dateTime+'","airCode":"'+onezhzDateJson.airCode+'","canbin":"'+cangwei+'"}],"secd":[{"a":"'+secdNumorder+'","depCity":"'+twozhzDateJson.orgCity+'","arrCity":"'+twozhzDateJson.dstCity+'","depDate":"'+sconddate+'","airCode":"'+twozhzDateJson.airCode+'","canbin":"'+cangwei+'"}]}'
+			//var yiwai = $(".flindYw")
+			$.ajax({
+					url:"<%=basePath%>wechatController/payCost/orderPay.action",
+					type:"POST",
+					data:{"subDateJson":subDateJson},
+					dataType:"json",
+					success:function(result){
+						//var obj = JSON.parse(result);
+						if(obj.state==1){
+							WeixinJSBridge.invoke('getBrandWCPayRequest',{
+								"appId" : obj.appId, //公众号名称，由商户传入
+								"timeStamp" : obj.timeStamp, //时间戳
+								"nonceStr" : obj.nonceStr, //随机串
+								"package" : obj.wxPackage,//统一支付接口返回的prepay_id 参数值，提交格式如：prepay_id=***
+								"signType" : obj.signType, //微信签名方式:sha1
+								"paySign" : obj.paySign //微信签名
+							},function(res){
+								if (res.err_msg == "get_brand_wcpay_request:ok") {
+										<%-- window.location.href = "<%=basePath%>/wechatController/business/paySncyNotify.action?time=" + obj.time; --%>
+										<%-- window.location.href = "<%=basePath %>console/wechat/StepFour.jsp?companyTypeJS="+companyTypeJS+"&typeCode="+typeCode; --%>
+								} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+												
+								} else if (res.err_msg == "get_brand_wcpay_request:fail") {
+										alert("支付失败，请重新下单！");
+								}
+							});
+						} else if(obj.state == 0) {
+									
+						}
+					},
+					error:function(result){
+					}
+				});
+		});
+		
 	$("#timess_m").val((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
 	$("#CostPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
 	$("#oneMoney").val(one_monTimey);
 	$("#twoMoney").val(two_monTimey);
-	
 	
 	//判断是否选择了证件类型
 	$("#IDcase").focus(function(){
@@ -413,12 +522,47 @@ function ageFunc(birthday){
 	}
 	return age;
 }
+
+function getcode(inc){
+	$.ajax({
+			url:"<%=basePath%>framework/invite/findByid.action",
+			type:"POST",
+			data:{"id":inc},
+			dataType:"json",
+			success:function(result){
+				var date = result.rows;
+				console.log(date);
+				if(date.length>0){
+					$("#zhekouType").text(date[0].type);
+					alert("您有优惠券可以使用哟！");
+					if(date[0].type=="discount"){
+						$(".youhuiText").text(date[0].remarks);
+						$(".youhuiBxzhz").val(date[0].discount);
+						$(".youhuiBox").css("display","block");
+					}else if(date[0].type=="preferential"){
+						$(".youhuiText").text(date[0].remarks);
+						$(".youhuiBxzhz").val(date[0].sum);
+						$(".youhuiBox").css("display","block");
+					}else{
+						alert("未知类型的优惠券，不能使用");
+						$(".youhuiBox").remove();
+					}
+				}else{
+					$(".youhuiBox").remove();
+				}
+			},
+			error:function(result){
+	
+			}
+	});
+}
 </script>
 <div class="fildBox">
 	<div class="timeBox"><span class="depday">01-05</span><span class="weekday">周四</span><span class="plandep">香港</span><span>—</span><span class="planarr">杭州</span><span class="time">4h50m</span><img src="<%=basePath %>console/images/TIMEiMG.png" style="width:10px;"/><span style="clear:both;"></span></div>
 	<div class="planName">
 		<div class="planNamech">
 			<div class="depTimefirst">09:35</div>
+			<input type="hidden" id="truess_m"/>
 			<div class="depTimesecond">11:05</div>
 		</div>
 		<div class="planNamech">
@@ -461,15 +605,15 @@ function ageFunc(birthday){
 		<div style="clear:both;"></div>
 	</div>
 	<div class="countNumMoney">
-		<span style="font-family:'微软雅黑'; color:#FF9A14; font-size:10px;">￥</span><span id="moneyPay">1205.00</span>
+		<span style="font-family:'微软雅黑'; color:#FF9A14; font-size:10px;">￥</span><span id="moneyPay">1205.00</span><span id="zhekouType" style="display:none;"></span>
 	</div>
 </div>
 
 <!-- 填写资料 -->
 <div class="writInfoBox">
 	<ul>
-		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><input type="hidden" id="firNumorder"/></li>
+		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
 		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:10px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
 		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
@@ -480,6 +624,7 @@ function ageFunc(birthday){
 <div class="baoxianBox">
 	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="购买"/><span class="spanTitBX">航空意外险</span></div>
 	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="购买"/><span class="spanTitBX">延误取消险</span></div>
+	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBxzhz" value="500"/><span class="spanTitBX youhuiText"></span></div>
 	<div style="clear:both;"><input id="oneMoney" type="hidden"/><input id="twoMoney" type="hidden"/></div>
 </div>
 
@@ -564,6 +709,34 @@ function ageFunc(birthday){
 		</div>
 	</div>
 	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
+</div>
+
+<!--用户登录-->
+<div id="touMbackground">
+	<div class="loginBox">
+		<div class="inputBoxLogin">
+			<div class="loginImgBox"><img src="<%=basePath %>console/images/admin.png"/></div>
+			<div class="logininpBox"><input type="text" id="userN" placeholder="请输入登录账号"/></div>
+		</div>
+		<div class="inputBoxLogin">
+			<div class="loginImgBox"><img src="<%=basePath %>console/images/suo.png"/></div>
+			<div class="logininpBox"><input type="password" id="passW" placeholder="请输入登录密码"/></div>
+		</div>
+		<div class="inputBoxLogin loginBtn">登 录</div>
+	</div>
+</div>
+
+<!-- 加载等待界面 -->	
+<div id="loading">
+	<div id="loading-center">
+		<div id="loading-center-absolute">
+			<div class="object" id="object_four"></div>
+			<div class="object" id="object_three"></div>
+			<div class="object" id="object_two"></div>
+			<div class="object" id="object_one"></div>
+		</div>
+		<div style="color:#ffffff; position:absolute; left:39%; top:58%;">数据加载中...</div>
+	</div> 
 </div>
 <script>
 $(function () {

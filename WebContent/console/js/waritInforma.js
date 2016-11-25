@@ -95,13 +95,15 @@
 		var newPayMoney = 0;
 		var youhuiType = $("#zhekouType").text();
 		var youhuiMoney = $(this).val();
+		var sd = $("#m").val();
+		sd = sd - (sd * (youhuiMoney/10));
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
 			if(youhuiType == "preferential"){
 				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(youhuiMoney)).toFixed(2);
 				$(".payMoney").text("￥"+newPayMoney);
 			}else if(youhuiType == "discount"){
-				newPayMoney = (parseFloat(SubPayMoney)*parseFloat((youhuiMoney/10))).toFixed(2);
+				newPayMoney = (parseFloat(SubPayMoney)-parseFloat(sd)).toFixed(2);
 				$(".payMoney").text("￥"+newPayMoney);
 			}
 		}else{
@@ -109,7 +111,7 @@
 				if(youhuiType == "preferential"){
 					newPayMoney = (parseFloat(SubPayMoney)+parseFloat(youhuiMoney)).toFixed(2);
 				}else if(youhuiType == "discount"){
-					newPayMoney = (parseFloat(SubPayMoney)/parseFloat((youhuiMoney/10))).toFixed(2);
+					newPayMoney = (parseFloat(SubPayMoney)+parseFloat(sd)).toFixed(2);
 				}
 			}
 			$(".payMoney").text("￥"+newPayMoney);

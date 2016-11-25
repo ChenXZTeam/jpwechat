@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?iy=20160305"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
@@ -79,6 +79,7 @@ $(function(){
 	for(var i=0; i<seInfo.length; i++){
 		if(seInfo[i].cangwei == cangweiType){
 			cost = seInfo[i].onewayPrice;
+			$("#m").val(cost);
 		}
 	}
 	//为信息框赋值
@@ -229,23 +230,12 @@ $(function(){
 			if($(".delayBx").attr("checked")=="checked")yanwu = 1;
 			if($(".youhuiBx").attr("checked")=="checked")youhui = 1;
 			var activType = ivid;
+			var infojson = '{"sign":"0","a":"'+a+'","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","youhui":"'+youhui+'","activType":"'+activType+'","depCity":"'+obj.orgCity+'","arrCity":"'+obj.dstCity+'","depDate":"'+chufDate+'","airCode":"'+obj.airCode+'","canbin":"'+cangweiType+'"}';
 			//var yiwai = $(".flindYw")
 			$.ajax({
 					url:"<%=basePath%>wechatController/payCost/orderPay.action",
 					type:"POST",
-					data:{
-						"a":a,
-						"yiwai":yiwai,
-						"yanwu":yanwu,
-						"youhui":youhui,
-						"activType":activType,
-						"depCity":obj.orgCity,
-						"arrCity":obj.dstCity,
-						"depDate":chufDate,
-						"airCode":obj.airCode,
-						"hangbanNum":obj.flightNo,
-						"canbin":cangweiType
-					},
+					data:{"subDateJson":infojson},
 					dataType:"json",
 					success:function(result){
 						//var obj = JSON.parse(result);
@@ -455,7 +445,7 @@ function ageFunc(birthday){
 		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
 		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:10px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
-		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">旅客类型：</span><input type="hidden" id="m"/><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
 		<li><span class="spanTit" id="caseIpnt">证件类型</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
 	</ul>
 </div>

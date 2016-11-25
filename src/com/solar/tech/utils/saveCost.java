@@ -11,10 +11,10 @@ import com.solar.tech.service.PlanTekService;
 import com.travelsky.sbeclient.obe.response.FDItem;
 
 public class saveCost {
-	public double getpay(String chufCity, String daodCity, String dateTime, String airCode, String filgNo, String cabin, String direct, String noStop){
+	public double getpay(String chufCity, String daodCity, String dateTime, String airCode, String cabin){
 		double paycost = 0.0;
 		//PlanTekService PlanTekServ = new PlanTekService();
-		List<FDItem> fdList = new ECUtils().fd(chufCity, daodCity, dateTime, airCode, null , "CH", null); // 传入出发城市、到达城市、日期及航空公司代码、航班号、是否直飞、是否有经停点
+		List<FDItem> fdList = new ECUtils().fd(chufCity, daodCity, dateTime, airCode, null , null, null); // 传入出发城市、到达城市、日期及航空公司代码、航班号、是否直飞、是否有经停点
 		if(fdList != null && fdList.size() > 0){
 			for(FDItem item : fdList){
 				// 根据当前航司代码、及舱位获取对应的运价信息
