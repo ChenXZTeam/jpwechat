@@ -49,7 +49,7 @@ public class OptimizeECUtils {
 					AvSegment avSeg = null;
 					for(AvSegment as : avList){
 						// 根据当前航班号、起始城市及到达城市，得到对应的座位信息
-						if(bean.getFlightNo().equals(as.getAirline()) && org.equals(as.getOrgcity()) && dst.equals(as.getDstcity())){
+						if(bean.getFlightNo().equals(as.getAirline()) && bean.getOrgCity().equals(as.getOrgcity()) && bean.getDstCity().equals(as.getDstcity())){
 							avSeg = as;
 						}
 					}

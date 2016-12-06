@@ -30,7 +30,7 @@ import com.solar.tech.util.ConfigUtils;
 import com.solar.tech.util.SHA1Util;
 import com.solar.tech.util.WeiXinSignAndPackage;
 import com.solar.tech.util.XMLUtil;
-import com.solar.tech.utils.saveCost;
+import com.solar.tech.utils.mony_av;
 
 /**
  * 微信支付的控制器
@@ -60,7 +60,7 @@ public class WXpayorder {
 		String out_trade_num = System.currentTimeMillis() + "";
 		System.out.println("商品号:" + out_trade_num); 
 		//获取航段共同的信息
-		saveCost getCost = new saveCost();
+		mony_av getCost = new mony_av();
 		JSONObject jsonObject=JSONObject.fromObject(subDateJson);
 		String sing = jsonObject.get("sign")+""; //接收标志 就能传进来的数据是中转数据或者往返数据
 		double lastpayCout = 0.0; //最终计算后的价格

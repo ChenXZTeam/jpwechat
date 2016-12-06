@@ -24,7 +24,7 @@ import com.travelsky.sbeclient.obe.book.SegmentInfo;
 import com.travelsky.sbeclient.obe.response.PnrResponse;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.utils.ECUtils;
-import com.solar.tech.utils.saveCost;
+import com.solar.tech.utils.mony_av;
 import com.solar.tech.service.userOrderService;
 
 @Controller
@@ -36,7 +36,7 @@ public class userOrderController {
 	@RequestMapping("/add/order.action")
 	@ResponseBody
 	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,String birthday,String menType,String age, String chufCode, String daodCode, HttpSession session){
-		saveCost getCost = new saveCost();
+		mony_av getCost = new mony_av();
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
 		/*if("".equals(openID)||null==openID){

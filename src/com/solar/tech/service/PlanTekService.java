@@ -3,6 +3,7 @@ package com.solar.tech.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -66,6 +67,71 @@ public class PlanTekService {
 		}
 		
 		return resultList;
+	}
+	
+	/**
+	 * 组合中转航班的方法
+	 */
+	public List<FlightInfo> zuhe(List<FlightInfo> list){
+		List<FlightInfo> resultList = new ArrayList<FlightInfo>();
+		Random random = new Random();
+		for(int i=0; i<list.size(); i++){
+			for(int j=list.size()-1; j>i; j--){
+				if((list.get(i).getDstCity()).equals(list.get(j).getOrgCity())&&(list.get(i).getAirCode()).equals(list.get(j).getAirCode())&&changeSS(list.get(i).getDepTime(),list.get(i).getArrTime())>3600){
+					String[] storeInvitationChars={"A","B","C","D","1","E","F","G","H","2","I","0","J","K","3","L","M","8","N","4","O","P","5","Q","R","9","S","T","U","V","6","W","X","Y","7","Z"};
+					String sign = ""; //为两个符合的航班加上标识，以便在前台组合
+					for(int k=0; k<20; k++){
+		    			int index = random.nextInt(35);
+		    			sign += storeInvitationChars[index];
+		    		}
+					list.get(i).setSign(sign);
+					list.get(j).setSign(sign);
+					//System.out.println("打印出标识："+sign);
+					resultList.add(list.get(i));
+					resultList.add(list.get(j));
+				}
+			}
+		}
+		return resultList;
+	}
+	
+	/**
+	 * 将时间化成秒
+	 * @param start
+	 * @param overt
+	 * @return
+	 */
+	public static int changeSS(String start, String overt){
+		//将时间转换成秒来比较
+		String shh=null,smm=null,sdd=null;
+		int scount;
+		int ocount; //定义总时间的两个变量
+		String ohh=null,omm=null,odd=null;
+		
+		if(start.indexOf("+")>0){
+			shh = start.substring(0,2);
+			smm = start.substring(2,4);
+			sdd = start.substring(4,start.length());
+			scount = (Integer.parseInt(shh)*3600)+(Integer.parseInt(smm)*60)+(24*3600);
+		}else{
+			shh = start.substring(0,2);
+			smm = start.substring(2,start.length());
+			sdd = "0";
+			scount = (Integer.parseInt(shh)*3600)+(Integer.parseInt(smm)*60);
+		}
+		
+		if(overt.indexOf("+")>0){
+				ohh = overt.substring(0,2);
+				omm = overt.substring(2,4);
+				odd = overt.substring(4,overt.length());
+				ocount = (Integer.parseInt(ohh)*3600)+(Integer.parseInt(omm)*60)+(24*3600);
+		}else{
+				ohh = overt.substring(0,2);
+				omm = overt.substring(2,overt.length());
+				odd = "0";
+				ocount = (Integer.parseInt(ohh)*3600)+(Integer.parseInt(omm)*60);
+		}
+		return ocount-scount;
 	}
 	
 	/*//临时方法

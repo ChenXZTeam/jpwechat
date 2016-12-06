@@ -25,9 +25,10 @@ import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.SeatUtils;
 import com.solar.tech.utils.CityUtils;
-import com.solar.tech.utils.saveCost;
+import com.solar.tech.utils.mony_av;
 import com.travelsky.sbeclient.obe.response.AVDoubleResponse;
 import com.travelsky.sbeclient.obe.response.AvSegment;
+import com.travelsky.sbeclient.obe.response.FDItem;
 import com.travelsky.sbeclient.obe.response.PATFareItem;
 import com.travelsky.sbeclient.obe.response.PataFareResponse;
 
@@ -73,26 +74,43 @@ public class PlanTekController {
 				}
 			}
 		}
+		
 		//获得直达的航班
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo fli : newFlil){
 				if(fli.getOrgCity().equals(chufCity)&&fli.getDstCity().equals(daodCity)){
 					zhidFil.add(fli);  //重构直达的链表
-					System.out.println("直达航班："+zhidFil);
+					System.out.println("直达航班："+fli);
 				}
 			}
 		}
 		System.out.println("直达航班的数量："+zhidFil.size());
 		
-		//初步获得中转的链表
+		//获得中转的链表
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班
+					//   zhzDate[i].dstCity==zhzDate[j].orgCity&&MathTime(zhzDate[i].arrTime,zhzDate[j].depTime)>3600&&(zhzDate[i].airCode==zhzDate[j].airCode)
+					/*mony_av si = new mony_av();
+					List<FDItem> fdlInfo = si.getsInfo(zfli.getOrgCity(), zfli.getDstCity(), dateTime, zfli.getAirCode());
+					for(int i=0; i<zfli.getSeatList().size(); i++){
+						if(fdlInfo != null&&fdlInfo.size()>0){
+							for(FDItem fdi : fdlInfo){
+								if((zfli.getFlightNo()).equals(fdi.getAirline())&&(zfli.getOrgCity()).equals(fdi.getOrgCity())&&(zfli.getDstCity()).equals(fdi.getDstCity())&&(zfli.getSeatList().get(i).getCangwei()).equals(fdi.getCabin())){
+									zfli.getSeatList().get(i).setOnewayPrice(fdi.getOnewayPrice());
+									zfli.getSeatList().get(i).setRoundtripPrice(fdi.getRoundtripPrice());
+									zfli.getSeatList().get(i).setBasicCabin(fdi.getBasicCabin());
+								}
+							}
+						}
+					}*/
 					zhongzFil.add(zfli);  //重构中转的链表
-					System.out.println("中转航班："+zfli);
+					//System.out.println("中转航班："+zfli);
 				}
 			}
-		}			
+			zhongzFil = PlanTekServ.zuhe(zhongzFil);
+		}
+		
 		System.out.println("中转航班数组的长度："+zhongzFil.size());
 		
 		if(zhidFil.size()==0&&zhongzFil.size()==0){

@@ -150,6 +150,10 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 					console.log(data.zzListDate);
 					var getDate = data.listDate;//直达
 					var zhzDate = data.zzListDate;//中转
+					for(var i=0; i<zhzDate.length; i++){
+						console.log(zhzDate[i].sign);
+					}
+					console.log();
 					for(var i=0;i<getDate.length;i++){
 						var depTime=changeType(getDate[i].depTime);//经过处理的出发时间
 						var arrTime=changeType(getDate[i].arrTime);//经过处理的到达时间
@@ -200,7 +204,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 					for(var i=0; i<zhzDate.length; i++){
 						var liList;
 						for(var j=zhzDate.length-1; j>i; j--){
-							if(zhzDate[i].dstCity==zhzDate[j].orgCity&&MathTime(zhzDate[i].arrTime,zhzDate[j].depTime)>3600&&(zhzDate[i].airCode==zhzDate[j].airCode)){
+							if(zhzDate[i].sign==zhzDate[j].sign){
 								var onezhzDate = JSON.stringify(zhzDate[i]); //第一航段
 								var twozhzDate = JSON.stringify(zhzDate[j]); //第二航段
 								var rowseatInfo1 = zhzDate[i].seatList; //第一航段的座位
@@ -230,11 +234,11 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 								//加载舱位
 								for(var k=0; k<rowseatInfo1.length; k++){
 									for(var h=0; h<rowseatInfo2.length; h++){
-										if(rowseatInfo1[k].cangwei == rowseatInfo2[h].cangwei){
-											var cangType_csw = rowseatInfo1[h].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
+										if(rowseatInfo1[k].cangwei == rowseatInfo2[h].cangwei){ 
+											var cangType_csw = rowseatInfo1[k].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
 											var cangType_bas = cnCang(rowseatInfo2[h].basicCabin);
 											onewayPrice = rowseatInfo1[k].onewayPrice; //价钱第一航班信息
-											twowayPrice = rowseatInfo1[h].onewayPrice; //价钱第二航班信息
+											twowayPrice = rowseatInfo2[h].onewayPrice; //价钱第二航班信息
 											//alert(onewayPrice+", "+twowayPrice);
 											var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangType_bas+'</span><a class="zhzanotheryu" href=\'<%=basePath%>console/wechat/zhzconfirmInfo.jsp?dateTime='+dateTime+'&cangwei='+cangType_csw+'&onezhzDate='+onezhzDate+'&twozhzDate='+twozhzDate+'\'>预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseInt(onewayPrice)+parseInt(twowayPrice))+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou">＞</span></div><div style="clear:both;"></div></div></div></div></div></div>';
 											$(".zhzLiBox:eq("+countDivNum+") .cangweiClass").append(listDiv);
@@ -319,11 +323,21 @@ function changesTime(time){
 //根据时间参数进行大小比较
 function MathTime(starTime,overTime){
 	//将时间转换成秒来比较
-	var shh = starTime.substring(0,2);
-	var smm = starTime.substring(2,starTime.length);
+	var shh,smm,sdd;
 	var scount,ocount; //定义总时间的两个变量
-		scount = shh*3600+smm*60; //开始的总秒数
 	var ohh,omm,odd;
+	if(starTime.indexOf("+")>0){
+			shh = starTime.substring(0,2);
+			smm = starTime.substring(2,4);
+			sdd = starTime.substring(4,starTime.length);
+			scount = shh*3600+smm*60+24*3600;
+	}else{
+			shh = starTime.substring(0,2);
+			smm = starTime.substring(2,starTime.length);
+			sdd = "0";
+			scount = shh*3600+smm*60;
+	}
+	
 	if(overTime.indexOf("+")>0){
 			ohh = overTime.substring(0,2);
 			omm = overTime.substring(2,4);
