@@ -77,16 +77,13 @@ public class PlanTekService {
 		Random random = new Random();
 		for(int i=0; i<list.size(); i++){
 			for(int j=list.size()-1; j>i; j--){
-				if((list.get(i).getDstCity()).equals(list.get(j).getOrgCity())&&(list.get(i).getAirCode()).equals(list.get(j).getAirCode())&&changeSS(list.get(i).getDepTime(),list.get(i).getArrTime())>3600){
+				if((list.get(i).getDstCity()).equals(list.get(j).getOrgCity())&&(list.get(i).getAirCode()).equals(list.get(j).getAirCode())&&changeSS(list.get(i).getArrTime(),list.get(j).getDepTime())>3600){
 					String[] storeInvitationChars={"A","B","C","D","1","E","F","G","H","2","I","0","J","K","3","L","M","8","N","4","O","P","5","Q","R","9","S","T","U","V","6","W","X","Y","7","Z"};
 					String sign = ""; //为两个符合的航班加上标识，以便在前台组合
 					for(int k=0; k<20; k++){
 		    			int index = random.nextInt(35);
 		    			sign += storeInvitationChars[index];
 		    		}
-					list.get(i).setSign(sign);
-					list.get(j).setSign(sign);
-					//System.out.println("打印出标识："+sign);
 					resultList.add(list.get(i));
 					resultList.add(list.get(j));
 				}

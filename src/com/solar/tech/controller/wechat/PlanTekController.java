@@ -108,7 +108,7 @@ public class PlanTekController {
 					//System.out.println("中转航班："+zfli);
 				}
 			}
-			zhongzFil = PlanTekServ.zuhe(zhongzFil);
+			//zhongzFil = PlanTekServ.zuhe(zhongzFil);
 		}
 		
 		System.out.println("中转航班数组的长度："+zhongzFil.size());

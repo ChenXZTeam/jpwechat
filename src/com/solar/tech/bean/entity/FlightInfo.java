@@ -13,7 +13,6 @@ public class FlightInfo {
 	private String dstCity; // 到达城市
 	private String deplaneName; //起始机场名
 	private String arrPlaneName; //到达机场名
-	private String sign; //标识组合航班
 	
 	private List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 可用舱位信息
 	
@@ -97,22 +96,13 @@ public class FlightInfo {
 		this.arrPlaneName = arrPlaneName;
 	}
 
-	public String getSign() {
-		return sign;
-	}
-
-	public void setSign(String sign) {
-		this.sign = sign;
-	}
-
 	@Override
 	public String toString() {
 		return "FlightInfo [airCode=" + airCode + ", flightNo=" + flightNo
 				+ ", planeStyle=" + planeStyle + ", depTime=" + depTime
 				+ ", orgCity=" + orgCity + ", arrTime=" + arrTime
 				+ ", dstCity=" + dstCity + ", deplaneName=" + deplaneName
-				+ ", arrPlaneName=" + arrPlaneName + ", sign=" + sign
-				+ ", seatList=" + seatList + "]";
+				+ ", arrPlaneName=" + arrPlaneName + ", seatList=" + seatList + "]";
 	}
 	
 }
