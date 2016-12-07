@@ -11,22 +11,20 @@
 <title>机票预订</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css?time=123"/>
-<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/banner.css"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=123"/>
+<link href="<%=basePath%>console/css/banIndex.css?time=25" type="text/css" rel="stylesheet" />
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
 <script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js?time=123"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/banner.js"></script>
 <style>
 	body{margin:0px; padding:0px;}
-	.product .ziDiv{width:100%; margin-left:auto; margin-right:auto; border-bottom:#cccccc solid 1px;}
+	.product .ziDiv{width:100%; margin-left:auto; margin-right:auto; border-bottom:#e1e1e1 solid 1px;}
 	.mudiplace{padding:5px;}
-	.product .mudiplace .shi{width:40%; float:left; text-align:center;}
+	.product .mudiplace .shi{width:40%; float:left; font-size:12px; margin-left: 10px; text-align:left;}
 	.product .mudiplace .shi span{ line-height:23px; display:block; color:#B5B5B5;}
 	.product .mudiplace .to{width:45px; float:left;}
-	.product .mudiplace .zhong{width:40%; float:left; text-align:center;}
+	.product .mudiplace .zhong{float:right; text-align:right; margin-right:15px; font-size:12px;}
 	.product .mudiplace .zhong span{ line-height:23px; display:block; color:#B5B5B5;}
 	.product .gotime{ padding:15px 0 6px 0; }
 	.product .gotime .goDay{margin-left:20px; float:left; color:#B5B5B5;}
@@ -44,23 +42,14 @@
 </head>
 
 <body>
-	<!--图片轮播图 宽高比为2.77:1-->
+<!--图片轮播图 宽高比为2.77:1-->
 <div>
-	<div class="banner"> 
-		<div class="b-img">
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner01.png" style="width:100%;"/></div>
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner02.png" style="width:100%;"/></div>
-			<div class="runDiv"><img src="<%=basePath %>console/images/banner03.png" style="width:100%;"/></div>
-		</div>
-			
-		<div class="b-list"></div>
-			<!--
-			 <a class="bar-left" href="#"><em></em></a>
-			 <a class="bar-right" href="#"><em></em></a> 
-			 --->
-		<!--end 全屏滚动-->
-	</div> 
+	<ul id="slides">
+		<li style="background:url('<%=basePath %>console/images/banner0.png') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
+		<li style="background:url('<%=basePath %>console/images/banner1.jpg') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
+	</ul>
 </div>
+<script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script>
 <div class="lanrenzhijia">
   <div class="title cf">
     <ul class="title-list fr cf ">
@@ -77,14 +66,14 @@
        <div class="ziDiv mudiplace">
 	   		<div class="shi">
 				<span id="shi01">国内/国际出发城市</span>
-				<span id="shi001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">广州</span>
+				<span id="shi001" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">广州</span>
 				<span id="shi0001">广州新白云国际机场</span>
 				<span id="shi00001" style="display:none">CAN</span>
 			</div>
 			<div class="to dancheng" style="padding-top:5px; padding-bottom:7px;" onclick="dancheng()"><img src="<%=basePath %>console/images/wang.gif" width="35"/></div>
 			<div class="zhong">
 				<span id="zhong01">国内/国际到达城市</span>
-				<span id="zhong001" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
+				<span id="zhong001" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">北京</span>
 				<span id="zhong0001">北京首都国际机场</span>
 				<span id="zhong00001" style="display:none">PEK</span>			
 			</div>
@@ -92,7 +81,7 @@
 	   </div>
 	   <!--时间-->
 	   <div class="ziDiv gotime">
-	   		<div class="goDay">出发日期</div>
+	   		<div class="goDay" style="font-size:13px;">出发日期</div>
 			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
@@ -117,14 +106,14 @@
        <div class="ziDiv mudiplace">
 	   		<div class="shi">
 				<span>国内/国际出发城市</span>
-				<span id="shif02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
+				<span id="shif02" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
 				<span id="shif03">宝安机场T3</span>
 				<span id="shif04" style="display:none;">SZX</span>
 			</div>
 			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;" onclick="fangcheng()"><img src="<%=basePath %>console/images/wangfan.gif" width="35"/></div>
 			<div class="zhong">
 				<span>国内/国际到达城市</span>
-				<span id="zhongf02" class="CityChoose" style="font-size:18px; color:#666666; font-family:Microsoft YaHei;">北京</span>
+				<span id="zhongf02" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">北京</span>
 				<span id="zhongf03">首都机场T3</span>
 				<span id="zhongf04" style="display:none;">PEK</span>			
 			</div>
@@ -132,12 +121,12 @@
 	   </div>
 	   <!--时间-->
 	   <div class="ziDiv gotime">
-	   		<div class="goDay">出发日期</div>
+	   		<div class="goDay" style="font-size:13px;">出发日期</div>
 			<div class="goTimeDiv"><input type="text" class="jcDate jcD02" id="gofaTime" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <div class="ziDiv gotime">
-	   		<div class="goDay">返程日期</div>
+	   		<div class="goDay" style="font-size:13px;">返程日期</div>
 			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" id="fancDate" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>

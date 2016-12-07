@@ -3013,7 +3013,7 @@ function findByplaneName(code){
 			"ZNZ":"桑给巴尔机场",
 			"ZQN":"皇后镇机场",
 			"ZQZ":"张家口宁远机场",
-			"ZRH":"苏黎世",
+			"ZRH":"苏黎世机场",
 			"ZST":"斯图尔特机场",
 			"ZTH":"扎金索斯机场",
 			"ZUH":"珠海三灶国际机场",
