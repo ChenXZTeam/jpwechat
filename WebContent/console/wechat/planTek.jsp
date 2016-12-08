@@ -171,7 +171,6 @@
 			<li><div class="remenLi"><span class="cityName">深圳</span><span class="planeName">深圳宝安国际机场</span><span class="airportCode">SZX</span></div></li>
 			<li><div class="remenLi"><span class="cityName">石家庄</span><span class="planeName">石家庄正定国际机场</span><span class="airportCode">SJW</span></div></li>
 			<li><div class="remenLi"><span class="cityName">广州</span><span class="planeName">广州新白云国际机场</span><span class="airportCode">CAN</span></div></li>
-			<li><div class="remenLi"><span class="cityName">长沙</span><span class="planeName">长沙黄花国际机场</span><span class="airportCode">CSX</span></div></li>
 		</ul>
 		<div style="clear:both;"></div>
 	</div>
@@ -575,7 +574,6 @@
 </body>
 <script>
 	$(function(){
-		var gofind=true;		
 		//单程的舱位切换
 		$(".cangwei .cang").click(function(){
 			$(this).addClass('on').siblings().removeClass('on');
@@ -635,17 +633,13 @@
 		var chufCityCode = $("#shi00001").text();
 		var daodCityCode = $("#zhong00001").text();
 		var cangW = $(".cang.on").text();
+		if(cangW=="经济舱"){cangW = "Y";}else if(cangW=="公务舱"){cangW = "C";}else if(cangW=="头等舱"){cangW = "F";}
 		var dateTime = $(".jcD01").val();
 		if(dateTime==""){
 			alert("请选择出发日期");
-			gofind=false;
-			return false;
-		}else{
-			gofind=true;
+			return false;	
 		}
-		if(gofind==true){
-			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&chufPlan="+chufPlan+"&daodPlan="+daodPlan;
-		}
+		window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&chufPlan="+chufPlan+"&daodPlan="+daodPlan;
 	}
 	
 	function bb(){
@@ -654,24 +648,19 @@
 		var chufPlan = $("#shif03").text();
 		var daodPlan = $("#zhongf03").text();
 		var chufCityCode = $("#shif04").text();
-		var daodCityCode = $("#zhongf04").text();
-		var cangW = $(".cang1.on").text();*/
+		var daodCityCode = $("#zhongf04").text();*/
+		var cangW = $(".cang1.on").text();
 		var dateTime = $(".jcD02").val(); 
-		
 		var chufCityCode = $("#shif04").text();
 		var daodCityCode = $("#zhongf04").text();
 		var dateTime = $("#gofaTime").val();
+		if(cangW=="经济舱"){cangW = "Y";}else if(cangW=="公务舱"){cangW = "C";}else if(cangW=="头等舱"){cangW = "F";}
 		var returnTime = $("#fancDate").val();
 		if(dateTime==""||returnTime==""){
 			alert("请选择日期");
-			gofind=false;
 			return false;
-		}else{
-			gofind=true;
 		}
-		if(gofind==true){
-			window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime;
-		}
+		window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime+"&cangW="+cangW;
 	}
 </script>
 </html>

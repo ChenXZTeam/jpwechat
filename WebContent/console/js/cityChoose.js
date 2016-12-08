@@ -13,7 +13,7 @@ $(function(){
 	$(".CityChoose").click(function(){	
 		$(document).attr("title","城市选择");
 		$(this).addClass("CityC");
-		$("#CityCH").fadeIn();
+		$("#CityCH").css("display","block");
 	});
 	
 	//城市子类信息选择(热门)
@@ -23,7 +23,7 @@ $(function(){
 		$(".CityC").next().next().text($(this).children(".airportCode").text());
 		$(".CityChoose").removeClass("CityC");
 		$(document).attr("title","机票查询");
-		$("#CityCH").fadeOut();
+		$("#CityCH").css("display","none");
 	});
 	
 	//城市子类信息选择(城市链表)
@@ -34,7 +34,7 @@ $(function(){
 		//alert($(this).children(".airportCode").text());
 		$(".CityChoose").removeClass("CityC");
 		$(document).attr("title","机票查询");
-		$("#CityCH").fadeOut();
+		$("#CityCH").css("display","none");
 	});
 	
 	//城市查找中的搜索按钮点击事件
@@ -74,7 +74,7 @@ function myFunction() {
 		var cityname = $(".chCity:eq("+i+")").text();
 		var palnename = $(".chCity:eq("+i+")").next().text();
 		var airCodeName = $.trim($(".chCity:eq("+i+")").next().next().text());
-		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span><span style="display:none;" class="palneName01">'+palnename+'</span><span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
+		var dateList = '<div class="pipeiChildren" onclick="javascript:chaRes(this)"><span class="cityName01">'+cityname+'</span><span style="font-size:12px;" class="palneName01">（'+palnename+'）</span><span style="display:none;" class="airCode01">'+airCodeName+'</span></div>';
 		$("#pipeiValue").append(dateList);
 	}
 }
@@ -82,10 +82,12 @@ function myFunction() {
 //索引出来的结果的点击事件
 function chaRes(inc){
 	$(".CityC").text($(inc).children(".cityName01").text());//选择的城市名字
-	$(".CityC").next().text($(inc).children(".palneName01").text());//选择的城市名字
+	var plname = $(inc).children(".palneName01").text();
+	plname = plname.substring(1,plname.length-1);
+	$(".CityC").next().text(plname);//选择的城市机场名
 	$(".CityC").next().next().text($(inc).children(".airCode01").text());//选择的城市名字
 	$("#pipeiValue").css("display","none");
 	$(".CityChoose").removeClass("CityC");
 	$(document).attr("title","机票查询");
-	$("#CityCH").fadeOut();
+	$("#CityCH").css("display","none");
 }

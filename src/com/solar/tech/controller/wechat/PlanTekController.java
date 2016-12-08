@@ -62,15 +62,7 @@ public class PlanTekController {
 		if(tempFlil != null && tempFlil.size() > 0){
 			for(FlightInfo f : tempFlil){
 				if(f.getSeatList().size()!=0){
-					int hasNum = 0;
-					for(SeatInfo info : f.getSeatList()){
-						if(SeatUtils.getSeatType(info.getBasicCabin()).equals(cangW)){
-							if(hasNum==0){
-								newFlil.add(f);  //将符合的航班加入新的数组链表里面
-								hasNum++;
-							}
-						}
-					}
+					newFlil.add(f);  //将符合的航班加入新的数组链表里面
 				}
 			}
 		}
@@ -80,7 +72,6 @@ public class PlanTekController {
 			for(FlightInfo fli : newFlil){
 				if(fli.getOrgCity().equals(chufCity)&&fli.getDstCity().equals(daodCity)){
 					zhidFil.add(fli);  //重构直达的链表
-					System.out.println("直达航班："+fli);
 				}
 			}
 		}
@@ -90,25 +81,10 @@ public class PlanTekController {
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班
-					//   zhzDate[i].dstCity==zhzDate[j].orgCity&&MathTime(zhzDate[i].arrTime,zhzDate[j].depTime)>3600&&(zhzDate[i].airCode==zhzDate[j].airCode)
-					/*mony_av si = new mony_av();
-					List<FDItem> fdlInfo = si.getsInfo(zfli.getOrgCity(), zfli.getDstCity(), dateTime, zfli.getAirCode());
-					for(int i=0; i<zfli.getSeatList().size(); i++){
-						if(fdlInfo != null&&fdlInfo.size()>0){
-							for(FDItem fdi : fdlInfo){
-								if((zfli.getFlightNo()).equals(fdi.getAirline())&&(zfli.getOrgCity()).equals(fdi.getOrgCity())&&(zfli.getDstCity()).equals(fdi.getDstCity())&&(zfli.getSeatList().get(i).getCangwei()).equals(fdi.getCabin())){
-									zfli.getSeatList().get(i).setOnewayPrice(fdi.getOnewayPrice());
-									zfli.getSeatList().get(i).setRoundtripPrice(fdi.getRoundtripPrice());
-									zfli.getSeatList().get(i).setBasicCabin(fdi.getBasicCabin());
-								}
-							}
-						}
-					}*/
 					zhongzFil.add(zfli);  //重构中转的链表
-					//System.out.println("中转航班："+zfli);
+					System.out.println("中转航班："+zfli);
 				}
 			}
-			//zhongzFil = PlanTekServ.zuhe(zhongzFil);
 		}
 		
 		System.out.println("中转航班数组的长度："+zhongzFil.size());
