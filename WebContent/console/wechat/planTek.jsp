@@ -96,8 +96,8 @@
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--按钮-->
-	   <div class="btnDiv" onclick="aa()">
-	   		<a>机票查询</a>
+	   <div class="btnDiv">
+	   		<a href="javascript:aa()">机票查询</a>
 	   </div>
     </div>
     <!--案例2-->
@@ -141,8 +141,8 @@
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--按钮-->
-	   <div class="btnDiv" onclick="bb()">
-	   		<a>机票查询</a>
+	   <div class="btnDiv">
+	   		<a href="javascript:bb()">机票查询</a>
 	   </div>
     </div>
   </div>
