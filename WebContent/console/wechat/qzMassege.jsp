@@ -57,8 +57,8 @@
 	<!--轮播图-->
   <div>
 	<ul id="slides">
-		<li style="background:url('<%=basePath %>console/images/banner0.png') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
-		<li style="background:url('<%=basePath %>console/images/banner1.jpg') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
+		<li style="background:url('<%=basePath %>console/images/banner0.png') no-repeat center top; background-size:100% 100%;"><a href="javascript:void(0)"></a></li>
+		<li style="background:url('<%=basePath %>console/images/banner1.jpg') no-repeat center top; background-size:100% 100%;"><a href="javascript:void(0)"></a></li>
 	</ul>
 </div>
 <script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script>
@@ -75,7 +75,7 @@
 	
 	<!--热门大洲-->
 	<div class="dazhou">
-		<div class="float" id="ya"><img src="<%=basePath %>console/images/yazhou.gif" onclick="a()"/><span style="color:#B6B6B6;">亚洲</span></div>
+		<div class="float" id="ya"><img src="<%=basePath %>console/images/yazhou.gif"/><span style="color:#56ABE4;">亚洲</span></div>
 		<div class="float" id="mei"><img src="<%=basePath %>console/images/meizhoug.gif" style="height:31px;"/><span>美洲</span></div>
 		<div class="float" id="fei"><img src="<%=basePath %>console/images/feizhoug.gif"/><span>非洲</span></div>
 		<div class="float" id="ou"><img src="<%=basePath %>console/images/ouzhoug.gif"/><span style="height:40px;">欧洲</span></div>
@@ -270,12 +270,8 @@
 	$(function(){
 		//图片的切换
 		$(".float").click(function(){
-			resetImg();
-			if($(this).children("span").text()=="亚洲")$(this).children("img").attr("src","<%=basePath %>console/images/yazhou.gif");
-			if($(this).children("span").text()=="美洲")$(this).children("img").attr("src","<%=basePath %>console/images/meizhoug.gif");
-			if($(this).children("span").text()=="非洲")$(this).children("img").attr("src","<%=basePath %>console/images/feizhoug.gif");
-			if($(this).children("span").text()=="欧洲")$(this).children("img").attr("src","<%=basePath %>console/images/ouzhoug.gif");
 			$(this).children("span").css("color","#56ABE4");
+			$(this).siblings().children("span").css("color","#B6B6B6");
 		});
 		
 		//显示城市选择框
@@ -370,19 +366,6 @@
 		var countryId = $(inc).next().text();
 		window.location.href="<%=basePath %>console/wechat/qzOneCoInfo.jsp?countryId="+countryId;
 	}
-	
-	//图片恢复成灰色的样式
-	function resetImg(){
-		$(".float").eq(0).children("img").attr("src","<%=basePath %>console/images/yazhou.gif");
-		$(".float").eq(0).children("span").css("color","#B6B6B6");	
-		$(".float").eq(1).children("img").attr("src","<%=basePath %>console/images/meizhoug.gif");
-		$(".float").eq(1).children("span").css("color","#B6B6B6");	
-		$(".float").eq(2).children("img").attr("src","<%=basePath %>console/images/feizhoug.gif");
-		$(".float").eq(2).children("span").css("color","#B6B6B6");	
-		$(".float").eq(3).children("img").attr("src","<%=basePath %>console/images/ouzhoug.gif");
-		$(".float").eq(3).children("span").css("color","#B6B6B6");	
-	}	
-	
 	
 	//百度定位的方法
 	var geolocation = new BMap.Geolocation();    
