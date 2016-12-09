@@ -67,7 +67,7 @@
 	<!--热门国家地区标题-->
 	<div class="cityTitle">
 		
-		<div style="line-height:20px; margin-left:5px; float:left; font-size:12px;"><span>热门国家/地区</span></div>
+		<div style="line-height:20px; margin-left:5px; float:left; font-size:12px;"><span><font color="blue" style="font-weight:bold;">|</font>&nbsp;&nbsp;热门国家/地区</span></div>
 		<div style="line-height:20px; float:right;">＞</div>
 		<div style="line-height:20px; float:right; font-size:12px;"><span>更多</span></div>
 		<div style="clear:both;"><span id="basePathID" style="display:none;"><%=basePath %></span></div>
@@ -75,10 +75,10 @@
 	
 	<!--热门大洲-->
 	<div class="dazhou">
-		<div class="float" id="ya"><img src="<%=basePath %>console/images/qiuMap02.gif"/><span style="color:#56ABE4;">亚洲</span></div>
-		<div class="float" id="mei"><img src="<%=basePath %>console/images/meizhou01.gif" style="height:31px;"/><span>美洲</span></div>
-		<div class="float" id="fei"><img src="<%=basePath %>console/images/feizhou01.gif"/><span>非洲</span></div>
-		<div class="float" id="ou"><img src="<%=basePath %>console/images/ouzhou01.png"/><span>欧洲</span></div>
+		<div class="float" id="ya"><img src="<%=basePath %>console/images/yazhou.gif" onclick="a()"/><span style="color:#B6B6B6;">亚洲</span></div>
+		<div class="float" id="mei"><img src="<%=basePath %>console/images/meizhoug.gif" style="height:31px;"/><span>美洲</span></div>
+		<div class="float" id="fei"><img src="<%=basePath %>console/images/feizhoug.gif"/><span>非洲</span></div>
+		<div class="float" id="ou"><img src="<%=basePath %>console/images/ouzhoug.gif"/><span style="height:40px;">欧洲</span></div>
 		<div style="clear:both"></div>
 	</div>
 	
@@ -271,10 +271,10 @@
 		//图片的切换
 		$(".float").click(function(){
 			resetImg();
-			if($(this).children("span").text()=="亚洲")$(this).children("img").attr("src","<%=basePath %>console/images/qiuMap02.gif");
-			if($(this).children("span").text()=="美洲")$(this).children("img").attr("src","<%=basePath %>console/images/meizhou02.png");
-			if($(this).children("span").text()=="非洲")$(this).children("img").attr("src","<%=basePath %>console/images/feizhou02.gif");
-			if($(this).children("span").text()=="欧洲")$(this).children("img").attr("src","<%=basePath %>console/images/ouzhou02.png");
+			if($(this).children("span").text()=="亚洲")$(this).children("img").attr("src","<%=basePath %>console/images/yazhou.gif");
+			if($(this).children("span").text()=="美洲")$(this).children("img").attr("src","<%=basePath %>console/images/meizhoug.gif");
+			if($(this).children("span").text()=="非洲")$(this).children("img").attr("src","<%=basePath %>console/images/feizhoug.gif");
+			if($(this).children("span").text()=="欧洲")$(this).children("img").attr("src","<%=basePath %>console/images/ouzhoug.gif");
 			$(this).children("span").css("color","#56ABE4");
 		});
 		
@@ -373,13 +373,13 @@
 	
 	//图片恢复成灰色的样式
 	function resetImg(){
-		$(".float").eq(0).children("img").attr("src","<%=basePath %>console/images/qiuMap01.gif");
+		$(".float").eq(0).children("img").attr("src","<%=basePath %>console/images/yazhou.gif");
 		$(".float").eq(0).children("span").css("color","#B6B6B6");	
-		$(".float").eq(1).children("img").attr("src","<%=basePath %>console/images/meizhou01.gif");
+		$(".float").eq(1).children("img").attr("src","<%=basePath %>console/images/meizhoug.gif");
 		$(".float").eq(1).children("span").css("color","#B6B6B6");	
-		$(".float").eq(2).children("img").attr("src","<%=basePath %>console/images/feizhou01.gif");
+		$(".float").eq(2).children("img").attr("src","<%=basePath %>console/images/feizhoug.gif");
 		$(".float").eq(2).children("span").css("color","#B6B6B6");	
-		$(".float").eq(3).children("img").attr("src","<%=basePath %>console/images/ouzhou01.png");
+		$(".float").eq(3).children("img").attr("src","<%=basePath %>console/images/ouzhoug.gif");
 		$(".float").eq(3).children("span").css("color","#B6B6B6");	
 	}	
 	
