@@ -13,10 +13,10 @@
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css?time=123"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=123"/>
 <link href="<%=basePath%>console/css/banIndex.css?time=25" type="text/css" rel="stylesheet" />
-<script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/planTek.js" charset="utf-8"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/jcDate.js"></script>
-<script type="text/javascript"  src="<%=basePath %>console/js/cityChoose.js?time=123"></script>
+<script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>console/js/planTek.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>console/js/jcDate.js"></script>
+<script type="text/javascript"  src="<%=basePath%>console/js/cityChoose.js?time=123"></script>
 <style>
 	body{margin:0px; padding:0px;}
 	.product .ziDiv{width:100%; margin-left:auto; margin-right:auto; border-bottom:#e1e1e1 solid 1px;}

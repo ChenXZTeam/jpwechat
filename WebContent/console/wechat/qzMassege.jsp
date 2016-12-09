@@ -10,10 +10,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>签证信息</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/qzBanner.css"/>
+<link type="text/css" rel="stylesheet" href="<%=basePath%>console/css/banIndex.css?time=25"/>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/QZcityChoose.css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/qzBanner.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/QZcityChoose.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/getLetter.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vKCQUCy8RGAuMMHU3iPH226z32Ojt6fI" charset="utf-8"></script>
@@ -55,15 +55,13 @@
 	</div>
 	
 	<!--轮播图-->
-  <div class="banner"> 
-  <div class="b-img">
-  	<div class="runDiv"><img src="<%=basePath %>console/images/banner0.jpg" style="width:100%;"/></div>
-	<div class="runDiv"><img src="<%=basePath %>console/images/banner1.jpg" style="width:100%;"/></div>
-	<div class="runDiv"><img src="<%=basePath %>console/images/banner2.jpg" style="width:100%;"/></div>
-  </div>
-
-  <div class="b-list"></div>
-   
+  <div>
+	<ul id="slides">
+		<li style="background:url('<%=basePath %>console/images/banner0.png') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
+		<li style="background:url('<%=basePath %>console/images/banner1.jpg') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
+	</ul>
+</div>
+<script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script>
 <!--end 全屏滚动-->
 	
 	<!--热门国家地区标题-->
