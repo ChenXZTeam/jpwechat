@@ -350,7 +350,7 @@
 			}
 		}
 		
-		//加载热门国家的选择
+		//加载热门国家的选择 
 		for(var i=0; i<visaList.length; i++){
 			var counName = visaList[i].country;
 			var countryID = visaList[i].countryID;
