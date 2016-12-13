@@ -92,7 +92,7 @@
 	.zhzLiBox .flidNameBox .zhongPlanNa .zhzSpan{ display:block; float:left; line-height:22px; color:#999999; height: 20px;}
 	.zhzLiBox .flidNameBox .zhongPlanNa img{display:block; float:left;}
 	.zhzLiBox .monAndtick{ float:right; padding-right:8px;}
-	.zhzLiBox .monAndtick .moneyCPY{line-height:33px; font-family:'微软雅黑'; margin-top:10px;}
+	.zhzLiBox .monAndtick .moneyCPY{line-height:33px; font-family:'微软雅黑';}
 	.zhzLiBox .monAndtick .moneyCPY .oneMoneyHouse{color:#FF8201; font-size:14px; font-family:Arial, Helvetica, sans-serif;}
 	.zhzLiBox .monAndtick .tickNum{line-height:15px; text-align:center; color:#999999;}
 	.zhzLiBox .infoMessgBox{ height:15px;}

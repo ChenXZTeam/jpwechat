@@ -3,6 +3,7 @@ package com.solar.tech.controller.wechat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.SeatUtils;
 import com.solar.tech.utils.CityUtils;
+import com.solar.tech.utils.fd_av;
 import com.solar.tech.utils.mony_av;
 import com.travelsky.sbeclient.obe.response.AVDoubleResponse;
 import com.travelsky.sbeclient.obe.response.AvSegment;
@@ -78,9 +80,12 @@ public class PlanTekController {
 		System.out.println("直达航班的数量："+zhidFil.size());
 		
 		//获得中转的链表
+		fd_av af = new fd_av();
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班
+					/*System.out.println("<<<<=====>>>> "+zfli.getOrgCity()+", "+zfli.getDstCity()+", "+af.getNextDate(dateTime, zfli.getDepTime(), Calendar.DATE, "yyyy-MM-dd")+", "+zfli.getAirCode()+", "+zfli.getFlightNo());*/
+					zfli.setSeatList(af.seatInfo(zfli.getOrgCity(), zfli.getDstCity(), af.getNextDate(dateTime, zfli.getDepTime(), Calendar.DATE, "yyyy-MM-dd"), zfli.getAirCode(), zfli.getFlightNo()));
 					zhongzFil.add(zfli);  //重构中转的链表
 					System.out.println("中转航班："+zfli);
 				}
@@ -182,4 +187,5 @@ public class PlanTekController {
 		map.put("c", PlanTekServ.getPlanList());
 		return map;
 	}*/
+
 }

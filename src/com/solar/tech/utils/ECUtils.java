@@ -165,8 +165,8 @@ public class ECUtils {
 				}
 			}
 		} catch (ObeException e) {
-			//e.printStackTrace();
-			System.out.println("=====>>>>>能捕获到可用座位的异常");
+			e.printStackTrace();
+			//System.out.println("=====>>>>>能捕获到可用座位的异常");
 		} 
 		return null;
 	}
@@ -198,8 +198,8 @@ public class ECUtils {
 				return fdResponse.getFare().getSortedfares(); // 返回所有的运价信息
 			}
 		} catch (ObeException e) {
-			//e.printStackTrace();
-			System.out.println("=====>>>>>能捕获到运价的异常");
+			e.printStackTrace();
+			//System.out.println("=====>>>>>能捕获到运价的异常");
 		} 
 		return null;
 	}
@@ -245,7 +245,7 @@ public class ECUtils {
 			}
 		} catch (ObeException e) { 
 			e.printStackTrace(); 
-			System.out.println("=====>>>>>能捕获到没有指定航班的异常");
+			//System.out.println("=====>>>>>能捕获到没有指定航班的异常");
 		}
 		return null;
 	}
@@ -300,8 +300,8 @@ public class ECUtils {
 				AVDoubleResponse avResponse = avClient.avForRoundTrip(request);
 				return avResponse;
 			} catch (ObeException e) { 
-				System.out.println("=======>>>>捕获到往返航班搜索结果的异常");
-				//e.printStackTrace(); 
+				//System.out.println("=======>>>>捕获到往返航班搜索结果的异常");
+				e.printStackTrace(); 
 				return null;
 			} 
 	}
