@@ -55,7 +55,6 @@ public class InviteCodeContorller {
 	@RequestMapping("/getAllInvitCode.action")
 	@ResponseBody
 	public Map<String, Object> getAllInvitationCode(int page, int rows){
-		System.out.println(page+", "+rows);
 		return this.inviteCodeService.getCodeList(page,rows);
 	}
 	
@@ -82,7 +81,8 @@ public class InviteCodeContorller {
 	 */
 	@RequestMapping("/updateCode.action")
 	@ResponseBody
-	public void update(InvitationCode invitationCode,String deadline_){
+	public void update(InvitationCode invitationCode,String deadline_ ,String id){
+		invitationCode.setID(id);
 		this.inviteCodeService.updateCode(invitationCode, deadline_);
 	}
 	

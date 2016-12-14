@@ -1,5 +1,6 @@
 package com.solar.tech.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.solar.tech.bean.AbstractUser;
 import com.solar.tech.bean.User;
 import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.controller.AbstractUserController;
@@ -41,7 +45,8 @@ public class UserController extends AbstractUserController{
 	public Map<String, Object> addUser(User user){
 		Map<String, Object> map = new HashMap<String, Object>();
 		int i = userService.addUser(user);
-		if(i==1){
+		int j = userService.addUserinGroup(user.getUserUID());
+		if(i==1&&j==1){
 			map.put("success", true);
 		}
 		return map;
@@ -56,6 +61,28 @@ public class UserController extends AbstractUserController{
 		System.out.println(map);
 		return map;
 	}
+	
+	 @RequestMapping({"/update.action"})
+	 @ResponseBody
+	 public String updateUser(String userUID, @RequestParam("userName") String userName, String userType, String userClass, Integer userStatus, String email, String headImg, MultipartFile headImgFile, String mobile, String userExtProps, String description)
+	     throws IllegalStateException, IOException
+	 {
+	     Map<String, Object> dataResult = new HashMap<String, Object>();
+	     AbstractUser user = this.userService.get(userUID);
+	     user.setUserUID(userUID);
+	     user.setUserName(userName);
+	     user.setUserType(userType);
+	     if (userClass != null) user.setUserClass(userClass);
+	     user.setUserStatus(userStatus);
+	     user.setEmail(email);
+	     user.setMobile(mobile);
+	     user.setUserExtProps(userExtProps);
+	     user.setDescription(description);
+	     user.setHeadImg(headImg);
+	     this.userService.updateUser(user, headImgFile);
+	     dataResult.put("success", Boolean.valueOf(true));
+	     return "";
+	 }
 
 	@RequestMapping("/findAllUser.action")
 	@ResponseBody

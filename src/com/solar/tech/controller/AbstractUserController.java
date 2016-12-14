@@ -25,7 +25,7 @@
 //   @RequestMapping({"/shows.action"})
    @ResponseBody
    public Map<String, Object> shows(int page, int rows) {
-     Map dataResult = this.userService.shows(page, rows);
+     Map<String, Object> dataResult = this.userService.shows(page, rows);
      dataResult.put("success", Boolean.valueOf(true));
      return dataResult;
    }
@@ -46,17 +46,17 @@
      user.setUserExtProps(userExtProps);
      user.setDescription(description);
      this.userService.addUser(user, headImgFile);
-     Map dataResult = new HashMap();
+     Map<String, Object> dataResult = new HashMap<String, Object>();
      dataResult.put("success", Boolean.valueOf(true));
      return "";
    }
  
-//   @RequestMapping({"/update.action"})
+  // @RequestMapping({"/update.action"})
    @ResponseBody
    public String updateUser(String userUID, @RequestParam("userName") String userName, String password, String userType, String userClass, Integer userStatus, String email, String headImg, MultipartFile headImgFile, String mobile, String userExtProps, String description)
      throws IllegalStateException, IOException
    {
-     Map dataResult = new HashMap();
+     Map<String, Object> dataResult = new HashMap<String, Object>();
      AbstractUser user = this.userService.get(userUID);
      user.setUserUID(userUID);
      user.setUserName(userName);
@@ -76,7 +76,7 @@
 //   @RequestMapping({"/delete.action"})
    @ResponseBody
    public Map<String, Object> deleteUser(String userUID) {
-     Map dataResult = new HashMap();
+     Map<String, Object> dataResult = new HashMap<String, Object>();
      try {
        this.userService.deleteUser(userUID);
        dataResult.put("success", Boolean.valueOf(true));

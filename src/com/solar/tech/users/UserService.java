@@ -39,6 +39,19 @@ public class UserService extends AbstractUserService{
 		}
 	}
 	
+	public int addUserinGroup(String uid){
+		 UserInGroup userInGroup = new UserInGroup();
+	     userInGroup.setUserUID(uid);
+	     userInGroup.setGroupId(1);
+	     userInGroup.setUGID((int)System.currentTimeMillis());
+	     try {
+				gDao.save(userInGroup);
+				return 1;
+			} catch (Exception e) {
+				return 0;
+			}
+	}
+	
 	public void deleteUser(String userUID){
 //		UserInGroup uig = gDao.findById(UserInGroup.class, userUID);---id不对应  ，所需是UGId,而传的是userUID
 		UserInGroup uig = new UserInGroup();

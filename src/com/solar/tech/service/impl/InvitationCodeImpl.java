@@ -92,7 +92,6 @@ public class InvitationCodeImpl implements InviteCodeService {
     	Date deadline;
 			try {
 				deadline = format.parse(deadline_);
-				System.out.println(deadline);
 				invitationCode.setDeadline(deadline);
 			} catch (ParseException e) {
 				e.printStackTrace();

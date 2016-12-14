@@ -169,20 +169,23 @@
 		function updateCode(){
 			var rows = $("#tt").datagrid("getChecked");
 			if(rows.length==1){
-                 $("#tt").form('clear'); 
                  $("input[name='invitationCode']").attr("value",rows[0].invitationCode);
-                 $("input[value='"+rows[0].type+"']").attr("checked","checked");
+                 $("input[name='id']").attr("value",rows[0].id);
                  $("#remarks").textbox("setValue",rows[0].remarks);
                  var date = new Date(rows[0].deadline);
                  $("#deadline_").datebox("setValue",date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
                  var sum = rows[0].sum;
                  var discount = rows[0].discount;
                  if(sum!=null&&sum!=''&&sum!=0){
+                 		document.getElementById("preferential").checked=true;
+                 		document.getElementById("discount").checked=false;
                  		$(".fitem").eq(1).find("label").html("优惠金额:");
              			$(".fitem").eq(1).find("input").attr("name","sum");
                  		$("#money").textbox('setValue',rows[0].sum);
                  }
                  if(discount!=null&&discount!=''&&discount!=0){
+                 		document.getElementById("discount").checked=true;
+                 		document.getElementById("preferential").checked=false;
                  		$(".fitem").eq(1).find("label").html("折扣:");
              			$(".fitem").eq(1).find("input").attr("name","discount");
                  		$("#money").textbox('setValue',rows[0].discount);
@@ -277,14 +280,17 @@
 			console.log(users.length);
 		}
 		function doPreferential(){
+			$("#money").textbox("setValue","");
 			$(".fitem").eq(1).find("label").html("优惠金额:");
 			$(".fitem").eq(1).find("input").attr("name","sum");
+			$("#remarks").textbox("setValue","");
 		}
 		
 		function doDiscount(){
+			$("#money").textbox("setValue","");
 			$(".fitem").eq(1).find("label").html("折扣:");
 			$(".fitem").eq(1).find("input").attr("name","discount");
-			console.log("discount");
+			$("#remarks").textbox("setValue","");
 		}
 		
 		//发送短信邀请码的方法
@@ -293,11 +299,8 @@
 			console.log(arr);
 			for(i=0;i<arr.length;i++){
 				var user=($(arr[i]).prop("checked"));
-				
 				var tel =($(arr[i]).val());
-				
 				if(user==true){
-					
 					$.ajax({
 		                url: "<%=basePath%>framework/invite/send.action",
 		                type: "POST",
@@ -346,11 +349,12 @@
 	padding: 10px 20px" closed="true" buttons="#dlg-buttons">
 		<div class="ftitle" id="ftitle"></div>
 		<form id="fm" method="post" enctype="multipart/form-data">
-		<input tyep="text" name="invitationCode" hidden="hidden"/>
+		<input type="hidden" name="invitationCode"/>
+		<input type="hidden" name="id"/>
 		<div class="fitem">
 			<label>邀请码类型:</label>		
 			<input name="type" type="radio" value="<%= InvitationCode.PREFERENTIAL %>" onfocus="doPreferential()" id="preferential">优惠</input>
-			<input name="type" type="radio" value="<%= InvitationCode.DISCOUNT %>" onfocus="doDiscount()">折扣</input>
+			<input name="type" type="radio" value="<%= InvitationCode.DISCOUNT %>" onfocus="doDiscount()" id="discount">折扣</input>
 		</div>
 		<div class="fitem">
 			<label>优惠金额:</label> 		

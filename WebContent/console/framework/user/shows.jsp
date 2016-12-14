@@ -15,7 +15,7 @@
 <script type="text/javascript"src="<%=basePath %>scripts/common/jquery-easyui/jquery.min.js"></script>
 <script type="text/javascript"src="<%=basePath %>scripts/common/jquery-easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript"src="<%=basePath %>scripts/common/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
-<title>Insert title here</title>
+<title>用户管理</title>
 <style type="text/css">
 * {
 	padding: 0px;
@@ -142,7 +142,6 @@ function editBean(row){
         if(row.userClass=='SYST'){
         	//$("#fitemPassword").append(fitemPassword);
         	$("#fitemPassword").show();
-        	
         }else{
         	//fitemPassword=$(".fitem_password").remove();
         	$("#fitemPassword").hide();
@@ -150,8 +149,8 @@ function editBean(row){
         row.password2=row.password="******";
         $('#dlg').dialog('open').dialog('setTitle','');
         $('#fm').form('load',row);
-        $("#headImgFile").val("");
-        $('#headImg').attr("src", "<%=basePath%>/images/framework/headimgs/"+ $("[name='headImg']").eq(0).val());
+        //$("#headImgFile").val("");
+        <%-- $('#headImg').attr("src", "<%=basePath%>/images/framework/headimgs/"+ $("[name='headImg']").eq(0).val()); --%>
         url = '<%=basePath%>framework/user/update.action';    
         $('#ftitle').html("修改用户信息");
     }
@@ -255,12 +254,12 @@ $.extend($.fn.validatebox.defaults.rules, {
 					 	data-options="required:true,validType:['equalTo[\'#password\']']"/>
 				</div>
 			</div>
-			<div class="fitem">
+			<%-- <div class="fitem">
 				<label>用户类型:</label>
 				 <input name="<%=User.USERCLASS %>" type="radio" value="<%=User.UserClass.SYSADMIN %>"/>系统管理员
 				 <input name="<%=User.USERCLASS %>" type="radio" value="<%=User.UserClass.SYSUSER %>"/>系统用户
 				 <input name="<%=User.USERCLASS %>" type="radio" value="<%=User.UserClass.WEBMEMB %>"/>网站成员
-			</div>
+			</div> --%>
 			<div class="fitem">
 				<label>用户角色:</label>
 				 <input name="userType" type="radio" value="ADMIN"/>管理员
@@ -281,7 +280,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 				 <input name="mobile" class="easyui-textbox"
 				 	data-options="validType:['length[0,25]']" />
 			</div>
-			<input name="headImg" type="hidden"/>
+			<!-- <input name="headImg" type="hidden"/>
 			<div class="fitem">
 				<label>用户头像:</label>
 				<input id="headImg" type="image" onclick="return false;"/>
@@ -299,7 +298,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 				<label>描述:</label>
 				 <input name="description" class="easyui-textbox"  style="width:300px;height:100px;white-space: pre-wrap;"
 				 	data-options="multiline:true"/>
-			</div>
+			</div> -->
 		</form>
 	</div>
 	<div id="dlg-buttons">
