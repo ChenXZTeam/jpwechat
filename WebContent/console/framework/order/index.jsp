@@ -160,16 +160,16 @@ $(function(){
 	        	 formatter:function(value,rec,index){  
                      if(value == '0'){
 						return "未支付";
-						}else if(value == '1'){
+					 }else if(value == '1'){
 							return "已支付";
-						}else {
+					 }else {
 							return "未识别支付类型";
-						}
+					 }
                  }	
 	        },
 	        { field: 'idcase', title: '申请人身份证号码', width: 250},
 	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200}
+	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);
@@ -314,13 +314,45 @@ function query(){
 	        },
 	        { field: 'idcase', title: '申请人身份证号码', width: 250},
 	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200}
+	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){
 			    details(rowData);
 		}
 	});
 }
+
+function fotmateDate(value){
+	var dateStr = "";
+	if(value=="undefined"||value=="null"||value==null){}else{
+		var date = new Date(value);
+		dateStr = date.format("yyyy-MM-dd");
+	}
+    return dateStr;    
+}
+
+//js格式化日期插件代码
+Date.prototype.format = function (format) {  
+		 var o = {  
+		        "M+": this.getMonth() + 1, // month  
+		        "d+": this.getDate(), // day  
+		        "H+": this.getHours(), // hour  
+		        "m+": this.getMinutes(), // minute  
+		        "s+": this.getSeconds(), // second  
+		        "q+": Math.floor((this.getMonth() + 3) / 3), // quarter  
+		        "S": this.getMilliseconds()  
+		        // millisecond  
+		 }
+		 if (/(y+)/.test(format)){
+		        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length)); 
+		 } 
+		 for (var k in o){  
+		      if (new RegExp("(" + k + ")").test(format)){
+		            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)); 
+		 	  }
+		 } 
+		 return format;  
+}  
 		
 </script>
 </body>

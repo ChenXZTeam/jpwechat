@@ -177,7 +177,7 @@ $(function(){
                  }	
 	        },
 	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200},
+	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate},
 	        { field: 'touryIntro', title: '风景介绍', width: 200}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
@@ -327,7 +327,7 @@ function query(){
                  }	
 	        },
 	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200},
+	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate},
 	        { field: 'touryIntro', title: '风景介绍', width: 200}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){
@@ -335,6 +335,38 @@ function query(){
 		}
 	});
 }
+
+function fotmateDate(value){
+	var dateStr = "";
+	if(value=="undefined"||value=="null"||value==null){}else{
+		var date = new Date(value);
+		dateStr = date.format("yyyy-MM-dd");
+	}
+    return dateStr;    
+}
+
+//js格式化日期插件代码
+Date.prototype.format = function (format) {  
+		 var o = {  
+		        "M+": this.getMonth() + 1, // month  
+		        "d+": this.getDate(), // day  
+		        "H+": this.getHours(), // hour  
+		        "m+": this.getMinutes(), // minute  
+		        "s+": this.getSeconds(), // second  
+		        "q+": Math.floor((this.getMonth() + 3) / 3), // quarter  
+		        "S": this.getMilliseconds()  
+		        // millisecond  
+		 }
+		 if (/(y+)/.test(format)){
+		        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length)); 
+		 } 
+		 for (var k in o){  
+		      if (new RegExp("(" + k + ")").test(format)){
+		            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)); 
+		 	  }
+		 } 
+		 return format;  
+} 
 		
 </script>
 </body>

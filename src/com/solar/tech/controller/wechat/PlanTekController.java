@@ -80,17 +80,17 @@ public class PlanTekController {
 		System.out.println("直达航班的数量："+zhidFil.size());
 		
 		//获得中转的链表
-		fd_av af = new fd_av();
+		/*fd_av af = new fd_av();
 		if(newFlil != null && newFlil.size() > 0){
 			for(FlightInfo zfli : newFlil){
 				if((zfli.getOrgCity().equals(chufCity)||zfli.getDstCity().equals(daodCity))&&!(zfli.getOrgCity().equals(chufCity)&&zfli.getDstCity().equals(daodCity))){ //只保留中转的航班，剔除直达航班
-					/*System.out.println("<<<<=====>>>> "+zfli.getOrgCity()+", "+zfli.getDstCity()+", "+af.getNextDate(dateTime, zfli.getDepTime(), Calendar.DATE, "yyyy-MM-dd")+", "+zfli.getAirCode()+", "+zfli.getFlightNo());*/
+					System.out.println("<<<<=====>>>> "+zfli.getOrgCity()+", "+zfli.getDstCity()+", "+af.getNextDate(dateTime, zfli.getDepTime(), Calendar.DATE, "yyyy-MM-dd")+", "+zfli.getAirCode()+", "+zfli.getFlightNo());
 					zfli.setSeatList(af.seatInfo(zfli.getOrgCity(), zfli.getDstCity(), af.getNextDate(dateTime, zfli.getDepTime(), Calendar.DATE, "yyyy-MM-dd"), zfli.getAirCode(), zfli.getFlightNo()));
 					zhongzFil.add(zfli);  //重构中转的链表
 					System.out.println("中转航班："+zfli);
 				}
 			}
-		}
+		}*/
 		
 		System.out.println("中转航班数组的长度："+zhongzFil.size());
 		

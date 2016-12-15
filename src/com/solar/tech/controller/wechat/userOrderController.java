@@ -1,6 +1,8 @@
 package com.solar.tech.controller.wechat;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +50,6 @@ public class userOrderController {
 		oderInfo.setChufDate(ChufDate);
 		oderInfo.setChufTime(ChufTime);
 		oderInfo.setDaodTime(DaodTime);
-		//oderInfo.setDaodCity(DaodCity);
 		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));
 		oderInfo.setOpenID(openID);
@@ -79,6 +80,7 @@ public class userOrderController {
 		oderInfo.setTakePlane("0");//未登机
 		String orderNum = OrderService.createOrderNum("RDOD", 8);
 		oderInfo.setOrderNum(orderNum);
+		oderInfo.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
 		//System.out.println("===>>>>预约编号："+oderInfo.getOrderNum());
 		System.out.println(
 				"出发日期："+oderInfo.getChufDate()+

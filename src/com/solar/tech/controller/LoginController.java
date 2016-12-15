@@ -46,7 +46,7 @@ import com.solar.tech.listener.sessionLister;
      return result;
    }
  
-   @RequestMapping({"/logout.action"})
+   @RequestMapping({"/framework/logout.action"})
    public String logout() {
      SecurityUtils.getSubject()
        .logout();

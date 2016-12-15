@@ -23,13 +23,13 @@
 	<style>
 		body{padding:0px; margin:0px;}
 		ul{list-style-type:none; margin:0px; padding:0px;}
-		.zhzLiBox{ margin:0px; font-size:15px; color:#666666; padding:7px 5px; font-family:Arial, Helvetica, sans-serif; border-bottom:#E0E0E0 solid 1px; padding:5px;}
+		.zhzLiBox{ margin:0px; font-size:15px; color:#666666; padding:8px 5px; font-family:Arial, Helvetica, sans-serif; border-bottom:#E0E0E0 solid 1px;}
 		.zhzLiBox .feiTimeBox{margin-left:6px; float:left; width:50px;}
-		.zhzLiBox .feiTimeBox .staTimeBox{ line-height:29px; text-align:left; height:40px;}
-		.zhzLiBox .feiTimeBox .arrTimeBox{ line-height:29px; color:#999999; text-align:left; font-size:13px;}
+		.zhzLiBox .feiTimeBox .staTimeBox{text-align:left; padding-top:10px;}
+		.zhzLiBox .feiTimeBox .arrTimeBox{ margin-top:15px; color:#999999; text-align:left; font-size:13px;}
 		.zhzLiBox .flidNameBox{ float:left; margin-left:2%; padding-top:6px;}
-		.zhzLiBox .flidNameBox .qishiPlanNa{ overflow:hidden; height:35px;}
-		.zhzLiBox .flidNameBox .zhongPlanNa{ overflow:hidden; padding-top:4px;}
+		.zhzLiBox .flidNameBox .qishiPlanNa{ overflow:hidden; padding-top:2px;}
+		.zhzLiBox .flidNameBox .zhongPlanNa{ overflow:hidden; padding-top:10px;}
 		.zhzLiBox .flidNameBox .qishiPlanNa img{ display:block; float:left;}
 		.zhzLiBox .flidNameBox .qishiPlanNa .qishiSpan,.zhzLiBox .flidNameBox .qishiPlanNa .zhongone{margin-left:5px; display:block; float:left; line-height:22px;}
 		.zhzLiBox .flidNameBox .fildNoClass{color:#888;display:block;margin-top:4px;font-size:13px;margin-left:10px;float:left;overflow:hidden;}
@@ -38,11 +38,11 @@
 		.zhzLiBox .zhzPlanName .zhuanName{color:#648bff; font-size:10px; margin-top:0px;}
 		.zhzLiBox .flidNameBox .zhongPlanNa .zhzSpan,.zhzLiBox .flidNameBox .zhongPlanNa .zhongtwo{margin-left:5px; display:block; float:left; line-height:22px; color:#999999;}
 		.zhzLiBox .flidNameBox .zhongPlanNa img{display:block; float:left;}
-		.zhzLiBox .monAndtick{ float:right; margin-right:7px;}
+		.zhzLiBox .monAndtick{ float:right; margin-right:7px; text-align:right;}
 		.zhzLiBox .monAndtick .moneyCPY{font-family:'微软雅黑'; text-align:right; height:25px; line-height:25px;}
 		.zhzLiBox .monAndtick .tickNumZh{color:#999; font-size:11px;}
 		.zhzLiBox .monAndtick .moneyCPY .oneMoneyHouse{color:#FF8201; font-size:15px; font-family:Arial, Helvetica, sans-serif;}
-		.zhzLiBox .monAndtick .tickNum{line-height:15px; text-align:right; color:#999999; margin-top:10px; font-size:12px;}
+		.zhzLiBox .monAndtick .tickNum{line-height:15px; text-align:right; color:#999999; margin-top:5px; font-size:12px;}
 		.zhzLiBox .infoMessgBox{ height:15px; display:none;}
 		.zhzLiBox .infoMessgBox .infoChBox{ float:left; height:13px; color:#999999; font-size:10px; line-height:13px; padding:1px 10px;}
 		.infoChBox img,.infoChBox span{display:block; float:left;}

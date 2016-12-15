@@ -91,9 +91,9 @@
 				rownumbers:true,
 				columns: [[
 					        { field: 'ck', checkbox: true },
-					        { field: 'id', title: '编号ID', width: 70},
+					        { field: 'id', title: '编号ID', width: 250},
 					        { field: 'invitationCode', title: '邀请码', width: 70},
-					        { field: 'type', title: '类型', width: 50},
+					        { field: 'type', title: '类型', width:100},
 					        { field: 'sum', title: '优惠金额', width: 80},
 					        { field: 'discount', title: '折扣', width: 50},
 					        { field: 'deadline', title: '到期时间', width: 100,formatter: formatDatebox},
@@ -237,8 +237,14 @@
 		
 		function sendCode(){
 			var rows = $("#tt").datagrid("getChecked");
-			console.log(rows);
-			
+			if(rows.length>1){
+				$.messager.alert("提示消息","只能选择一条记录！");
+				return false;
+			}
+			if(rows.length<=0){
+				$.messager.alert("提示消息","请先选择一条记录！");
+				return false;
+			}
 			vac = rows[0].invitationCode;
 			ivID = rows[0].id;
 			timeNums = rows[0].times;
@@ -250,12 +256,6 @@
 				    valueField:'phoneNum',
 				    textField:'userName'
 				});
-			}
-			if(rows.length>1){
-				$.messager.alert("提示消息","只能选择一条记录！");
-			}
-			if(rows.length<1){
-				$.messager.alert("提示消息","请先选择一条记录！");
 			}
 		}
 		
@@ -308,8 +308,9 @@
 		                data: { "telnumber": tel, "invitationCode":vac, "ivID":ivID, "timeNums":timeNums},
 		                success: function (res) {
 		                    if(res==1){
-		                 	   
 		                 	   $.messager.alert("提示消息","发送成功！");
+		                    }else{
+		                       $.messager.alert("提示消息","发送失败！");
 		                    }
 		                 },
 		                 error: function (error) {

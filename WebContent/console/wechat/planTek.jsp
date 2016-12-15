@@ -26,10 +26,10 @@
 	.product .mudiplace .to{width:45px; float:left;}
 	.product .mudiplace .zhong{float:right; text-align:right; margin-right:15px; font-size:12px;}
 	.product .mudiplace .zhong span{ line-height:23px; display:block; color:#B5B5B5;}
-	.product .gotime{ padding:15px 0 6px 0; }
+	.product .gotime{ padding:10px 0 10px 0; }
 	.product .gotime .goDay{margin-left:20px; float:left; color:#B5B5B5;}
 	.product .gotime .goTimeDiv{margin-right:20px; float:right; color:#6CA5FE;}
-	.product .gotime .goTimeDiv .jcDate{width:70px; text-align:right; color:#6CA5FE; border:none; font-size:12px; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0);}
+	.product .gotime .goTimeDiv .jcDate{width:100px; text-align:right; color:#6CA5FE; border:none; font-size:12px; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0);}
 	.product .seatChoose{padding:20px 0 10px 0; border-bottom:none;}
 	.product .ziDiv .zuoweiFloat{margin-left:15px; float:left; width:45px;}
 	.product .ziDiv .cangwei{margin-top:8px; margin-left:10px; float:left; width:65%; padding-left:3px; background-color:#ffffff; border-radius:7px; margin-bottom:0px; height:30px;}
@@ -82,7 +82,7 @@
 	   <!--时间-->
 	   <div class="ziDiv gotime">
 	   		<div class="goDay" style="font-size:13px;">出发日期</div>
-			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--舱位-->
@@ -122,12 +122,12 @@
 	   <!--时间-->
 	   <div class="ziDiv gotime">
 	   		<div class="goDay" style="font-size:13px;">出发日期</div>
-			<div class="goTimeDiv"><input type="text" class="jcDate jcD02" id="gofaTime" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD02" id="gofaTime" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <div class="ziDiv gotime">
 	   		<div class="goDay" style="font-size:13px;">返程日期</div>
-			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" id="fancDate" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px;"></span></div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" id="fancDate" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--舱位-->

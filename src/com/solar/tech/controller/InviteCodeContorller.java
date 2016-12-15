@@ -109,20 +109,20 @@ public class InviteCodeContorller {
 		System.out.println(telnumber+", "+invitationCode+", "+ivID); 
 		Send106msg sender = new Send106msg();
 		String resultNum = null;
-		int i = this.inviteCodeService.updateinvatecode(invitationCode, telnumber, ivID);
-		if(i==1){
-			try {
-				resultNum = sender.SendMSGtoPhone("【微信】邀请码为："+invitationCode, telnumber);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			resultNum = sender.SendMSGtoPhone("【微信】邀请码为："+invitationCode, telnumber);
+			if(resultNum.equals("1")||"1".equals(resultNum)){
+				int i = this.inviteCodeService.updateinvatecode(invitationCode, telnumber, ivID);
+				if(i==1){
+					return 1;
+				}
 			}
-			return 1;
-		}else{
-			return 0;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	
+		return 0;
 	}
 	
 }

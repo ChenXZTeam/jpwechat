@@ -26,7 +26,7 @@ public class JP_orderService {
 	 */
 	public Map<String, Object> loadOrder(int pag,int row){
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM userOrderInfo u where AdminDel = 0 order by u.intNum desc";
+		String hql = "FROM userOrderInfo u where AdminDel = 0 order by u.createTime desc";
 		if(row==10000){
 			List<userOrderInfo> vList = this.gDao.find(hql);
 			map.put("vList", vList);

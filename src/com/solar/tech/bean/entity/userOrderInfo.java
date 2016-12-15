@@ -166,9 +166,13 @@ public class userOrderInfo {
 	@Column(name = "updateTime")
 	private Timestamp updateTime;
 	
+	//创建时间
+	@Column(name = "createTime")
+	private Timestamp createTime;
+	
 	//票号
 	@Column(name = "telNum")
-	private Timestamp telNum;
+	private String telNum;
 	
 	//标识两个订单之间是否是往返
 	@Column(name = "wfsign")
@@ -466,11 +470,11 @@ public class userOrderInfo {
 		this.updateTime = updateTime;
 	}
 
-	public Timestamp getTelNum() {
+	public String getTelNum() {
 		return telNum;
 	}
 
-	public void setTelNum(Timestamp telNum) {
+	public void setTelNum(String telNum) {
 		this.telNum = telNum;
 	}
 
@@ -488,6 +492,14 @@ public class userOrderInfo {
 
 	public void setZzsign(String zzsign) {
 		this.zzsign = zzsign;
+	}
+
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}
 
 }

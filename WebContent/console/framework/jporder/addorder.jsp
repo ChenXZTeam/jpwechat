@@ -8,16 +8,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>机票预定</title>
+	<link rel="stylesheet" type="text/css"href="<%=basePath%>scripts/common/jquery-easyui/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/default/datagrid.css"/>
 	<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/BeatPicker.min.css"/>
 	<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript"src="<%=basePath%>scripts/common/jquery-easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript"src="<%=basePath %>scripts/common/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script src="<%=basePath %>console/js/BeatPicker.min.js"></script>
 	<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	#radioClassBox{}
 	#radioClassBox span{ display:block;}
 	#conditionId{ font-size:13px; overflow:hidden;}
-	#conditionId>div{float:left; margin-left:10px; margin-top:10px;/*  border:1px solid #ff0000; */}
-	#conditionId>div input{width:137px;}
+	#conditionId .inputstyle{padding-left:5px; width:137px; height:20px; border-radius:5px; border:#77C0F1 solid 1px;}
 	.planeTitle{ background:#f0f0f0; color:#666666; margin-top:15px; padding-left:2px;}
 	.planeTitle .planeTitleCh{ float:left; width:150px; text-align:center; height:30px; margin-left:15px; line-height:30px;}
 	#ulBox{list-style-type:none; padding:0px; font-family:'微软雅黑'; margin:0px; color:#666666;}
@@ -64,16 +68,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	#ulBox li .zhzfildBox .yudingBtn{width:250px; text-align:center;}
 	#ulBox li .zhzfildBox .yudingBtn>a{display: block; width: 50px; margin-left: 75px; padding:8px 20px; margin-top:7px; margin-bottom:7px; cursor:pointer; background-color:#0099CC; color:#FFFFFF; border:none; border-radius:5px;}
 	#ulBox li .zhzfildBox .kongBox,.zhzfildBox .otherCangweiClass,.zhzfildBox .jiagePay,.zhzfildBox .yudingBtn{ float:left;}
+	#findBtn{padding:30px; background-color:#3879D9; cursor:pointer; outline:none; border:none; color:#fff; font-size:15px; border-radius:10px;}
+	
 	/*城市选择切换css*/
 	a,img{border:0;}
 	body{font:12px Arial, Helvetica, sans-serif, "新宋体";}
 	.tab1{width:500px;border:#cccccc solid 1px; position:absolute; left:40%; top:30%; padding:20px; display:none; background-color:#FFFFFF;}
 	.colseImgCity{display:block; float:right; width:13px; height:15px; text-align:center; cursor:pointer;}
 	.colseImgCity:hover{ border:#CCCCCC solid 1px;}
-	.menu{height:30px;font-size:14px;}
-	.menu ul{ overflow:hidden; margin:0px; padding:0px;}
-	.menu li{float:left;text-align:center;line-height:20px;height:20px;padding:5px 21px; font-size:13px; cursor:pointer;color:#666;overflow:hidden;}
-	.menu li.off{background:#fff;border-bottom:2px solid #0000FF; color:#0000FF; font-weight:bold;}
+	.citymenu{height:30px;font-size:14px;}
+	.citymenu ul{ overflow:hidden; margin:0px; padding:0px;}
+	.citymenu li{float:left;text-align:center;line-height:20px;height:20px;padding:5px 21px; font-size:13px; cursor:pointer;color:#666;overflow:hidden;}
+	.citymenu li.off{background:#fff;border-bottom:2px solid #0000FF; color:#0000FF; font-weight:bold;}
 	.menudiv{ border-top:2px solid #ccc;}
 	.menudiv>div{padding:15px 15px 5px 15px;line-height:28px; overflow:auto; max-height:335px;}
 	.menudiv div ul{ list-style:none; overflow:hidden; margin:0px; padding:0px;}
@@ -125,71 +131,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 	<!--搜索条件-->
 	<div id="conditionId" style="border:1px solid #e1e1e1; padding:10px 8px;">
-		<div id="radioClassBox" style="margin-top:0px;">
-			<input type="radio" value="1" name="cityArea" class="checkBox" style="width:20px;" checked="checked"/>国内
-			<input type="radio" value="2" name="cityArea" class="checkBox" style="width:20px;"/>国际
-		</div>
-		<div>
-				 <%for (int i = 0; i < 200; i++)
-	   	 	{ %>
-	       		 <tr>
-	            	&nbsp;
-	          	</tr>
-			<%} %>
-		</div>
-		<div>
-			<select id="danAndFan" style="width:70px;">
-				<option value="1">单程</option>
-				<option value="2">往返</option>
-			</select>
-		</div>
-		
-		<div>
+		<table border="0" cellpadding="5" cellspacing="0" width="90%">
+			<tr>
+				<td>国际范围：</td>
+				<td>
+					<select id="cityArea" class="easyui-combobox" style="width:110px;" panelHeight="45">
+						<option value="1">国内</option>
+						<option value="2">国际</option>
+					</select>
+				</td>
+				<td>出发城市：</td>
+				<td><input class="cityIpnt inputstyle" id="gofaCity" oninput="myFunction(this)"/></td>
+				<td rowspan="2">
+					<button id="changeBtn" style="border:1px solid #77C0F1; border-radius:5px; outline:none; background:none; cursor:pointer; height:21px;">换</button>
+				</td>
+				<td>出发日期：</td>
+				<td><input id="gofaTime" class="inputstyle" data-beatpicker="true"/></td>
+				<td rowspan="2"><button id="findBtn" onclick="ajaxjson()">搜索航班</button></td>
+			</tr>
+			<tr>
+				<td>单返类型：</td>
+				<td>
+					<select id="danAndFan" class="easyui-combobox" style="width:110px;" panelHeight="55">
+						<option value=""></option>
+						<option value="1">单程</option>
+						<option value="2">往返</option>
+					</select>
+				</td>
+				<td>到达城市：</td>
+				<td><input class="cityIpnt1 inputstyle" id="arrCity" oninput="myFunction(this)"/></td>
+				<td>返回日期：</td>
+				<td><input id="fancDate" class="inputstyle" disabled="disabled" data-beatpicker="true"/></td>
+			</tr>
+		</table>
+		<!-- <div>
 			<select id="cangwei" style="width:70px;">
 				<option value="经济舱">经济舱</option>
 				<option value="头等舱">头等舱</option>
 				<option value="公务舱">公务舱</option>
 			</select>
-		</div>
-		
-		<div>
-				 <%for (int i = 0; i < 200; i++)
-	   	 	{ %>
-	       		 <tr>
-	            	&nbsp;
-	          	</tr>
-			<%} %>
-		</div>
-		
-		<div>
-			<span>出发城市</span>
-			<input class="cityIpnt" id="gofaCity"  oninput="myFunction(this)"/>
-		</div>
-		<div>
-			<input type="hidden" class="planeInpt" id="gofaPlane"/>
-		</div>
-		<div>
-			<button id="changeBtn" style="border:1px solid #e1e1e1; background:none; cursor:pointer; height:21px;">换</button>
-		</div>
-		<div>
-			<span>到达城市</span>
-			<input class="cityIpnt1" id="arrCity" oninput="myFunction(this)"/>
-		</div>
-		<div>
-			<input type="hidden" class="planeInpt" id="arrPlane"/>
-		</div>
-		<div>
-			<span style="float:left; display:block; margin-top:3px;">出发日期</span>
-			<input id="gofaTime" data-beatpicker="true"/>
-		</div>
-		<div>
-			<span style="float:left; display:block; margin-top:3px;">返程日期</span>
-			<input id="fancDate" disabled="disabled" data-beatpicker="true"/>
-		</div>
-		<div>
-			<button id="findBtn" onclick="ajaxjson()">搜索航班</button>
-		</div>
-		<div style="clear:both;"></div>
+		</div> -->		
 	</div>
 	<!--结果标题-->
 	<div class="planeTitle">
@@ -232,7 +213,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--城市查找（国内）-->
 	<div class="tab1" id="tab1">
 		<div style="overflow:hidden;"><span>国内城市</span><span id="colseImgCity" class="colseImgCity">X</span><span style="clear:both;"></span></div>
-		<div class="menu">
+		<div class="citymenu">
 			<ul>
 				<li id="one1" onclick="setTab('one',1)">热门</li>
 				<li id="one2" onclick="setTab('one',2)">ABCDEF</li>
@@ -457,7 +438,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--城市查找（国际）-->
 	<div class="tab1" id="tab2">
 		<div style="overflow:hidden;"><span>国际城市</span><span id="colseImgCity" class="colseImgCity">X</span><span style="clear:both;"></span></div>
-		<div class="menu">
+		<div class="citymenu">
 			<ul>
 				<li id="two1" onclick="setTab('two',1)" class="off">热门</li>
 				<li id="two2" onclick="setTab('two',2)">ABCDEF</li>
@@ -707,47 +688,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 			
 			//单程和返程
-			$("#danAndFan").change(function(){
-				//alert($(this).val());
-				if($(this).val()=="1"){
-					$("#fancDate").attr("disabled","disabled");
-				}else{
-					$("#fancDate").attr("disabled",false);
+			$("#danAndFan").combobox({
+				onChange:function (n,o){
+					if($("#danAndFan").combobox("getValue")=="2"){
+						$("#fancDate").attr("disabled",false);
+					}else{
+						$("#fancDate").attr("disabled","disabled");
+					}
 				}
 			});
 			
 			//出发城市选择输入框
 			$(".cityIpnt").click(function(){
-				document.getElementById("gofaCity").value="";
+				$(this).val("");
+				$(".cityIpnt1").removeClass("chooseIpnt");
 				$(this).addClass("chooseIpnt");
 				$(this).parent().next().children(".planeInpt").addClass("tempPlane");
 				var top = $(this).offset().top;
 				var left = $(this).offset().left;
-				if($(".checkBox:checked").val()=="1"){ //国内城市的选择框
-					$("#tab1").css("top",top+20);
-					$("#tab1").css("left",left);
-					$("#tab1").css("display","block");
-				}else{ //国际城市的选择框
+				if($("#cityArea").combobox("getValue")=="2"){ //国际城市的选择框
 					$("#tab2").css("top",top+20);
 					$("#tab2").css("left",left);
 					$("#tab2").css("display","block");
+				}else{ //国内城市的选择框
+					$("#tab1").css("top",top+20);
+					$("#tab1").css("left",left);
+					$("#tab1").css("display","block");
 				}
 			});
 			//到达城市选择输入框
 			$(".cityIpnt1").click(function(){
-				document.getElementById("arrCity").value="";
+				$(this).val("");
+				$(".cityIpnt").removeClass("chooseIpnt");
 				$(this).addClass("chooseIpnt");
 				$(this).parent().next().children(".planeInpt").addClass("tempPlane");
 				var top = $(this).offset().top;
 				var left = $(this).offset().left;
-				if($(".checkBox:checked").val()=="1"){ //国内城市的选择框
-					$("#tab1").css("top",top+20);
-					$("#tab1").css("left",left);
-					$("#tab1").css("display","block");
-				}else{ //国际城市的选择框
+				if($("#cityArea").combobox("getValue")=="2"){ //国际城市的选择框
 					$("#tab2").css("top",top+20);
 					$("#tab2").css("left",left);
 					$("#tab2").css("display","block");
+				}else{ //国内城市的选择框
+					$("#tab1").css("top",top+20);
+					$("#tab1").css("left",left);
+					$("#tab1").css("display","block");
 				}
 			});
 			//交换城市的方法
@@ -819,22 +803,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	//机票搜索的js
 	function ajaxjson(){
 		$("#ulBox").html("");
-		if($("#danAndFan").val()=="1"){  //单程
-			var chufCityCode = $("#gofaCity").val();
-			var daodCityCode = $("#arrCity").val();
-			if(chufCityCode==daodCityCode){
-				alert("填写内容有误！");
-				return;
-			}
-			var cangW = $("#cangwei").val();
+		var chufCityCode = $("#gofaCity").val();
+		var daodCityCode = $("#arrCity").val();
+		var gody = $("#gofaTime").val();
+		var fady = $("#fancDate").val();
+		if(chufCityCode==""||chufCityCode==null){
+			alert("出发城市不能为空");
+			return false;
+		}
+		if(daodCityCode==""||daodCityCode==null){
+			alert("到达城市不能为空");
+			return false;
+		}
+		if(chufCityCode==daodCityCode){
+			alert("起始城市和目的城市不能相同");
+			return false;
+		}
+		if(gody==""||gody==null){
+			alert("出发时间不能为空");
+			return false;
+		}
+		if($("#danAndFan").combobox("getValue")=="1"){  //单程
+			//var cangW = $("#cangwei").val();
 			var dateTime = $("#gofaTime").val();
 			chufCityCode = getText(chufCityCode);
 			daodCityCode = getText(daodCityCode);
-			console.log(chufCityCode+","+daodCityCode+","+cangW+","+dateTime);
+			//console.log(chufCityCode+","+daodCityCode+","+cangW+","+dateTime); ,"cangW":cangW
 			$.ajax({
 					url:"<%=basePath%>wechatController/find/planTek.action",
 					type:"POST",
-					data:{"chufCity":chufCityCode,"daodCity":daodCityCode,"cangW":cangW,"dateTime":dateTime},
+					data:{"chufCity":chufCityCode,"daodCity":daodCityCode,"dateTime":dateTime},
 					dataType:"json",
 					beforeSend:function(){$("#loading").css("display","block");},
 					complete:function(){$("#loading").css("display","none");},
@@ -848,40 +846,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								var teickNum = (dataList[i].seatList)[(dataList[i].seatList.length)-1].cangwei_data; //舱位剩余的票数
 								var arrTime = changeType(dataList[i].arrTime); //到达时间
 								var depTime = changeType(dataList[i].depTime); //出发时间
+								var costPay=0;
 								for(var j=0; j<dataList[i].seatList.length; j++){ //没有对应的舱位
-									if((dataList[i].seatList)[j].basicCabin==cnCang($("#cangwei").val())){
-										//var costPay = (dataList[i].seatList)[j].onewayPrice; //花费价格
-										//var costPay = (dataList[i].seatList)[2].onewayPrice; //花费价格
-										//var min=(dataList[i].seatList)[0].onewayPrice;
-										/* if(min>(dataList[i].seatList)[j].onewayPrice){
-											min=(dataList[i].seatList)[j].onewayPrice;
-											alert((dataList[i].seatList)[j].onewayPrice);
-										} */
-										
-										  /* for(var n=1;n<=(dataList[i].seatList).length;n++){
-												if(min>(dataList[i].seatList)[n].onewayPrice){
-													min=(dataList[i].seatList)[n].onewayPrice;
-												}  
-												console.log(min+","+(dataList[i].seatList)[n].onewayPrice);
-											}   */
-										//alert(Math.min(20,30));
-											
+									//if((dataList[i].seatList)[j].basicCabin==cnCang($("#cangwei").val())){
 										var b=new Array(dataList[i].seatList.length);
 										for(var n=0,t=0;n<dataList[i].seatList.length;n++){
 											b[t++]=(dataList[i].seatList)[n].onewayPrice;
 										}
-										//alert(parseInt(b[dataList[i].seatList.length-1]));
-										//alert(parseInt("980"));
-										
-										//alert(Math.min(parseInt(b[0]),parseInt(b[dataList[i].seatList.length-1])));
-										//alert(b);
-										//alert(Math.min(parseInt(b[0]),Math.min(parseInt(b[4]));
-										//console.log(b);
-										var costPay=Math.min.apply( Math, b);
-										var cangweiType = (dataList[i].seatList)[j].cangwei; //舱位
-										var gofaPlane = $("#gofaPlane").val();
-										var arrPlane = $("#arrPlane").val();
-									}
+										costPay=Math.min.apply( Math, b);
+										console.log(costPay);
+										//var cangweiType = (dataList[i].seatList)[j].cangwei; //舱位
+										//var gofaPlane = $("#gofaPlane").val();
+										//var arrPlane = $("#arrPlane").val();
+									//}
 								}
 								
 								var liList='<li class="resultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(dataList[i].airCode)+'</div><div class="filetNo">'+dataList[i].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+findByplaneName(dataList[i].orgCity)+'</div></div><div class="infoContent"><div style="line-height:50px;"><img src="<%=basePath%>console/images/bigtip1.png"/></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+findByplaneName(dataList[i].dstCity)+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costPay+'</span></div><div class="infoContent"><button class="btnclass" onclick="pointBtn(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="otherCang"></div></li>';
@@ -889,7 +866,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 								//动态加载针对该航班的其他舱位的信息
 								for(var j=0;j<dataList[i].seatList.length;j++){
-										var cangweiName = $("#cangwei").val();
+										// var cangweiName = $("#cangwei").val();
 										var basicCabin = dataList[i].seatList[j].basicCabin;
 										if(basicCabin=="C"){
 											basicCabin="公务舱";
@@ -898,12 +875,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										}else if(basicCabin=="Y"){
 											basicCabin="经济舱";
 										}
-										if(basicCabin==cangweiName){
+										//if(basicCabin==cangweiName){
 											var cangwei_type = dataList[i].seatList[j].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
 											onewayPrice = dataList[i].seatList[j].onewayPrice;//价钱
 											var listDiv='<div class="childBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+basicCabin+'：</span><span class="cangweiNum">'+cangwei_type+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+onewayPrice+'</span></div><div class="yudingBtn"><button class="trueYuBtn" onclick="yudingTicket(this)">预　定</button><a class="orgCity" style="display:none;">'+dataList[i].orgCity+'</a><a class="dstCity" style="display:none;">'+dataList[i].dstCity+'</a></div><div style="clear:both;"></div></div>';
 											$(".resultListBox:eq("+i+") .otherCang").append(listDiv);
-										}
+										//}
 								}
 								$(".otherCang").slideUp("fast");
 							}
@@ -914,8 +891,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								var liList;
 								for(var j=zzDataList.length-1; j>i; j--){
 									if(zzDataList[i].dstCity==zzDataList[j].orgCity&&MathTime(zzDataList[i].arrTime,zzDataList[j].depTime)>3600&&(zzDataList[i].airCode==zzDataList[j].airCode)){
-										//console.log(zzDataList[i].airCode+"-"+zzDataList[i].deplaneName+"-"+zzDataList[i].arrPlaneName+"-"+zzDataList[i].arrTime+" / "+zzDataList[j].airCode+"-"+zzDataList[j].deplaneName+"-"+zzDataList[j].arrPlaneName+"-"+zzDataList[j].depTime);
-										//console.log(stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime)));
 										var rowstr1 = JSON.stringify(zzDataList[i]); //第一段航班(字符串)
 										var rowstr2 = JSON.stringify(zzDataList[j]); //第二段航班(字符串)
 										var rowseatInfo1 = zzDataList[i].seatList; //第一航段的座位
@@ -925,39 +900,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										var depTime = changeType(zzDataList[i].depTime); //出发时间
 										var onePay,twoPay;
 										for(var k=0; k<rowseatInfo1.length; k++){  //第一段航班的对应舱位的价格
-											if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
-												//onePay = rowseatInfo1[k].onewayPrice;
-												
+											//if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
 												var b=new Array(rowseatInfo1.length);
 												for(var n=0,t=0;n<rowseatInfo1.length;n++){
 													b[t++]=rowseatInfo1[n].onewayPrice;
 												}
-												//alert(parseInt(b[dataList[i].seatList.length-1]));
-												//alert(parseInt("980"));
-												
-												//alert(Math.min(parseInt(b[0]),parseInt(b[dataList[i].seatList.length-1])));
-												//alert(b);
-												//alert(Math.min(parseInt(b[0]),Math.min(parseInt(b[4]));
 												var onePay=Math.min.apply( Math, b);
-											}
+											//}
 										}
 										
 										for(var k=0; k<rowseatInfo2.length; k++){	//第二段航班的对应舱位的价格
-											if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
-												//twoPay = rowseatInfo2[k].onewayPrice;
-												
+											//if(rowseatInfo1[k].basicCabin == cnCang($("#cangwei").val())){
 												var c=new Array(rowseatInfo2.length);
 												for(var n=0,t=0;n<rowseatInfo2.length;n++){
 													c[t++]=rowseatInfo2[n].onewayPrice;
 												}
-												//alert(parseInt(b[dataList[i].seatList.length-1]));
-												//alert(parseInt("980"));
-												
-												//alert(Math.min(parseInt(b[0]),parseInt(b[dataList[i].seatList.length-1])));
-												//alert(b);
-												//alert(Math.min(parseInt(b[0]),Math.min(parseInt(b[4]));
 												var twoPay=Math.min.apply( Math, c);
-											}
+											//}
 										}
 										var costpayzhuang=(parseFloat(onePay)+parseFloat(twoPay)).toFixed(2);
 										liList='<li class="zzresultListBox"><div class="infoContent" style="margin-left:0px;"><div class="airPlane">'+findByCode(zzDataList[i].airCode)+'</div><div class="filetNo">'+zzDataList[i].flightNo+'/'+zzDataList[j].flightNo+'</div></div><div class="infoContent planeName"><div class="timeClass newttime">'+depTime+'</div><div class="planeNameText deplaneName">'+findByplaneName(zzDataList[i].orgCity)+'</div></div><div class="infoContent"><div><div>'+findByCity(zzDataList[i].dstCity)+'(转)</div><div>停留：'+stos(MathTime(zzDataList[i].arrTime,zzDataList[j].depTime))+'</div></div></div><div class="infoContent planeName"><div class="timeClass arrTimenews">'+arrTime+'</div><div class="planeNameText arrPlaneName">'+findByplaneName(zzDataList[j].dstCity)+'</div></div><div class="infoContent"><span>￥</span><span class="costPayMoney" style="line-height:50px; font-size:30px; color:#FF9900; font-weight:bold;">'+costpayzhuang+'</span></div><div class="infoContent"><button class="zaClass" onclick="pointBtnzhz(this)">预定航班▼</button></div><div style="clear:both;"></div><div class="zhzfildBox"></div></li>';
@@ -993,13 +952,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					}
 			});
-		}else if($("#danAndFan").val()=="2"){ //往返
+		}else if($("#danAndFan").combobox("getValue")=="2"){ //往返
+			if(fady==""||fady==null){
+				alert("返程时间不能为空");
+				return false;
+			}
 			var chufCityCode = getText($("#gofaCity").val());
 			var daodCityCode = getText($("#arrCity").val());
-			if(chufCityCode==daodCityCode){
-				alert("填写内容有误！");
-				return;
-			}
 			var dateTime = $("#gofaTime").val();
 			var returnTime = $("#fancDate").val();
 			date1 = new Date(dateTime); //出发时间
@@ -1084,22 +1043,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											var RcangPont = (returnf[j].seatList)[h].cangwei;
 											
 											var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
-											//alert(return_moneyCost);
-											/* var b=new Array((returnf[j].seatList).length);
-											for(var n=0,t=0;n<(returnf[j].seatList).length;n++){
-												b[t++]=(returnf[j].seatList)[n].onewayPrice;
-											}
-											var return1_moneyCost=Math.min.apply( Math, b);  */
-											//console.log(return_moneyCost);
 											var dr_countPay = (parseFloat(depart_moneyCost)+parseFloat(return_moneyCost)).toFixed(2);
-											
-											//console.log(dr_countPay);
 											
 											if(GcangType == RcangType && GcangPont == RcangPont){
 												var departRows = JSON.stringify(depart[i]); //第一段航班(字符串)
 												var returnRows = JSON.stringify(returnf[j]); //第二段航班(字符串)
 												d[h++]=parseInt(dr_countPay);
-												//var dr_countPay1 = Math.min.apply(Math,d);
 												if(min>parseInt(dr_countPay)){
 													min=dr_countPay;
 												}
@@ -1111,17 +1060,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													}
 												});
 												dr_countPay1=Math.min.apply(Math,dr_countPay1);
-												//alert(dr_countPay1);
 												console.log(dr_countPay1);
-												//c[l++]=dr_countPay1;
 												var listDiv='<div class="wfchildBoxClass"><div class="kongBox"></div><div class="otherCangweiClass"><span>'+GcangType+'：</span><span class="cangweiNum">'+GcangPont+'</span><span> 舱位</span></div><div class="jiagePay"><span style="color:#666666;">￥</span><span class="payMoneyBox">'+dr_countPay+'</span></div><div class="yudingBtn"><a class="trueYuBtn" href=\'<%=basePath%>console/framework/jporder/zz_writeInfo.jsp?chufDate=2016-11-19,2016-11-21&cang='+GcangPont+'&rowstr1='+departRows+'&rowstr2='+returnRows+'\'>预　定</a></div><div style="clear:both;"></div></div>';
 												$(".wfresListBox:eq("+countwf+") .childBoxCang").append(listDiv);
 												$(".wfresListBox:eq("+countwf+")>.countMoney>.payMoey").text(min);
 											}
 											
 										}
-										//z[p++]=c[0];
-										//console.log(c);
 										
 									}
 									countwf++;
@@ -1135,13 +1080,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					}
 			});
+		}else{
+			alert("请选择单返类型");
+			return false;
 		}
 	}
 		
 		//输入关键字的时候自动索引
 		function myFunction(inc) {
-		
-				
 				$("#tab1").css("display","none");
 				$("#tab2").css("display","none");
 				var top = $(".chooseIpnt").offset().top;
@@ -1150,7 +1096,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#pipeiValue").css("left",left);
 				$("#pipeiValue").css("display","block");
 				var keyVal = $(inc).val();
-				if($(".checkBox:checked").val()=="1"){
+				if($("#cityArea").combobox("getValue")=="1"){
 					$("#tab2 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity");
 					$("#tab1 .zimuBox .nameBoxDiv li>.cityName").removeClass("chCity").filter(":contains(" + keyVal + ")").addClass("chCity");
 				}else{
@@ -1170,7 +1116,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		//索引出来的结果的点击事件
 		function chaRes(inc){
-			
 			var cityName = $(inc).children(".cityName01").text();
 			planeName = $(inc).children(".palneName01").text();
 			var planeCode = $(inc).children(".airCode01").text();
