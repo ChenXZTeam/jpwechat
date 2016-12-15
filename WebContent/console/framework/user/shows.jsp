@@ -129,7 +129,7 @@ function newBean(){
  	$("#fitemPassword").show();
     $('#dlg').dialog('open').dialog('setTitle',' ');
     $('#fm').form('clear');
-    $("[name='<%=User.USERCLASS %>']").eq(0)[0].checked=true;
+    <%-- $("[name='<%=User.USERCLASS %>']").eq(0)[0].checked=true; --%>
     $("[name='<%=User.USERTYPE %>']").eq(0)[0].checked=true;
     $("[name='<%=User.USERSTATUS %>']").eq(0)[0].checked=true;
     $('#headImg').attr("src", "").attr("value","");

@@ -25,8 +25,11 @@ public class UserService extends AbstractUserService{
 	public Map<String, Object> showUsers(int page, int rows){
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<User> list = new ArrayList<User>(); 
+		String hql = "FROM User";
 		list = gDao.findByPage(User.class, page, rows);
+		Long total = this.gDao.count(User.class,hql); 
 		map.put("rows", list);
+		map.put("total", total);
 		return map;
 	}
 	

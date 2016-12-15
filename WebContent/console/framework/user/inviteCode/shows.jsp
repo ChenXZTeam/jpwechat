@@ -342,8 +342,10 @@
 			iconCls="icon-redo" plain="true" onclick="sendCode()">发送</a>	
 	</div>
 	<!-- 数据表格 -->
-	<div id="tt" style="width: 100%;height:100%"></div>
-	
+	<div style="width:100%;height:420px;">
+		<div id="tt" style="width:100%;height:420px;">
+		</div>
+	</div>
 	<!-- 对话框 -->
 	<div id="dlg" class="easyui-dialog" style="width: 40%; height: 400px; 
 	padding: 10px 20px" closed="true" buttons="#dlg-buttons">
