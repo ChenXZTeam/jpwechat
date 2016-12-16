@@ -64,7 +64,7 @@
 		.hangbanImform .neiImform .firstDiv .aYuding,.hangbanImform .neiImform .firstDiv .anotherCW,.hangbanImform .neiImform .firstDiv .zhzaYuding,.hangbanImform .neiImform .firstDiv .zhzanotheryu{float:right; padding:4px 15px; border:#FF8204 solid 1px; color:#FF8204; font-size:13px; text-decoration:none;}
 		.hangbanImform .neiImform .firstDiv .money{color:#FF8204;}
 		.hangbanImform .neiImform .firstDiv .zhe{color:#0079FE;}
-		.hangbanImform .neiImform .firstDiv .Eimg{float:left; border:1px solid #0079FE; border-radius:2px; color:#0079FE; width:16px; height:16px;}
+		.hangbanImform .neiImform .firstDiv .Eimg{float:left; border:1px solid #0079FE; border-radius:2px; color:#0079FE; width:16px; height:16px; line-height:18px;}
 		.hangbanImform .neiImform .firstDiv .pointer{float:right; color:#FF8204;}
 		.hangbanImform .neiImform .firstDiv .licheng{float:right; margin-right:5px; font-size:13px;}
 		.hangbanImform .neiImform .firstDiv .shiyong{float:left; color:#999; font-size:15px; font-family:Arial, Helvetica, sans-serif; line-height:22px;}
