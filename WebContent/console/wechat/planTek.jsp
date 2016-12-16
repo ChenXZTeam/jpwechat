@@ -643,12 +643,6 @@
 	}
 	
 	function bb(){
-		/* var chufCity= $("#shif02").text();
-		var daodCity = $("#zhongf02").text();
-		var chufPlan = $("#shif03").text();
-		var daodPlan = $("#zhongf03").text();
-		var chufCityCode = $("#shif04").text();
-		var daodCityCode = $("#zhongf04").text();*/
 		var cangW = $(".cang1.on").text();
 		var dateTime = $(".jcD02").val(); 
 		var chufCityCode = $("#shif04").text();

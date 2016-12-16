@@ -8,6 +8,7 @@ $(function(){
 		$("body .wfbanner").css("display","none");
 		$("body .cangweiClass").css("display","none");
 		$(this).siblings(".banner").css("display","block");
+		$(".panel").css("display","none");
 	});
 	
 	//点击列表的方法(中转)
@@ -16,18 +17,21 @@ $(function(){
 		$("body .wfbanner").css("display","none");
 		$("body .cangweiClass").css("display","none");
 		$(this).siblings(".wfbanner").css("display","block");
+		$(".panel").css("display","none");
 	});
 	
 	//点击“对应舱位其他票价”时
 	$(".piaojia").click(function(){
 		$(".cangweiClass").css("display","none");
 		$(this).parents(".banner").next(".cangweiClass").css("display","block");
+		$(".panel").css("display","none");
 	});
 	
 	//点击“对应舱位其他票价”时(中转)
 	$(".wfpiaojia").click(function(){
 		$(".cangweiClass").css("display","none");
 		$(this).parents(".wfbanner").next(".cangweiClass").css("display","block");
+		$(".panel").css("display","none");
 	});
 	
 	//预定的方法

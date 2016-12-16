@@ -171,10 +171,12 @@ $(function(){
 function chooseLi(inc){
 	$(inc).siblings(".wfbanner").slideToggle("fast");
 	$(inc).siblings(".cangweiClass").slideUp("fast");
+	$(".panel").slideUp("fast");
 }
 
 function othercang(inc){
 	$(inc).parents(".wfbanner").siblings(".cangweiClass").slideToggle("fast");
+	$(".panel").slideUp("fast");
 }
 
 //改变出发时间和到达时间的类型
