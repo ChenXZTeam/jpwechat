@@ -17,22 +17,29 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<title>往返航班</title>
+	<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+	<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
+	<link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
+	<link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 	<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 	<script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+	<script src="<%=basePath %>console/js/jquery-weui.js"></script>
 	<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
+	<script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
+	<script src="<%=basePath %>console/js/mobiscroll.js"></script>
 	<style>
 		body{padding:0px; margin:0px;}
 		ul{list-style-type:none; margin:0px; padding:0px;}
 		.zhzLiBox{ margin:0px; font-size:15px; color:#666666; padding:8px 5px; font-family:Arial, Helvetica, sans-serif; border-bottom:#E0E0E0 solid 1px;}
 		.zhzLiBox .feiTimeBox{margin-left:6px; float:left; width:50px;}
-		.zhzLiBox .feiTimeBox .staTimeBox{text-align:left; padding-top:10px;}
+		.zhzLiBox .feiTimeBox .staTimeBox{text-align:left; padding-top:5px;}
 		.zhzLiBox .feiTimeBox .arrTimeBox{ margin-top:15px; color:#999999; text-align:left; font-size:13px;}
 		.zhzLiBox .flidNameBox{ float:left; margin-left:2%; padding-top:6px;}
 		.zhzLiBox .flidNameBox .qishiPlanNa{ overflow:hidden; padding-top:2px;}
 		.zhzLiBox .flidNameBox .zhongPlanNa{ overflow:hidden; padding-top:10px;}
 		.zhzLiBox .flidNameBox .qishiPlanNa img{ display:block; float:left;}
 		.zhzLiBox .flidNameBox .qishiPlanNa .qishiSpan,.zhzLiBox .flidNameBox .qishiPlanNa .zhongone{margin-left:5px; display:block; float:left; line-height:22px;}
-		.zhzLiBox .flidNameBox .fildNoClass{color:#888;display:block;margin-top:4px;font-size:13px;margin-left:10px;float:left;overflow:hidden;}
+		.zhzLiBox .flidNameBox .fildNoClass{color:#888;display:block;font-size:13px;margin-left:10px;float:left;overflow:hidden;}
 		.zhzLiBox .zhzPlanName{ text-align:center; float:left; margin-left:10px;}
 		.zhzLiBox .zhzPlanName .zhuanICO{color:#648bff; font-size:10px; display:block; margin-top:15px;}
 		.zhzLiBox .zhzPlanName .zhuanName{color:#648bff; font-size:10px; margin-top:0px;}
@@ -67,11 +74,46 @@
 		.hangbanImform .neiImform .firstDiv .piaojia,.hangbanImform .neiImform .firstDiv .wfpiaojia{float:right; color:#999; font-size:15px; font-family:Arial, Helvetica, sans-serif; line-height:20px;}
 		.banner,.wfbanner{ display:none;}
 		.cangweiClass{ display:none;}
+		.time .timeDiv{ color:#666666; font-size:14px;}
+		.time .mmddWeek{background:url('<%=basePath %>console/images/riliImgblue.png') no-repeat 13px 6px; text-align:right; background-size:17px 16px; width:240px; border: 1px solid #f0f0f0; margin-left: auto; margin-right: auto; line-height: 30px; padding: 0px 10px; background-color: #fff; border-radius: 5px;}
+		.time .timeDiv{ color:#666666; font-size:15px;}
+		.weui-btn { position: relative; display: block; margin-left: auto; margin-right: auto; margin-top: auto; padding-left: 14px; padding-right: 14px; box-sizing: border-box; font-size: 18px; text-align: center; text-decoration: none; color: #FFFFFF; line-height: 2.55555556; border-radius: 5px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); overflow: hidden;}
+		.weui-btn_mini {display: inline-block; padding: 0 1.32em;line-height: 2.3; font-size: 13px;}
+		.weui-btn_primary {background-color: #1AAD19;}
+		.weui-btn1 {position: relative;margin-left: auto; margin-right: auto; margin-top: auto; padding-left: 14px; padding-right: 14px; box-sizing: border-box; font-size: 1px; text-align: center; text-decoration: none; color: #FFFFFF; line-height: 2.55555556; border-radius: 5px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); overflow: hidden;}
+		.weui-btn_disabled {color: rgba(255, 255, 255, 0.6);}
+		.weui-btn_default{color: #000000; background-color: #F8F8F8;}
+		.panel{text-align: left;webkit-box-shadow:3px 3px 3px #c3c3c3; -moz-box-shadow:3px 3px 3px #c3c3c3; box-shadow: 3px 3px 3px #c3c3c3;background-color:#f1f1f1;position:fixed;z-index:10000;width:100%;display:none;top:0px;left:0px;padding:15px 10px;}
+		.panel .paanelChild{float:left;}
+		.panel .paanelChild .inpStyle{font-size:15px; padding:7px; border:1px solid #e1e1e1; border-radius:5px; width:90%;}
+		.panel .paanelChild #ahtherBtn{cursor:pointer;background-color: #1AAD19; border: none; border-radius: 5px; padding:20px; color: #fff; font-size:14px;height:75px;width:100%;}
+		.panel .paanelChild>input{display:block;}
 	</style>
 </head>
 <body>
-<ul id="ulBox"></ul>
-<!-- 加载等待界面 -->	
+<div class="panel" style="display:none;">
+	<div class="paanelChild" style="width:70%;">
+		<input type="text" id="d11" class="inpStyle" placeholder="出发日期"/>
+		<input type="text" id="d12" class="inpStyle" placeholder="返程日期" style="margin-top:10px;"/>
+	</div>
+	<div class="paanelChild" style="width:25%;">
+		<input type="button" id="ahtherBtn" value="确定"/>
+	</div>
+	<div style="clear:both;"></div>
+</div> 
+<div class="time" style="border-bottom:#E0E0E0 solid 1px; background-color:#F8F8F8; padding:3px;">
+	<div id="cendivBox">
+		<div class="timeDiv mmddWeek"></div>
+	</div>
+	<%-- <div id="dateTimeID"  style="display:none;"><%=dateTime %></div> 
+	<div id="chufCityID" style="display:none;"><%=chufCity %></div>
+	<div id="daodCityID" style="display:none;"><%=daodCity %></div> --%>
+</div>
+<ul id="ulBox">
+	<li id="TicketList">
+	</li>
+</ul>
+<!-- 加载等待界面 -->
 <div id="loading">
 	<div id="loading-center">
 		<div id="loading-center-absolute">
@@ -86,17 +128,139 @@
 </body>
 <script>
 $(function(){
+	chax("<%=dateTime%>","<%=returnTime%>");
+	$("#ahtherBtn").click(function(){
+		var returnTime =document.getElementById("d12").value; 
+		var dateTime=document.getElementById("d11").value;
+		if(dateTime==""||dateTime==null){
+			$.alert("出发时间不能为空");
+			return false;
+		}
+		if(returnTime==""||returnTime==null){
+			$.alert("返程时间不能为空");
+			return false;
+		}
+	    if(dateTime == returnTime){
+	    	$.alert("同一天请分开预定");
+	    	return false;
+	    }
+		var data = dateTime;
+		var reData = returnTime;
+	    data = data.replace("-","/");
+	    reData = reData.replace("-","/");
+	    var chknow = new Date(Date.parse(data));
+	    var rechknow = new Date(Date.parse(reData));
+	    if(rechknow < chknow){
+	    	$.alert("返程时间不能在去程时间之前");
+	    	return false;
+	    }
+	    var now = new Date();
+	    now.setDate(now.getDate()-1);
+	    if (chknow < now) {
+	           $.alert("去程时间不能在今天之前");
+	           return false;
+	    }
+	    if (rechknow < now) {
+	           $.alert("返程时间不能在今天之前");
+	           return false;
+	    }
+		chax(dateTime,returnTime);
+	});
+});
+
+function chooseLi(inc){
+	$(inc).siblings(".wfbanner").slideToggle("fast");
+	$(inc).siblings(".cangweiClass").slideUp("fast");
+}
+
+function othercang(inc){
+	$(inc).parents(".wfbanner").siblings(".cangweiClass").slideToggle("fast");
+}
+
+//改变出发时间和到达时间的类型
+function changeType(GoTime){	
+	if(4<GoTime.length){
+		var firstTime=GoTime.substring(0,2);
+		var conterTime=GoTime.substring(2,4);
+		var lastTime=GoTime.substring(4,GoTime.length);
+		return firstTime+":"+conterTime+"<span style='color:#ff0000; font-size:10px;'>"+lastTime+"</span>";
+	}else{			
+		var firstTime=GoTime.substring(0,2);
+		var lastTime=GoTime.substring(2,GoTime.length);
+		return firstTime+":"+lastTime;
+	}
+}
+
+//格式化舱位
+function cnCang(basicCabin){
+		if(basicCabin=="C"){
+			basicCabin="公务舱";
+		}else if(basicCabin=="F"){
+			basicCabin="头等舱";
+		}else if(basicCabin=="Y"){
+			basicCabin="经济舱";
+		}
+		return basicCabin;
+}
+
+//当两段航班的票数不一样的时候，按最低的票为准
+function signTekt(onefd,twofd){
+	if(parseInt(onefd)>parseInt(twofd)){
+		return twofd;
+	}else if(parseInt(onefd)<parseInt(twofd)){
+		return onefd;
+	}else{
+		return onefd;
+	}
+}
+
+//计算剩余票价张数的方法
+function tekNum(date){
+	if(date=="A"){
+		date=9;
+	}else if(date=="L"||date=="Q"||date=="S"||date=="C"||date=="X"||date=="Z"){
+		date="";
+	}else if(date!=""){
+		date=date;
+	}
+	return date;
+}
+
+function conterCONTime(goTime,resTime){
+	var yymmdd = goTime.split("-"); //拆分传进来的时间
+	//根据时间获取星期
+	var date = goTime;
+	var day = new Date(Date.parse(date.replace(/-/g, '/')));  
+	var today = new Array('周日','周一','周二','周三','周四','周五','周六');  
+	var week = today[day.getDay()]; //获得星期
+	var mmdd = yymmdd[1]+"月"+yymmdd[2]+"日 "+week;
+
+	var YYMMDD = resTime.split("-");
+	var date2 = resTime;
+	var day2 = new Date(Date.parse(date2.replace(/-/g, '/')));  
+	var today2 = new Array('周日','周一','周二','周三','周四','周五','周六');  
+	var week2 = today2[day2.getDay()]; //获得星期
+	var mmdd2 = YYMMDD[1]+"月"+YYMMDD[2]+"日 "+week2+"<span class='jcD01' style='font-size:10px; color:#017AFD;' >&nbsp;▼</span>";
+	
+	$(".mmddWeek").html(mmdd+"<span style='color:#017AFD;margin:0px 3px;font-size:16px;'>/</span>"+mmdd2);
+}   
+
+$(".mmddWeek").click(function(){
+	$(".panel").slideToggle("fast");
+});
+
+function chax(dateTime,returnTime){
+	//alert(document.getElementById("d11").value);
+	//alert(document.getElementById("d12").value);
 	var cangW = "<%=cangW%>";
 	var chufCityCode = "<%=chufCity%>";
 	var daodCityCode = "<%=daodCity%>";
-	var dateTime = "<%=dateTime%>";
-	var returnTime = "<%=returnTime%>";
+	//var dateTime=document.getElementById("d11").value;
+	conterCONTime(dateTime,returnTime);//显示在中间的时间
+	//var returnTime =document.getElementById("d12").value; 
 	date1 = new Date(dateTime); //出发时间
 	date2 = new Date(returnTime); //返程时间
-	if(Date.parse(date1)>Date.parse(date2)){
-		alert("订当天往返的机票，推荐分开来订单程航班。");
-		return false;
-	}
+	
 	var airline = "";
 	var page = "";
 	$.ajax({
@@ -176,64 +340,30 @@ $(function(){
 						
 			}
 	});
+	$(".panel").slideUp("fast");
+}
+</script>
+<script>
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: false,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+	
+	$("#d11").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#d12").mobiscroll($.extend(opt['date'], opt['default']));
 });
-
-function chooseLi(inc){
-	$(inc).siblings(".wfbanner").slideToggle("fast");
-	$(inc).siblings(".cangweiClass").slideUp("fast");
-}
-
-function othercang(inc){
-	$(inc).parents(".wfbanner").siblings(".cangweiClass").slideToggle("fast");
-}
-
-//改变出发时间和到达时间的类型
-function changeType(GoTime){	
-	if(4<GoTime.length){
-		var firstTime=GoTime.substring(0,2);
-		var conterTime=GoTime.substring(2,4);
-		var lastTime=GoTime.substring(4,GoTime.length);
-		return firstTime+":"+conterTime+"<span style='color:#ff0000; font-size:10px;'>"+lastTime+"</span>";
-	}else{			
-		var firstTime=GoTime.substring(0,2);
-		var lastTime=GoTime.substring(2,GoTime.length);
-		return firstTime+":"+lastTime;
-	}
-}
-
-//格式化舱位
-function cnCang(basicCabin){
-		if(basicCabin=="C"){
-			basicCabin="公务舱";
-		}else if(basicCabin=="F"){
-			basicCabin="头等舱";
-		}else if(basicCabin=="Y"){
-			basicCabin="经济舱";
-		}
-		return basicCabin;
-}
-
-//当两段航班的票数不一样的时候，按最低的票为准
-function signTekt(onefd,twofd){
-	if(parseInt(onefd)>parseInt(twofd)){
-		return twofd;
-	}else if(parseInt(onefd)<parseInt(twofd)){
-		return onefd;
-	}else{
-		return onefd;
-	}
-}
-
-//计算剩余票价张数的方法
-function tekNum(date){
-	if(date=="A"){
-		date=9;
-	}else if(date=="L"||date=="Q"||date=="S"||date=="C"||date=="X"||date=="Z"){
-		date="";
-	}else if(date!=""){
-		date=date;
-	}
-	return date;
-}
 </script>
 </html>

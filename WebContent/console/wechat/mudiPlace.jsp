@@ -21,10 +21,14 @@
 <title><%=chufCity %>--><%=daodCity %></title>
 <link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
+<link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
+<link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>console/js/airCodeVScity.js?yim=2015"></script>
+<script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
+<script src="<%=basePath %>console/js/mobiscroll.js"></script>
 <style type="text/css">
 	*{padding:0px;margin:0px;}
 	body{text-align:center; font-size:13px; font:normal Helvetica, Arial, sans-serif; background-color:#ffffff;}
@@ -92,16 +96,27 @@
 	.zhzLiBox .flidNameBox .zhongPlanNa .zhzSpan{ display:block; float:left; line-height:22px; color:#999999; height: 20px;}
 	.zhzLiBox .flidNameBox .zhongPlanNa img{display:block; float:left;}
 	.zhzLiBox .monAndtick{ float:right; padding-right:8px;}
-	.zhzLiBox .monAndtick .moneyCPY{line-height:33px; font-family:'微软雅黑';}
+	.zhzLiBox .monAndtick .moneyCPY{line-height:33px; font-family:'微软雅黑'; margin-top:10px;}
 	.zhzLiBox .monAndtick .moneyCPY .oneMoneyHouse{color:#FF8201; font-size:14px; font-family:Arial, Helvetica, sans-serif;}
 	.zhzLiBox .monAndtick .tickNum{line-height:15px; text-align:center; color:#999999;}
 	.zhzLiBox .infoMessgBox{ height:15px;}
 	.zhzLiBox .infoMessgBox .infoChBox{ float:left; height:13px; color:#999999; font-size:10px; line-height:13px; padding:1px 10px;}
 	.infoChBox img,.infoChBox span{display:block; float:left;}
 	.infoChBox span{ margin-top:1px; margin-left:5px;}
+	.jcDate{width:70px; text-align:right; color:#6CA5FE; border:none; font-size:12px; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0);}
+	.weui-btn {position: relative; display: block;margin-left: auto; margin-right: auto; padding-left: 14px; padding-right: 14px; box-sizing: border-box; font-size: 18px; text-align: center; text-decoration: none; color: #FFFFFF; line-height: 2.55555556; border-radius: 5px;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); overflow: hidden;}
+	.weui-btn_mini{display: inline-block;padding: 0 1.32em; line-height: 2.3; font-size: 13px;}
+	.weui-btn_primary {background-color: #1AAD19;}
+	.weui-btn1 {position: relative; margin-left: auto; margin-right: auto; padding-left: 14px; padding-right: 14px; box-sizing: border-box;font-size: 1px; text-align: center; text-decoration: none; color: #FFFFFF;line-height: 2.55555556; border-radius: 5px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); overflow: hidden;}
+	.weui-btn_disabled {color: rgba(255, 255, 255, 0.6);}
+	.weui-btn_default {color: #000000; background-color: #F8F8F8;}
+	.panel{text-align: left;webkit-box-shadow:3px 3px 3px #c3c3c3; -moz-box-shadow:3px 3px 3px #c3c3c3; box-shadow: 3px 3px 3px #c3c3c3;background-color:#f1f1f1;position:fixed;z-index:10000;width:100%;display:none;top:0px;left:0px;padding:15px 10px;}
+	.panel>input{float:left;} 
+	.resitInput{font-size:15px; padding:7px; border:1px solid #e1e1e1; border-radius:5px; width:60%;}
+	.resitBtn{width:25%;background-color: #1AAD19; border: none; border-radius: 5px; padding:8px 20px; color: #fff; margin-left: 10px;font-size:14px;}
 </style>
-<script>
 
+<script>
 $(function(){ 
 	var chufCityCode="<%=chufCityCode %>";
 	var daodCityCode="<%=daodCityCode %>";
@@ -126,6 +141,10 @@ $(function(){
 		$(".zhzLiBox").remove(); //移除原来的中转航班
 		ajax(chufCityCode, daodCityCode, cangW, newDate); //执行数据加载ajax		
 		$("#dateTimeID").text(newDate);//把这个值重新赋值一下，当做下一此点击时再一次调用
+	});
+	
+	$(".mmddWeek").click(function(){
+		$(".panel").slideToggle("fast");
 	});
 	
 	var tjTicket=0;//推荐的机票
@@ -171,7 +190,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 						}  
 						// <span style="width:60px; text-align:right; font-size:13px; line-height:28px;">'+' '+getDate[i].flightNo+'</span>
 						// <span style="width:50px; text-align:center; float:right;">'+' '+cuntNumTime+'</span>
-						var notTjList = '<li class="notTjTicket"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+changeType(getDate[i].depTime)+'</div><div class="EndTime lineHeight">'+changeType(getDate[i].arrTime)+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.png" style="float:left;"/><span style="float:left;"><%=chufPlan%></span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.png" style="float:left;"><span style="float:left;"><%=daodPlan%></span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201; text-align:right;">￥'+parseFloat(onewayPrice).toFixed(2)+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cnCang(cangW)+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="aYuding">预定</a><span class="choDate">'+JSON.stringify(getDate[i])+'</span></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+parseFloat(onewayPrice).toFixed(2)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
+						var notTjList = '<li class="notTjTicket" style="position:relative;z-index:1;"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+changeType(getDate[i].depTime)+'</div><div class="EndTime lineHeight">'+changeType(getDate[i].arrTime)+'</div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.png" style="float:left;"/><span style="float:left;"><%=chufPlan%></span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.png" style="float:left;"><span style="float:left;"><%=daodPlan%></span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201; text-align:right;">￥'+parseFloat(onewayPrice).toFixed(2)+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cnCang(cangW)+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="aYuding">预定</a><span class="choDate">'+JSON.stringify(getDate[i])+'</span></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+parseFloat(onewayPrice).toFixed(2)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="piaojia">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
 						$("#TicketList").append(notTjList);	
 						if(sum == 0||sum == "0"){
 							$(".notTjTicket:eq("+i+") .aYuding").text("已售完");
@@ -352,7 +371,7 @@ function conterCONTime(time){
 	var day = new Date(Date.parse(date.replace(/-/g, '/')));  
 	var today = new Array('周日','周一','周二','周三','周四','周五','周六');  
 	var week = today[day.getDay()]; //获得星期
-	var mmdd = yymmdd[1]+"月"+yymmdd[2]+"日 "+week+"<span style='font-size:10px; color:#017AFD;'>&nbsp;▼</span>";
+	var mmdd = yymmdd[1]+"月"+yymmdd[2]+"日 "+week+"<span class='jcD01' style='font-size:10px; color:#017AFD;' >&nbsp;▼</span>";
 	$(".mmddWeek").html(mmdd);
 }
 
@@ -407,6 +426,30 @@ function cnCang(basicCabin){
 		return basicCabin;
 }
 
+function chax(){
+	//alert(document.getElementById("d11").value);
+	dateTime=document.getElementById("d11").value;
+	if(dateTime==""||dateTime==null){
+		alert("请选择日期！");
+		return false;
+	}
+	var data = dateTime;    //获取控件上选择的日期
+    data = data.replace("-","/");
+    var now = new Date();
+    now.setDate(now.getDate()-1);
+    var chknow = new Date(Date.parse(data));
+    if (chknow < now) {
+           $.alert("日期选择错误");
+           return false;
+    }
+	var chufCityCode="<%=chufCityCode %>";
+	var daodCityCode="<%=daodCityCode %>";
+	var cangW="<%=cangW %>";
+	ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
+	conterCONTime(dateTime);//显示在中间的时间
+	$(".panel").slideToggle("fast");
+}
+
 //
 /* function notTickDiv(inc){
 	$("body .banner").css("display","none");
@@ -423,8 +466,13 @@ function cnCang(basicCabin){
 		<div class="timeDiv" style="float:left; width:25%; "><a class="prevDate" style="background:url('<%=basePath%>console/images/zuopoit.png') no-repeat 0px 1px; background-size:15px 16px; padding-left:15px;">前一天</a></div>
 		<div id="cendivBox">
 			<div class="timeDiv mmddWeek"></div>
+			<div class="panel">
+				<input type="text" id="d11" class="resitInput" placeholder="请选择出发日期"/>
+				<input type="button" class="resitBtn" value="确定" onclick="chax()"/>
+				<span style="clear:both;"></span>
+			</div>
 		</div>
-		<div id="dateTimeID" style="display:none;"><%=dateTime %></div>
+		<div id="dateTimeID"  style="display:none;"><%=dateTime %></div> 
 		<div id="chufCityID" style="display:none;"><%=chufCity %></div>
 		<div id="daodCityID" style="display:none;"><%=daodCity %></div>
 		<!-- <div class="timeDiv" style="float:left; width:15%; text-align:left;">明天▼</div> -->
@@ -450,4 +498,26 @@ function cnCang(basicCabin){
 		</div> 
 	</div>
 </body>
+<script>
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: false,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+	
+	$("#d11").mobiscroll($.extend(opt['date'], opt['default']));
+});
+</script>
 </html>

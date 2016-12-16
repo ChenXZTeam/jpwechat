@@ -820,8 +820,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			return false;
 		}
 		if(gody==""||gody==null){
-			alert("出发时间不能为空");
+			alert("出发日期不能为空");
 			return false;
+		}
+		var data = gody;
+		var chknow = new Date(Date.parse(data));
+		var now = new Date();
+		now.setDate(now.getDate()-1);
+		if (chknow < now) {
+		         alert("出发日期不能在今天之前");
+		         return false;
 		}
 		if($("#danAndFan").combobox("getValue")=="1"){  //单程
 			//var cangW = $("#cangwei").val();
@@ -954,19 +962,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 		}else if($("#danAndFan").combobox("getValue")=="2"){ //往返
 			if(fady==""||fady==null){
-				alert("返程时间不能为空");
+				alert("返回日期不能为空");
 				return false;
 			}
 			var chufCityCode = getText($("#gofaCity").val());
 			var daodCityCode = getText($("#arrCity").val());
 			var dateTime = $("#gofaTime").val();
 			var returnTime = $("#fancDate").val();
-			date1 = new Date(dateTime); //出发时间
-			date2 = new Date(returnTime); //返程时间
-			if(Date.parse(date1)>Date.parse(date2)){
-				alert("订当天往返的机票，推荐分开来订单程航班。");
+			if(dateTime==""||dateTime==null){
+				alert("出发日期不能为空");
 				return false;
 			}
+			if(returnTime==""||returnTime==null){
+				alert("返回日期不能为空");
+				return false;
+			}
+		    if(dateTime == returnTime){
+		    	alert("同一天请分开预定");
+		    	return false;
+		    }
+		    var data = dateTime;
+			var reData = returnTime;
+		    data = data.replace("-","/");
+		    reData = reData.replace("-","/");
+		    var chknow = new Date(Date.parse(data));
+		    var rechknow = new Date(Date.parse(reData));
+		    if(rechknow < chknow){
+		    	alert("返回日期不能在出发日期之前");
+		    	return false;
+		    }
+		    var now = new Date();
+		    now.setDate(now.getDate()-1);
+		    if (chknow < now) {
+		           alert("出发日期不能在今天之前");
+		           return false;
+		    }
+		    if (rechknow < now) {
+		           alert("返回日期不能在今天之前");
+		           return false;
+		    }
 			var airline = "";
 			var page = "";
 			$.ajax({
