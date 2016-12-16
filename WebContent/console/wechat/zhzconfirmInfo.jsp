@@ -735,7 +735,14 @@ function getcode(inc){
 			<div class="object" id="object_two"></div>
 			<div class="object" id="object_one"></div>
 		</div>
-		<div style="color:#ffffff; position:absolute; left:39%; top:58%;">数据加载中...</div>
+		<span class="textMove" id="one">广</span>
+		<span class="textMove" id="two">州</span>
+		<span class="textMove" id="three">仁</span>
+		<span class="textMove" id="four">德</span>
+		<span class="textMove" id="five">机</span>
+		<span class="textMove" id="six">票</span>
+		<span class="textMove" id="seven">系</span>
+		<span class="textMove" id="eight">统</span>
 	</div> 
 </div>
 <script>

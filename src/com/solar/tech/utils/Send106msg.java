@@ -8,11 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import com.solar.tech.dbutil.Encode; 
-
 public class Send106msg {
 	public String SendMSGtoPhone(String msgText,String phoneNum) throws MalformedURLException, IOException{
-		String password = "5BC4066C0BEE64E62B14B3F4B7E98AE3";//对密码加密MD5
+		String password = PassSend.readValue();//对密码加密MD5
 		//发送内容
 		String msg = msgText; //"【永弘支付短信提醒】您办理的业务费用支付成功，感谢您对永弘的支持。约定编号：334412315 请妥善保管" 
 		

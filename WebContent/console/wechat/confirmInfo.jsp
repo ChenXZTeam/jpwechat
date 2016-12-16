@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="<%=basePath %>console/css/style.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?iy=20160305"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
@@ -323,8 +324,8 @@ function nextPat(){
 					type:"POST",
 					data:date,
 					dataType:"json",
-					beforeSend:function(){$(".loadingBox").css("display","block");},
-					complete:function(){$(".loadingBox").css("display","none");},
+					beforeSend:function(){$(".loading").css("display","block");},
+					complete:function(){$(".loading").css("display","none");},
 					success:function(result){
 						alert(result.planMsg);
 						$("#turmonp").text(result.order);
@@ -534,9 +535,24 @@ function ageFunc(birthday){
 	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
 </div>
 <!-- 提交订单的时候加载等待的效果 -->
-<div class="loadingBox">
-	<span>正在创建订单...</span>
-</div>
+<div id="loading">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_four"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_one"></div>
+			</div>
+			<span class="textMove" id="one">广</span>
+			<span class="textMove" id="two">州</span>
+			<span class="textMove" id="three">仁</span>
+			<span class="textMove" id="four">德</span>
+			<span class="textMove" id="five">机</span>
+			<span class="textMove" id="six">票</span>
+			<span class="textMove" id="seven">系</span>
+			<span class="textMove" id="eight">统</span>
+		</div> 
+	</div>
 <script>
 	$(function () {
 	var currYear = (new Date()).getFullYear();	
