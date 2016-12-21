@@ -69,7 +69,10 @@
 <script>
 $(function(){
 	 var jsonstr = '<%=str%>';
-	 var obj = JSON.parse(jsonstr);
+	 //var jsonstr = '{"type":"SL","id":"402881e65775382301577538c7f600b5","status":3,"mode":"0.4\'5"}';
+	 //console.log(jsonstr);
+	 var obj = $.parseJSON(jsonstr);
+	 //var obj = JSON.parse(jsonstr);
 	 console.log(obj);
 	 $(".applyCountry").text(obj.applyCountry);
 	 $(".contactsEmail").text(obj.contactsEmail);

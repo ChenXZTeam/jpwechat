@@ -30,11 +30,13 @@
             	/framework/visa/** = anon  
                 /images/framework/** = anon
                 /scripts/common/** = anon
+                /kinder/** = anon
                 /console/** = anon
                 /login.jsp = anon
                 /login.action = anon
                 /tempoImg/** = anon
                 /uploadImg/** = anon
+                /kinderimg/** = anon
                 /wechatController/** = anon 
                 /userOrderController/** = anon      
                 /**= authc,roles[admin]

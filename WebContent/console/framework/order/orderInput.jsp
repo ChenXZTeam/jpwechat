@@ -148,7 +148,7 @@
 			var EmailAdd = $("#Email").val();//电子邮件
 			var trayTypeIpnt = $("#lvkeType").val();//旅客类型
 			var IDcase = $("#idNum").val()//身份证号
-			var songTypeIpnt = $("#peisType").text();//配送方式
+			var songTypeIpnt = $("#peisType").val();//配送方式
 			var sondAdd = $("#peisAdd").val();//配送地址
 			var countryIdNum = $("#countryIdNum").text(); //国家代码
 			var countryName = $("#applyCountry").val();; //签证国家

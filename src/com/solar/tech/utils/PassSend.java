@@ -17,7 +17,7 @@ public final class PassSend {
 	public static String readValue(){
 		 try {
 			 	String path = TestDemo.class.getClassLoader().getResource("sendPass.properties").getPath();  //先获取绝对路劲在查找
-		    	FileInputStream in = new FileInputStream(path);
+			 	FileInputStream in = new FileInputStream(path);
 		    	Properties props = new Properties();
 		        props.load(in);
 		        String value = props.getProperty ("pass");
