@@ -26,11 +26,11 @@ public class Info {
 	private String infoID;
     
    //文章标题
-    @Column(name="title", length=50)
+    @Column(name="title", length=200)
 	private String title;
     
    //文字内容
-    @Column(name="info", length=150)
+    @Column(name="info")
 	private String info;
   //创建时间
   	@Column(name = "createTime")

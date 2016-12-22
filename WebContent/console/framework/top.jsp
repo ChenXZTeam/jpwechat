@@ -4,36 +4,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-	<%-- <div id="topbar" style="width:100%;">
-      <table id="toptab" style="width:100%">
-            <tr style="width:100%">
-                <th  style="width:75%">
-                <img src="<%=basePath %>images/framework/logo.png" />
-                <div id="usercbmenu">
-                    	<ul>
-	                   		<li></li>
-	                   	</ul>
-                    </div>
-                </th>
-    
-                <th style="width:25%">
-                
-                    <span style="font-size:21px; color:#FFFFFF">
-                   欢迎你登录：<%=com.solartech.framework.ldap.Current.user()%>&nbsp;<a href="#">退出</a>
-              </span>
-                </th>
-            </tr>
-        </table>
-        <div style="float:left; width:80%;">dd</div>
-        <div style="float:left; width:250px;;">    
-        <div class="logonuser_txt">
-           
-
-                    </div></div>
-        
-    </div> --%>
-    
-    <style>
+<style>
     body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,
 form,fieldset,input,textarea,p,blockquote,th,td,a{
 	margin:0px;padding:0px;font-family:"微软雅黑";

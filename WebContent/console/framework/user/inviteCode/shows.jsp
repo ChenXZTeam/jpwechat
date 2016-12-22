@@ -105,12 +105,10 @@
 		});
 		
 		function addCode(){
-			$("#preferential").eq(0).attr("disabled",true);
-			console.log($("#preferential"));
-			$("input[name='type']").attr("disabled",false);
 			$("#dlg").dialog("open").dialog('setTitle','');
 			$('#ftitle').html("添加邀请码");
 			$('#fm').form('clear');
+			document.getElementById("preferential").checked=true;
 		}
 		
 		function deleteCode(){

@@ -56,6 +56,7 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="<%=basePath%>console/framework/contryNews/addinfo.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="sendInfo()">推送消息</a>
 </div>
 <div style="width:100%;height:420px;">
 	<div id="zixunListBox" style="width:100%;height:420px;"></div>
@@ -283,6 +284,20 @@ Date.prototype.format = function (format) {
 		 } 
 		 return format;  
 } 
+
+function sendInfo(){
+	$.ajax({
+            cache: false,
+            async: false,
+            type: "POST",
+            data:{},
+            dataType: 'json',
+            url: "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=ACCESS_TOKEN",
+            success: function (data) {
+            	
+            }
+    });
+}
 		
 </script>
 </body>

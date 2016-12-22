@@ -23,7 +23,7 @@
 		<div id="tabs" class="easyui-tabs" fit="true" border="false">
 			<div title="Home">
 				<div class="cs-home-remark">
-					<h1>续日开发框架   ytytytytyt</h1>
+					<h1>广州仁德机票管理系统</h1>
 					<br>
 				</div>
 			</div>
