@@ -74,6 +74,7 @@ public class OutInfoController {
 	       String value = request.getParameter(key); 
 	       if(key.equals("title"))outInfo.setTitle(value); 
 	       if(key.equals("info"))outInfo.setInfo(value); 
+	       if(key.equals("introduction"))outInfo.setIntroduction(value); 
 	      
 	    }
 	   

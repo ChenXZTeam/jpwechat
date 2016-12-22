@@ -76,6 +76,7 @@ public class InfoController {
 	       String value = request.getParameter(key); 
 	       if(key.equals("title"))info.setTitle(value); 
 	       if(key.equals("info"))info.setInfo(value); 
+	       if(key.equals("introduction"))info.setIntroduction(value); 
 	      
 	    }
 	   
