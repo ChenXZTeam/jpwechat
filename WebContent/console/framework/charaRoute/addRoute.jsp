@@ -40,7 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						beforeSend:function(){$("#loading").css("display","block");},
 						complete:function(){$("#loading").css("display","none");},
 						success: function(result) {
-							
+							alert("保存数据成功");
+							window.location.href="javascript:history.go(-1)";
 						},error:function(){
 							
 						}

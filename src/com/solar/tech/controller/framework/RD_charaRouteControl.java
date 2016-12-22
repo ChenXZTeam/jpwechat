@@ -1,9 +1,13 @@
 package com.solar.tech.controller.framework;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +51,61 @@ public class RD_charaRouteControl {
 		cRoute.setTitle(title);
 		cRoute.setConText(conText);
 		routeSer.saveRoute(cRoute);
+		return map;
+	}
+	/**
+	 * 删除路线信息
+	 */
+	@RequestMapping("/deleteRoute.action")
+	@ResponseBody
+	public Map<String, Object> deleteRoute(String routeID) {
+	     Map<String, Object> map = new HashMap<String, Object>(); 
+	     try {
+	    	 int i = routeSer.deleteRoute(routeID);
+	    	 if(i == 1){
+	    		 map.put("state", 1);
+				 map.put("msg", "success");
+				 return map;
+	    	 }
+			 map.put("state", 0);
+			 map.put("msg", "数据删除失败");
+	     } catch (Exception e) {
+	    	 map.put("state", -1);
+	    	 map.put("msg", e.getMessage());
+	     }
+	     return map;
+	   }
+	/**
+	 * 功能：修改路线
+	 *
+	 */
+	@RequestMapping("/updateRoute.action")
+	@ResponseBody
+	public Map<String, Object> updateRoute(CharaRoute charaRoute){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String userName = Current.user().getUserName();
+		charaRoute.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
+		charaRoute.setUserName(userName);
+		routeSer.updateRoute(charaRoute);
+		map.put("state", 1);
+		return map;
+	}
+	
+	/**
+	 * 功能描述：查找路线信息
+	 *
+	 * @param id
+	 * @param map
+	 *
+	 * @return String
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/findRoute.action")
+	@ResponseBody
+	public Map<String, Object> findRoute(String title,int page, int rows,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
+		Map<String, Object> map =new HashMap<String, Object>();
+		title = new String(title.getBytes("iso8859-1"),"utf-8");
+		map = routeSer.findRoute(title, page, rows);
 		return map;
 	}
 }

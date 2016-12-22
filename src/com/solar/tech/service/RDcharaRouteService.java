@@ -48,4 +48,32 @@ public class RDcharaRouteService {
 		map.put("total", total);
 		return map;
 	}
+	
+	/**
+	 * 删除数据
+	 */
+	public int deleteRoute(String routeiD) {
+		gDao.deleteByIds(CharaRoute.class, routeiD);
+		return 1;
+	}
+	
+	/**
+	 * 修改数据
+	 */
+	public void updateRoute(CharaRoute charaRoute) {
+		gDao.update(charaRoute);
+	}
+
+	/**
+	 * 查找数据
+	 */
+	public Map<String, Object> findRoute(String title, int pag, int row) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM CharaRoute c where c.title like '%"+title+"%' ";
+		List<Info> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		Long total = this.gDao.count(CharaRoute.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	}
 }

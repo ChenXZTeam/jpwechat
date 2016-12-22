@@ -22,8 +22,8 @@ public class CharaRoute {
 	@Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid")
-	@Column(name = "ID", length=100)
-	private String ID;
+	@Column(name = "routeID", length=100)
+	private String routeID;
 	
 	//特色路线标题
 	@Column(name = "title", length=100)
@@ -41,12 +41,14 @@ public class CharaRoute {
 	@Column(name = "createTime")
 	private Timestamp createTime;
 
-	public String getID() {
-		return ID;
+	
+
+	public String getRouteID() {
+		return routeID;
 	}
 
-	public void setID(String iD) {
-		ID = iD;
+	public void setRouteID(String routeID) {
+		this.routeID = routeID;
 	}
 
 	public String getTitle() {
