@@ -30,12 +30,16 @@
 <body>
 	<table width="1000" border="0" cellpadding="0" cellspacing="10">
 		<tr>
-			<td style="width:120px;">文章标题：</td>
+			<td style="width:1200px;">文章标题：</td>
 			<td style="width:400px;"><input id="infoTitle" type="text"/></td>
 		</tr>
 		<tr>
-			<td>文章内容：</td>
-			<td colspan="3"><textarea id="info" name="conText" style="width:842px; height:100px;"></textarea></td>
+			<td style="width:120px;">简介：</td>
+			<td style="width:400px;"><input id="introduction" type="text"/></td>
+		</tr>
+		<tr>
+			<td style="width:200px;">文章内容：</td>
+			<td colspan="8"><textarea id="info" name="conText" style="width:842px; height:100px;"></textarea></td>
 		</tr>
 		<tr>
 			<td colspan="4"><button id="submitBtn">提交</button></td>
@@ -47,12 +51,15 @@
 		$("#submitBtn").click(function(){
 			var title = document.getElementById("infoTitle").value;
 			var info = document.getElementById("info").value;
+			var introduction = document.getElementById("introduction").value;
+			
 			$.ajax({
 				url:"<%=basePath%>/framework/info/addInfo.action",
 				type:"POST",
 				data:{
 					"title":title,
-					"info":info
+					"info":info,
+					"introduction":introduction
 				},
 				dataType:"json",
 				success:function(res){

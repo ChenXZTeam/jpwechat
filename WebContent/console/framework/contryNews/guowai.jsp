@@ -72,6 +72,10 @@
 				<td colspan="3"><input name="title"/></td>
 			</tr>
 			<tr>
+				<td class="titleClass">简介：</td>
+				<td colspan="3"><input name="introduction"/></td>
+			</tr>
+			<tr>
 				<td class="titleClass">文章内容：</td>
 				<td colspan="3"><textarea name="info" style="width:500px; height:394px;"/></textarea></td>
 			</tr>
@@ -106,7 +110,7 @@ $(function(){
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'title', title: '文章标题', width: 150 },
-	        { field: 'info', title: '文章内容', width: 150},
+	        { field: 'introduction', title: '简介', width: 100 },
 	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
 	       
 	    ]],
@@ -164,6 +168,7 @@ function toUpdate(){  //弹出修改框
            var row = $('#zixunListBox').datagrid('getSelected');
            var rows = $('#zixunListBox').datagrid('getSelections');	
            console.log(row);
+           $(document.getElementsByTagName("iframe")[0].contentWindow.document.body).html(row.info);
            if (row == undefined||row == null||row=="") {
              	$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
              	return;

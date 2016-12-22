@@ -22,12 +22,14 @@
 	<tr>
 		<td class="titleStyle">文章标题：</td>
 		<td class="contTextStyle title"></td>
-		
+	</tr>
+	<tr>
+		<td class="titleStyle">简介：</td>
+		<td class="contTextStyle introduction"></td>
 	</tr>
 	<tr>
 		<td>文章内容：</td>
 		<td class="contTextStyle info"></td>
-	
 	</tr>
 	
 </table>
@@ -36,10 +38,18 @@
 <script>
 $(function(){
 	 var jsonstr = '<%=str%>';
-	 var obj = JSON.parse(jsonstr);
-	 console.log(obj);
-	 $(".title").text(obj.title);
-	 $(".info").text(obj.info);
+	 var titleNum=jsonstr.indexOf("title");
+	 var introductionNum=jsonstr.indexOf("introduction");
+	 var infoNum=jsonstr.lastIndexOf("info");
+	 var cNum=jsonstr.indexOf("createTime");
+	 //alert(jsonstr.indexOf("title"));
+	 console.log(jsonstr);
+	 //var obj = JSON.parse(jsonstr); 
+	 //console.log(obj);
+	
+	$(".title").text(jsonstr.substring(titleNum+8,introductionNum-3));
+	$(".info").html(jsonstr.substring(infoNum+7,cNum-3));
+	$(".introduction").text(jsonstr.substring(introductionNum+15,infoNum-3));
 	
 });
 </script>
