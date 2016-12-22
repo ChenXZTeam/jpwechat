@@ -86,8 +86,16 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#upInfoBox').dialog('close')" style="width:90px">取消</a>
 </div>
-<div class="seeContryInfoBox">
-	
+
+<div id="wxMessBox" class="easyui-dialog" style="width:600px; height:500px; padding: 10px 20px" closed="true" buttons="#wxMes-buttons" iconCls="icon-edit">
+	<form id="wxMesfm" method="post" enctype="multipart/form-data" novalidate>
+		<input type="file" name="flieInpt" id="flieInpt"/>
+		<input type="text" name="testText" id="textInpt"/>
+	</form>
+</div>
+<div id="wxMes-buttons">
+	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="wxMesSaveBean" iconCls="icon-ok" onclick="wxMesBean()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="wxMesSaveCancel" iconCls="icon-cancel" onclick="javascript:$('#wxMessBox').dialog('close')" style="width:90px">取消</a>
 </div>
 <script>
 $(function(){
@@ -292,7 +300,8 @@ Date.prototype.format = function (format) {
 } 
 
 function sendInfo(){
-	$.ajax({
+	$('#wxMessBox').dialog('open').dialog('setTitle','微信图文消息推送');
+	/* $.ajax({
             cache: false,
             async: false,
             type: "POST",
@@ -302,7 +311,23 @@ function sendInfo(){
             success: function (data) {
             	
             }
-    });
+    }); */
+}
+
+function wxMesBean(){ 	
+	  var imgUrl = document.getElementById("flieInpt").value;
+	  alert(imgUrl);
+      $.ajax({
+            cache: false,
+            async: false,
+            type: "POST",
+            data:{"flieInpt":imgUrl,"testText":"你好世界"},
+            dataType: 'json',
+            url: "<%=basePath%>framework/info/wxTsMesgess.action",
+            success: function (data) {
+            	
+            }
+     });
 }
 		
 </script>

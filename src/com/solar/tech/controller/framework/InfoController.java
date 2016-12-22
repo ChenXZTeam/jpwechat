@@ -156,6 +156,12 @@ public class InfoController {
 	
 	
 	//------------------------微信图文消息推送代码---------------------------
+	/**
+	 * 用户输入关键字时进行自动图文回复
+	 * @param req
+	 * @param resp
+	 * @throws IOException
+	 */
 	@RequestMapping("/wxMesgess.action")
 	@ResponseBody
 	public void wxMesgess(HttpServletRequest req, HttpServletResponse resp) throws IOException{
@@ -168,5 +174,17 @@ public class InfoController {
 		out.print(respMessage);
 		out.close();
 	}
-
+	
+	/**
+	 * 管理员点击推送消息的时候推送图文回复
+	 */
+	@RequestMapping("/wxTsMesgess.action")
+	@ResponseBody
+	public Map<String,Object> wxTsMesgess(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+		Map<String,Object> map = new HashMap<String,Object>();
+		String fileUrl = req.getParameter("flieInpt");
+		System.out.println(fileUrl);
+		return map;
+	}
+	
 }
