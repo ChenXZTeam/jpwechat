@@ -29,12 +29,26 @@ public class Info {
     @Column(name="title", length=200)
 	private String title;
     
+    //简介
+    @Column(name="introduction", length=200)
+    private String introduction;
+    
    //文字内容
     @Column(name="info")
 	private String info;
+    
   //创建时间
   	@Column(name = "createTime")
   	private Timestamp createTime;
+
+  	
+	public String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
 
 	public Timestamp getCreateTime() {
 		return createTime;
