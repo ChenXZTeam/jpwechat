@@ -1,7 +1,5 @@
 package com.solar.tech.controller.framework;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,15 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.solar.tech.bean.entity.Info;
 import com.solar.tech.service.InfoService;
-import com.solar.tech.service.userOrderService;
-import com.solar.tech.utils.CoreService;
 /**
  * 类名：InfoController 
  *
@@ -36,9 +31,6 @@ import com.solar.tech.utils.CoreService;
 @Controller
 @RequestMapping("/framework/info")
 public class InfoController {
-	
-	@Autowired
-	private userOrderService OrderService;
 	@Resource
 	private InfoService infoService;
 	
@@ -151,39 +143,6 @@ public class InfoController {
 		Map<String, Object> map =new HashMap<String, Object>();
 		title = new String(title.getBytes("iso8859-1"),"utf-8");
 		map = infoService.findVisa(title, page, rows);
-		return map;
-	}
-	
-	
-	//------------------------微信图文消息推送代码---------------------------
-	/**
-	 * 用户输入关键字时进行自动图文回复
-	 * @param req
-	 * @param resp
-	 * @throws IOException
-	 */
-	@RequestMapping("/wxMesgess.action")
-	@ResponseBody
-	public void wxMesgess(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-		// 调用核心业务类接收消息、处理消息
-		String respMessage = CoreService.processRequest();
-		//String respMessage = "<xml><ToUserName><![CDATA[gh_a9162165f144]]></ToUserName><FromUserName><![CDATA[oI6f2wDvj5glUkde-sQBTSyoyyZ4]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[this is a test]]></Content><MsgId>1234567890123456</MsgId></xml>";
-		//System.out.println(respMessage);
-		// 响应消息
-		PrintWriter out = resp.getWriter();
-		out.print(respMessage);
-		out.close();
-	}
-	
-	/**
-	 * 管理员点击推送消息的时候推送图文回复
-	 */
-	@RequestMapping("/wxTsMesgess.action")
-	@ResponseBody
-	public Map<String,Object> wxTsMesgess(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-		Map<String,Object> map = new HashMap<String,Object>();
-		String fileUrl = req.getParameter("flieInpt");
-		System.out.println(fileUrl);
 		return map;
 	}
 	
