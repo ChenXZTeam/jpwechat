@@ -34,7 +34,7 @@
 </style>
 <script>
 		KindEditor.ready(function(K) {
-			var editor1 = K.create('textarea[name="info"]', {
+			var editor1 = K.create('textarea[name="info",id="contText"]', {
 				cssPath : '<%=basePath %>kinder/plugins/code/prettify.css',
 				uploadJson : '<%=basePath %>kinder/upload_json.jsp',
 				fileManagerJson : '<%=basePath %>kinder/file_manager_json.jsp',
@@ -89,12 +89,28 @@
 
 <div id="wxMessBox" class="easyui-dialog" style="width:600px; height:500px; padding: 10px 20px" closed="true" buttons="#wxMes-buttons" iconCls="icon-edit">
 	<form id="wxMesfm" method="post" enctype="multipart/form-data" novalidate>
-		<input type="file" name="flieInpt" id="flieInpt"/>
-		<input type="text" name="testText" id="textInpt"/>
+		<table border="0" cellpadding="0" cellspacing="10">
+			<tr>
+				<td>图文标题：</td>
+				<td><input type="text" name="mittitle" id="mittitle" style="width:300px;"/></td>
+			</tr>
+			<tr>
+				<td>封面图路径：</td>
+				<td><input type="text" name="fmUrl" id="fmUrl" style="width:300px;"/></td>
+			</tr>
+			<tr>
+				<td>图文描述：</td>
+				<td><input type="text" name="mitcont" id="mitcont" style="width:420px;"/></td>
+			</tr>
+			<tr>
+				<td style="vertical-align:top;">图文内容：</td>
+				<td><textarea name="contText" id="contText" style="width:420px; height:300px;"></textarea></td>
+			</tr>
+		</table>
 	</form>
 </div>
 <div id="wxMes-buttons">
-	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="wxMesSaveBean" iconCls="icon-ok" onclick="wxMesBean()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="wxMesSaveBean" iconCls="icon-ok" onclick="wxMesBean()" style="displaly:block;width: 90px">确认推送</a> 
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="wxMesSaveCancel" iconCls="icon-cancel" onclick="javascript:$('#wxMessBox').dialog('close')" style="width:90px">取消</a>
 </div>
 <script>
@@ -301,33 +317,19 @@ Date.prototype.format = function (format) {
 
 function sendInfo(){
 	$('#wxMessBox').dialog('open').dialog('setTitle','微信图文消息推送');
-	/* $.ajax({
-            cache: false,
-            async: false,
-            type: "POST",
-            data:{},
-            dataType: 'json',
-            url: "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=ACCESS_TOKEN",
-            success: function (data) {
-            	
-            }
-    }); */
 }
 
 function wxMesBean(){ 	
-	  var imgUrl = document.getElementById("flieInpt").value;
-	  alert(imgUrl);
-      $.ajax({
-            cache: false,
-            async: false,
-            type: "POST",
-            data:{"flieInpt":imgUrl,"testText":"你好世界"},
-            dataType: 'json',
-            url: "<%=basePath%>framework/info/wxTsMesgess.action",
-            success: function (data) {
-            	
-            }
-     });
+     $('#wxMesfm').form('submit',{
+		       url: "<%=basePath%>framework/wxInfo/wxTsMesgess.action",
+		       onSubmit: function(){
+		           return $(this).form('validate');
+		       },
+		       success: function(data){
+		       		var obj = JSON.parse(data);
+					alert(data.msg);
+		       }
+	 });
 }
 		
 </script>

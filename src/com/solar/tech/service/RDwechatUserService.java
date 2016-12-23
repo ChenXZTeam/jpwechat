@@ -99,4 +99,19 @@ public class RDwechatUserService {
 		 
 		return (RD_wechatUser) list.get(0);
 	}
+	
+	/**
+	 * 获取全部关注该公众号的全部用户
+	 * @return
+	 */
+	public String getUserList(){
+		String hql="FROM RD_wechatUser";
+		List<RD_wechatUser> user_list = gDao.find(hql);
+		String opend_idStr= "";
+		for(RD_wechatUser usr : user_list){
+			opend_idStr += usr.getOpenID()+"\",\"";
+		}
+		String resultStr = opend_idStr.substring(0,opend_idStr.length()-3);
+		return resultStr;
+	}
 }

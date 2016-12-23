@@ -1,11 +1,7 @@
 package com.solar.tech.utils;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
-
-import com.solar.tech.TestDemo;
 
 /**
  * 获取读取properties短信接口的密码的方法
@@ -16,7 +12,7 @@ public final class PassSend {
 	//用于web项目的方法
 	public static String readValue(){
 		 try {
-			 	String path = TestDemo.class.getClassLoader().getResource("sendPass.properties").getPath();  //先获取绝对路劲在查找
+			 	String path = PassSend.class.getClassLoader().getResource("sendPass.properties").getPath();  //先获取绝对路劲在查找
 			 	FileInputStream in = new FileInputStream(path);
 		    	Properties props = new Properties();
 		        props.load(in);
