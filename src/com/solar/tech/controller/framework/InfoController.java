@@ -51,6 +51,23 @@ public class InfoController {
 		}
 		return map;
 	}
+	/**
+	 * 功能描述：获得国内资讯，返回到微信列表页面
+	 *
+	 * @return List<Info>
+	 */
+	@RequestMapping("/getInfo.action")
+	@ResponseBody
+	public Map<String, Object> getInfo(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = infoService.getInfo();
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
+		return map;
+	}
 	
 	/**
 	 * 功能描述：添加国内外资讯
@@ -143,6 +160,28 @@ public class InfoController {
 		Map<String, Object> map =new HashMap<String, Object>();
 		title = new String(title.getBytes("iso8859-1"),"utf-8");
 		map = infoService.findVisa(title, page, rows);
+		return map;
+	}
+	
+	/**
+	 * 功能描述：接收前端传来的ID并根据此ID找到对应的Info对象传到InfoContent.jsp页面
+	 *
+	 * @param id
+	 * @param map
+	 *
+	 * @return String
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/findInfoByTitle.action")
+	@ResponseBody
+	public Map<String, Object> findInfoByTitle(String title,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
+		Map<String, Object> map =new HashMap<String, Object>();
+		map = infoService.findInfoByTitle(title);
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
 		return map;
 	}
 	

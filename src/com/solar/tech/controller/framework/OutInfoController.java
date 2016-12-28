@@ -59,6 +59,23 @@ public class OutInfoController {
 	}
 	
 	/**
+	 * 功能描述：获得国外资讯，返回到微信列表页面
+	 *
+	 * @return List<Info>
+	 */
+	@RequestMapping("/getOutInfo.action")
+	@ResponseBody
+	public Map<String, Object> getOutInfo(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = outInfoService.getOutInfo();
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
+		return map;
+	}
+	/**
 	 * 功能描述：添加国内外资讯
 	 *
 	 * @return Serializable
@@ -149,6 +166,28 @@ public class OutInfoController {
 		Map<String, Object> map =new HashMap<String, Object>();
 		title = new String(title.getBytes("iso8859-1"),"utf-8");
 		map = outInfoService.findVisa(title, page, rows);
+		return map;
+	}
+	/**
+	 * 功能描述：查找标题，返回微信
+	 *
+	 * @param id
+	 * @param map
+	 *
+	 * @return String
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/findOutInfoByTitle.action")
+	@ResponseBody
+	public Map<String, Object> findOutInfoByTitle(String title,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
+		Map<String, Object> map =new HashMap<String, Object>();
+		//title = new String(title.getBytes("iso8859-1"),"utf-8");
+		map = outInfoService.findOutInfoByTitle(title);
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
 		return map;
 	}
 }

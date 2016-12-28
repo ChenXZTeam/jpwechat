@@ -1,5 +1,6 @@
 package com.solar.tech.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.entity.Info;
-import com.solar.tech.bean.Visa;
 import com.solar.tech.dao.GenericDao;
 @Service
 @Transactional
@@ -42,7 +42,7 @@ public class InfoService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String hql = "FROM Info i  order by i.createTime desc";
 		if(row==10000){
-			List<Visa> iList = this.gDao.find(hql);
+			List<Info> iList = this.gDao.find(hql);
 			map.put("iList", iList);
 		}else{
 			List<Info> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
@@ -75,11 +75,11 @@ public class InfoService {
 	}
 	
 	/**
-	 * 功能描述：通过id查找Info
+	 * 功能描述：通过title查找Info
 	 *
 	 * @param id
 	 *
-	 * @return Visa
+	 * @return Info
 	 */
 	public Map<String, Object> findVisa(String title, int pag, int row) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -89,6 +89,59 @@ public class InfoService {
 		map.put("rows", cList);
 		map.put("total", total);
 		return map;
+	}
+
+	/**
+	 * 功能描述：获得国内资讯
+	 *
+	 * @param id
+	 *
+	 * @return Info
+	 */
+	public Map<String, Object> getInfo() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM Info i  order by i.createTime desc";
+		List<Info> cList = this.gDao.queryHQL(hql);
+		Long total = this.gDao.count(Info.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	}
+
+	/**
+	 * 后台管理员查找新闻标题
+	 * @param title
+	 * @return
+	 */
+	public Map<String, Object> findInfoByTitle(String title) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM Info i where i.title like '%"+title+"%' ";
+		List<Info> cList = this.gDao.queryHQL(hql);
+		Long total = this.gDao.count(Info.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	 * 这个是获取最新一条的国内资讯
+	 * @return
+	 */
+	public Info getNewInfo(){
+		Info ss = new Info();
+		ss.setTitle("国内资讯标题获取失败");
+		ss.setIntroduction("国内资讯简介获取失败");
+		String hql = "FROM Info ORDER BY createTime DESC";
+		List<Info> chInfo = new ArrayList<Info>();
+		try{
+			chInfo = this.gDao.queryHQL(hql);
+			if(chInfo.size()>0){
+				ss = chInfo.get(0);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ss;
 	}
 
 }

@@ -152,4 +152,22 @@ public class WechatPageControlle {
 	public String kaifing() {
 		return "wechat/waiting";
 	}
+
+	/**
+	 * 国内资讯
+	 * @return
+	 */
+	@RequestMapping("/details.action")
+	public String details() {
+		return "wechat/gnzixun";
+	}
+	
+	/**
+	 * 国外资讯
+	 * @return
+	 */
+	@RequestMapping("/gwdetails.action")
+	public String gwdetails() {
+		return "wechat/gwzixun";
+	}
 }

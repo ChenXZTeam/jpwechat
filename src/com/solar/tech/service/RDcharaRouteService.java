@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.entity.CharaRoute;
-import com.solar.tech.bean.entity.Info;
 import com.solar.tech.dao.GenericDao;
 
 
@@ -70,10 +69,31 @@ public class RDcharaRouteService {
 	public Map<String, Object> findRoute(String title, int pag, int row) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String hql = "FROM CharaRoute c where c.title like '%"+title+"%' ";
-		List<Info> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		List<CharaRoute> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(CharaRoute.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
 		map.put("total", total);
 		return map;
+	}
+	
+	/**
+	 * 这个是获取最新一条的特色路线资讯
+	 * @return
+	 */
+	public CharaRoute getCharaRoute(){
+		CharaRoute ss = new CharaRoute();
+		ss.setTitle("特色路线标题获取失败");
+		ss.setIntroduction("特色路线简介获取失败");
+		String hql = "FROM CharaRoute ORDER BY createTime DESC";
+		List<CharaRoute> chInfo = new ArrayList<CharaRoute>();
+		try{
+			chInfo = this.gDao.queryHQL(hql);
+			if(chInfo.size()>0){
+				ss = chInfo.get(0);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ss;
 	}
 }

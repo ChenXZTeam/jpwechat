@@ -29,6 +29,10 @@ public class CharaRoute {
 	@Column(name = "title", length=100)
 	private String title;
 	
+	//简介
+    @Column(name="introduction", length=200)
+    private String introduction;
+    
 	//文本内容
 	@Column(name="conText")
 	private String conText;
@@ -81,6 +85,14 @@ public class CharaRoute {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
 	}
 
 }

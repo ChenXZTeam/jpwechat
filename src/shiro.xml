@@ -28,6 +28,8 @@
             	/framework/order/** = anon
             	/framework/invite/** = anon
             	/framework/visa/** = anon  
+            	/framework/info/** = anon
+            	/framework/outinfo/** = anon
                 /images/framework/** = anon
                 /scripts/common/** = anon
                 /kinder/** = anon

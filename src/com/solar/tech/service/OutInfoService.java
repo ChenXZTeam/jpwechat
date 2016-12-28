@@ -1,5 +1,6 @@
 package com.solar.tech.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,48 @@ public class OutInfoService {
 		map.put("rows", cList);
 		map.put("total", total);
 		return map;
+	}
+
+	public Map<String, Object> getOutInfo() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM OutInfo out order by out.createTime desc";
+		List<OutInfo> cList = this.gDao.queryHQL(hql);
+		Long total = this.gDao.count(OutInfo.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		
+		return map;
+	}
+
+	public Map<String, Object> findOutInfoByTitle(String title) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM OutInfo i where i.title like '%"+title+"%' ";
+		List<OutInfo> cList = this.gDao.queryHQL(hql);
+		Long total = this.gDao.count(OutInfo.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	 * 这个是获取最新一条的国际资讯
+	 * @return
+	 */
+	public OutInfo getNewOutInfo(){
+		OutInfo ss = new OutInfo();
+		ss.setTitle("国际资讯标题获取失败");
+		ss.setIntroduction("国际资讯简介获取失败");
+		String hql = "FROM OutInfo ORDER BY createTime DESC";
+		List<OutInfo> chInfo = new ArrayList<OutInfo>();
+		try{
+			chInfo = this.gDao.queryHQL(hql);
+			if(chInfo.size()>0){
+				ss = chInfo.get(0);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ss;
 	}
 
 }

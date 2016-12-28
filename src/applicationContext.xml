@@ -43,6 +43,8 @@
   		<property name="sessionFactory" ref="sessionFactory" />
  	</bean>
  	
+ 	<bean class="com.solar.tech.utils.MyApplicationContextUtil"></bean>
+ 	
  	<!-- 配置上传图片的方法 -->
  	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
  	
