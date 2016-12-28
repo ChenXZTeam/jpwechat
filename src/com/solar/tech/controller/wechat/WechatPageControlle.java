@@ -170,4 +170,13 @@ public class WechatPageControlle {
 	public String gwdetails() {
 		return "wechat/gwdetails";
 	}
+	
+	/**
+	 * 特色路线的界面跳转
+	 * @return
+	 */
+	@RequestMapping("/routedetail.action")
+	public String charaRoute() {
+		return "wechat/routedetail";
+	}
 }

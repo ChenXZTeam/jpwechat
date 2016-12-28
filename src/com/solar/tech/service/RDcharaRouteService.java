@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.entity.CharaRoute;
 import com.solar.tech.dao.GenericDao;
+import com.solar.tech.utils.PassSend;
 
 
 @Service
@@ -64,7 +65,7 @@ public class RDcharaRouteService {
 	}
 
 	/**
-	 * 查找数据
+	 * 查找数据用于后台管理员中的查找
 	 */
 	public Map<String, Object> findRoute(String title, int pag, int row) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -73,6 +74,19 @@ public class RDcharaRouteService {
 		Long total = this.gDao.count(CharaRoute.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
 		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	 * 通过id进行查找资讯 用于微信前端
+	 * @param title
+	 * @return
+	 */
+	public Map<String, Object> findInfoByID(String ID) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM CharaRoute i where i.routeID = '"+ID+"' ";
+		List<CharaRoute> cList = this.gDao.queryHQL(hql);
+		map.put("rows", cList);
 		return map;
 	}
 	
@@ -90,6 +104,7 @@ public class RDcharaRouteService {
 			chInfo = this.gDao.queryHQL(hql);
 			if(chInfo.size()>0){
 				ss = chInfo.get(0);
+				ss.setWebPath(PassSend.webPath());
 			}
 		}catch(Exception e){
 			e.printStackTrace();

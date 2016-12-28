@@ -32,10 +32,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#saveBtn").click(function(){
 				var title = document.getElementById("title").value;
 				var conText = document.getElementById("conText").value;
+				var introduction = document.getElementById("introduction").value;
+				var oneUrl = conText.substring(conText.indexOf("<img"),conText.indexOf("alt="));
+				var twoUrl = oneUrl.substring(oneUrl.indexOf("src=")+20,(oneUrl.length)-2);
 				$.ajax({
 						url:"<%=basePath%>framework/route/createRoute.action",
 						type:"POST",
-						data:{"title":title,"conText":conText},
+						data:{
+								"title":title,
+								"conText":conText,
+								"introduction":introduction,
+								"fmUrl":twoUrl
+						},
 						dataType:"json",
 						beforeSend:function(){$("#loading").css("display","block");},
 						complete:function(){$("#loading").css("display","none");},
@@ -49,14 +57,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 	});
 </script>
-<table border="1">
+<table border="0" cellpadding="10">
 	<tr>
 		<td>路线标题：</td>
 		<td><input type="text" id="title"/></td>
 	</tr>
 	<tr>
+		<td style="width:120px;">简介：</td>
+		<td><input id="introduction" type="text" style="width:350px;"/></td>
+	</tr>
+	<tr>
 		<td>路线内容：</td>
-		<td><textarea name="conText" id="conText" style="width:780px; height:200px;"></textarea></td>
+		<td><textarea name="conText" id="conText" style="width:780px; height:400px;"></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2"><button id="saveBtn">保存</button></td>

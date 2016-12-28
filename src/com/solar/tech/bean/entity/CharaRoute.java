@@ -48,6 +48,9 @@ public class CharaRoute {
 	//封面路径
 	@Column(name="fmUrl")
 	private String fmUrl;
+	
+	//不需要创建数据库字段的变量（用于传递参数用的,在InfoService中用于传参数一次而已）
+	private String webPath;
 
 	public String getRouteID() {
 		return routeID;
@@ -103,6 +106,14 @@ public class CharaRoute {
 
 	public void setFmUrl(String fmUrl) {
 		this.fmUrl = fmUrl;
+	}
+
+	public String getWebPath() {
+		return webPath;
+	}
+
+	public void setWebPath(String webPath) {
+		this.webPath = webPath;
 	}
 
 }

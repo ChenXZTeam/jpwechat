@@ -2,7 +2,7 @@
 <%
 	String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-	String str = new String(request.getParameter("str").getBytes("ISO-8859-1"),"utf-8");
+	String title = new String(request.getParameter("title").getBytes("ISO-8859-1"),"utf-8");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,21 +36,25 @@
 
 </body>
 <script>
-$(function(){
-	 var jsonstr = '<%=str%>';
-	 var titleNum=jsonstr.indexOf("title");
-	 var introductionNum=jsonstr.indexOf("introduction");
-	 var infoNum=jsonstr.lastIndexOf("info");
-	 var cNum=jsonstr.indexOf("createTime");
-	 //alert(jsonstr.indexOf("title"));
-	 console.log(jsonstr);
-	 //var obj = JSON.parse(jsonstr); 
-	 //console.log(obj);
-	
-	$(".title").text(jsonstr.substring(titleNum+8,introductionNum-3));
-	$(".info").html(jsonstr.substring(infoNum+7,cNum-3));
-	$(".introduction").text(jsonstr.substring(introductionNum+15,infoNum-3));
-	
-});
+	$(function(){
+		$.ajax({
+			url:"<%=basePath %>framework/info/findInfoByID.action",
+			type:"POST",
+			data:{"title":"<%=title%>"},
+			dataType:"json",
+			success:function(data){
+				if(data.msg==1){
+					var rowsDate = data.rows;
+					console.log(rowsDate);
+					$(".title").text(rowsDate[0].title);
+					$(".introduction").text(rowsDate[0].introduction);
+					$(".info").html(rowsDate[0].info);
+				}else{
+					alert("没有找到资讯信息");
+				}
+			},error:function(){
+			}
+		});
+	});
 </script>
 </html>

@@ -42,7 +42,7 @@ public class RD_charaRouteControl {
 	 */
 	@RequestMapping("/createRoute.action")
 	@ResponseBody
-	public Map<String, Object> createRoute(String title, String conText){
+	public Map<String, Object> createRoute(String title, String conText, String introduction, String fmUrl){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String userName = Current.user().getUserName();
 		CharaRoute cRoute = new CharaRoute();
@@ -50,7 +50,14 @@ public class RD_charaRouteControl {
 		cRoute.setUserName(userName);
 		cRoute.setTitle(title);
 		cRoute.setConText(conText);
-		routeSer.saveRoute(cRoute);
+		cRoute.setIntroduction(introduction);
+		cRoute.setFmUrl(fmUrl);
+		int i = routeSer.saveRoute(cRoute);
+		if(i==1){
+			System.out.println("特色路线信息保存成功");
+		}else{
+			System.out.println("特色路线信息保存失败");
+		}
 		return map;
 	}
 	/**
@@ -74,7 +81,8 @@ public class RD_charaRouteControl {
 	    	 map.put("msg", e.getMessage());
 	     }
 	     return map;
-	   }
+	}
+	
 	/**
 	 * 功能：修改路线
 	 *
@@ -106,6 +114,28 @@ public class RD_charaRouteControl {
 		Map<String, Object> map =new HashMap<String, Object>();
 		title = new String(title.getBytes("iso8859-1"),"utf-8");
 		map = routeSer.findRoute(title, page, rows);
+		return map;
+	}
+	
+	/**
+	 * 功能描述：接收前端传来的ID并根据此ID找到对应的Info对象传到jsp页面
+	 *
+	 * @param id
+	 * @param map
+	 *
+	 * @return String
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/findInfoByID.action")
+	@ResponseBody
+	public Map<String, Object> findInfoByID(String title){
+		Map<String, Object> map =new HashMap<String, Object>();
+		map = routeSer.findInfoByID(title);
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
 		return map;
 	}
 }

@@ -113,8 +113,8 @@ public class WechatService {
 				CharaRoute chInfo = charaRoute.getCharaRoute();
 				item.setTitle(chInfo.getTitle());
 				item.setDescription(chInfo.getIntroduction());
-				item.setPicUrl(chInfo.getFmUrl());
-				item.setUrl("www.baidu.com");
+				item.setPicUrl(chInfo.getWebPath()+chInfo.getFmUrl());
+				item.setUrl(chInfo.getWebPath()+"wechatController/page/routedetail.action?title="+chInfo.getRouteID());
 			
 				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())
 						.toUser(wxMessage.getFromUserName()).build();

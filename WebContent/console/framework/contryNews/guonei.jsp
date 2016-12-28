@@ -137,10 +137,7 @@ $(function(){
 	        { field: 'introduction', title: '简介', width: 100 },
 	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
 	       
-	    ]],
-	    onDblClickRow :function(rowIndex,rowData){
-	    	details(rowData);
-	   	}
+	    ]]
 	});
 });
 
@@ -224,14 +221,6 @@ function saveBean(){
 	 }); 
 }
 
-//查看详情的方法
-function details(row){
-	if(row){
-			var str = JSON.stringify(row); 
-			window.location.href="<%=basePath%>console/framework/zixun/details.jsp?str="+str;		
-	}
-}
-
 function shows(){ //查看
 		    var row = $('#zixunListBox').datagrid('getSelected');
 		    var rows = $('#zixunListBox').datagrid('getSelections');
@@ -244,10 +233,7 @@ function shows(){ //查看
              	return false;
             }  
 			if (row){
-				console.log(row);
-				var str = JSON.stringify(row); 
-				console.log(str);
-				window.location.href="<%=basePath%>console/framework/contryNews/details.jsp?str="+str;
+				window.location.href="<%=basePath%>console/framework/contryNews/details.jsp?title="+row.infoID;
 			}
 }
 
@@ -276,10 +262,7 @@ function query(){
 			       { field: 'title', title: '文章标题', width: 150 },
 			       { field: 'introduction', title: '简介', width: 100},
 			       { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
-	    ]],
-		onDblClickRow :function(rowIndex,rowData){
-			    details(rowData);
-		}
+	    ]]
 	});
 }
 
@@ -327,7 +310,7 @@ function wxMesBean(){
 		       },
 		       success: function(data){
 		       		var obj = JSON.parse(data);
-					alert(data.msg);
+					alert(obj.msg);
 		       }
 	 });
 }

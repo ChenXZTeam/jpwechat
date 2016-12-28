@@ -110,7 +110,7 @@ public class InfoService {
 	}
 
 	/**
-	 * 后台管理员查找新闻标题
+	 * 通过id进行查找资讯 用于微信前端
 	 * @param title
 	 * @return
 	 */

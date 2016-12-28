@@ -39,7 +39,7 @@
 		</tr>
 		<tr>
 			<td>文章内容：</td>
-			<td colspan="3"><textarea id="info" name="conText" style="width:842px; height:100px;"></textarea></td>
+			<td colspan="3"><textarea id="info" name="conText" style="width:842px; height:400px;"></textarea></td>
 		</tr>
 		<tr>
 			<td colspan="4"><button id="submitBtn">提交</button></td>

@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 	<script>
 		KindEditor.ready(function(K) {
-			var editor1 = K.create('textarea[name="conText"]', {
+			var editor1 = K.create('textarea[name="conText",id="contText"]', {
 				cssPath : '<%=basePath %>kinder/plugins/code/prettify.css',
 				uploadJson : '<%=basePath %>kinder/upload_json.jsp',
 				fileManagerJson : '<%=basePath %>kinder/file_manager_json.jsp',
@@ -44,6 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="<%=basePath%>console/framework/charaRoute/addRoute.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="sendInfo()">推送消息</a>
 </div>
 <div style="width:100%;height:420px;">
 	<div id="chRouteBox" style="width:100%;height:420px;"></div>
@@ -73,8 +74,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#upInfoBox').dialog('close')" style="width:90px">取消</a>
 </div>
-<div class="seeContryInfoBox">
-	
+<div id="wxMessBox" class="easyui-dialog" style="width:600px; height:500px; padding: 10px 20px" closed="true" buttons="#wxMes-buttons" iconCls="icon-edit">
+	<form id="wxMesfm" method="post" enctype="multipart/form-data" novalidate>
+		<table border="0" cellpadding="0" cellspacing="10">
+			<tr>
+				<td>图文标题：</td>
+				<td><input type="text" name="mittitle" id="mittitle" style="width:300px;"/></td>
+			</tr>
+			<tr>
+				<td>封面图路径：</td>
+				<td><input type="text" name="fmUrl" id="fmUrl" style="width:300px;"/></td>
+			</tr>
+			<tr>
+				<td>图文描述：</td>
+				<td><input type="text" name="mitcont" id="mitcont" style="width:420px;"/></td>
+			</tr>
+			<tr>
+				<td style="vertical-align:top;">图文内容：</td>
+				<td><textarea name="contText" id="contText" style="width:420px; height:300px;"></textarea></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="wxMes-buttons">
+	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="wxMesSaveBean" iconCls="icon-ok" onclick="wxMesBean()" style="displaly:block;width: 90px">确认推送</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="wxMesSaveCancel" iconCls="icon-cancel" onclick="javascript:$('#wxMessBox').dialog('close')" style="width:90px">取消</a>
 </div>
 </body>
 <script>
@@ -101,10 +125,7 @@ $(function(){
 	        { field: 'title', title: '文章标题', width: 150 },
 	        { field: 'userName', title: '创建对象', width: 150},
 	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
-	    ]],
-	    onDblClickRow :function(rowIndex,rowData){
-	    	details(rowData);
-	   	}
+	    ]]
 	});
 });
 //删除方法
@@ -188,15 +209,6 @@ function saveBean(){
 	 }); 
 }
 
-//查看详情的方法
-function details(row){
-	if(row){
-			var str = JSON.stringify(row); 
-			alert(str);
-			window.location.href="<%=basePath%>console/framework/zixun/details.jsp?str="+str;		
-	}
-}
-
 function shows(){ //查看
 		    var row = $('#chRouteBox').datagrid('getSelected');
 		    var rows = $('#chRouteBox').datagrid('getSelections');
@@ -209,11 +221,7 @@ function shows(){ //查看
              	return false;
             }  
 			if (row){
-				console.log(row);
-				var str = JSON.stringify(row); 
-				
-				console.log(str);
-				window.location.href="<%=basePath%>console/framework/charaRoute/details.jsp?str="+str;
+				window.location.href="<%=basePath%>console/framework/charaRoute/details.jsp?title="+row.routeID;
 			}
 }
 
@@ -243,10 +251,7 @@ function query(){
 			{ field: 'title', title: '文章标题', width: 150 },
 			{ field: 'userName', title: '创建对象', width: 150},
 			{ field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
-	    ]],
-		onDblClickRow :function(rowIndex,rowData){
-			    details(rowData);
-		}
+	    ]]
 	});
 }
 
@@ -281,5 +286,22 @@ Date.prototype.format = function (format) {
 		 } 
 		 return format;  
 } 
+
+function sendInfo(){
+	$('#wxMessBox').dialog('open').dialog('setTitle','微信图文消息推送');
+}
+
+function wxMesBean(){ 	
+     $('#wxMesfm').form('submit',{
+		       url: "<%=basePath%>framework/wxInfo/wxTsMesgess.action",
+		       onSubmit: function(){
+		           return $(this).form('validate');
+		       },
+		       success: function(data){
+		       		var obj = JSON.parse(data);
+					alert(obj.msg);
+		       }
+	 });
+}
 </script>
 </html>
