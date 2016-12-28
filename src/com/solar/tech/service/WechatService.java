@@ -2,7 +2,12 @@ package com.solar.tech.service;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+
+import com.solar.tech.bean.entity.CharaRoute;
+import com.solar.tech.bean.entity.Info;
+import com.solar.tech.bean.entity.OutInfo;
+import com.solar.tech.utils.MyApplicationContextUtil;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.WxMenu;
@@ -15,9 +20,10 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.WxMpXmlOutNewsMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutTextMessage;
+import me.chanjar.weixin.mp.bean.WxMpXmlOutNewsMessage.Item;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
 /**
  * 
@@ -62,12 +68,72 @@ public class WechatService {
 				return m;
 			}
 		};
+		
+		WxMpMessageHandler handler4 = new WxMpMessageHandler() {
+			@Override
+			public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context,
+					WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {			
+				Item item = new Item();
+				InfoService infoService= (InfoService)MyApplicationContextUtil.getBean("infoService");  
+				Info chInfo = infoService.getNewInfo();
+				item.setTitle(chInfo.getTitle());
+				item.setDescription(chInfo.getIntroduction());
+				item.setPicUrl("http://d2.freep.cn/3tb_161221134600uo2r581058.jpg");
+				item.setUrl("www.baidu.com");
+			
+				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())
+						.toUser(wxMessage.getFromUserName()).build();
 
-		wxMpMessageRouter = new WxMpMessageRouter(wxMpService);
-		wxMpMessageRouter.rule().async(false).content("哈哈") // 拦截内容为“哈哈”的消息
-				.handler(handler).end().rule().async(false).event(WxConsts.EVT_SUBSCRIBE).handler(handler).end().rule()
-				.event(WxConsts.EVT_UNSUBSCRIBE).async(false).handler(handler).end();
+				return m;
+			}
+		};
+		
+		WxMpMessageHandler handler5 = new WxMpMessageHandler() {
+			@Override
+			public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context,
+					WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {			
+				Item item = new Item();
+				OutInfoService outinfoService= (OutInfoService)MyApplicationContextUtil.getBean("outInfoService");  
+				OutInfo chInfo = outinfoService.getNewOutInfo();
+				item.setTitle(chInfo.getTitle());
+				item.setDescription(chInfo.getIntroduction());
+				item.setPicUrl("http://d2.freep.cn/3tb_161221134600uo2r581058.jpg");
+				item.setUrl("www.baidu.com");
+			
+				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())
+						.toUser(wxMessage.getFromUserName()).build();
 
+				return m;
+			}
+		};
+		
+		WxMpMessageHandler handler6 = new WxMpMessageHandler() {
+			@Override
+			public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context,
+					WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {			
+				Item item = new Item();
+				RDcharaRouteService charaRoute= (RDcharaRouteService)MyApplicationContextUtil.getBean("outInfoService");  
+				CharaRoute chInfo = charaRoute.getCharaRoute();
+				item.setTitle(chInfo.getTitle());
+				item.setDescription(chInfo.getIntroduction());
+				item.setPicUrl("http://d2.freep.cn/3tb_161221134600uo2r581058.jpg");
+				item.setUrl("www.baidu.com");
+			
+				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())
+						.toUser(wxMessage.getFromUserName()).build();
+
+				return m;
+			}
+		};
+
+		wxMpMessageRouter = new WxMpMessageRouter(wxMpService); //charaRoute
+		wxMpMessageRouter
+				.rule().async(false).content("哈哈")	.handler(handler).end() //拦截“哈哈”的内容
+				.rule().async(false).event(WxConsts.EVT_SUBSCRIBE).handler(handler).end() //订阅时自动回复
+				.rule().async(false).event(WxConsts.EVT_UNSUBSCRIBE).handler(handler).end()  //取消订阅时自动回复
+				.rule().async(false).event(WxConsts.BUTTON_CLICK).eventKey("InContraty").handler(handler4).end()  //国内资讯
+				.rule().async(false).event(WxConsts.BUTTON_CLICK).eventKey("OutContraty").handler(handler5).end() //国际资讯
+				.rule().async(false).event(WxConsts.BUTTON_CLICK).eventKey("charaRoute").handler(handler6).end(); //特色路线
 	}
 
 	public boolean checkSignature(String timestamp, String nonce, String signature) {

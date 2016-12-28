@@ -52,11 +52,9 @@ public class MenuManger {
 						WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton inewsButton = new WxMenuButton();
-				inewsButton.setType(WxConsts.BUTTON_VIEW);
+				inewsButton.setType(WxConsts.BUTTON_CLICK);
 				inewsButton.setName("最近资讯(国内)");
-				inewsButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
-								WxConsts.OAUTH2_SCOPE_BASE, null));
+				inewsButton.setKey("InContraty");
 
 				orderButton.getSubButtons().add(planeButton);
 				orderButton.getSubButtons().add(inviteButton);
@@ -68,11 +66,9 @@ public class MenuManger {
 				worldButton.setType(WxConsts.BUTTON_CLICK);
 				
 				WxMenuButton wnewsButton = new WxMenuButton();
-				wnewsButton.setType(WxConsts.BUTTON_VIEW);
+				wnewsButton.setType(WxConsts.BUTTON_CLICK);
 				wnewsButton.setName("最近资讯(国际)");
-				wnewsButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
-								WxConsts.OAUTH2_SCOPE_BASE, null));
+				wnewsButton.setKey("OutContraty");
 				
 				WxMenuButton visaButton = new WxMenuButton();
 				visaButton.setType(WxConsts.BUTTON_VIEW);
@@ -82,11 +78,9 @@ public class MenuManger {
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton featureButton = new WxMenuButton();
-				featureButton.setType(WxConsts.BUTTON_VIEW);
+				featureButton.setType(WxConsts.BUTTON_CLICK);
 				featureButton.setName("特色线路");
-				featureButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
-								WxConsts.OAUTH2_SCOPE_BASE, null));
+				featureButton.setKey("charaRoute");
 				
 				WxMenuButton rateButton = new WxMenuButton();
 				rateButton.setType(WxConsts.BUTTON_VIEW);
@@ -173,11 +167,9 @@ public class MenuManger {
 						WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton inewsButton = new WxMenuButton();
-				inewsButton.setType(WxConsts.BUTTON_VIEW);
+				inewsButton.setType(WxConsts.BUTTON_CLICK);
 				inewsButton.setName("最近资讯(国内)");
-				inewsButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
-								WxConsts.OAUTH2_SCOPE_BASE, null));
+				inewsButton.setKey("InContraty");
 
 				orderButton.getSubButtons().add(planeButton);
 				orderButton.getSubButtons().add(inviteButton);
@@ -189,11 +181,9 @@ public class MenuManger {
 				worldButton.setType(WxConsts.BUTTON_CLICK);
 				
 				WxMenuButton wnewsButton = new WxMenuButton();
-				wnewsButton.setType(WxConsts.BUTTON_VIEW);
+				wnewsButton.setType(WxConsts.BUTTON_CLICK);
 				wnewsButton.setName("最近资讯(国际)");
-				wnewsButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
-								WxConsts.OAUTH2_SCOPE_BASE, null));
+				wnewsButton.setKey("OutContraty");
 				
 				WxMenuButton visaButton = new WxMenuButton();
 				visaButton.setType(WxConsts.BUTTON_VIEW);
@@ -203,11 +193,9 @@ public class MenuManger {
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton featureButton = new WxMenuButton();
-				featureButton.setType(WxConsts.BUTTON_VIEW);
+				featureButton.setType(WxConsts.BUTTON_CLICK);
 				featureButton.setName("特色线路");
-				featureButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/kaifing.action",
-								WxConsts.OAUTH2_SCOPE_BASE, null));
+				featureButton.setKey("charaRoute");
 				
 				WxMenuButton rateButton = new WxMenuButton();
 				rateButton.setType(WxConsts.BUTTON_VIEW);
