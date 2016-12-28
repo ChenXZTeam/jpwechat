@@ -2,7 +2,7 @@ package com.solar.tech.service;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
+import javax.annotation.Resource; 
 
 import com.solar.tech.bean.entity.CharaRoute;
 import com.solar.tech.bean.entity.Info;

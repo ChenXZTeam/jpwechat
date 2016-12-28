@@ -1,6 +1,6 @@
 package com.solar.tech.service;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 
 import me.chanjar.weixin.common.api.WxConsts;
