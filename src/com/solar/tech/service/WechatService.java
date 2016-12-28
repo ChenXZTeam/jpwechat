@@ -2,8 +2,6 @@ package com.solar.tech.service;
 
 import java.util.Map;
 
-import javax.annotation.Resource; 
-
 import com.solar.tech.bean.entity.CharaRoute;
 import com.solar.tech.bean.entity.Info;
 import com.solar.tech.bean.entity.OutInfo;
@@ -28,7 +26,6 @@ import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 /**
  * 
  * @ClassName: WechatService
- * @Description: TODO
  * @author: ChenXZ
  * @date: 2016年4月22日 下午11:52:03
  */
@@ -78,8 +75,8 @@ public class WechatService {
 				Info chInfo = infoService.getNewInfo();
 				item.setTitle(chInfo.getTitle());
 				item.setDescription(chInfo.getIntroduction());
-				item.setPicUrl("http://d2.freep.cn/3tb_161221134600uo2r581058.jpg");
-				item.setUrl("www.baidu.com");
+				item.setPicUrl(chInfo.getWebPath()+chInfo.getFmUrl());
+				item.setUrl(chInfo.getWebPath()+"wechatController/page/details.action?title="+chInfo.getInfoID());
 			
 				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())
 						.toUser(wxMessage.getFromUserName()).build();
@@ -97,8 +94,8 @@ public class WechatService {
 				OutInfo chInfo = outinfoService.getNewOutInfo();
 				item.setTitle(chInfo.getTitle());
 				item.setDescription(chInfo.getIntroduction());
-				item.setPicUrl("http://d2.freep.cn/3tb_161221134600uo2r581058.jpg");
-				item.setUrl("www.baidu.com");
+				item.setPicUrl(chInfo.getWebPath()+chInfo.getFmUrl());
+				item.setUrl(chInfo.getWebPath()+"wechatController/page/gwdetails.action?title="+chInfo.getOutinfoID());
 			
 				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())
 						.toUser(wxMessage.getFromUserName()).build();
@@ -112,11 +109,11 @@ public class WechatService {
 			public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context,
 					WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {			
 				Item item = new Item();
-				RDcharaRouteService charaRoute= (RDcharaRouteService)MyApplicationContextUtil.getBean("outInfoService");  
+				RDcharaRouteService charaRoute= (RDcharaRouteService)MyApplicationContextUtil.getBean("RDcharaRouteService");  
 				CharaRoute chInfo = charaRoute.getCharaRoute();
 				item.setTitle(chInfo.getTitle());
 				item.setDescription(chInfo.getIntroduction());
-				item.setPicUrl("http://d2.freep.cn/3tb_161221134600uo2r581058.jpg");
+				item.setPicUrl(chInfo.getFmUrl());
 				item.setUrl("www.baidu.com");
 			
 				WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().addArticle(item).fromUser(wxMessage.getToUserName())

@@ -159,7 +159,7 @@ public class WechatPageControlle {
 	 */
 	@RequestMapping("/details.action")
 	public String details() {
-		return "wechat/gnzixun";
+		return "wechat/details";
 	}
 	
 	/**
@@ -168,6 +168,6 @@ public class WechatPageControlle {
 	 */
 	@RequestMapping("/gwdetails.action")
 	public String gwdetails() {
-		return "wechat/gwzixun";
+		return "wechat/gwdetails";
 	}
 }

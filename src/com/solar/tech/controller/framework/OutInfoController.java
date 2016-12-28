@@ -92,7 +92,7 @@ public class OutInfoController {
 	       if(key.equals("title"))outInfo.setTitle(value); 
 	       if(key.equals("info"))outInfo.setInfo(value); 
 	       if(key.equals("introduction"))outInfo.setIntroduction(value); 
-	      
+	       if(key.equals("fmUrl"))outInfo.setFmUrl(value);
 	    }
 	   
 	    outInfo.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
@@ -177,12 +177,11 @@ public class OutInfoController {
 	 * @return String
 	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/findOutInfoByTitle.action")
+	@RequestMapping("/findOutInfoByID.action")
 	@ResponseBody
 	public Map<String, Object> findOutInfoByTitle(String title,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
 		Map<String, Object> map =new HashMap<String, Object>();
-		//title = new String(title.getBytes("iso8859-1"),"utf-8");
-		map = outInfoService.findOutInfoByTitle(title);
+		map = outInfoService.findOutInfoByID(title);
 		if(map.size()>0){
 			map.put("msg", 1);
 		}else{

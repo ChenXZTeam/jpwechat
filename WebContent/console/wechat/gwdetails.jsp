@@ -26,35 +26,24 @@
 <script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script>
 	$(function(){
-		/* for(var i=0;i<8;i++){
-			$("#bigTable").append("<tr class='cententTR'><td class='cententTD'>空客A320</td><td class='cententTD'>大型飞机</td><td class='cententTD'>空中客车A320</td><td class='cententTD'>约180人</td></tr>");
-		} */
-		//alert("<%=title%>");
-		var title="<%=title%>";
-		ajax(title);
-		
-	});
-	
-function ajax(title){
-		
 		$.ajax({
-			url:"<%=basePath %>framework/outinfo/findOutInfoByTitle.action",
-			type:"POST",
-			data:{"title":title},
-			dataType:"json",
-			success:function(data){
-				console.log("data"+data);
-				if(data.msg==1){
-					var getInfo = data.rows;//直达
-					console.log("getInfo"+getInfo);
-					$("#bigTable").append("<tr class='cententTR'><td class='cententTD '>"+getInfo[0].title+"</td></tr><tr class='cententTR'><td class='cententTD1'><font color='darkgray'>来源：</font><font color='deepskyblue'>"+getInfo[0].introduction+"</td></tr><tr class='cententTR'><td class='cententTD'><div style='width:330px;height:1px;margin:0px auto;padding:0px;background-color:#D5D5D5;overflow:hidden;'></div></td></tr><tr class='cententTR'><td class='cententTD titl'>"+getInfo[0].info+"</td></tr>");
-				}else{
-					alert("没有找到资讯信息");
+				url:"<%=basePath %>framework/outinfo/findOutInfoByID.action",
+				type:"POST",
+				data:{"title":"<%=title%>"},
+				dataType:"json",
+				success:function(data){
+					console.log("data"+data);
+					if(data.msg==1){
+						var getInfo = data.rows;//直达
+						console.log("getInfo"+getInfo);
+						$("#bigTable").append("<tr class='cententTR'><td class='cententTD '>"+getInfo[0].title+"</td></tr><tr class='cententTR'><td class='cententTD1'><font color='darkgray'>来源：</font><font color='deepskyblue'>"+getInfo[0].introduction+"</td></tr><tr class='cententTR'><td class='cententTD'><div style='width:330px;height:1px;margin:0px auto;padding:0px;background-color:#D5D5D5;overflow:hidden;'></div></td></tr><tr class='cententTR'><td class='cententTD titl'>"+getInfo[0].info+"</td></tr>");
+					}else{
+						alert("没有找到资讯信息");
+					}
+				},error:function(){
 				}
-			},error:function(){
-			}
+		});		
 	});
-}
 </script>
 </head>
 

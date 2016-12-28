@@ -86,7 +86,7 @@ public class InfoController {
 	       if(key.equals("title"))info.setTitle(value); 
 	       if(key.equals("info"))info.setInfo(value); 
 	       if(key.equals("introduction"))info.setIntroduction(value); 
-	      
+	       if(key.equals("fmUrl"))info.setFmUrl(value); 
 	    }
 	   
 	    info.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
@@ -172,11 +172,11 @@ public class InfoController {
 	 * @return String
 	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/findInfoByTitle.action")
+	@RequestMapping("/findInfoByID.action")
 	@ResponseBody
-	public Map<String, Object> findInfoByTitle(String title,HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException{
+	public Map<String, Object> findInfoByID(String title) throws UnsupportedEncodingException{
 		Map<String, Object> map =new HashMap<String, Object>();
-		map = infoService.findInfoByTitle(title);
+		map = infoService.findInfoByID(title);
 		if(map.size()>0){
 			map.put("msg", 1);
 		}else{

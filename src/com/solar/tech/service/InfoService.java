@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.entity.Info;
 import com.solar.tech.dao.GenericDao;
+import com.solar.tech.utils.PassSend;
 @Service
 @Transactional
 public class InfoService {
@@ -113,13 +114,11 @@ public class InfoService {
 	 * @param title
 	 * @return
 	 */
-	public Map<String, Object> findInfoByTitle(String title) {
+	public Map<String, Object> findInfoByID(String ID) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM Info i where i.title like '%"+title+"%' ";
+		String hql = "FROM Info i where i.infoID = '"+ID+"' ";
 		List<Info> cList = this.gDao.queryHQL(hql);
-		Long total = this.gDao.count(Info.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
-		map.put("total", total);
 		return map;
 	}
 	
@@ -137,6 +136,7 @@ public class InfoService {
 			chInfo = this.gDao.queryHQL(hql);
 			if(chInfo.size()>0){
 				ss = chInfo.get(0);
+				ss.setWebPath(PassSend.webPath());
 			}
 		}catch(Exception e){
 			e.printStackTrace();

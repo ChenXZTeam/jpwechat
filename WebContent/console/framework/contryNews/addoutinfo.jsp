@@ -52,13 +52,16 @@
 			var title = document.getElementById("infoTitle").value;
 			var info = document.getElementById("info").value;
 			var introduction = document.getElementById("introduction").value;
+			var oneUrl = info.substring(info.indexOf("<img"),info.indexOf("alt="));
+			var twoUrl = oneUrl.substring(oneUrl.indexOf("src=")+20,(oneUrl.length)-2);
 			$.ajax({
 				url:"<%=basePath%>/framework/outinfo/addInfo.action",
 				type:"POST",
 				data:{
 					"title":title,
 					"info":info,
-					"introduction":introduction
+					"introduction":introduction,
+					"fmUrl":twoUrl
 				},
 				dataType:"json",
 				success:function(res){

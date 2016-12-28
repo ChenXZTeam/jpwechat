@@ -24,6 +24,21 @@ public final class PassSend {
 		  }
 	 }
 	
+	//用于web项目的方法
+	public static String webPath(){
+			 try {
+				 	String path = PassSend.class.getClassLoader().getResource("sendPass.properties").getPath();  //先获取绝对路劲在查找
+				 	FileInputStream in = new FileInputStream(path);
+			    	Properties props = new Properties();
+			        props.load(in);
+			        String value = props.getProperty ("webUrl");
+			        return value;
+			  } catch (Exception e) {
+			        e.printStackTrace();
+			        return null;
+			  }
+	}
+	
 	//用于普通java项目的方法
 	/*private static String param1;    
     static{    

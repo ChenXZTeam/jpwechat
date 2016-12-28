@@ -45,7 +45,9 @@ public class CharaRoute {
 	@Column(name = "createTime")
 	private Timestamp createTime;
 
-	
+	//封面路径
+	@Column(name="fmUrl")
+	private String fmUrl;
 
 	public String getRouteID() {
 		return routeID;
@@ -93,6 +95,14 @@ public class CharaRoute {
 
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
+	}
+
+	public String getFmUrl() {
+		return fmUrl;
+	}
+
+	public void setFmUrl(String fmUrl) {
+		this.fmUrl = fmUrl;
 	}
 
 }

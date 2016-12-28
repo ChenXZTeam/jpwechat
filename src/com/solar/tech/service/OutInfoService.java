@@ -14,6 +14,7 @@ import com.solar.tech.bean.entity.Info;
 import com.solar.tech.bean.entity.OutInfo;
 import com.solar.tech.bean.Visa;
 import com.solar.tech.dao.GenericDao;
+import com.solar.tech.utils.PassSend;
 
 @Service
 @Transactional
@@ -87,7 +88,7 @@ public class OutInfoService {
 	public Map<String, Object> findVisa(String title, int pag, int row) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String hql = "FROM OutInfo out where out.title like '%"+title+"%' ";
-		List<Info> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		List<OutInfo> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(OutInfo.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
 		map.put("total", total);
@@ -101,17 +102,19 @@ public class OutInfoService {
 		Long total = this.gDao.count(OutInfo.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
 		map.put("total", total);
-		
 		return map;
 	}
 
-	public Map<String, Object> findOutInfoByTitle(String title) {
+	/**
+	 * 前端查看订单详情获取的方法
+	 * @param ID
+	 * @return
+	 */
+	public Map<String, Object> findOutInfoByID(String ID) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM OutInfo i where i.title like '%"+title+"%' ";
+		String hql = "FROM OutInfo i where i.outinfoID = '"+ID+"'";
 		List<OutInfo> cList = this.gDao.queryHQL(hql);
-		Long total = this.gDao.count(OutInfo.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
-		map.put("total", total);
 		return map;
 	}
 	
@@ -129,6 +132,7 @@ public class OutInfoService {
 			chInfo = this.gDao.queryHQL(hql);
 			if(chInfo.size()>0){
 				ss = chInfo.get(0);
+				ss.setWebPath(PassSend.webPath());
 			}
 		}catch(Exception e){
 			e.printStackTrace();
