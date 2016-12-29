@@ -109,6 +109,17 @@ public class WechatPageControlle {
 	}
 	
 	/**
+	 * @title 个人中心界面跳转
+	 * @return
+	 */
+	@RequestMapping("/oneself.action")
+	public String oneself() {
+		return "wechat/oneself";
+	}
+	
+	
+	
+	/**
 	 * @title 天气界面跳转
 	 * @return
 	 */

@@ -24,27 +24,31 @@ public class VisaOrder {
 	@Column(name="orderNum",length=50)
 	private String orderNum;
 	
-	//申请人
-	@Column(name="proposer",length=20)
-	private String proposer;
+	//申请人账号
+	@Column(name="userName",length=20)
+	private String userName;
+	
+	//申请人的opendID
+	@Column(name="opendID",length=200)
+	private String opendID;
 
 	//客户类型
 	@Column(name="customerType",length=20)
 	private String customerType;
 
-	//联系人名称
+	//申请人
 	@Column(name="contactsName",length=20)
 	private String contactsName;
 	
-	//联系人性别
+	//申请人性别
 	@Column(name="contactsSex",length=20)
 	private String contactsSex;
 		
-	//联系人电话
+	//申请人电话
 	@Column(name="contactsPhone",length=50)
 	private String contactsPhone;
 
-	//联系人邮箱
+	//申请人邮箱
 	@Column(name="contactsEmail",length=50)
 	private String contactsEmail;
 
@@ -160,12 +164,12 @@ public class VisaOrder {
 		this.userID = userID;
 	}
 
-	public String getProposer() {
-		return proposer;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setProposer(String proposer) {
-		this.proposer = proposer;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getCustomerType() {
@@ -283,7 +287,7 @@ public class VisaOrder {
 	@Override
 	public String toString() {
 		return "VisaOrder [visaOrderID=" + visaOrderID + ", orderNum="
-				+ orderNum + ", proposer=" + proposer + ", customerType="
+				+ orderNum + ", userName=" + userName + ", customerType="
 				+ customerType + ", contactsName=" + contactsName
 				+ ", contactsPhone=" + contactsPhone + ", contactsEmail="
 				+ contactsEmail + ", deliveryMethod=" + deliveryMethod

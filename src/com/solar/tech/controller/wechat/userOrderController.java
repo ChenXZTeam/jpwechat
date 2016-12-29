@@ -1,6 +1,7 @@
 package com.solar.tech.controller.wechat;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +25,10 @@ import com.travelsky.sbeclient.obe.book.PassengerInfo;
 import com.travelsky.sbeclient.obe.book.RMKInfo;
 import com.travelsky.sbeclient.obe.book.SegmentInfo;
 import com.travelsky.sbeclient.obe.response.PnrResponse;
+import com.solar.tech.bean.InvitationCode;
+import com.solar.tech.bean.VisaOrder;
+import com.solar.tech.bean.entity.LinkMan;
+import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.mony_av;
@@ -35,18 +40,53 @@ public class userOrderController {
 	@Autowired
 	private userOrderService OrderService;
 	
+	@RequestMapping("/add/addLinkman.action")
+	@ResponseBody
+	public Map<String, Object> addLinkman(String linkName,String linkPhoneNum,HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
+		session.setAttribute("userName", "ttt");
+		String openId = (String) session.getAttribute("openId");
+		String userName = (String) session.getAttribute("userName"); 
+		LinkMan linkInfo = new LinkMan();
+		linkInfo.setLinkman(linkName);
+		linkInfo.setLinkNumber(linkPhoneNum);
+		linkInfo.setOpenID(openId);
+		linkInfo.setUserName(userName);
+		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
+		int i = OrderService.addLinkman(linkInfo);
+		if(i==1){
+			map.put("msg", 1);
+			return map;
+		}else{
+			map.put("msg", 0);
+			return map;
+		}
+	}
+	
 	@RequestMapping("/add/order.action")
 	@ResponseBody
 	public Map<String, Object> addOrder(String ChufDate,String ChufTime,String ChufCity,String DaodCity, String cabin, String DaodTime,String QishiPlan,String airCode, String hangbanNum,String DaodPlan,String lishiTime,String CostPay,String LinkName,String Sex,String iDcaseType,String iDcase,String PhoneNum,String YiwaiBX,String YanwuBX,String birthday,String menType,String age, String chufCode, String daodCode, HttpSession session){
 		mony_av getCost = new mony_av();
 		Map<String, Object> map = new HashMap<String, Object>();
-		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
+		String openID = (String) session.getAttribute("openId");
+		String userName = (String) session.getAttribute("userName"); 
+		//String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
 		/*if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
 			return map;
 		}*/
 		userOrderInfo oderInfo = new userOrderInfo();
+		/*保存常用联系人信息*/
+		LinkMan linkInfo = new LinkMan();
+		linkInfo.setLinkman(LinkName);
+		linkInfo.setLinkNumber(PhoneNum);
+		linkInfo.setOpenID(openID);
+		linkInfo.setUserName(userName);
+		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
+		OrderService.addLinkman(linkInfo);
+		
 		oderInfo.setChufDate(ChufDate);
 		oderInfo.setChufTime(ChufTime);
 		oderInfo.setDaodTime(DaodTime);
@@ -514,6 +554,54 @@ public class userOrderController {
 		//}
 		return map;
 	}
+	//修改常用联系人信息
+	@RequestMapping("/update/updateLinkman.action")
+	@ResponseBody
+	public Map<String, Object> updateLinkman(String id,String linkName, String linkPhoneNum){
+		Map<String, Object> map = new HashMap<String, Object>();		
+		LinkMan linfo = new LinkMan();
+		linfo.setID(id);
+		linfo.setLinkman(linkName);
+		linfo.setLinkNumber(linkPhoneNum);
+		int i = OrderService.updateLinkman(linfo);
+		if(i==1){
+			map.put("msg", 1);
+			System.out.println("修改常用信息成功");
+		}else{
+			map.put("msg", 0);
+			System.out.println("修改常用联系人信息失败");
+		}
+		//}
+		return map;
+	}
+	//修改常用联系人信息
+	@RequestMapping("/update/upqzInfo.action")
+	@ResponseBody
+	public Map<String, Object> upqzInfo(String contactsName,String customerType,String contactsSex,String contactsPhone,String contactsEmail,String trayTypeIpnt,
+				String IDcase,String deliveryMethod,String deliveryAddress,String visaOrderID){
+		Map<String, Object> map = new HashMap<String, Object>();		
+		VisaOrder vinfo = new VisaOrder();
+		vinfo.setContactsName(contactsName);
+		vinfo.setCustomerType(customerType);
+		vinfo.setContactsSex(contactsSex);
+		vinfo.setContactsPhone(contactsPhone);
+		vinfo.setContactsEmail(contactsEmail);
+		vinfo.setIDcase(IDcase);
+		vinfo.setDeliveryMethod(deliveryMethod);
+		vinfo.setDeliveryAddress(deliveryAddress);
+		vinfo.setTrayTypeIpnt(trayTypeIpnt);
+		vinfo.setVisaOrderID(visaOrderID);
+		int i = OrderService.upqzInfo(vinfo);
+		if(i==1){
+			map.put("msg", 1);
+			System.out.println("修改签证信息成功");
+		}else{
+			map.put("msg", 0);
+			System.out.println("修改签证信息失败");
+		}
+		//}
+		return map;
+	}
 	
 	//改签（已付款的时候）我的订单中的 同舱改期功能调用的方法
 	@RequestMapping("/update/changeDate.action")
@@ -543,6 +631,39 @@ public class userOrderController {
 		return map;
 	}
 	
+	//删除联系人信息
+	@RequestMapping("/delete/deleteLinkman.action")
+	@ResponseBody
+	public Map<String, Object> deleteLinkman(String id){
+		Map<String, Object> map = new HashMap<String, Object>();
+		int i = OrderService.deleteLinkman(id);
+		if(i==1){
+			map.put("msg",1);
+			System.out.println("联系人删除成功");
+		}else{
+			map.put("msg",0);
+			System.out.println("联系人删除出错");
+		}
+		//}
+		return map;
+	}
+	//删除联系人信息
+	@RequestMapping("/delete/deleteVisa.action")
+	@ResponseBody
+	public Map<String, Object> deleteVisa(String visaOrderID){
+		Map<String, Object> map = new HashMap<String, Object>();
+		int i = OrderService.deleteVisa(visaOrderID);
+		if(i==1){
+			map.put("msg",1);
+			System.out.println("签证订单删除成功");
+		}else{
+			map.put("msg",0);
+			System.out.println("签证订单删除出错");
+		}
+		//}
+		return map;
+	}
+	
 	//删除订单同时得删除中航信中的订单
 	@RequestMapping("/delete/order.action")
 	@ResponseBody
@@ -567,8 +688,6 @@ public class userOrderController {
 	@ResponseBody
 	public Map<String, Object> loadOrder(HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
-		/*session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
-		session.setAttribute("userName", "ttt");*/ 
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
 		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);
@@ -582,7 +701,69 @@ public class userOrderController {
 		}
 		return map;
 	}
-	
+	//加载该用户的签证订单
+	@RequestMapping("/loading/visaOrder.action")
+	@ResponseBody
+	public Map<String, Object> visaOrder(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String openId = (String) session.getAttribute("openId");
+		String phoneNumber = (String) session.getAttribute("phoneNumber");
+		String userName = (String) session.getAttribute("userName");
+		List<VisaOrder> orderList = OrderService.loadVisaOrder(openId,phoneNumber,userName);
+		if(orderList.size()>0){
+			map.put("orderList",orderList);
+			map.put("msg",1);
+		}else{
+			map.put("msg",0);
+			System.out.println("数据为空");
+		}
+		return map;
+	}
+	//加载该用户的优惠卷
+	@RequestMapping("/loading/myDiscount.action")
+	@ResponseBody
+	public Map<String, Object> myDiscount(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<InvitationCode> orderList1=null;
+		List<InvitationCode> orderList2=new ArrayList<InvitationCode>();
+		String openId = (String) session.getAttribute("openId");
+		String userName = (String) session.getAttribute("userName");
+		List<RD_wechatUser> orderList = OrderService.myInviteCore(userName,openId);
+		
+		for(int i=0;i<orderList.size();i++){
+			orderList1 = OrderService.myDiscount(orderList.get(i).getInCode());	
+			orderList2.addAll(orderList1);
+		}
+		
+		if(orderList.size()>0){
+			map.put("orderList2",orderList2);
+			System.out.println("数据不为空");
+			map.put("msg",1);
+		}else{
+			map.put("msg",0);
+			System.out.println("数据为空");
+		}
+		return map;
+	}
+	//加载该用户的联系人
+	@RequestMapping("/loading/linkman.action")
+	@ResponseBody
+	public Map<String, Object> linkman(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String openId = (String) session.getAttribute("openId");
+		String userName = (String) session.getAttribute("userName");
+		List<LinkMan> linkList = OrderService.findLinman(userName,openId);
+		if(linkList.size()>0){
+			map.put("linkList",linkList);
+			System.out.println("数据不为空");
+			map.put("msg",1);
+		}else{
+			map.put("msg",0);
+			System.out.println("数据为空");
+		}
+		return map;
+	}
+		
 	//反馈信息到用户修改的输入框里面
 	@RequestMapping("/loading/userMsg.action")
 	@ResponseBody
@@ -595,6 +776,21 @@ public class userOrderController {
 		}else{
 			map.put("msg",0);
 			System.out.println("该订单的用户资料为空");
+		}
+		return map;
+	}
+	//反馈信息到常用联系人选择框里面
+	@RequestMapping("/loading/loadLinkman.action")
+	@ResponseBody
+	public Map<String, Object> loadLinkman(String linkName, HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<LinkMan> orderList = OrderService.loadLinkman(linkName);
+		if(orderList.size()>0){
+			map.put("orderList",orderList);
+			map.put("msg",1);
+		}else{
+			map.put("msg",0);
+			System.out.println("联系人资料为空");
 		}
 		return map;
 	}

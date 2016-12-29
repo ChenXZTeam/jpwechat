@@ -41,7 +41,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		String root = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + root + "/";
 
-		if (pageurl.equals("/wechatController/page/planTek.action")||pageurl.equals("/wechatController/page/myPlaneTickek.action")) {  //拦截机票查询的界面
+		if (pageurl.equals("/wechatController/page/planTek.action")||pageurl.equals("/wechatController/page/oneself.action")) {  //拦截机票查询的界面
 			HttpSession session = request.getSession();
 			String newCode = request.getParameter("code");
 			String userName = (String) session.getAttribute("userName");

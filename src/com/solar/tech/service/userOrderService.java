@@ -1,6 +1,7 @@
 package com.solar.tech.service;
 
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +14,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.InvitationCode;
+import com.solar.tech.bean.VisaOrder;
+import com.solar.tech.bean.entity.LinkMan;
+import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.airport;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
@@ -262,6 +267,9 @@ public class userOrderService {
 			return null;
 		}
 		
+		/**
+		 * 根据机场公司的三字码查找所在的城市
+		 */
 		public String findCity(String code){
 			String cityName = null;
 			//String sql="select * from b_airport where AIRPORTCODE = '"+code+"'";
@@ -279,6 +287,142 @@ public class userOrderService {
 			}
 			else{
 				return null;
+			}
+		}
+
+		/**
+		 * 加载我的签证信息的订单
+		 */
+		public List<VisaOrder> loadVisaOrder(String opendID, String phoneNumber, String userName) {
+			List<Object> params = new ArrayList<Object>();
+			params.add(opendID);
+			params.add(phoneNumber);
+			params.add(userName);
+			String sql="from VisaOrder where opendID = ? OR contactsPhone = ? OR userName = ? ORDER BY createTime DESC";
+			List<VisaOrder> list = gDao.getListByHql(VisaOrder.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
+		}
+
+		/**
+		 * 加载我的邀请码
+		 */
+		public List<RD_wechatUser> myInviteCore(String userName, String openId) {
+			List<Object> params = new ArrayList<Object>();
+			params.add(userName);
+			params.add(openId);
+			String sql="from RD_wechatUser where UserName=? AND openID=? ORDER BY BindTime DESC";
+			List<RD_wechatUser> list = gDao.getListByHql(RD_wechatUser.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
+		}
+
+		/**
+		 * 加载我的优惠券
+		 */
+		public List<InvitationCode> myDiscount(String inCode) {
+			List<Object> params = new ArrayList<Object>();
+			params.add(inCode);
+			String sql="from InvitationCode where invitationCode=? ORDER BY deadline DESC";
+			List<InvitationCode> list = gDao.getListByHql(InvitationCode.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
+		}
+
+		/**
+		 * 微信端用户订票的时候查找常用联系人
+		 */
+		public List<LinkMan> findLinman(String userName, String openId) {
+			List<Object> params = new ArrayList<Object>();
+			params.add(userName);
+			params.add(openId);
+			String sql="from LinkMan where UserName=? AND openID=? ORDER BY createTime DESC";
+			List<LinkMan> list = gDao.getListByHql(LinkMan.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
+		}
+
+		/**
+		 * 加载常用联系人
+		 */
+		public List<LinkMan> loadLinkman(String linkName) {
+			List<Object> params = new ArrayList<Object>();
+			params.add(linkName);
+			String sql="from LinkMan where linkman=?";
+			List<LinkMan> list = gDao.getListByHql(LinkMan.class, sql, params);
+			if(list.size()>0){
+				return list;
+			}
+			return null;
+		}
+
+		/**
+		 * 微信用户更新常用联系人
+		 */
+		public int updateLinkman(LinkMan linfo) {
+			String sql = "UPDATE FW_linkman SET linkman = '"+linfo.getLinkman()+"',linkNumber = '"+linfo.getLinkNumber()+"' WHERE ID = '"+linfo.getID()+"'";
+			System.out.println(sql);
+			int i = gDao.executeJDBCSql(sql);
+			if(i > 0){
+				return 1;
+			}
+			return 0;
+		}
+
+		/**
+		 * 微信用户添加常用联系人
+		 */
+		public int addLinkman(LinkMan linkInfo) {
+			try {
+				gDao.save(linkInfo);
+				return 1;
+			} catch (Exception e) {
+				return 0;
+			}
+		}
+
+		/**
+		 * 微信用户删除常用联系人
+		 */
+		public int deleteLinkman(String id) {
+			try {
+				gDao.deleteById(LinkMan.class, id);
+				return 1;
+			} catch (Exception e) {
+				return 0;
+			}
+		}
+
+		/**
+		 * 微信用户修改签证信息
+		 */
+		public int upqzInfo(VisaOrder vinfo) {
+			String sql = "UPDATE fw_VisaOrder SET contactsName = '"+vinfo.getContactsName()+"',contactsSex = '"+vinfo.getContactsSex()+"',contactsPhone = '"+vinfo.getContactsPhone()+"',contactsEmail = '"+vinfo.getContactsEmail()+"',customerType = '"+vinfo.getCustomerType()+"',IDcase = '"+vinfo.getIDcase()+"',deliveryMethod = '"+vinfo.getDeliveryMethod()+"',deliveryAddress = '"+vinfo.getDeliveryAddress()+"',trayTypeIpnt = '"+vinfo.getTrayTypeIpnt()+"' WHERE visaOrderID = '"+vinfo.getVisaOrderID()+"'";
+			System.out.println(sql);
+			int i = gDao.executeJDBCSql(sql);
+			if(i > 0){
+				return 1;
+			}
+			return 0;
+		}
+
+		/**
+		 * 微信用户删除签证订单
+		 */
+		public int deleteVisa(String id) {
+			try {
+				gDao.deleteById(VisaOrder.class, id);
+				return 1;
+			} catch (Exception e) {
+				return 0;
 			}
 		}
 		
