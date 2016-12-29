@@ -100,9 +100,9 @@ public class MenuManger {
 				
 				WxMenuButton myOrderButton = new WxMenuButton();
 				myOrderButton.setType(WxConsts.BUTTON_VIEW);
-				myOrderButton.setName("我的订单");
+				myOrderButton.setName("个人中心");
 				myOrderButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/myPlaneTickek.action",
+						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/oneself.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton weatherButton = new WxMenuButton();
@@ -215,9 +215,9 @@ public class MenuManger {
 				
 				WxMenuButton myOrderButton = new WxMenuButton();
 				myOrderButton.setType(WxConsts.BUTTON_VIEW);
-				myOrderButton.setName("我的订单");
+				myOrderButton.setName("个人中心");
 				myOrderButton.setUrl(
-						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/myPlaneTickek.action",
+						buildAuthorizationUrl("http://jp.gzyhinc.com/BookTicketsys/wechatController/page/oneself.action",
 								WxConsts.OAUTH2_SCOPE_BASE, null));
 				
 				WxMenuButton weatherButton = new WxMenuButton();
