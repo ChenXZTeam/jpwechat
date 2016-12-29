@@ -34,7 +34,7 @@
 	.btnBox #btnQ{margin-top: 15px; float:left; display: block; padding:10px 0px; background-color:#ccc; border-radius: 5px; color: #FBFDFF; font-size: 12px; text-align: center; width:48%; margin-left: auto; margin-right: auto;}
 </style>
 <script>
-$(function(){
+$(function(){ 
 		//保存联系人的方法
 		$(".aBtn").click(function(){
 			var linkName = $("#linkName").val();

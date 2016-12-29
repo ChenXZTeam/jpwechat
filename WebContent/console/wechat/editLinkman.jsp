@@ -25,7 +25,7 @@
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <style>
-	.writInfoBox{margin-top:0px;}
+	.writInfoBox{margin-top:0px;} 
 	.writInfoBox ul li{line-height:50px;}
 	.ChoosClassBox{width:80.5%; height:0px; overflow:hidden; border:1px solid #e1e1e1; position:absolute; top:400px; left:20px; background-color:#FFFFFF; padding:5px 10px; display:none; z-index:1;}
 	.ChoosClassBox .ChoosSmallBox{padding:5px; border-bottom:1px solid #e1e1e1;}

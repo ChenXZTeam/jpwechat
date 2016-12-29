@@ -26,7 +26,7 @@
 </style>
 <script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
-<script>
+<script> 
 	$(function(){
 		$.ajax({
 			url:"<%=basePath %>userOrderController/loading/linkman.action",

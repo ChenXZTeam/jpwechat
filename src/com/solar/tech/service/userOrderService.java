@@ -358,7 +358,7 @@ public class userOrderService {
 			params.add(id);
 			String sql="from LinkMan where ID=?";
 			List<LinkMan> list = gDao.getListByHql(LinkMan.class, sql, params);
-			if(list.size()>0){
+			if(list.size()>0){ 
 				return list;
 			}
 			return null;

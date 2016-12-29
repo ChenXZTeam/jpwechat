@@ -47,7 +47,7 @@ public class userOrderController {
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName"); 
 		LinkMan linkInfo = new LinkMan();
-		linkInfo.setLinkman(linkName);
+		linkInfo.setLinkman(linkName); 
 		linkInfo.setLinkNumber(linkPhoneNum);
 		linkInfo.setSex(sexIpnt);
 		linkInfo.setBirthday(birthIpnt);

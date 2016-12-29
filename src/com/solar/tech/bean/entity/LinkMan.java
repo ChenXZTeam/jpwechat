@@ -36,7 +36,7 @@ public class LinkMan {
     
     //证件类型
     @Column(name="caseType", length=15)
-    private String caseType;
+    private String caseType; 
     
     //证件类型
     @Column(name="caseNum", length=50)
