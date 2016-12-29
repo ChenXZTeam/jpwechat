@@ -353,10 +353,10 @@ public class userOrderService {
 		/**
 		 * 加载常用联系人
 		 */
-		public List<LinkMan> loadLinkman(String linkName) {
+		public List<LinkMan> loadLinkman(String id) {
 			List<Object> params = new ArrayList<Object>();
-			params.add(linkName);
-			String sql="from LinkMan where linkman=?";
+			params.add(id);
+			String sql="from LinkMan where ID=?";
 			List<LinkMan> list = gDao.getListByHql(LinkMan.class, sql, params);
 			if(list.size()>0){
 				return list;
@@ -368,13 +368,12 @@ public class userOrderService {
 		 * 微信用户更新常用联系人
 		 */
 		public int updateLinkman(LinkMan linfo) {
-			String sql = "UPDATE FW_linkman SET linkman = '"+linfo.getLinkman()+"',linkNumber = '"+linfo.getLinkNumber()+"' WHERE ID = '"+linfo.getID()+"'";
-			System.out.println(sql);
-			int i = gDao.executeJDBCSql(sql);
-			if(i > 0){
+			try{
+				gDao.update(linfo);
 				return 1;
+			}catch(Exception e){
+				return 0;
 			}
-			return 0;
 		}
 
 		/**

@@ -42,15 +42,18 @@ public class userOrderController {
 	
 	@RequestMapping("/add/addLinkman.action")
 	@ResponseBody
-	public Map<String, Object> addLinkman(String linkName,String linkPhoneNum,HttpSession session){
+	public Map<String, Object> addLinkman(String linkName,String linkPhoneNum,String sexIpnt,String birthIpnt,String personIpnt,String caseIpnt,String IDcase,HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
-		session.setAttribute("openId", "oI6f2wDvj5glUkde-sQBTSyoyyZ4");
-		session.setAttribute("userName", "ttt");
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName"); 
 		LinkMan linkInfo = new LinkMan();
 		linkInfo.setLinkman(linkName);
 		linkInfo.setLinkNumber(linkPhoneNum);
+		linkInfo.setSex(sexIpnt);
+		linkInfo.setBirthday(birthIpnt);
+		linkInfo.setPeopleType(personIpnt);
+		linkInfo.setCaseType(caseIpnt);
+		linkInfo.setCaseNum(IDcase);
 		linkInfo.setOpenID(openId);
 		linkInfo.setUserName(userName);
 		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
@@ -557,13 +560,27 @@ public class userOrderController {
 	//修改常用联系人信息
 	@RequestMapping("/update/updateLinkman.action")
 	@ResponseBody
-	public Map<String, Object> updateLinkman(String id,String linkName, String linkPhoneNum){
+	public Map<String, Object> updateLinkman(String id,String linkName, String linkPhoneNum, String sexIpnt, String birthIpnt, String personIpnt, String caseIpnt, String IDcase, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();		
-		LinkMan linfo = new LinkMan();
-		linfo.setID(id);
-		linfo.setLinkman(linkName);
-		linfo.setLinkNumber(linkPhoneNum);
-		int i = OrderService.updateLinkman(linfo);
+		String openId = (String) session.getAttribute("openId");
+		String userName = (String) session.getAttribute("userName"); 
+		if(openId.equals("")||openId==null||userName.equals("")||userName==null){
+			map.put("msg", 0);
+			return map;
+		}
+		LinkMan linkInfo = new LinkMan();
+		linkInfo.setID(id);
+		linkInfo.setLinkman(linkName);
+		linkInfo.setLinkNumber(linkPhoneNum);
+		linkInfo.setSex(sexIpnt);
+		linkInfo.setBirthday(birthIpnt);
+		linkInfo.setPeopleType(personIpnt);
+		linkInfo.setCaseType(caseIpnt);
+		linkInfo.setCaseNum(IDcase);
+		linkInfo.setOpenID(openId);
+		linkInfo.setUserName(userName);
+		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
+		int i = OrderService.updateLinkman(linkInfo);
 		if(i==1){
 			map.put("msg", 1);
 			System.out.println("修改常用信息成功");
@@ -693,11 +710,10 @@ public class userOrderController {
 		List<userOrderInfo> orderList = OrderService.loadOrder(userName,openId);
 		if(orderList.size()>0){
 			map.put("orderList",orderList);
-			System.out.println("数据不为空");
 			map.put("msg",1);
 		}else{
 			map.put("msg",0);
-			System.out.println("数据为空");
+			System.out.println("机票订单数据为空");
 		}
 		return map;
 	}
@@ -715,7 +731,7 @@ public class userOrderController {
 			map.put("msg",1);
 		}else{
 			map.put("msg",0);
-			System.out.println("数据为空");
+			System.out.println("签证订单数据为空");
 		}
 		return map;
 	}
@@ -737,11 +753,10 @@ public class userOrderController {
 		
 		if(orderList.size()>0){
 			map.put("orderList2",orderList2);
-			System.out.println("数据不为空");
 			map.put("msg",1);
 		}else{
 			map.put("msg",0);
-			System.out.println("数据为空");
+			System.out.println("优惠券数据为空");
 		}
 		return map;
 	}
@@ -752,14 +767,15 @@ public class userOrderController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
+		//String userName = "ttt";
+		//String openId = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
 		List<LinkMan> linkList = OrderService.findLinman(userName,openId);
 		if(linkList.size()>0){
 			map.put("linkList",linkList);
-			System.out.println("数据不为空");
 			map.put("msg",1);
 		}else{
 			map.put("msg",0);
-			System.out.println("数据为空");
+			System.out.println("常见联系人数据为空");
 		}
 		return map;
 	}
@@ -782,9 +798,9 @@ public class userOrderController {
 	//反馈信息到常用联系人选择框里面
 	@RequestMapping("/loading/loadLinkman.action")
 	@ResponseBody
-	public Map<String, Object> loadLinkman(String linkName, HttpSession session){
+	public Map<String, Object> loadLinkman(String id, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<LinkMan> orderList = OrderService.loadLinkman(linkName);
+		List<LinkMan> orderList = OrderService.loadLinkman(id);
 		if(orderList.size()>0){
 			map.put("orderList",orderList);
 			map.put("msg",1);

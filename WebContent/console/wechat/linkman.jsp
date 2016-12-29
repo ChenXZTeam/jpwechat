@@ -14,13 +14,13 @@
 <style>
 	*{padding:0px; margin:0px;}
 	body{text-align:center; font:normal Helvetica, Arial, sans-serif; background-color:#F9F9F9; font-family:Microsoft JhengHei;}
-	#bigTable{width:100%; border:none; text-align:left; margin-left:auto; margin-right:auto; font-size:16px;}
+	#bigTable{width:100%; border:none; padding-bottom: 50px; text-align:left; margin-left:auto; margin-right:auto; font-size:16px;}
 	.title{height:40px; background-color:#E3E3E3;}
 	.title td{border-bottom:#B7B7B7 solid 1px;}
 	.cententTR{height:50px;}
 	.cententTD{border-bottom:#E3E3E3 solid 1px;padding-left: 10px;}
 	.hiddenClass{display:none;}
-	.btnBox{background:url('<%=basePath%>console/images/newImg.png') no-repeat center 5px; background-size: 40px 40px; margin-left: auto;  margin-right: auto;  overflow: hidden;  height: 50px; border-top:1px solid #e1e1e1; position: fixed;  bottom: 0px;  left: 0px;  width: 100%;}
+	.btnBox{background:#fff url('<%=basePath%>console/images/newImg.png') no-repeat center 5px; background-size: 40px 40px; margin-left: auto;  margin-right: auto;  overflow: hidden;  height: 50px; border-top:1px solid #e1e1e1; position: fixed;  bottom: 0px;  left: 0px;  width: 100%;}
 	.btnBox .aBtn{padding:10px 0px; float:left; width:48%;}
 	.aBtn{margin-top:15px; display:block; padding:7px 0px; background-color:#007AFF; border-radius:5px; color:#FBFDFF; font-size:12px; text-align:center; width:88.55%; margin-left:90px; margin-right:auto;}
 </style>
@@ -40,9 +40,35 @@
 					}
 					$(".linkName").click(function(){
 						var id =$(this).parent().children(".id").text();
-						var linkName=$(this).text();
-						var linkPhoneNum =$(this).parent().children(".linkPhoneNum").text();
-						window.location.href="<%=basePath %>console/wechat/editLinkman.jsp?linkName="+linkName+"&linkPhoneNum="+linkPhoneNum+"&id="+id;
+						$.actions({
+							  actions: [{
+								    text: "编辑",
+								    onClick: function() {
+											window.location.href="<%=basePath %>console/wechat/editLinkman.jsp?id="+id;
+								    }
+							  },{
+								    text: "删除",
+								    onClick: function() {
+										      $.ajax({ 
+													url:"<%=basePath%>userOrderController/delete/deleteLinkman.action",
+													type:"POST",
+													data:{
+														"id":id,
+													},
+													dataType:"json",
+													success: function(result) {
+														if(result.msg==1){
+															window.location.href="<%=basePath %>console/wechat/linkman.jsp";
+														}else{
+															$.alert("删除失败");
+														}
+													},error:function(){
+													
+													}
+												});		
+								    }
+							  }]
+						});
 					})
 				}else{
 					$.alert("您还没有联系人");
@@ -52,10 +78,6 @@
 			}
 		});
 		
-		
-		<%-- $(".aBtn").click(function(){
-				window.location.href="<%=basePath %>console/wechat/addLinkman.jsp";
-		}) --%>
 		$(".btnBox").click(function(){
 				window.location.href="<%=basePath %>console/wechat/addLinkman.jsp";
 		})

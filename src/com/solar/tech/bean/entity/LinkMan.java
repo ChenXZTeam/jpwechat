@@ -34,7 +34,27 @@ public class LinkMan {
     @Column(name="linkNumber", length=50)
     private String linkNumber;
     
-  //用户对应的openid
+    //证件类型
+    @Column(name="caseType", length=15)
+    private String caseType;
+    
+    //证件类型
+    @Column(name="caseNum", length=50)
+    private String caseNum;
+    
+    //生日
+    @Column(name="birthday", length=15)
+    private String birthday;
+    
+    //生日
+    @Column(name="sex", length=15)
+    private String sex;
+    
+    //旅客类型
+    @Column(name="peopleType",length=10)
+    private String peopleType;
+    
+    //用户对应的openid
   	@Column(name="openID",length=100)
   	private String openID;
   	
@@ -94,7 +114,45 @@ public class LinkMan {
 		this.createTime = createTime;
 	}
 
-	
-  	
+	public String getCaseType() {
+		return caseType;
+	}
+
+	public void setCaseType(String caseType) {
+		this.caseType = caseType;
+	}
+
+	public String getCaseNum() {
+		return caseNum;
+	}
+
+	public void setCaseNum(String caseNum) {
+		this.caseNum = caseNum;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getPeopleType() {
+		return peopleType;
+	}
+
+	public void setPeopleType(String peopleType) {
+		this.peopleType = peopleType;
+	}
+
 }  	
 	
