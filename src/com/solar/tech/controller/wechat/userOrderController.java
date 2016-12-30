@@ -227,7 +227,7 @@ public class userOrderController {
 			//map.put("planMsg", response.toJson());
 			map.put("msg","1");
 			map.put("order", orderNum);
-			map.put("planMsg","订单生成成功");
+			map.put("planMsg","座位订单锁定成功,请付款");
 		}else if(num==0){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败1，系统出错");

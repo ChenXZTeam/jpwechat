@@ -25,7 +25,7 @@
 		</tr>
 		<tr>
 			<td>申请人:</td>
-			<td><%=visaOrder.getProposer() %></td>
+			<td><%=visaOrder.getContactsName() %></td>
 		</tr>
 		<tr>
 			<td>客户类型:</td>

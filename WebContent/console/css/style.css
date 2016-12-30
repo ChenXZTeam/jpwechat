@@ -1,4 +1,4 @@
-ï»¿/*å…¨å±€æ ·å¼å¼€å§‹*/
+/*È«¾ÖÑùÊ½¿ªÊ¼*/
 * {
 	margin: 0;
 	padding: 0;
@@ -19,7 +19,7 @@
 body {
 	height: 100%;
 	width: 100%;
-	font-size: 12px;
+	font-size: 15px;
 	line-height: 1;
 	font-family: "Microsoft YaHei", \u5FAE\u8F6F\u96C5\u9ED1, "MicrosoftJhengHei", \u534E\u6587\u7EC6\u9ED1, STHeiti, MingLiu;
 	background: #eaeaea;
@@ -45,7 +45,7 @@ a {
 }
 
 
-/*è¡¨å•æ ·å¼å¼€å§‹*/
+/*±íµ¥ÑùÊ½¿ªÊ¼*/
 #form, #reg {
 	width: 94%;
 	margin: 15px auto 0;
@@ -128,6 +128,6 @@ a {
 .already label.wm {
 	color: #8f8f8f;
 }
-/*è¡¨å•æ ·å¼ç»“æŸ*/
+/*±íµ¥ÑùÊ½½áÊø*/
 
 

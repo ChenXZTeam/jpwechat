@@ -1,7 +1,7 @@
 /* CSS Document */
 .{font-size: 11px; -webkit-text-size-adjust:none;}  
 body{ background-color:#f1f1f1; padding:0px; margin:0px; font-family:"Microsoft YaHei"; padding-bottom:10px;}
-.massInfoBox{ background-color:#FFFFFF; margin-top:15px; border-top:#E8E8E8 solid 1px; padding:20px; padding-bottom:0px; padding-top:10px;}
+.massInfoBox{ background-color:#FFFFFF; border-top:#E8E8E8 solid 1px; padding:20px; padding-bottom:0px; padding-top:25px;}
 .massInfoBox ul{ list-style-type:none; padding:0px; border-bottom:#e8e8e8 solid 1px; margin:0px; padding-bottom:10px;}
 .massInfoBox ul li{ line-height:25px;}
 .spanTit{color:#8D8D8D;}
@@ -11,17 +11,17 @@ body{ background-color:#f1f1f1; padding:0px; margin:0px; font-family:"Microsoft 
 
 .writInfoBox{ border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; margin-top:10px; padding:0px; background-color:#FFFFFF; padding:0px 20px;}
 .writInfoBox ul{ list-style-type:none; padding:0px; margin:0px; border:none;}
-.writInfoBox ul li{ line-height:35px; border-bottom:1px solid #e8e8e8;}
+.writInfoBox ul li{ line-height:50px; border-bottom:1px solid #e8e8e8; height:50px;}
 .writInfoBox ul li input{border:none; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0); margin-left:10px; width:65%;}
 .writInfoBox ul li span img{width:12px;}
 .writInfoBox ul li:last-child{border:none;}
 
-.baoxianBox{height:30px; padding-left:15px;}
+.baoxianBox{height:30px; padding-left:15px; font-size:13px;}
 .baoxianBox .oneClassBX{float:left; padding:8px 0px;}
 .baoxianBox .oneClassBX input{margin-top:5px; margin-left:-13px; display:block; float:left; filter:alpha(opacity=0); -moz-opacity:0; opacity:0;}
 .baoxianBox .oneClassBX .spanTitBX{color:#8D8D8D; margin-top:5px; margin-left:5px; display:block; float:left;}	
 	
-.aBtn{margin-top:15px; display:block; padding:7px 0px; background-color:#007AFF; border-radius:5px; color:#FBFDFF; font-size:12px; text-align:center; width:88.55%; margin-left:auto; margin-right:auto;}
+.aBtn{margin-top:15px; display:block; background-color:#007AFF; border-radius:5px; color:#FBFDFF; line-height:40px; height:40px; text-align:center; width:88.55%; margin-left:auto; margin-right:auto;}
 
 #touMbackground{ position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; display:block; display:none;}
 #touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:78%; height:150px; left:10%; top:25%; position:absolute; padding-top:10px;}
@@ -40,7 +40,7 @@ body{ background-color:#f1f1f1; padding:0px; margin:0px; font-family:"Microsoft 
 #trueOrderInfo .flidNoNumBox .wanfDivBox img{display:block; margin:auto; text-align:center; width:25px;}
 #trueOrderInfo .flidNoNumBox .wanfDivBox span{display:block; margin:auto; text-align:center; color:#8E8E8E; margin-top:11px;}
 #trueOrderInfo .flidNoNumBox .daodDivBox{width:32%; float:left; height:100%;}
-#trueOrderInfo .flidNoNumBox .placeCity{font-size:16px; font-weight:500; color:#007BFD; line-height:40px;}
+#trueOrderInfo .flidNoNumBox .placeCity{font-size:23px; font-weight:500; color:#007BFD; line-height:40px;}
 #trueOrderInfo .flidNoNumBox .planeNameInfo{color:#666666; font-size:12px; line-height:20px; overflow:hidden; height:18px;}
 #trueOrderInfo .flidNoNumBox .aboutTime{width:125px; color:#8E8E8E; line-height:20px; font-size:10px; -webkit-transform-origin-x:0;}
 

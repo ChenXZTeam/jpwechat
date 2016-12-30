@@ -18,7 +18,10 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>填写资料</title>
 <link rel="stylesheet" href="<%=basePath %>console/css/normalize3.0.2.min.css" />
-<link rel="stylesheet" href="<%=basePath %>console/css/style.css" />
+<link rel="stylesheet" href="<%=basePath %>console/css/style.css?time=2106" />
+<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
+<link rel="stylesheet" href="<%=basePath%>scripts/common/weui/css/weui.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
@@ -26,44 +29,46 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script>
+<script src="<%=basePath %>console/js/jquery-weui.js"></script>
+<script src="<%=basePath %>scripts/common/weui/js/zepto.min.js"></script>
 <script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	body{ background-color:#e5e5e5;}
-	.fildBox{padding:12px; margin-left:auto; margin-right:auto; border-radius:5px; font-size:13px; font-family:Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
-	.timeBox{color:#333; overflow:hidden; font-size:11px;}
+	.fildBox{padding:12px; margin-left:auto; margin-right:auto; border-radius:5px; font-size:15px; font-family:Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
+	.timeBox{color:#333; overflow:hidden; font-size:14px;}
 	.timeBox>span{ float:left;}
 	.timeBox>.weekday{ margin-left:3px;}
 	.timeBox>.plandep{ margin-left:5px; margin-right:3px;}
 	.timeBox>.planarr{ margin-left:3px;}
 	.timeBox>.time{ float:right; margin-left:3px;}
-	.timeBox>img{ float:right; margin-top:2px;}
+	.timeBox>img{ float:right; margin-top:-2px;}
 	.planName{ margin-top:15px;}
 	.planName .planNamech{float:left; margin-left:10px;}
-	.planName .planNamech>div{ margin-top:5px;}
-	.planName .planNamech .depTimefirst{ font-size:17px; font-weight:bold; text-align:right; margin-top:0px;}
-	.planName .planNamech .depTimesecond{ margin-top:27px; text-align:right;}
-	.planName .planNamech .depAirPlanfirst{ font-size:13px; margin-top:0px;}
-	.planName .planNamech .lishiTime{ color:#999; font-size:12px; margin-top:10px;}
-	.planName .planNamech .depAirPlansecond{ font-size:11px; color:#666; margin-top:10px;}
+	.planName .planNamech>div{}
+	.planName .planNamech .depTimefirst{ font-size:18px; font-weight:bold; text-align:right; margin-top:0px;}
+	.planName .planNamech .depTimesecond{ margin-top:20px; text-align:right;}
+	.planName .planNamech .depAirPlanfirst{ font-size:17px; margin-top:0px;}
+	.planName .planNamech .lishiTime{ color:#999; font-size:14px;}
+	.planName .planNamech .depAirPlansecond{ font-size:15px; color:#666;}
 	.planName .planNamech .depTimenumt{text-align:right; margin-top:0px;}
-	.planName .planNamech .arrTimenumt{ font-size:17px; font-weight:bold; text-align:right; margin-top:0px; margin-top:30px;}
-	.planName .planNamech .depPlane_numt{ margin-top:0px; color:#666; font-size:11px;}
-	.planName .planNamech .lishiTime_two{ color:#999; font-size:12px; margin-top:10px;}
-	.planName .planNamech .arrPlane_numt{font-size: 13px; margin-top:10px;}
-	.planName .airNameType{ float:right; font-size:10px; color:#666666;}
+	.planName .planNamech .arrTimenumt{ font-size:17px; font-weight:bold; text-align:right; margin-top:0px; margin-top:25px;}
+	.planName .planNamech .depPlane_numt{ margin-top:0px; color:#666; font-size:15px;}
+	.planName .planNamech .lishiTime_two{ color:#999; font-size:14px;}
+	.planName .planNamech .arrPlane_numt{font-size: 17px;}
+	.planName .airNameType{ float:right; color:#666666;}
 	.planName .airNameType .airNameTypech{ margin-top:0px;}
 	.planName .planNamech img{width:14px;}
 	.zhzBox{ margin-top:15px; color:#666666; font-size:12px;}
 	.zhzBox .zhzCity{ margin-left:30px;}
-	.zhzBox .zhzPlanName{float:left;}
+	.zhzBox .zhzPlanName{float:left;line-height: 25px;}
 	.zhzBox .zhuangBox{ margin-left:8px; margin-top:-2px;}
 	.zhzBox .zhzPlanName .tingliuText{ margin-left:8px;}
 	.countNumMoney{ text-align:right; margin-top:15px; font-size:18px; color:#FF9A14;}
 	
 	/*填写资料*/
-	.writInfoBox{ border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; font-size:12px; color:#8D8D8D; margin-top:10px; padding:0px; background-color:#FFFFFF; padding:0px 20px;}
+	.writInfoBox{ border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; color:#8D8D8D; margin-top:10px; padding:0px; background-color:#FFFFFF; padding:0px 20px;}
 	.writInfoBox ul{ list-style-type:none; padding:0px; margin:0px; border:none;}
-	.writInfoBox ul li{ line-height:35px; border-bottom:1px solid #e8e8e8;}
+	.writInfoBox ul li{ line-height:50px; border-bottom:1px solid #e8e8e8; height:50px;}
 	.writInfoBox ul li input{border:none; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0); margin-left:10px; width:65%;}
 	.writInfoBox ul li span img{width:12px;}
 	.writInfoBox ul li:last-child{border:none;}
@@ -78,7 +83,7 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 	.checkboxA{ border:#C9C9C9 1px solid; background-color:#fff; width:16px; height:16px; display:block; z-index:-1; float:left; border-radius:8px; margin-top:3px;}
 	.checkboxB{ background-color:#0079FE; border-radius:4px; width:8px; height:8px; display:block; float:left; margin-left:-11.544px; margin-top:6.599999px; display:none;}
 
-	.aBtn{margin-top:15px; display:block; padding:7px 0px; background-color:#007AFF; border-radius:5px; color:#FBFDFF; font-size:12px; text-align:center; width:88.55%; margin-left:auto; margin-right:auto;}
+	.aBtn{margin-top:15px; display:block; background-color:#007AFF; border-radius:5px; color:#FBFDFF; text-align:center; width:88.55%; margin-left:auto; margin-right:auto; margin-bottom: 30px; height: 50px; line-height: 50px;}
 
 	/*登录*/
 	#touMbackground{ position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; display:block; display:none;}
@@ -86,8 +91,8 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 	#touMbackground .loginBox .inputBoxLogin{ border:#e1e1e1 solid 1px; height:30px; width:78%; margin-left:auto; margin-right:auto; margin-top:10px; border-radius:3px;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox{float:left;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox img{border-right:#e1e1e1 solid 1px; padding-right:5px; width:25px; margin-top:5px; margin-left:3px;}
-	#touMbackground .loginBox .inputBoxLogin .logininpBox{float:left;}
-	#touMbackground .loginBox .inputBoxLogin .logininpBox input{margin-top:5px; margin-left:10px; border:none;}
+	#touMbackground .loginBox .inputBoxLogin .logininpBox{float:right;}
+	#touMbackground .loginBox .inputBoxLogin .logininpBox input{margin-top:5px; border:none;}
 	#touMbackground .loginBox .loginBtn{ text-align:center; line-height:28px; color:#FFFFFF; background-color:#004F92;}
 
 	/*确认订单*/
@@ -99,7 +104,7 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 	#trueOrderInfo .flidNoNumBox .wanfDivBox img{display:block; margin:auto; text-align:center; width:25px;}
 	#trueOrderInfo .flidNoNumBox .wanfDivBox span{display:block; margin:auto; text-align:center; color:#8E8E8E; margin-top:11px;}
 	#trueOrderInfo .flidNoNumBox .daodDivBox{width:32%; float:left; height:100%;}
-	#trueOrderInfo .flidNoNumBox .placeCity{font-size:16px; font-weight:500; color:#007BFD; line-height:40px;}
+	#trueOrderInfo .flidNoNumBox .placeCity{font-size:20px; font-weight:500; color:#007BFD; line-height:40px;}
 	#trueOrderInfo .flidNoNumBox .planeNameInfo{color:#666666; font-size:12px; line-height:20px; overflow:hidden; height:18px;}
 	#trueOrderInfo .flidNoNumBox .aboutTime{width:125px; color:#8E8E8E; line-height:20px; font-size:10px; -webkit-transform-origin-x:0;}
 	
@@ -175,7 +180,7 @@ $(function(){
 	var username="<%=username%>";
 	var jin = "<%=jin%>"
 	if(username==""||username=="null"||jin==""||jin=="null"){
-		alert("登录才能订票");
+		$.alert("登录才能订票");
 		$("#touMbackground").css("display","block");
 	}else{
 		getcode("<%=jin%>");
@@ -202,15 +207,15 @@ $(function(){
 							$(".loginBtn").css("border","#cccccc solid 1px");
 							$(".loginBtn").html("");
 							$(".loginBtn").html("加载中...");
-							alert("登录成功，可以订票咯^_^");
+							$.alert("登录成功，可以订票咯^_^");
 							$("#touMbackground").css("display","none");
 						}else{
-							alert("登录失败");
+							$.alert("登录失败");
 							$("#touMbackground").css("display","block");
 						}							
 					},
 					error: function() {
-						//alert("登录失败");
+						//$.alert("登录失败");
 					}
 			});
 	});
@@ -218,27 +223,27 @@ $(function(){
 	//下一步的按钮点击事件
 	$(".aBtn").click(function(){
 		if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
-				alert("请填写姓名");
+				$.alert("请填写姓名");
 				return;
 			}
 			if($("#sexIpnt").val()==""||$("#sexIpnt").val()==" "||$("#sexIpnt").val()=="null"||$("#sexIpnt").val()==null){
-				alert("请填写性别");
+				$.alert("请填写性别");
 				return;
 			}
 			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
-				alert("请填写手机号码");
+				$.alert("请填写手机号码");
 				return;
 			}
 			if($("#personIpnt").val()==""||$("#personIpnt").val()==" "||$("#personIpnt").val()==null||$("#personIpnt").val()=="null"){
-				alert("请选择旅客类型");
+				$.alert("请选择旅客类型");
 				return;
 			}
-			if($("#caseIpnt").text()==""||$("#caseIpnt").text()==" "||$("#caseIpnt").text()==null||$("#caseIpnt").text()=="null"){
-				alert("请选择证件类型");
+			if($("#caseIpnt").text()=="证件类型"){
+				$.alert("请选择证件类型");
 				return;
 			}
 			if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()==null||$("#IDcase").val()=="null"){
-				alert("请填写证件号码");
+				$.alert("请填写证件号码");
 				return;
 			}
 		//航班信息
@@ -339,13 +344,17 @@ $(function(){
 						$("#firNumorder").val(result.of);
 						$("#secdNumorder ").val(result.sc);
 						if(result.msg=="1"||result.msg==1){
-							alert("机票预定成功");
+							$.alert("座位订单已锁定，请支付");
 							$("#trueOrderInfo").css("display","block");
+							$("html").css("height","100%");
+							$("html").css("overflow","hidden");
+							$("body").css("height","100%");
+							$("body").css("overflow","hidden");
 							<%-- window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action"; --%>
 						}else if(result.msg=="0"||result.msg==0){
-							alert("机票预定失败1，请稍后再试");
+							$.alert("机票预定失败1，请稍后再试");
 						}else{
-							alert("机票预定失败2，请稍后再试");
+							$.alert("机票预定失败2，请稍后再试");
 						}
 					},
 					error:function(result){
@@ -388,7 +397,7 @@ $(function(){
 								} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
 												
 								} else if (res.err_msg == "get_brand_wcpay_request:fail") {
-										alert("支付失败，请重新下单！");
+										$.alert("支付失败，请重新下单！");
 								}
 							});
 						} else if(obj.state == 0) {
@@ -408,7 +417,7 @@ $(function(){
 	//判断是否选择了证件类型
 	$("#IDcase").focus(function(){
 		if($("#caseIpnt").text()=="证件类型"){
-			alert("请选择证件类型");
+			$.alert("请选择证件类型");
 			$("#IDcase").blur();
 			return false;
 		}
@@ -418,11 +427,68 @@ $(function(){
 	$("#phoneNum").change(function(){
 		var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
 		if(!phone.test($("#phoneNum").val())){
-			alert("请输入正确的手机号码");
+			$.alert("请输入正确的手机号码");
 			$("#phoneNum").focus();
 			return false;
 		}
 	});
+	
+	$("#sexIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'先生', 
+	            			value:'先生'
+	        		   },{  
+	        		   		label:'女士',
+	            			value:'女士'
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#sexIpnt").val(result); 
+	            			}  
+	        	});  
+    	});
+    	
+    	$("#personIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'成人', 
+	            			value:'成人'
+	        		   },{  
+	        		   		label:'儿童',
+	            			value:'儿童'
+	        		   },{  
+	        		   		label:'婴儿',
+	            			value:'婴儿'
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#personIpnt").val(result); 
+	            			}  
+	        	});  
+    	});
+		
+		$("#caseIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'身份证', 
+	            			value:'身份证'
+	        		   },{  
+	        		   		label:'护照',
+	            			value:'护照'
+	        		   },{  
+	        		   		label:'其他',
+	            			value:'其他' 
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#caseIpnt").text(result); 
+	            			}  
+	        	});  
+    	});
 });
 
 //根据时间获取星期
@@ -517,7 +583,7 @@ function ageFunc(birthday){
 	if(ageNum > 0){
 	    age = ageNum;
 	}else{
-	    alert("年龄选择错误，请重新选择！");
+	    $.alert("年龄选择错误，请重新选择！");
 	    return "";
 	}
 	return age;
@@ -534,7 +600,7 @@ function getcode(inc){
 				console.log(date);
 				if(date.length>0){
 					$("#zhekouType").text(date[0].type);
-					alert("您有优惠券可以使用哟！");
+					$.alert("您有优惠券可以使用哟！");
 					if(date[0].type=="discount"){
 						$(".youhuiText").text(date[0].remarks);
 						$(".youhuiBxzhz").val(date[0].discount);
@@ -544,7 +610,7 @@ function getcode(inc){
 						$(".youhuiBxzhz").val(date[0].sum);
 						$(".youhuiBox").css("display","block");
 					}else{
-						alert("未知类型的优惠券，不能使用");
+						$.alert("未知类型的优惠券，不能使用");
 						$(".youhuiBox").remove();
 					}
 				}else{
@@ -558,7 +624,7 @@ function getcode(inc){
 }
 </script>
 <div class="fildBox">
-	<div class="timeBox"><span class="depday">01-05</span><span class="weekday">周四</span><span class="plandep">香港</span><span>—</span><span class="planarr">杭州</span><span class="time">4h50m</span><img src="<%=basePath %>console/images/TIMEiMG.png" style="width:10px;"/><span style="clear:both;"></span></div>
+	<div class="timeBox"><span class="depday">01-05</span><span class="weekday">周四</span><span class="plandep">香港</span><span>—</span><span class="planarr">杭州</span><span class="time">4h50m</span><img src="<%=basePath %>console/images/TIMEiMG.png" style="width:15px;"/><span style="clear:both;"></span></div>
 	<div class="planName">
 		<div class="planNamech">
 			<div class="depTimefirst">09:35</div>
@@ -581,7 +647,7 @@ function getcode(inc){
 	</div>
 	<div class="zhzBox">
 		<div class="zhzPlanName zhzCity">厦门</div>
-		<div class="zhzPlanName zhuangBox"><img src="<%=basePath %>console/images/zhuangImg.jpg" style="width:20px; height:20px;"/></div>
+		<div class="zhzPlanName zhuangBox"><img src="<%=basePath %>console/images/zhuangImg.jpg" style="width:25px; height:25px;"/></div>
 		<div class="zhzPlanName"><span class="tingliuText">停留</span><span class="tingliuTime">1h35m</span></div>
 		<div style="clear:both;"><input id="timess_m" type="hidden"/></div>
 	</div>
@@ -613,10 +679,10 @@ function getcode(inc){
 <div class="writInfoBox">
 	<ul>
 		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><input type="hidden" id="firNumorder"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
-		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:10px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
+		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
+		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
-		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
 		<li><span class="spanTit" id="caseIpnt">证件类型</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
 	</ul>
 </div>
@@ -629,26 +695,6 @@ function getcode(inc){
 </div>
 
 <a class="aBtn">下 一 步</a>
-<!--性别选择-->
-<div class="ChoosClassBox" id="sexType">
-	<div class="ChoosSmallBox sexBoxCH">男</div>
-	<div class="ChoosSmallBox sexBoxCH" style="border:none;">女</div>
-	<div style="clear:both;"></div>
-</div>
-<!--旅客类型-->
-<div class="ChoosClassBox" id="personType">
-	<div class="ChoosSmallBox persBoxCH">成人</div>
-	<div class="ChoosSmallBox persBoxCH">儿童</div>
-	<div class="ChoosSmallBox persBoxCH" style="border:none;">婴儿</div>
-	<div style="clear:both;"></div>
-</div>
-<!--证件类型-->
-<div class="ChoosClassBox" id="CaseType" style="width:30%;">
-	<div class="ChoosSmallBox caseBoxCH">身份证</div>
-	<div class="ChoosSmallBox caseBoxCH">护照</div>
-	<div class="ChoosSmallBox caseBoxCH" style="border:none;">其他</div>
-	<div style="clear:both;"></div>
-</div>
 
 <!--确认订单-->
 <div id="trueOrderInfo">
@@ -767,5 +813,6 @@ $(function () {
 	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['default']));
 });
 </script>
+<script src="<%=basePath %>scripts/common/weui/js/weui.min.js"></script>
 </body>
 </html>

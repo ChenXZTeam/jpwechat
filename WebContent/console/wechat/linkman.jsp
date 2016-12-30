@@ -49,23 +49,27 @@
 							  },{
 								    text: "删除",
 								    onClick: function() {
-										      $.ajax({ 
-													url:"<%=basePath%>userOrderController/delete/deleteLinkman.action",
-													type:"POST",
-													data:{
-														"id":id,
-													},
-													dataType:"json",
-													success: function(result) {
-														if(result.msg==1){
-															window.location.href="<%=basePath %>console/wechat/linkman.jsp";
-														}else{
-															$.alert("删除失败");
+											$.confirm("您要删除这个联系人吗？", "确定删除", function() {
+												  $.ajax({ 
+														url:"<%=basePath%>userOrderController/delete/deleteLinkman.action",
+														type:"POST",
+														data:{
+															"id":id,
+														},
+														dataType:"json",
+														success: function(result) {
+															if(result.msg==1){
+																window.location.href="<%=basePath %>console/wechat/linkman.jsp";
+															}else{
+																$.alert("删除失败");
+															}
+														},error:function(){
+														
 														}
-													},error:function(){
-													
-													}
-												});		
+													});	
+									            }, function() {
+									               
+									         });
 								    }
 							  }]
 						});

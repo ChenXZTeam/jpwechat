@@ -14,15 +14,16 @@
 <title>修改常用联系人信息</title>
 <link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/normalize3.0.2.min.css" />
-<link rel="stylesheet" href="<%=basePath %>console/css/style.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>scripts/common/weui/css/weui.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js" chatset="utf-8"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
+<script src="<%=basePath %>scripts/common/weui/js/zepto.min.js"></script>
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <style>
 	.writInfoBox{margin-top:0px;} 
@@ -32,8 +33,8 @@
 	.checkboxA{ border:#C9C9C9 1px solid; background-color:#fff; width:16px; height:16px; display:block; z-index:-1; float:left; border-radius:8px; margin-top:3px;}
 	.checkboxB{ background-color:#0079FE; border-radius:4px; width:8px; height:8px; display:block; float:left; margin-left:-11.544px; margin-top:6.599999px; display:none;}
 	.btnBox{width:88.55%; margin-left:auto; margin-right:auto; overflow:hidden;}
-	.btnBox .aBtn{padding:10px 0px; float:left; width:100%;}
-	.btnBox #btnQ{margin-top: 15px; float:right; display: block; padding:10px 0px; background-color:#ccc; border-radius: 5px; color: #FBFDFF; font-size: 12px; text-align: center; width:48%; margin-left: auto; margin-right: auto;}
+	.btnBox .aBtn{padding:10px 0px; float:left; width:100%; font-size:15px;}
+	.btnBox #btnQ{margin-top: 15px; float:right; display: block; padding:10px 0px; background-color:#ccc; border-radius: 5px; color: #FBFDFF; font-size: 15px; text-align: center; width:48%; margin-left: auto; margin-right: auto;}
 </style>
 <script>
 	$(function(){
@@ -98,56 +99,63 @@
 			});		
 		});
 		
-		//性别选择
-		$("#sexIpnt").click(function(){
-				var top = $(this).offset().top;
-				var left = $(this).offset().left;
-				$("#sexType").css("top",top+25);
-				$("#sexType").css("left",left-45);
-				$("#sexType").css("display","block");
-				$("#sexType").animate({height:"70px"},250);
-		});
+		$("#sexIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'先生', 
+	            			value:'先生'
+	        		   },{  
+	        		   		label:'女士',
+	            			value:'女士'
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#sexIpnt").val(result); 
+	            			}  
+	        	});  
+    	});
+    	
+    	$("#personIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'成人', 
+	            			value:'成人'
+	        		   },{  
+	        		   		label:'儿童',
+	            			value:'儿童'
+	        		   },{  
+	        		   		label:'婴儿',
+	            			value:'婴儿'
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#personIpnt").val(result); 
+	            			}  
+	        	});  
+    	});
 		
-		$(".sexBoxCH").click(function(){
-				$(this).text();	
-				$("#sexIpnt").val($(this).text());
-				$("#sexType").animate({height:"0px"},250);
-				var t  = setTimeout(function(){$("#sexType").css("display","none")},250);
-		})
+		$("#caseIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'身份证', 
+	            			value:'身份证'
+	        		   },{  
+	        		   		label:'护照',
+	            			value:'护照'
+	        		   },{  
+	        		   		label:'其他',
+	            			value:'其他' 
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#caseIpnt").text(result); 
+	            			}  
+	        	});  
+    	});
 		
-		//旅客选择
-		$("#personIpnt").click(function(){
-				var top = $(this).offset().top;
-				var left = $(this).offset().left;
-				$("#personType").css("top",top+25);
-				$("#personType").css("left",left-70);
-				$("#personType").css("display","block");
-				$("#personType").animate({height:"100px"},250);
-		});
-		
-		$(".persBoxCH").click(function(){
-				$(this).text();	
-				$("#personIpnt").val($(this).text());
-				$("#personType").animate({height:"0px"},250);
-				var t  = setTimeout(function(){$("#personType").css("display","none")},250);
-		})
-		
-		//证件选择
-		$("#caseIpnt").click(function(){
-				var top = $(this).offset().top;
-				var left = $(this).offset().left;
-				$("#CaseType").css("top",top+25);
-				$("#CaseType").css("left",left);
-				$("#CaseType").css("display","block");
-				$("#CaseType").animate({height:"100px"},250);
-		});
-		
-		$(".caseBoxCH").click(function(){
-				$(this).text();	
-				$("#caseIpnt").text($(this).text());
-				$("#CaseType").animate({height:"0px"},250);
-				var t  = setTimeout(function(){$("#CaseType").css("display","none")},250);
-		})
 	});
 	
 </script>
@@ -158,33 +166,13 @@
 	<ul>
 		<li><span class="spanTit">联系人：</span><input id="linkName" type="text"/></li>
 		<li><span class="spanTit">联系人电话：</span><input id="linkPhoneNum" type="text"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
-		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:10px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
-		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:12px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
+		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
 		<li><span class="spanTit" id="caseIpnt">证件类型</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
 	</ul>
 </div>
 
-<!--性别选择-->
-<div class="ChoosClassBox" id="sexType">
-	<div class="ChoosSmallBox sexBoxCH">男</div>
-	<div class="ChoosSmallBox sexBoxCH" style="border:none;">女</div>
-	<div style="clear:both;"></div>
-</div>
-<!--旅客类型-->
-<div class="ChoosClassBox" id="personType">
-	<div class="ChoosSmallBox persBoxCH">成人</div>
-	<div class="ChoosSmallBox persBoxCH">儿童</div>
-	<div class="ChoosSmallBox persBoxCH" style="border:none;">婴儿</div>
-	<div style="clear:both;"></div>
-</div>
-<!--证件类型-->
-<div class="ChoosClassBox" id="CaseType" style="width:30%;">
-	<div class="ChoosSmallBox caseBoxCH">身份证</div>
-	<div class="ChoosSmallBox caseBoxCH">护照</div>
-	<div class="ChoosSmallBox caseBoxCH" style="border:none;">其他</div>
-	<div style="clear:both;"></div>
-</div>
 <div class="btnBox"><a class="aBtn">确定修改</a></div>
 
 <script>
@@ -209,5 +197,6 @@ $(function () {
 	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['default']));
 });
 </script>
+<script src="<%=basePath %>scripts/common/weui/js/weui.min.js"></script>
 </body>
 </html>
