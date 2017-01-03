@@ -12,7 +12,7 @@
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <style>
 	html{height:100%;}
-	body{height:95%; background-color:#e1e1e1;}
+	body{height:95%; background-color:#e1e1e1; padding:0px; margin:0px;}
 	#iptbtnBox{background-color:#fff; padding:15px 10px;}
 	#iptbtnBox #inptMoneyClassBox{height:30px;}
 	#iptbtnBox .titleBoxClass{border:1px solid #e1e1e1; height:30px; padding:0px 10px; border-radius:5px 0px 0px 5px; float:left; font-size:13px; font-family:"微软雅黑"; color:#999999;}
@@ -24,7 +24,6 @@
 	#iptbtnBox #choMoneyClass #changeBtn{float:left; padding-top:10px;}
 	#iptbtnBox #choMoneyClass #changeBtn img{width:28px;}
 	#iptbtnBox #changeBoxBtn{ margin-top:10px; width:98%;}
-	#iptbtnBox #changeBoxBtn button{ width:100%; padding:10px; background-color:#388BFF; color:#FFFFFF; border:none; display:block; border-radius:5px; outline:none;}
 	#resultBigBox{background-color:#FFFFFF; height:55%; margin-top:10px;}
 	#resultBigBox .resultBox{font-size:18px; padding:20px 0px 0px 10px; color:#388BFF; font-family:"微软雅黑";}
 	#resultBigBox .resultBoxValue{color:#666; font-size:15px; padding:0px 10px 10px 10px; text-align:center;}
@@ -36,62 +35,38 @@
 	#bizhongBox ul li{padding:10px 10px 10px 25px; border-bottom:1px solid #e1e1e1;}
 	#bizhongBox ul li:last-child{border:none;}
 	#bizhongBox ul .titleMoney{padding-left:10px; font-weight:bold; background-color:#eee;}
+	#changeBoxBtn button{ width:95%; padding:15px; background-color:#007AFF; color:#FFFFFF; font-size: 17px; border:none; display:block; border-radius:5px; outline:none; margin-left:auto; margin-right:auto; margin-top:40px;}
 </style>
 </head>
 
 <body>
-	<div id="iptbtnBox">
-		<div id="inptMoneyClassBox">
-			<div class="titleBoxClass"><span>转换金额</span></div>
-			<div class="inptBoxClass"><input type="text" id="changeMoney"/></div>
+	<div style="overflow:hidden; padding:18px 15px; background-color:#fff; font-family:'微软雅黑';">
+		<div style="border-bottom:1px solid #e1e1e1; overflow:hidden; padding:10px;">
+			<span style="float:left;display:block; color:#666; font-size:17px;">待转化币种</span>
+			<span class="chooseMoney" style="float:right;display:block;"><img src="<%=basePath %>console/images/pojiantou.png" style="width:24px;"/></span>
+			<span id="fromChangebz" class="moneySign" style="float:right;display:block; color:#007AFF; font-size:15px;">COP</span>
+			<span style="clear:both;"></span>
 		</div>
-		<div id="choMoneyClass">
-			<div id="choBiTypeBox">
-				<div style="overflow:hidden;">
-					<div class="titleBoxClass"><span>起始币种</span></div>
-					<div class="inptBoxClass">
-						<input type="text" id="fromChangebz" class="inputBiz"/>
-					</div>
-				</div>
-				<div style="margin-top:10px; overflow:hidden;">
-					<div class="titleBoxClass"><span>目的币种</span></div>
-					<div class="inptBoxClass">
-						<input type="text" id="toChangebz" class="inputBiz"/>
-					</div>
-				</div>
-			</div>
-			<div id="changeBtn"><img src="<%=basePath%>console/images/changeImgBtn.png"/></div>
-		</div>
-		<div id="changeBoxBtn"><button id="btnChange">开始转换</button></div>
-	</div>
-	<div style="clear:both;"></div>
-	<div id="resultBigBox">
-		<div class="resultBox"><span>转换结果</span></div>
-		<div class="resultBoxValue">
-			<table>
-				<tr>
-					<td>转换金额：</td>
-					<td id="resCountMoney" style="text-align:left; padding-left:10px;"></td>
-				</tr>
-				<tr>
-					<td>起始币种：</td>
-					<td id="resqishBizh" style="text-align:left; padding-left:10px;"></td>
-				</tr>
-				<tr>
-					<td>目的币种：</td>
-					<td id="resbudiBizh" style="text-align:left; padding-left:10px;"></td>
-				</tr>
-				<tr>
-					<td>当前汇率：</td>
-					<td id="nowHuilv" style="text-align:left; padding-left:10px;"></td>
-				</tr>
-				<tr>
-					<td>转换结果：</td>
-					<td id="resultId" style="text-align:left; padding-left:10px; color:#ff0000; font-size:18px; font-weight:bold;"></td>
-				</tr>
-			</table>		
+		<div>
+			<input id="changeMoney" type="text" style="width:94%; height:35px; font-size:15px; outline:none; color:#666; padding-left:10px; border:none;"/>
 		</div>
 	</div>
+	<div style="overflow:hidden; padding:18px 15px; background-color:#fff; margin-top:10px; font-family:'微软雅黑';">
+		<div style="border-bottom:1px solid #e1e1e1; overflow:hidden; padding:10px;">
+			<span style="float:left;display:block; color:#666; font-size:17px;">转化后币种</span>
+			<span class="chooseMoney" style="float:right;display:block;"><img src="<%=basePath %>console/images/pojiantou.png" style="width:24px;"/></span>
+			<span id="toChangebz" class="moneySign" style="float:right;display:block; color:#007AFF; font-size:15px;">COP</span>
+			<span style="clear:both;"></span>
+		</div>
+		<div>
+			<input type="text" id="resultId" style="width:94%; height:35px; outline:none; font-size:15px; color:#666; padding-left:10px; border:none;" readonly/>
+		</div>
+	</div>
+	<div id="huilvResult" style="display:none; color:#666; font-size:15px; font-family:'微软雅黑'; padding-left:20px; margin-top:10px;">
+		<span>汇率：</span>
+		<span id="nowHuilv"></span>
+	</div>
+	<div id="changeBoxBtn"><button id="btnChange">开始转换</button></div>
 	<div id="bizhongBox">
 		<ul>
 			<li class="titleMoney">热门货币</li>
@@ -193,32 +168,11 @@
 	<div id="jiazaiBox" style="display:none; height:100%; position:absolute; width:100%; background-color:rgba(0,0,0,0.5); z-index:2; top:0px; left:0px; text-align:center;"><span style="display:block; color:#fff; margin-top:50%;">换算中...</span></div>
 <script>
 	$(function(){
-			<%-- $.ajax({
-					url:"<%=basePath%>framework/exchangeRate/supperExchangeRate.action",
-					type:"POST",
-					data:{},
-					dataType:"json",
-					success:function(res){
-						var dateList=JSON.parse(res.data);
-						var bizhongList = dateList.retData;
-						for(var i=0; i<bizhongList.length;i++){
-							var listLi='<li onclick="liClick(this)">'+bizhongList[i]+'</li>';
-							$("#bizhongBox ul").append(listLi);
-						}
-					},error:function(){
-						//alert("请求失败");
-					}
-			}); --%>
-			
+
 			$("#btnChange").click(function(){
 				var money=$("#changeMoney").val();
-				
-				var fromCode=$("#fromChangebz").val();
-				fromCode=fromCode.substring(fromCode.length-3,fromCode.length);
-				//alert(fromCode)
-				var toCode=$("#toChangebz").val();
-				toCode=toCode.substring(toCode.length-3,toCode.length);
-				//alert(toCode)
+				var fromCode=$("#fromChangebz").text().trim();
+				var toCode=$("#toChangebz").text().trim();
 				$.ajax({ 
 					url:"<%=basePath%>framework/exchangeRate/queryExchangeRate.action",
 					type:"POST",
@@ -227,18 +181,14 @@
 					beforeSend:function(){$("#jiazaiBox").css("display","block");},
 					complete:function(){$("#jiazaiBox").css("display","none");},
 					success:function(resut){
-				
-						
 						var dateList=JSON.parse(resut.date);
-						
+						console.log(dateList);
 						var retaDa = dateList.showapi_res_body.money;
-						$("#resCountMoney").text($("#changeMoney").val());
 						var sum=0;
 						sum=retaDa/money;
-						$("#resqishBizh").text($("#fromChangebz").val());
-						$("#resbudiBizh").text($("#toChangebz").val());
 						$("#nowHuilv").text(sum);
-						$("#resultId").text(dateList.showapi_res_body.money);
+						$("#resultId").val(dateList.showapi_res_body.money);
+						$("#huilvResult").css("display","block");
 					},error:function(){
 						alert("请求失败");
 					}
@@ -255,13 +205,13 @@
 	
 	function liClick(inc){
 		var text = $(inc).text();
-		$(".bizhType").val(text);
+		$(".bizhType").text(text.substring(text.length-3,text.length));
 		$("#bizhongBox").css("display","none");
 	}
 	
-	$(".inputBiz").click(function(){
-		$(".inputBiz").removeClass("bizhType");
-		$(this).addClass("bizhType");
+	$(".chooseMoney").click(function(){
+		$(".moneySign").removeClass("bizhType");
+		$(this).next().addClass("bizhType");
 		$("#bizhongBox").css("display","block");
 	});
 </script>

@@ -8,7 +8,7 @@ $(function(){
 		$(this).addClass('on').siblings().removeClass('on');
 		$('.product-wrap div.product').eq(liindex).fadeIn(10).siblings('div.product').hide();
 		var liWidth = $('.title-list li').width();
-		$('.lanrenzhijia .title-list p').stop(false,true).animate({'left' : liindex * liWidth + 'px'},0);
+		$('.lanrenzhijia>.title>.title-list>p').animate({'left' : liindex * liWidth + 'px'},0);
 	});
 
 	

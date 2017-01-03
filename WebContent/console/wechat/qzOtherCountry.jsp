@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>特优国家</title>
-<link rel="stylesheet" href="<%=basePath %>console/css/QZplanTek.css" />
+<link rel="stylesheet" href="<%=basePath %>console/css/QZplanTek.css?time=2016" />
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/QZplanTek.js"></script>
 <style>
@@ -224,10 +224,10 @@
 		});
 		//收起和展开的方法
 		$(".shouImgBox").click(function(){			
-			if(!$(this).prev().hasClass("nowShow"))$(".nowShow").slideUp("slow");
+			if(!$(this).prev().hasClass("nowShow"))$(".nowShow").slideUp("fast");
 			$(".conteryList").removeClass("nowShow");
 			$(this).prev().addClass("nowShow");
-			$(".nowShow").slideToggle("slow");
+			$(".nowShow").slideToggle("fast");
 		});
 	});
 	

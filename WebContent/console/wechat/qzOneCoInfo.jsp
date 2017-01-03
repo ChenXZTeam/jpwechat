@@ -18,16 +18,16 @@
 	.imgBoxClass{ margin:0px;}
 	.imgBoxClass img{width:100%;}
 	.countryNameBox{ width:88.55%; height:30px; margin:10px auto 0 auto; border-bottom:1px solid #007AFF;}
-	.countryNameBox .countryName{line-height:35px; font-size:16px; color:#007AFF;}
+	.countryNameBox .countryName{line-height:35px; font-size:20px; color:#007AFF;}
 	.messageBox{ padding:0px; margin:0px; list-style-type:none; width:88.55%; margin:10px auto 0 auto;}
-	.messageBox li{ margin-top:5px;}
-	.messageBox li .titleClass{font-size:13px; color:#666666;}
+	.messageBox li{ margin-top:10px;}
+	.messageBox li .titleClass{color:#666666;}
 	.messageBox li .contornClass{font-size:13px; color:#666666;}
 	.messageBox li .payMoney{font-size:15px; color:#fe0000; font-weight:bold;}
 	.jianjieBox{ width:88.55%; margin:15px auto 0 auto;}
-	.jianjieBox .textContClass{font-size:10px; color:#999999; text-indent:2em; display:block; height:30px; overflow:hidden;}
+	.jianjieBox .textContClass{font-size:14px; color:#999999; text-indent:2em; display:block; height:30px; overflow:hidden;}
 	.jianjieBox .seeMore{font-size:11px; color:#666; cursor:pointer; font-family:Arial, Helvetica, sans-serif; float:right; margin-right:3%; margin-top:5px;}
-	#qzBtn{display:block; width:88.55%; margin:30px auto 0 auto; background-color:#007AFF; font-size:13px; padding:10px 0; text-align:center; color:#FFFFFF; border-radius:5px;}
+	#qzBtn{display:block; width:88.55%; margin:30px auto 0 auto; background-color:#007AFF; font-size:16px; padding:10px 0; text-align:center; color:#FFFFFF; border-radius:5px;margin-bottom: 30px;}
 </style>
 </head>
 

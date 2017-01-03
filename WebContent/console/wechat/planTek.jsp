@@ -10,14 +10,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>机票预订</title>
 <link rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
-<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/swiper.min.css?time=222"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css?time=123"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=123"/>
-<link href="<%=basePath%>console/css/banIndex.css?time=25" type="text/css" rel="stylesheet" />
-<script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>console/js/planTek.js" charset="utf-8"></script>
-<script type="text/javascript" src="<%=basePath%>console/js/jcDate.js"></script>
-<script type="text/javascript"  src="<%=basePath%>console/js/cityChoose.js?time=123"></script>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/swiper.min.css?time=223"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=124"/>
+<link href="<%=basePath%>scripts/common/sui/css/sm.min.css" type="text/css" rel="stylesheet" />
+<%-- <script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script> --%>
+<script type='text/javascript' src='<%=basePath%>scripts/common/sui/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='<%=basePath%>scripts/common/sui/js/sm.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="<%=basePath%>console/js/planTek.js?time=23" charset="utf-8"></script>
+<%-- <script type="text/javascript" src="<%=basePath%>console/js/jcDate.js"></script> --%>
+<script type="text/javascript"  src="<%=basePath%>console/js/cityChoose.js?time=125"></script>
 <script type="text/javascript" src="<%=basePath%>console/js/swiper.min.js"></script>
 <script>
 $(function(){
@@ -40,7 +41,7 @@ $(function(){
 	.product .mudiplace .zhong span{ line-height:23px; display:block; color:#B5B5B5;}
 	.product .gotime{ padding:10px 0 10px 0; }
 	.product .gotime .goDay{margin-left:20px; float:left; color:#B5B5B5;}
-	.product .gotime .goTimeDiv{margin-right:20px; float:right; color:#6CA5FE;}
+	.product .gotime .goTimeDiv{margin-right:20px; float:right; color:#6CA5FE;margin-top:3px;}
 	.product .gotime .goTimeDiv .jcDate{width:100px; text-align:right; color:#6CA5FE; border:none; font-size:12px; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0);}
 	.product .seatChoose{padding:20px 0 10px 0; border-bottom:none;}
 	.product .ziDiv .zuoweiFloat{margin-left:15px; float:left; width:45px;}
@@ -50,38 +51,8 @@ $(function(){
 	.product .ziDiv .on{background-color:#007AFF; color:#FFFFFF; border:#007AFF solid 1px;}
 	.product .btnDiv{width:95%; margin-top:10px; margin-left:auto; margin-right:auto; background-color:#007AFF; border:1px solid #007AFF; border-radius:7px;}
 	.product .btnDiv a{ display:block; font-size:14px; padding:10px 0; color:#FFFFFF;}
-   body {
-        background: #eee;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        color:#000;
-        margin: 0;
-        padding: 0;
-    }
-    .swiper-container {
-        width: 360px;
-        height: 100px;
-        margin: 0px;
-    }
-    .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-
-        /* Center slide text vertically */
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
+    .swiper-container {width:100%;height: 120px; margin: 0px;}
+    .swiper-slide {text-align: center; font-size: 18px; background: #fff;display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex; -webkit-box-pack: center; -ms-flex-pack: center; -webkit-justify-content: center;justify-content: center; -webkit-box-align: center; -ms-flex-align: center; -webkit-align-items: center;align-items: center;}
 </style>
 </head>
 
@@ -94,7 +65,7 @@ $(function(){
         </div>
         <div class="swiper-pagination"></div>
 </div>
-<script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script>
+<%-- <script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script> --%>
 <div class="lanrenzhijia">
   <div class="title cf">
     <ul class="title-list fr cf ">
@@ -127,7 +98,7 @@ $(function(){
 	   <!--时间-->
 	   <div class="ziDiv gotime">
 	   		<div class="goDay" style="font-size:13px;">出发日期</div>
-			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" readonly="readonly" placeholder="选择日期"/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" readonly="readonly" placeholder="选择日期" data-toggle='date'/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--舱位-->
@@ -626,15 +597,6 @@ $(function(){
 		//返程的舱位切换
 		$(".cangwei .cang1").click(function(){
 			$(this).addClass('on').siblings().removeClass('on');
-		});		
-		//加载日期控件
-		$(".jcDate").jcDate({
-			Event : "click",
-			Speed : 100,
-			Left : 0,
-			Top : 28,
-			format : "-",
-			Timeout : 100
 		});
 	});
 	
@@ -701,5 +663,10 @@ $(function(){
 		}
 		window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime+"&cangW="+cangW;
 	}
+</script>
+<script type="text/javascript">
+	$(".jcDate").calendar({
+	    value: ['2017-01-01']
+	});
 </script>
 </html>

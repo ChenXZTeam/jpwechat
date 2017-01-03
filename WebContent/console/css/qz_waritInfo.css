@@ -1,6 +1,6 @@
 /* CSS Document */
 .{font-size: 11px; -webkit-text-size-adjust:none;}  
-body{ background-color:#f1f1f1; padding:0px; margin:0px; font-size:12px; font-family:"Microsoft YaHei"; padding-bottom:10px;}
+body{ background-color:#f1f1f1; padding:0px; margin:0px; font-family:"Microsoft YaHei"; padding-bottom:10px;}
 .massInfoBox{ background-color:#FFFFFF; margin-top:15px; border-top:#E8E8E8 solid 1px; padding:20px; padding-bottom:0px; padding-top:10px;}
 .massInfoBox ul{ list-style-type:none; padding:0px; border-bottom:#e8e8e8 solid 1px; margin:0px; padding-bottom:10px;}
 .massInfoBox ul li{ line-height:25px;}
@@ -11,8 +11,8 @@ body{ background-color:#f1f1f1; padding:0px; margin:0px; font-size:12px; font-fa
 
 .writInfoBox{ border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; margin-top:0px; padding:0px; background-color:#FFFFFF; padding:0px 20px;}
 .writInfoBox ul{ list-style-type:none; padding:0px; margin:0px; border:none;}
-.writInfoBox ul li{ line-height:35px; border-bottom:1px solid #e8e8e8;}
-.writInfoBox ul li input{border:none; outline:none; color:#666; -webkit-tap-highlight-color:rgba(255,255,255,0); margin-left:10px; width:65%;}
+.writInfoBox ul li{ line-height:50px; border-bottom:1px solid #e8e8e8;}
+.writInfoBox ul li input{border:none; outline:none; color:#666; font-size: 16px; -webkit-tap-highlight-color:rgba(255,255,255,0); margin-left:10px; width:65%;}
 .writInfoBox ul li span img{width:12px;}
 .writInfoBox ul li:last-child{border:none;}
 

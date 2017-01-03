@@ -6,7 +6,7 @@ $(function(){
 		$(this).addClass('onCountry').siblings().removeClass('onCountry');
 		$('.product-wrap1 div.product1').eq(liindex).fadeIn(10).siblings('div.product1').hide();
 		var liWidth = $('.titleTab-list li').width();
-		$('.CityTab .titleTab-list p').stop(false,true).animate({'left' : liindex * liWidth + 'px'},0);
+		$('.CityTab .titleTab-list p').animate({'left' : liindex * liWidth + 'px'},0);
 	});
 	
 	//城市选择
