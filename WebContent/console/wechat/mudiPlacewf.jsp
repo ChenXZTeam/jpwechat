@@ -75,7 +75,7 @@
 		.banner,.wfbanner{ display:none;}
 		.cangweiClass{ display:none;}
 		.time .timeDiv{ color:#666666; font-size:14px;}
-		.time .mmddWeek{background:url('<%=basePath %>console/images/riliImgblue.png') no-repeat 13px 6px; text-align:right; background-size:17px 16px; width:240px; border: 1px solid #f0f0f0; margin-left: auto; margin-right: auto; line-height: 30px; padding: 0px 10px; background-color: #fff; border-radius: 5px;}
+		.time .mmddWeek{background:url('<%=basePath %>console/images/riliImgblue.png') no-repeat 13px 6px; text-align:right; background-size:17px 16px; width:250px; border: 1px solid #f0f0f0; margin-left: auto; margin-right: auto; line-height: 30px; padding: 0px 10px; background-color: #fff; border-radius: 5px;}
 		.time .timeDiv{ color:#666666; font-size:15px;}
 		.weui-btn { position: relative; display: block; margin-left: auto; margin-right: auto; margin-top: auto; padding-left: 14px; padding-right: 14px; box-sizing: border-box; font-size: 18px; text-align: center; text-decoration: none; color: #FFFFFF; line-height: 2.55555556; border-radius: 5px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); overflow: hidden;}
 		.weui-btn_mini {display: inline-block; padding: 0 1.32em;line-height: 2.3; font-size: 13px;}

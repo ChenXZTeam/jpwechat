@@ -8,10 +8,10 @@
 
 #CityCH #remenCity{overflow:hidden; height:auto; padding:10px 5px;}
 #CityCH #remenCity>#remenTitle{margin-left:1%; border-bottom:#dddddd solid 1px; margin-bottom:4px; padding-bottom:5px;}
-#CityCH #remenCity>#remenTitle>span{color:#666666; font-weight:bold; font-size:18px;}
+#CityCH #remenCity>#remenTitle>span{color:#666666; font-size:17px;}
 #CityCH #remenCity>ul{list-style-type:none; padding:0px; margin:0px; overflow:hidden;}
-#CityCH #remenCity>ul>li{font-size:16px; display:block; float:left; margin-top:5px; margin-left:10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0); text-align:center;}
-#CityCH #remenCity>ul>li>.remenLi{width:80px; line-height:22px; overflow:hidden; border-radius:5px; border:#dddddd solid 1px; padding:5px 10px; margin-left:auto; margin-right:auto;}
+#CityCH #remenCity>ul>li{font-size:15px; display:block; float:left; margin-top:11px; margin-left:10px; cursor:pointer; -webkit-tap-highlight-color:rgba(255,255,255,0); text-align:center;}
+#CityCH #remenCity>ul>li>.remenLi{width:80px; line-height:26px; height:26px; overflow:hidden; border:#dddddd solid 1px; padding:3px 10px; margin-left:auto; margin-right:auto;}
 #CityCH #remenCity>ul>li>.remenLi>.planeName{display:none;}
 #CityCH #remenCity>ul>li>.remenLi>.airportCode{display:none;}
 #CityCH #pipeiValue{display:none; border:1px solid #e1e1e1; border-top:none; position:absolute; top:42px; left:5px; z-index:9999; height:auto; width:74%; background-color:#ffffff;}

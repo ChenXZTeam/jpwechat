@@ -11,7 +11,7 @@
 <title>机票预订</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css?time=123"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=123"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=124"/>
 <link href="<%=basePath%>console/css/banIndex.css?time=25" type="text/css" rel="stylesheet" />
 <script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>console/js/planTek.js" charset="utf-8"></script>
