@@ -10,20 +10,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>签证信息</title>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/qzBanner.css"/>
-<link type="text/css" rel="stylesheet" href="<%=basePath%>console/css/banIndex.css?time=25"/>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/swiper.min.css?time=222"/>
+<%-- <link type="text/css" rel="stylesheet" href="<%=basePath%>console/css/banIndex.css?time=25"/> --%>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/QZcityChoose.css"/>
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery.touchSwipe.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/QZcityChoose.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/getLetter.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vKCQUCy8RGAuMMHU3iPH226z32Ojt6fI" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>console/js/swiper.min.js"></script>
 <style type="text/css">
 	body{padding:0px; margin:0px; background-color:#F9F9F9;}
 	#bigContent{padding:0px;}
 	#find{padding:10px 10px 5px 10px; text-align:center;}
 	#xFind{border-radius:5px; background-color:#FFFFFF;}
 	#xFind .inputName,.inputDiv{padding:5px 10px; overflow:hidden; float:left;}	
-	#xFind img,span,input{float:left; outline:none; }
+	#xFind img,#xFind span,#xFind input{float:left; outline:none; }
 	.qzBackImg{margin-top:0px;}
 	.cityTitle{padding:15px 10px 5px 0px; font-size:15px; color:#666666; background-color:#FFFFFF; font-family:Microsoft YaHei; border-bottom:solid 1px #DCDCDC;}
 	.dazhou{ background-color:#FFFFFF; padding-top:10px; padding-bottom:10px;}
@@ -40,7 +42,19 @@
 	.counNameClass{display:block; width:100%;}
 	.remCountrName{display:block; width:100%; text-align:center;}
 	.remCountryId{display:none;}
+	.swiper-container {width: 360px; height: 100px; margin: 0px;}
+    .swiper-slide {text-align: center; font-size: 18px; mbackground: #fff; display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex; -webkit-box-pack: center; -ms-flex-pack: center; -webkit-justify-content: center; justify-content: center; -webkit-box-align: center; -ms-flex-align: center; -webkit-align-items: center; align-items: center;}
 </style>
+<script>
+$(function(){
+	var swiper = new Swiper('.swiper-container', {
+	    pagination: '.swiper-pagination',
+	    paginationClickable: true,
+	    spaceBetween: 30,
+	    autoplay: 3000,//可选选项，自动滑动
+	});
+})
+</script>
 </head>
 
 <body>
@@ -54,12 +68,13 @@
 		</div>
 	</div>
 	
-	<!--轮播图-->
-  <div>
-	<ul id="slides">
-		<li style="background:url('<%=basePath %>console/images/banner0.png') no-repeat center top; background-size:100% 100%;"><a href="javascript:void(0)"></a></li>
-		<li style="background:url('<%=basePath %>console/images/banner1.jpg') no-repeat center top; background-size:100% 100%;"><a href="javascript:void(0)"></a></li>
-	</ul>
+<!--轮播图-->
+<div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img style="height:120px;" src="<%=basePath %>console/images/banner0.png"></img></div>
+            <div class="swiper-slide"><img style="height:120px;width:100%;" src="<%=basePath %>console/images/banner1.jpg"></img></div>
+        </div>
+        <div class="swiper-pagination"></div>
 </div>
 <script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script>
 <!--end 全屏滚动-->

@@ -9,14 +9,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>机票预订</title>
-<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
+<link rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
+<link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/swiper.min.css?time=222"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/jcDate.css?time=123"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=124"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=123"/>
 <link href="<%=basePath%>console/css/banIndex.css?time=25" type="text/css" rel="stylesheet" />
 <script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>console/js/planTek.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath%>console/js/jcDate.js"></script>
 <script type="text/javascript"  src="<%=basePath%>console/js/cityChoose.js?time=123"></script>
+<script type="text/javascript" src="<%=basePath%>console/js/swiper.min.js"></script>
+<script>
+$(function(){
+	var swiper = new Swiper('.swiper-container', {
+	    pagination: '.swiper-pagination',
+	    paginationClickable: true,
+	    spaceBetween: 30,
+	    autoplay: 3000,//可选选项，自动滑动
+	});
+})
+</script>
 <style>
 	body{margin:0px; padding:0px;}
 	.product .ziDiv{width:100%; margin-left:auto; margin-right:auto; border-bottom:#e1e1e1 solid 1px;}
@@ -38,16 +50,49 @@
 	.product .ziDiv .on{background-color:#007AFF; color:#FFFFFF; border:#007AFF solid 1px;}
 	.product .btnDiv{width:95%; margin-top:10px; margin-left:auto; margin-right:auto; background-color:#007AFF; border:1px solid #007AFF; border-radius:7px;}
 	.product .btnDiv a{ display:block; font-size:14px; padding:10px 0; color:#FFFFFF;}
+   body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color:#000;
+        margin: 0;
+        padding: 0;
+    }
+    .swiper-container {
+        width: 360px;
+        height: 100px;
+        margin: 0px;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
 </style>
 </head>
 
 <body>
 <!--图片轮播图 宽高比为2.77:1-->
-<div>
-	<ul id="slides">
-		<li style="background:url('<%=basePath %>console/images/banner0.png') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
-		<li style="background:url('<%=basePath %>console/images/banner1.jpg') no-repeat center top; background-size:100% 100%;"><a href="javascript:"></a></li>
-	</ul>
+<div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img style="height:120px;" src="<%=basePath %>console/images/banner0.png"></img></div>
+            <div class="swiper-slide"><img style="height:120px;width:100%;" src="<%=basePath %>console/images/banner1.jpg"></img></div>
+        </div>
+        <div class="swiper-pagination"></div>
 </div>
 <script type="text/javascript" src="<%=basePath%>console/js/jquery.jslides.js"></script>
 <div class="lanrenzhijia">
