@@ -18,7 +18,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title><%=chufCity %>--><%=daodCity %></title>
+<title><%=chufCity %>—><%=daodCity %></title>
 <link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>

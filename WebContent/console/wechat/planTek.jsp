@@ -665,8 +665,25 @@ $(function(){
 	}
 </script>
 <script type="text/javascript">
+	var d = new Date();
+	var yy = d.getFullYear();
+	var mm = d.getMonth()+1;
+	mm = mm > 10?mm:"0"+mm;
+	var dd = d.getDate();
+	dd = dd > 10?dd:"0"+dd;
+	var str = yy+"-"+mm+"-"+dd;
+	
+	var d1 = new Date(str);
+	d1.setDate(d1.getDate() - 1);
+	var y_y = d1.getFullYear();
+	var m_m = d1.getMonth()+1;
+	m_m = m_m > 10?m_m:"0"+m_m;
+	var d_d = d1.getDate();
+	d_d = d_d > 10?d_d:"0"+d_d;
+	var str1 = y_y+"-"+m_m+"-"+d_d;
 	$(".jcDate").calendar({
-	    value: ['2017-01-01']
+	    value: [str],
+		minDate:str1
 	});
 </script>
 </html>
