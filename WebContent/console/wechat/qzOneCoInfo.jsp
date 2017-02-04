@@ -14,7 +14,7 @@
 <title>签证的国家</title>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <style>
-	body{padding:0px; margin:0px; font-family:"微软雅黑";}
+	body{padding:0px; margin:0px; font-family:"微软雅黑"; margin-bottom:100px;}
 	.imgBoxClass{ margin:0px;}
 	.imgBoxClass img{width:100%;}
 	.countryNameBox{ width:88.55%; height:30px; margin:10px auto 0 auto; border-bottom:1px solid #007AFF;}
@@ -25,9 +25,9 @@
 	.messageBox li .contornClass{font-size:13px; color:#666666;}
 	.messageBox li .payMoney{font-size:15px; color:#fe0000; font-weight:bold;}
 	.jianjieBox{ width:88.55%; margin:15px auto 0 auto;}
-	.jianjieBox .textContClass{font-size:14px; color:#999999; text-indent:2em; display:block; height:30px; overflow:hidden;}
+	.jianjieBox .textContClass{font-size:14px; color:#999999; text-indent:2em; display:block; overflow:hidden;}
 	.jianjieBox .seeMore{font-size:11px; color:#666; cursor:pointer; font-family:Arial, Helvetica, sans-serif; float:right; margin-right:3%; margin-top:5px;}
-	#qzBtn{display:block; width:88.55%; margin:30px auto 0 auto; background-color:#007AFF; font-size:16px; padding:10px 0; text-align:center; color:#FFFFFF; border-radius:5px;margin-bottom: 30px;}
+	#qzBtn{position: fixed; display:block; width:100%; background-color:#007AFF; font-size:16px; padding:10px 0; text-align:center; color:#FFFFFF; bottom:0px;}
 </style>
 </head>
 
@@ -46,7 +46,7 @@
 </ul>
 <div class="jianjieBox">
 	<span class="textContClass touryIntro">日本位于亚洲大陆东边的太平洋上。整个国土由四个主要岛屿组成，在这四个岛屿的周围还有约4,000多个小岛。日本是一个地势多变、水力资源丰富的国家，由此构成了优美壮丽的景色，那里有山中积雪的湖泊、怪石嶙峋的峡谷、湍急的河流、峻峭的山峰、雄伟的瀑布以及大大小小的温泉，这些引人入胜的旅游景点常年吸引着大量游客来到日本观光。</span>
-	<span class="seeMore">展开︾</span>
+	<!-- <span class="seeMore">展开︾</span> -->
 </div>
 <a id="qzBtn">申请签证</a>
 <script>
@@ -75,18 +75,20 @@
 			},error:function(){}
 		});
 		
-		var fasl=true;
+		/* var fasl=true;
+		var heig = $(".textContClass").height();
+		alert(heig);
 		$(".seeMore").click(function(){
-			if(fasl==true){				
-				$(".textContClass").animate({height:"80px"},250,function(){$(".seeMore").text("收起︽");});
+			if(fasl==true){
+				alert(heig);				
+				$(".textContClass").animate({height:heig+""},250,function(){$(".seeMore").text("收起︽");});
 				fasl=false;
 			}else{
 				$(".textContClass").animate({height:"30px"},250,function(){$(".seeMore").text("展开︾");});
 				fasl=true;
 			}
-			
 			//$(".textContClass").slideToggle("slow",function(){$(".seeMore").text("展开︾");});
-		});
+		}); */
 		
 		$("#qzBtn").click(function(){
 			var payMoney = $(".payMoney").text().substring(1,$(".payMoney").text().length);
