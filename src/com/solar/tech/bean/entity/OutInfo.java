@@ -26,15 +26,15 @@ public class OutInfo {
 	private String outinfoID;
     
    //文章标题
-    @Column(name="title", length=200)
+    @Column(name="title", length=2000)
 	private String title;
     
    //简介
-    @Column(name="introduction", length=200)
+    @Column(name="introduction", length=2000)
     private String introduction;
     
    //文字内容
-   @Column(name="info")
+   @Column(name="info", length=5000)
    private String info;
    
    //封面路径

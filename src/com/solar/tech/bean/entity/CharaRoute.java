@@ -26,15 +26,15 @@ public class CharaRoute {
 	private String routeID;
 	
 	//特色路线标题
-	@Column(name = "title", length=100)
+	@Column(name = "title", length=2000)
 	private String title;
 	
 	//简介
-    @Column(name="introduction", length=200)
+    @Column(name="introduction", length=2000)
     private String introduction;
     
 	//文本内容
-	@Column(name="conText")
+	@Column(name="conText",length=5000)
 	private String conText;
 	
 	//用户名
