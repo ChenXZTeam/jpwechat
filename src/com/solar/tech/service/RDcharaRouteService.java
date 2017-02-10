@@ -96,8 +96,8 @@ public class RDcharaRouteService {
 	 */
 	public CharaRoute getCharaRoute(){
 		CharaRoute ss = new CharaRoute();
-		ss.setTitle("特色路线标题获取失败");
-		ss.setIntroduction("特色路线简介获取失败");
+		ss.setTitle("特色路线数据为空");
+		ss.setIntroduction("特色路线数据为空");
 		String hql = "FROM CharaRoute ORDER BY createTime DESC";
 		List<CharaRoute> chInfo = new ArrayList<CharaRoute>();
 		try{

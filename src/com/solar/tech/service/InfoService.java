@@ -128,8 +128,8 @@ public class InfoService {
 	 */
 	public Info getNewInfo(){
 		Info ss = new Info();
-		ss.setTitle("国内资讯标题获取失败");
-		ss.setIntroduction("国内资讯简介获取失败");
+		ss.setTitle("国内资讯数据为空");
+		ss.setIntroduction("国内资讯数据为空");
 		String hql = "FROM Info ORDER BY createTime DESC";
 		List<Info> chInfo = new ArrayList<Info>();
 		try{

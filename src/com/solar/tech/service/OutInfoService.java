@@ -124,8 +124,8 @@ public class OutInfoService {
 	 */
 	public OutInfo getNewOutInfo(){
 		OutInfo ss = new OutInfo();
-		ss.setTitle("国际资讯标题获取失败");
-		ss.setIntroduction("国际资讯简介获取失败");
+		ss.setTitle("国际资讯数据为空");
+		ss.setIntroduction("国际资讯数据为空");
 		String hql = "FROM OutInfo ORDER BY createTime DESC";
 		List<OutInfo> chInfo = new ArrayList<OutInfo>();
 		try{
