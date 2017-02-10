@@ -46,10 +46,13 @@
 </ul>
 <div class="jianjieBox">
 	<span class="textContClass touryIntro">日本位于亚洲大陆东边的太平洋上。整个国土由四个主要岛屿组成，在这四个岛屿的周围还有约4,000多个小岛。日本是一个地势多变、水力资源丰富的国家，由此构成了优美壮丽的景色，那里有山中积雪的湖泊、怪石嶙峋的峡谷、湍急的河流、峻峭的山峰、雄伟的瀑布以及大大小小的温泉，这些引人入胜的旅游景点常年吸引着大量游客来到日本观光。</span>
-	<!-- <span class="seeMore">展开︾</span> -->
+	<!-- <button type="button" class="seeMore">展开︾</button>  -->
+	<span class="seeMore">展开︾</span>
+	<span id="allText" style="display:none;"></span>
+	<span id="bfText" style="display:none;"></span>
 </div>
 <a id="qzBtn">申请签证</a>
-<script>
+<script  type="text/javascript">
 	$(function(){
 		//根据国家编号查找数据并加载在对应的位置
 		var countryId = "<%=countryId%>";
@@ -69,26 +72,33 @@
 					$(".periodOfValidity").text(data[0].periodOfValidity);
 					$(".payMoney").text("￥"+data[0].visaPrice);
 					$(".earlyDates").text(data[0].earlyDates);
-					$(".touryIntro").text(data[0].touryIntro);
+					$("#allText").text(data[0].touryIntro);
+					var s = data[0].touryIntro;
+					if(s.length<50){
+						$(".touryIntro").text(data[0].touryIntro);
+						$("#bfText").text(data[0].touryIntro);
+					}else{
+						$(".touryIntro").text(s.substring(0,50)+"……");
+						$("#bfText").text(s.substring(0,50)+"……");
+					}
 					$("#contryImg").attr("src","<%=basePath%>"+data[0].urlImg);
 				}
 			},error:function(){}
 		});
-		
-		/* var fasl=true;
-		var heig = $(".textContClass").height();
-		alert(heig);
+
+
+		var fasl=true;
 		$(".seeMore").click(function(){
-			if(fasl==true){
-				alert(heig);				
-				$(".textContClass").animate({height:heig+""},250,function(){$(".seeMore").text("收起︽");});
-				fasl=false;
-			}else{
-				$(".textContClass").animate({height:"30px"},250,function(){$(".seeMore").text("展开︾");});
-				fasl=true;
-			}
-			//$(".textContClass").slideToggle("slow",function(){$(".seeMore").text("展开︾");});
-		}); */
+				if(fasl==true){
+					$(".textContClass").text($("#allText").text());
+					$(".seeMore").text("收起︽");
+					fasl=false;
+				}else{
+					$(".textContClass").text($("#bfText").text());
+					$(".seeMore").text("展开︾");
+					fasl=true;
+				}
+		});
 		
 		$("#qzBtn").click(function(){
 			var payMoney = $(".payMoney").text().substring(1,$(".payMoney").text().length);
