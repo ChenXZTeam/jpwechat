@@ -76,10 +76,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 						session.setAttribute("phoneNumber", phoneNumber);
 						session.setAttribute("invId", invId);
 					}
-					System.out.println("(LoginInterceptor类中)openId的值："+openId+" userName:"+userName+" phoneNumber:"+phoneNumber+", 邀请码id:"+invId);
+					System.out.println("(LoginInterceptor类中)openId的值："+(String)session.getAttribute("openId")+" userName:"+(String)session.getAttribute("userName")+" phoneNumber:"+(String)session.getAttribute("phoneNumber")+", 邀请码id:"+(String)session.getAttribute("invId"));
 				}
 			} else {
-				System.out.println("pageurl:" + pageurl +" userName:"+userName+" openId:" + openId+" phoneNumber:"+phoneNumber+", 邀请码id:"+invId);
+				System.out.println("pageurl:" + pageurl +" userName:"+(String)session.getAttribute("userName")+" openId:" + (String)session.getAttribute("openId")+" phoneNumber:"+(String)session.getAttribute("phoneNumber")+", 邀请码id:"+(String)session.getAttribute("invId"));
 			}
 
 		}

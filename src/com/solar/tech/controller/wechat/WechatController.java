@@ -111,7 +111,12 @@ public class WechatController {
 			WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(),
 					wxMpService.getWxMpInMemoryConfigStorage(), timestamp, nonce, msgSignature);
 			WxMpXmlOutMessage outMessage = wxMpService.route(inMessage);
-			response.getWriter().write(outMessage.toEncryptedXml(wxMpService.getWxMpInMemoryConfigStorage()));
+			if(outMessage != null) {
+				response.getWriter().write(outMessage.toEncryptedXml(wxMpService.getWxMpInMemoryConfigStorage()));
+			} else {
+				response.getWriter().write("");
+			}
+			
 			return;
 		}
 
