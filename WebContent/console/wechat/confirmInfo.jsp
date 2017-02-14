@@ -91,7 +91,7 @@ $(function(){
 	//判断是否登录
 	var username="<%=username%>";
 	var jin = "<%=jin%>"
-	if(username==""||username=="null"){
+	if(username==""||username=="null"||username==null){
 		alert("登录才能订票");
 		$("#touMbackground").css("display","block");
 	}else{
