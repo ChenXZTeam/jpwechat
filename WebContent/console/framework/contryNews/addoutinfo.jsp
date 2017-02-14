@@ -53,7 +53,8 @@
 			var info = document.getElementById("info").value;
 			var introduction = document.getElementById("introduction").value;
 			var oneUrl = info.substring(info.indexOf("<img"),info.indexOf("alt="));
-			var twoUrl = oneUrl.substring(oneUrl.indexOf("src=")+20,(oneUrl.length)-2);
+			var twoUrl = oneUrl.substring(oneUrl.indexOf("src=")+20,oneUrl.length);
+				twoUrl = twoUrl.substring(0,twoUrl.indexOf(" ")-1);
 			$.ajax({
 				url:"<%=basePath%>/framework/outinfo/addInfo.action",
 				type:"POST",

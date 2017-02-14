@@ -34,7 +34,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				var conText = document.getElementById("conText").value;
 				var introduction = document.getElementById("introduction").value;
 				var oneUrl = conText.substring(conText.indexOf("<img"),conText.indexOf("alt="));
-				var twoUrl = oneUrl.substring(oneUrl.indexOf("src=")+20,(oneUrl.length)-2);
+				var twoUrl = oneUrl.substring(oneUrl.indexOf("src=")+20,oneUrl.length);
+				twoUrl = twoUrl.substring(0,twoUrl.indexOf(" ")-1);
 				$.ajax({
 						url:"<%=basePath%>framework/route/createRoute.action",
 						type:"POST",
