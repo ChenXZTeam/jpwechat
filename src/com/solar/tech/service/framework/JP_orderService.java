@@ -1,6 +1,5 @@
 package com.solar.tech.service.framework;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.entity.phoneMess;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 
@@ -54,4 +54,45 @@ public class JP_orderService {
 		map.put("total", total);
 		return map;
 	};
+	
+	/**
+	 * 获取短信发送的列表
+	 * @param page
+	 * @param rows
+	 * @return
+	 */
+	public Map<String, Object> otindPhoneMes(int page,int rows){
+		Map<String, Object> map = new HashMap<String, Object>();
+	    String hql = "FROM phoneMess ORDER BY createTime DESC";
+	    List<phoneMess> orders = this.gDao.findByPage(hql, Integer.valueOf(page), Integer.valueOf(rows));	    
+	    Long total = this.gDao.count(phoneMess.class,hql); //获取影响的行数，用于前台分页
+	    map.put("rows", orders);
+	    map.put("total", total);
+	    return map;
+	}
+	
+	/**
+	 * 查找短信的信息
+	 * @return
+	 */
+	public Map<String, Object> findPhoneMes(String phoneNumber,int page,int rows){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM phoneMess WHERE phoneNumber like '%"+phoneNumber+"%'ORDER BY createTime DESC";
+		List<phoneMess> orders = this.gDao.findByPage(hql, Integer.valueOf(page), Integer.valueOf(rows));	    
+	    Long total = this.gDao.count(phoneMess.class,hql); //获取影响的行数，用于前台分页
+	    map.put("rows", orders);
+	    map.put("total", total);
+		return map;
+	}
+	
+	/**
+	 * 记录短信发送的方法
+	 */
+	public void savaPhoneMess(phoneMess ph) {
+		try {
+			gDao.save(ph);
+		} catch (Exception e) {
+		}
+	}
+	
 }
