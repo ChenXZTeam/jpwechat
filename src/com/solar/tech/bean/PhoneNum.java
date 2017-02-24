@@ -1,5 +1,5 @@
 package com.solar.tech.bean;
-
+ 
 import java.sql.Date;
 import java.sql.Timestamp;
 
