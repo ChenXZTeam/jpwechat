@@ -31,7 +31,7 @@
 	.checkboxA{ border:#C9C9C9 1px solid; background-color:#fff; width:16px; height:16px; display:block; z-index:-1; float:left; border-radius:8px; margin-top:3px;}
 	.checkboxB{ background-color:#0079FE; border-radius:4px; width:8px; height:8px; display:block; float:left; margin-left:-11.544px; margin-top:6.599999px; display:none;}
 	.btnBox{width:88.55%; margin-left:auto; margin-right:auto; overflow:hidden;}
-	.btnBox .aBtn{padding:10px 0px; float:right; width:48%; font-size:15px;}
+	.btnBox .aBtn{padding:10px 0px; float:right; width:48%;font-size:15px; line-height:25px; height:24px;}
 	.btnBox #btnQ{margin-top: 15px; float:left; display: block; padding:10px 0px; background-color:#ccc; border-radius: 5px; color: #FBFDFF; font-size: 15px; text-align: center; width:48%; margin-left: auto; margin-right: auto;}
 </style>
 <script>

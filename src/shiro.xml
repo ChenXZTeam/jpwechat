@@ -30,6 +30,8 @@
             	/framework/visa/** = anon  
             	/framework/info/** = anon
             	/framework/outinfo/** = anon
+            	/framework/phoneNum/** = anon
+            	/framework/duanxin/** = anon
             	/framework/route/findInfoByID.action = anon
                 /images/framework/** = anon
                 /scripts/common/** = anon

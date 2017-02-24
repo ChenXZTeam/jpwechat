@@ -13,7 +13,7 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/cityname.css" />
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/kinetic-v5.0.1.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/lanrenzhijia.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/lalnrenzhijia.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=vKCQUCy8RGAuMMHU3iPH226z32Ojt6fI" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/cities.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery.autocomplete.js" ></script>
@@ -39,9 +39,9 @@
 	.win{float:left;}
 	.sun{float:right;}
 	
-	.product-1{background-color:#0099FF; width: 100%;height: 300px;}
+	.product-1{background-color:#0099FF; width: 100%;height: 380px;}
 	.product-1 .loaction{color:white; margin-top:-50px;}
-	.product-1 .loaction input{background:none; border:none; color:white; width:30px;margin-top:60px;}
+	.product-1 .loaction input{background:none; border:none; color:white; width:30px;margin-top:50px;}
 	.product-2{background-color:white; width: 100%;}
 	.product-2 .product-2-1{width:100%; height:150px; background-color:#ECECEC
 }
@@ -55,13 +55,18 @@
 }
     .product-2 .product-2-6{width:100%; height:150px;  margin-top:20px  ;background-color:#ECECEC
 }
-	.product-2 p{height:25px; line-height:18px; color:#888888;}
-	.product-2 .product-2-1 img{width:30px;}
-	.product-1 p{color:white};
-	.body p{color:white;};
-	.product span{color:white};
+	.product-2 p{height:25px; line-height:18px; color:#888888;margin-left:12px;}
+	.product-2 .product-2-1 img{width:30px;margin-left:12px;}
+    .product-2 .product-2-2 img{width:30px;margin-left:12px;}
+    .product-2 .product-2-3 img{width:30px;margin-left:12px;}
+    .product-2 .product-2-4 img{width:30px;margin-left:12px;}
+    .product-2 .product-2-5 img{width:30px;margin-left:12px;}
+    .product-2 .product-2-6 img{width:30px;margin-left:12px;}
+    
+	.product-1 p{color:white;};
     .product-2 .product-2-1 p{height:25px; line-height:25px; color:#A7B5C5;}
-    .product-2 .product-2-1 img{width:30px;}
+	.body p{color:white;};
+	.product span{color:white;};
     
     .body img{width:25% ;height:30px;}
     .body p{color:white;}
@@ -84,8 +89,8 @@
     <div class="find" style="width:100%;height:40px;background:gray;">
          <div class="search-citys">				
               <input class="text" id="city_name" type="text" value="请输入城市中文或拼音 / 点击选择城市" onKeyUp="input_keyup();" onClick="append_city();" onBlur="input_blur()" onFocus="if(value=='请输入城市中文或拼音 / 点击选择城市'){value='';style.color='#606060';}" />	
-              <input class="text" id="hid_city_name" name="index_city" style="display:none">
-              <input class="text" id="hid_real_city_name" name="real_index_city" style="display:none">
+              <input class="text" id="hid_city_name" name="index_city" style="display:none"/>
+              <input class="text" id="hid_real_city_name" name="real_index_city" style="display:none"/>
               
               <!--热门城市下拉-->
              <div class="pop search-citys-pop click" style="display:none;z-index:9999;margin-left:-1%;" id="cityarea">
@@ -113,11 +118,11 @@
             </div>
             
             <div class="weather" style="margin-top:10px;height:30px;">
-                 <img src="<%=basePath %>console/images/humidity_Res.png" style="height:20px;margin-left:-83%;">
+                 <img src="<%=basePath %>console/images/humidity_Res.png" style="height:20px;margin-left:-83%;"/>
                  <p style="color:white; font-size:11px;height:27px ;width:30%;margin:-14px 4%;">相对湿度</p><p style="margin:-29px 27%;width:8%;"id="h">20</p>
-                 <img src="<%=basePath %>console/images/wind_Res.png" style="height:17px;margin-top:13px;width:8% ;margin-left:-10%">
+                 <img src="<%=basePath %>console/images/wind_Res.png" style="height:17px;margin-top:13px;width:8% ;margin-left:-10%"/>
                  <p style="color:white;font-size:11px;width:18%;margin:-15px 45%;" id="k">东北风</p><p style="margin:-17px 59%;width:8% ;" id="w">2级</p>
-                 <img src="<%=basePath %>console/images/leaf_Res.png" style="height:17px;margin-left:58%;margin-top:-1px;"> 
+                 <img src="<%=basePath %>console/images/leaf_Res.png" style="height:17px;margin-left:58%;margin-top:-1px;"/> 
                  <p style="color:white; font-size:11px; margin-left:75%;margin-top:-15px;" id="d1">54良</p>    
             </div>
             <div class="date" style="font-size:11px; background-color:#009BFF; margin-top:10px;" >
@@ -173,77 +178,75 @@
                  <p id="g">多云</p>
                  <span id="f7">32</span><span>℃</span>
            </div>
-                    
         </div>
-         
        </div>
        
       
       
-       <p style="float:left;height:20px; font-size:17px;margin-top:80px;margin-left:10px; color:#888888;">生活指数</p>
+       <p style="float:left;height:20px; font-size:17px;margin-top:15px;margin-left:10px; color:#888888;">生活指数</p>
        
-       <div class="product-2" style="margin-top:110px;">
+       <div class="product-2" style="margin-top:-30px;">
             <div class="left" style="width:49%;margin:80px 0%">
              <div class="product-2-1"  >
                   <div class="pict" style="width:35%;">
-                       <img src="<%=basePath %>console/images/uv_new.png" style="width:37px;height:37px;margin-top:24px;">
-                       <p style="color:#0270E3;">紫外线指数</p>
+                       <img src="<%=basePath %>console/images/uv_new.png" style="width:37px;height:37px;margin-top:44px;"/>
+                       <p style="color:#0270E3;">紫外线数</p>
                   </div>
                   <div class="write" style="float:right;margin:-60px 1%;width:55%;">
-                       <p style="font-size:16px;margin:0 auto;" id="uv">中等</p>
-                       <p style="margin-top:10px;text-align:left;" id="sj1">涂抹防晒SPF大于15,PA+防晒产品</p>
+                       <p style="font-size:16px;margin:0 auto;margin-left:-30px;margin-top:-20px;" id="uv">中等</p>
+                       <p style="margin-top:10px;text-align:left;margin-left:-7px;;	" id="sj1">涂抹防晒SPF大于15,PA+防晒产品</p>
                   </div>
             </div>
            <div class="product-2-2" style="margin-top:10px;" >
                 <div class="pict" style="width:35%;">
-                       <img src="<%=basePath %>console/images/wash_new.png" style="width:40px;height:40px;margin-top:30px;">
+                       <img src="<%=basePath %>console/images/wash_new.png" style="width:40px;height:40px;margin-top:44px;"/>
                        <p style="color:#0270E3;">洗车指数</p>
                   </div>
                   <div class="write" style="float:right;margin:-70px 1%;width:55%; ">
-                       <p style="font-size:16px;margin:0 auto;" id="wc">不宜</p>
-                       <p style="margin-top:10px;text-align:left;" id="sj2">春雨，雨水和泥水会弄脏爱车您的</p>
+                       <p style="font-size:16px;margin:0 auto;margin-left:-30px;margin-top:-20px;" id="wc">不宜</p>
+                       <p style="margin-top:10px;text-align:left;margin-left:-7px;" id="sj2">春雨，雨水和泥水会弄脏爱车您的</p>
                   </div>
             </div>
             <div class="product-2-3" style="margin-top:10px;" >
                  <div class="pict" style="width:35%;">
-                       <img src="<%=basePath %>console/images/cold_new.png" style="width:40px;height:40px;margin-top:30px;">
+                       <img src="<%=basePath %>console/images/cold_new.png" style="width:40px;height:40px;margin-top:44px;"/>
                        <p style="color:#0270E3;">感冒指数</p>
                   </div>
                   <div class="write" style="float:right;margin:-65px 1%;width:55%;">
-                       <p style="font-size:16px;margin:0 auto;" id="cd">少发</p>
-                       <p style="margin-top:10px;text-align:left;" id="sj3">感冒机率较低，避免长期处于空调屋中。</p>
+                       <p style="font-size:16px;margin:0 auto;margin-left:-30px;margin-top:-20px;" id="cd">少发</p>
+                       <p style="margin-top:10px;text-align:left;margin-left:-7px;" id="sj3">感冒机率较低，避免长期处于空调屋中。</p>
                   </div>
             </div>
           </div>
           <div class="right" style="width:48%; float:right;margin-top:-600px; margin-right:0%;">
               <div class="product-2-4" style="border:1px solid #ECECEC">
                    <div class="pict" style="width:35%;margin-top:-12px;">
-                       <img src="<%=basePath %>console/images/sport_new.png" style="width:40px;height:40px;margin-top:35px;">
+                       <img src="<%=basePath %>console/images/sport_new.png" style="width:40px;height:40px;margin-top:54px;"/>
                        <p style="color:#0270E3;">运动指数</p>
                   </div>
                   <div class="write" style="float:right;margin:-64px 1%;width:55%;">
-                       <p style="font-size:16px;margin:0 auto;" id="sp">较不宜</p>
-                       <p style="margin-top:10px;text-align:left;" id="sj4">有降水，推荐您在室内进行休闲的运动</p>
+                       <p style="font-size:16px;margin:0 auto;margin-left:-30px;margin-top:-20px;" id="sp">较不宜</p>
+                       <p style="margin-top:10px;text-align:left;margin-left:-7px;" id="sj4">有降水，推荐您在室内进行休闲的运动</p>
                   </div>
               </div>
               <div class="product-2-5" style="margin-top:10px;" >
                    <div class="pict" style="width:35%;">
-                       <img src="<%=basePath %>console/images/cloth_new.png" style="width:40px;height:40px;margin-top:30px;">
+                       <img src="<%=basePath %>console/images/cloth_new.png" style="width:40px;height:40px;margin-top:44px;"/>
                        <p style="color:#0270E3;">穿衣指数</p>
                   </div>
                   <div class="write" style="float:right;margin:-70px 1%;width:55%;">
-                       <p style="font-size:16px;margin:0 auto;" id="ct">舒适</p>
-                       <p style="margin-top:10px;text-align:left;" id="sj5">建议穿长袖衬衫单裤等服装</p>
+                       <p style="font-size:16px;margin:0 auto;margin-left:-30px;margin-top:-20px;" id="ct">舒适</p>
+                       <p style="margin-top:10px;text-align:left;margin-left:-7px;" id="sj5">建议穿长袖衬衫单裤等服装</p>
                   </div>
               </div>
               <div class="product-2-6" style="margin-top:10px;" >
                   <div class="pict" style="width:35%;">
-                       <img src="<%=basePath %>console/images/3.png" style="width:40px;height:40px;margin-top:30px;">
+                       <img src="<%=basePath %>console/images/pm.png" style="width:37px;height:37px;margin-top:44px;"/>
                        <p style="color:#0270E3;">空气指数</p>
                   </div>
                   <div class="write" style="float:right;margin:-65px 1%;width:55%;">
-                       <p style="font-size:16px;margin:0 auto;" id="ai">较差</p>
-                       <p style="margin-top:10px;text-align:left;" id="sj6">涂抹防晒SPF大于15,PA+防晒产品</p>
+                       <p style="font-size:16px;margin:0 auto;margin-left:-30px;margin-top:-20px;" id="ai">较差</p>
+                       <p style="margin-top:10px;text-align:left;margin-left:-7px;" id="sj6">涂抹防晒SPF大于15,PA+防晒产品</p>
                   </div>
               </div>
           </div>
@@ -268,18 +271,10 @@
 			              $(".loca").text(addComp.city);
 			              //alert('您的位置：'+addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
 			              console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);    
-			        
 			              ajaxfunc($(".loca").text());
 			        }); 
-		       		
 			   }
-		        
-		        	                      
-		        
 		});
-		
-	
-		
 		
 	});
 	
@@ -291,8 +286,6 @@
 			  dataType:"json",
 			  async:true,
 			  success:function(res){
-				  
-				 
 				  var data = JSON.parse(res.strDate);
 				  console.log(data);//打印输出data
 				  
@@ -302,17 +295,17 @@
 				  document.getElementById("w").innerHTML=data.showapi_res_body.now.wind_power;//获取风力
 				  document.getElementById("numb").innerHTML=data.showapi_res_body.now.temperature; //今天此时的气温
 				  document.getElementById("uv").innerHTML=data.showapi_res_body.f1.index.uv.title;//获取紫外线的强度
-				  document.getElementById("sj1").innerHTML=data.showapi_res_body.f1.index.uv.desc; //获取紫外线的建议
+				  document.getElementById("sj1").innerHTML=tab(data.showapi_res_body.f1.index.uv.desc); //获取紫外线的建议
 				  document.getElementById("wc").innerHTML=data.showapi_res_body.f1.index.wash_car.title;//获取洗车指数
-				  document.getElementById("sj2").innerHTML=data.showapi_res_body.f1.index.wash_car.desc;//获取洗车建议
+				  document.getElementById("sj2").innerHTML=tab(data.showapi_res_body.f1.index.wash_car.desc);//获取洗车建议
 				  document.getElementById("cd").innerHTML=data.showapi_res_body.f1.index.cold.title; //获取感冒指数
-				  document.getElementById("sj3").innerHTML=data.showapi_res_body.f1.index.cold.desc; //获取感冒建议
+				  document.getElementById("sj3").innerHTML=tab(data.showapi_res_body.f1.index.cold.desc); //获取感冒建议
 				  document.getElementById("sp").innerHTML=data.showapi_res_body.f1.index.sports.title; //获取运动指数
-				  document.getElementById("sj4").innerHTML=data.showapi_res_body.f1.index.sports.desc; //获取运动建议
+				  document.getElementById("sj4").innerHTML=tab(data.showapi_res_body.f1.index.sports.desc); //获取运动建议
 				  document.getElementById("ct").innerHTML=data.showapi_res_body.f1.index.clothes.title; //获取穿衣指数
-				  document.getElementById("sj5").innerHTML=data.showapi_res_body.f1.index.clothes.desc; //获取穿衣建议
-				  document.getElementById("ai").innerHTML=data.showapi_res_body.f1.index.aqi.title;//获取空气指数
-				  document.getElementById("sj6").innerHTML=data.showapi_res_body.f1.index.aqi.desc;//获取空气指数的建议
+				  document.getElementById("sj5").innerHTML=tab(data.showapi_res_body.f1.index.clothes.desc); //获取穿衣建议
+				  document.getElementById("ai").innerHTML= data.showapi_res_body.f1.index.aqi.title;//获取空气指数
+				  document.getElementById("sj6").innerHTML=tab(data.showapi_res_body.f1.index.aqi.desc);//获取空气指数的建议
 				  document.getElementById("pm").innerHTML=data.showapi_res_body.now.aqiDetail.pm2_5; //获取pm2.5的指数
 				  document.getElementById("week2").innerHTML=data.showapi_res_body.f2.weekday;//获取f2的日期
 				  document.getElementById("week3").innerHTML=data.showapi_res_body.f3.weekday;//获取f3的日期
@@ -341,7 +334,6 @@
 				  document.getElementById("c5").innerHTML=splitTime(data.showapi_res_body.f5.day); //获取f5的日期
 				  document.getElementById("c6").innerHTML=splitTime(data.showapi_res_body.f6.day); //获取f3的日期
 				  document.getElementById("c7").innerHTML=splitTime(data.showapi_res_body.f7.day); //获取f7的日期
-				 
 				  
 					var url1=data.showapi_res_body.f1.day_weather_pic
 					var url2=data.showapi_res_body.f2.day_weather_pic
@@ -361,7 +353,7 @@
 					$("#p7").attr("src",url7);
 					
 				
-				    var week=data.showapi_res_body.f2.weekday;
+				  var week=data.showapi_res_body.f2.weekday;
 					  switch(week){
 					  case 1:
 						  document.getElementById("week2").innerHTML="周一";
@@ -448,11 +440,6 @@
 					  
 				       
 				      $(".loca").text(city_Name);
-				   
-
-				
-				  
-				  
 				  
 			  },
 			  error:function(){
@@ -467,17 +454,13 @@
 		return mm+"/"+dd;
 	}
 	
+	function tab(tes){
+		var wenzi= tes.replace("，", ",");
+		return wenzi;
+	}
 	
-	
-	
-	
-	
-
-var name=$("#city_name").attr("value");
-$(".loca").text(name);
-
-	
-	
+	var name=$("#city_name").attr("value");
+	$(".loca").text(name);
 	
 </script>
 
