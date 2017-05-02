@@ -13,8 +13,8 @@
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/swiper.min.css?time=223"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=124"/>
 <link href="<%=basePath%>scripts/common/sui/css/sm.min.css" type="text/css" rel="stylesheet" />
-<%-- <script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script> --%>
-<script type='text/javascript' src='<%=basePath%>scripts/common/sui/js/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='<%=basePath%>scripts/common/sui/js/zepto.min.js?bsadl=1232' charset='utf-8'></script>
+<script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js?yine=20151sdsdsd"></script>
 <script type='text/javascript' src='<%=basePath%>scripts/common/sui/js/sm.min.js' charset='utf-8'></script>
 <script type="text/javascript" src="<%=basePath%>console/js/planTek.js?time=23" charset="utf-8"></script>
 <%-- <script type="text/javascript" src="<%=basePath%>console/js/jcDate.js"></script> --%>
@@ -681,7 +681,7 @@ $(function(){
 	var d_d = d1.getDate();
 	d_d = d_d > 10?d_d:"0"+d_d;
 	var str1 = y_y+"-"+m_m+"-"+d_d;
-	$(".jcDate").calendar({
+	$$(".jcDate").calendar({
 	    value: [str],
 		minDate:str1
 	});
