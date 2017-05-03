@@ -68,8 +68,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 
 <!-- 数据展示页 -->
-<div style="width:100%;height:420px;">
-	<div id="dg" style="width:100%;height:420px;"></div>
+<div id="grideBox" style="width:100%;">
+	<div id="dg" style="width:100%;height:100%;"></div>
 </div>
 
 <!-- 查看错误信息文本 -->
@@ -83,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script>
 
 	$(function(){
-		
+		$("#grideBox").css("height",$(window).height()-60);
 		$('#dg').datagrid({
 		    height: '100%',
 		    fit:true,
@@ -102,9 +102,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			rownumbers:true,
 		    columns: [[ 
 						{ field: 'ck', checkbox: true },
-		                { field: 'phoneNumber', title: '<span class="txtcenter">手机号码</span>',width: 120},
-						{ field: 'text', title: '<span class="txtcenter">消息内容</span>', width: 550},
-						{ field: 'sendType', title: '<span class="txtcenter">发送状态</span>', width: 120,
+		                { field: 'phoneNumber', title: '手机号码',align:'center',width: '14%'},
+						{ field: 'text', title: '消息内容', width: '38%'},
+						{ field: 'sendType', title: '发送状态',align:'center', width: '10%',
 							formatter:function(value,rec,index){  
 			                     if(value == '1' || value == 1){
 									return "发送成功";
@@ -113,17 +113,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 }
 							}
 						},
-						{ field: 'userName', title: '<span class="txtcenter">操作员</span>', width: 120},
-						{ field: 'createTime', title: '<span class="txtcenter">发送时间</span>', width: 200,formatter:fotmateDate},
-						{ field: 'zuNumber', title: '<span class="txtcenter">组号码</span>', width: 120,},
-				        { field: 'userMode', title: '<span class="txtcenter">用户模板</span>',align:'center', width: 120}
+						{ field: 'userName', title: '操作员',align:'center', width: '8%'},
+						{ field: 'createTime', title: '发送时间',align:'center', width: '14%',formatter:fotmateDate},
+						{ field: 'zuNumber', title: '组号码',align:'center', width: '8%'},
+				        { field: 'userMode', title: '用户模板',align:'center', width: '5%'}
 		    ]],
                onDblClickRow :function(rowIndex,rowData){
 			    	details(rowData);
-			   	},
-			   onLoadSuccess:function(data){
-			        $(".txtcenter").parent().parent().css("text-align","center");
-			    }
+			   	}
 		});
 		
 		
@@ -149,9 +146,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    
 					columns: [[
 						{ field: 'ck', checkbox: true },
-				        { field: 'phoneNumber', title: '<span class="txtcenter">手机号码</span>',width: 120},
-						{ field: 'text', title: '<span class="txtcenter">消息内容</span>', width: 550},
-						{ field: 'sendType', title: '<span class="txtcenter">发送状态</span>', width: 120,
+				        { field: 'phoneNumber', title: '手机号码',align:'center',width: '14%'},
+						{ field: 'text', title: '消息内容', width: '38%'},
+						{ field: 'sendType', title: '发送状态',align:'center', width: '10%',
 							formatter:function(value,rec,index){  
 			                     if(value == '1' || value == 1){
 									return "发送成功";
@@ -160,14 +157,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 }
 							}
 						},
-						{ field: 'userName', title: '<span class="txtcenter">操作员</span>', width: 120},
-						{ field: 'createTime', title: '<span class="txtcenter">发送时间</span>', width: 200,formatter:fotmateDate},
-						{ field: 'zuNumber', title: '<span class="txtcenter">组号码</span>', width: 120,},
-				        { field: 'userMode', title: '<span class="txtcenter">用户模板</span>', width: 120}
+						{ field: 'userName', title: '操作员',align:'center', width: '8%'},
+						{ field: 'createTime', title: '发送时间',align:'center', width: '14%',formatter:fotmateDate},
+						{ field: 'zuNumber', title: '组号码',align:'center', width: '8%',},
+				        { field: 'userMode', title: '用户模板',align:'center', width: '5%'}
 				    ]],
-				    onLoadSuccess:function(data){
-				        $(".txtcenter").parent().parent().css("text-align","center");
-				    },
 				    onDblClickRow :function(rowIndex,rowData){
 				    	details(rowData);
 				   	}

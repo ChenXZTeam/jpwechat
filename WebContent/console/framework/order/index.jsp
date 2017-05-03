@@ -41,8 +41,8 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="<%=basePath%>console/framework/order/orderInput.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="orderListBox" style="width:100%;height:420px;">
+<div id="grideBox" style="width:100%;">
+	<div id="orderListBox" style="width:100%;height:100%;">
 	</div>
 </div>
 <div id="upInfoBox" class="easyui-dialog" style="width:720px; height:350px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
@@ -134,6 +134,7 @@
 </div>
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-82);
 	$('#orderListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -152,11 +153,11 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'orderNum', title: '预约编号', width: 150},
-	        { field: 'contactsName', title: '用户姓名', width: 150},
-	        { field: 'contactsPhone', title: '联系电话', width: 120},
-	        { field: 'applyCountry', title: '申请国家', width: 120},
-	        { field: 'paystatus', title: '付款状态', width: 100,
+	        { field: 'orderNum', title: '预约编号',align:'center', width: '16%'},
+	        { field: 'contactsName', title: '用户姓名',align:'center', width: '12%'},
+	        { field: 'contactsPhone', title: '联系电话',align:'center', width: '12%'},
+	        { field: 'applyCountry', title: '申请国家',align:'center', width: '8%'},
+	        { field: 'paystatus', title: '付款状态',align:'center', width: '12%',
 	        	 formatter:function(value,rec,index){  
                      if(value == '0'){
 						return "未支付";
@@ -167,9 +168,9 @@ $(function(){
 					 }
                  }	
 	        },
-	        { field: 'idcase', title: '申请人身份证号码', width: 250},
-	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate}
+	        { field: 'idcase', title: '申请人身份证号码',align:'center', width: '17%'},
+	        { field: 'trayTypeIpnt', title: '旅客类型',align:'center', width: '8%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '12%',formatter: fotmateDate}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);
@@ -297,11 +298,11 @@ function query(){
 		rownumbers:true,
 		columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'orderNum', title: '预约编号', width: 150},
-	        { field: 'contactsName', title: '用户姓名', width: 150},
-	        { field: 'contactsPhone', title: '联系电话', width: 120},
-	        { field: 'applyCountry', title: '申请国家', width: 120},
-	        { field: 'paystatus', title: '付款状态', width: 100,
+	        { field: 'orderNum', title: '预约编号',align:'center', width: '16%'},
+	        { field: 'contactsName', title: '用户姓名',align:'center', width: '8%'},
+	        { field: 'contactsPhone', title: '联系电话',align:'center', width: '12%'},
+	        { field: 'applyCountry', title: '申请国家',align:'center', width: '12%'},
+	        { field: 'paystatus', title: '付款状态',align:'center', width: '12%',
 	        	 formatter:function(value,rec,index){  
                      if(value == '0'){
 						return "未支付";
@@ -312,9 +313,9 @@ function query(){
 						}
                  }	
 	        },
-	        { field: 'idcase', title: '申请人身份证号码', width: 250},
-	        { field: 'trayTypeIpnt', title: '旅客类型', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate}
+	        { field: 'idcase', title: '申请人身份证号码',align:'center', width: '16%'},
+	        { field: 'trayTypeIpnt', title: '旅客类型',align:'center', width: '8%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '12%',formatter: fotmateDate}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){
 			    details(rowData);

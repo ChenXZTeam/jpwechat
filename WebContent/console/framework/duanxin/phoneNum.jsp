@@ -48,8 +48,8 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="toImportExcel()">导入</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="phoneNumListBox" style="width:100%;height:420px;"></div>
+<div id="grideBox" style="width:100%;">
+	<div id="phoneNumListBox" style="width:100%;height:100%;"></div>
 </div>
 <div id="phoneNumBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
@@ -89,6 +89,7 @@
 	  </div>
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-83);
 	$('#phoneNumListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -107,9 +108,9 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'phoneNumber', title: '手机号码', width: 150 },
-	        { field: 'userName', title: '用户名', width: 100 },
-	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
+	        { field: 'phoneNumber', title: '手机号码', width: '25%' },
+	        { field: 'userName', title: '用户名', width: '22.5%' },
+	        { field: 'createTime', title: '创建时间', width: '50%',formatter:fotmateDate}
 	       
 	    ]]
 	});

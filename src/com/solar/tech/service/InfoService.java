@@ -84,7 +84,7 @@ public class InfoService {
 	 */
 	public Map<String, Object> findVisa(String title, int pag, int row) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM Info i where i.title like '%"+title+"%' ";
+		String hql = "FROM Info i where i.title like '%"+title+"%' order by i.createTime desc";
 		List<Info> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(Info.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);

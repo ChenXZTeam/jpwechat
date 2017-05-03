@@ -47,8 +47,8 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
 	<a href="<%=basePath%>console/framework/duanxin/addExample.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" >新增</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="ExampleListBox" style="width:100%;height:420px;"></div>
+<div id="grideBox" style="width:100%;">
+	<div id="ExampleListBox" style="width:100%;height:100%;"></div>
 </div>
 <div id="ExampleBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
@@ -82,6 +82,7 @@
 
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-83);
 	$('#ExampleListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -100,9 +101,9 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'banPeople', title: '绑定人', width: 200 },
-	        { field: 'banZu', title: '绑定组', width: 100 },
-	        { field: 'text', title: '模板内容', width: 500 },
+	        { field: 'banPeople', title: '绑定人', width: '25%' },
+	        { field: 'banZu', title: '绑定组', width: '22.5%' },
+	        { field: 'text', title: '模板内容', width: '50%' },
 	       
 	    ]]
 	});

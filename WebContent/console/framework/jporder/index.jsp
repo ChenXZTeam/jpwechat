@@ -36,12 +36,13 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="<%=basePath %>console/framework/jporder/addorder.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">预定机票</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="dataBox" style="width:100%;height:420px;">
+<div id="grideBox" style="width:100%;">
+	<div id="dataBox" style="width:100%;height:100%;">
 	</div>
 </div>
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-82);
 	$('#dataBox').datagrid({
 		height:'80%',
 	    fit:true,
@@ -60,10 +61,10 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'orderNum', title: '预约编号', width: 150},
-	        { field: 'linkName', title: '用户姓名', width: 150},
-	        { field: 'linkPhoneNum', title: '联系电话', width: 120},
-	        { field: 'stutisPay', title: '付款状态', width: 100,
+	        { field: 'orderNum', title: '预约编号',align:'center', width: '15%'},
+	        { field: 'linkName', title: '用户姓名',align:'center', width: '7%'},
+	        { field: 'linkPhoneNum', title: '联系电话',align:'center', width: '11%'},
+	        { field: 'stutisPay', title: '付款状态',align:'center', width: '6%',
 	        	 formatter:function(value,rec,index){  
                      if(value == '0'){
 							return "未支付";
@@ -74,11 +75,11 @@ $(function(){
 					 }
                  }	
 	        },
-	        { field: 'hangbanNum', title: '航班号', width: 50},
-	        { field: 'chufDate', title: '出发日期', width: 100},
-	        { field: 'chufTime', title: '出发时间', width: 100},
-	        { field: 'idcase', title: '证件号码', width: 200},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate},
+	        { field: 'hangbanNum', title: '航班号',align:'center', width: '11%'},
+	        { field: 'chufDate', title: '出发日期',align:'center', width: '11%'},
+	        { field: 'chufTime', title: '出发时间',align:'center', width: '6%'},
+	        { field: 'idcase', title: '证件号码',align:'center', width: '16%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '14.5%',formatter: fotmateDate},
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);
@@ -167,10 +168,10 @@ function query(){
 		rownumbers:true,
 		columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'orderNum', title: '预约编号', width: 150},
-	        { field: 'linkName', title: '用户姓名', width: 150},
-	        { field: 'linkPhoneNum', title: '联系电话', width: 120},
-	        { field: 'stutisPay', title: '付款状态', width: 100,
+	        { field: 'orderNum', title: '预约编号',align:'center', width: '15%'},
+	        { field: 'linkName', title: '用户姓名',align:'center', width: '7%'},
+	        { field: 'linkPhoneNum', title: '联系电话',align:'center', width: '11%'},
+	        { field: 'stutisPay', title: '付款状态',align:'center', width: '6%',
 	        	 formatter:function(value,rec,index){  
                      if(value == '0'){
 							return "未支付";
@@ -181,11 +182,11 @@ function query(){
 					 }
                  }	
 	        },
-	        { field: 'hangbanNum', title: '航班号', width: 50},
-	        { field: 'chufDate', title: '出发日期', width: 100},
-	        { field: 'chufTime', title: '出发时间', width: 100},
-	        { field: 'idcase', title: '证件号码', width: 200},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate},
+	        { field: 'hangbanNum', title: '航班号',align:'center', width: '11%'},
+	        { field: 'chufDate', title: '出发日期',align:'center', width: '11%'},
+	        { field: 'chufTime', title: '出发时间',align:'center', width: '6%'},
+	        { field: 'idcase', title: '证件号码',align:'center', width: '16%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '14.5%',formatter: fotmateDate},
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);

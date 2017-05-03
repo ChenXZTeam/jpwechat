@@ -41,8 +41,8 @@
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
 	<a href="<%=basePath%>console/framework/country/qz_inpCountry.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="countryListBox" style="width:100%;height:420px;">
+<div id="grideBox" style="width:100%;">
+	<div id="countryListBox" style="width:100%;height:100%;">
 	</div>
 </div>
 <div id="upInfoBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
@@ -144,6 +144,7 @@
 </div>
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-85);
 	$('#countryListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -162,10 +163,10 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'country', title: '国家', width: 150},
-	        { field: 'immigrationOfTimes', title: '入境次数', width: 120},
-	        { field: 'periodOfValidity', title: '有效期限', width: 120},
-	        { field: 'qzMode', title: '特殊签证类型', width: 100,
+	        { field: 'country', title: '国家',align:'center', width: '8%'},
+	        { field: 'immigrationOfTimes', title: '入境次数',align:'center', width: '10%'},
+	        { field: 'periodOfValidity', title: '有效期限',align:'center', width: '10%'},
+	        { field: 'qzMode', title: '特殊签证类型',align:'center', width: '14%',
 	        	 formatter:function(value,rec,index){  
                      if(value == '3'){
 						return "免签";
@@ -176,9 +177,9 @@ $(function(){
 						}
                  }	
 	        },
-	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate},
-	        { field: 'touryIntro', title: '风景介绍', width: 200}
+	        { field: 'sojournTime', title: '逗留天数',align:'center', width: '8%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '14%',formatter:fotmateDate},
+	        { field: 'touryIntro', title: '风景介绍', width: '33%'}
 	    ]],
 	    onDblClickRow :function(rowIndex,rowData){
 	    	details(rowData);
@@ -312,10 +313,10 @@ function query(){
 		rownumbers:true,
 		columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'country', title: '国家', width: 150},
-	        { field: 'immigrationOfTimes', title: '入境次数', width: 120},
-	        { field: 'periodOfValidity', title: '有效期限', width: 120},
-	        { field: 'qzMode', title: '特殊签证类型', width: 100,
+	        { field: 'country', title: '国家',align:'center', width: '8%'},
+	        { field: 'immigrationOfTimes', title: '入境次数',align:'center', width: '10%'},
+	        { field: 'periodOfValidity', title: '有效期限',align:'center', width: '10%'},
+	        { field: 'qzMode', title: '特殊签证类型',align:'center', width: '14%',
 	        	 formatter:function(value,rec,index){  
                      if(value == '3'){
 						return "免签";
@@ -326,9 +327,9 @@ function query(){
 						}
                  }	
 	        },
-	        { field: 'sojournTime', title: '逗留天数', width: 100},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter: fotmateDate},
-	        { field: 'touryIntro', title: '风景介绍', width: 200}
+	        { field: 'sojournTime', title: '逗留天数',align:'center', width: '8%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '14%',formatter:fotmateDate},
+	        { field: 'touryIntro', title: '风景介绍', width: '33%'}
 	    ]],
 		onDblClickRow :function(rowIndex,rowData){
 			    details(rowData);

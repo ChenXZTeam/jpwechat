@@ -71,6 +71,8 @@
 <script>
 
 		$(function(){
+			$("#grideBox").css("height",$(window).height()-30);
+			
 			var lastIndex;
 			var vac,ivID,timeNums;
 			$('#tt').datagrid({
@@ -91,14 +93,14 @@
 				rownumbers:true,
 				columns: [[
 					        { field: 'ck', checkbox: true },
-					        { field: 'id', title: '编号ID', width: 250},
-					        { field: 'invitationCode', title: '邀请码', width: 70},
-					        { field: 'type', title: '类型', width:100},
-					        { field: 'sum', title: '优惠金额', width: 80},
-					        { field: 'discount', title: '折扣', width: 50},
-					        { field: 'deadline', title: '到期时间', width: 100,formatter: formatDatebox},
-					        { field: 'times', title: '使用次数', width: 80},
-					        { field: 'remarks', title: '备注', width: 200},
+					        { field: 'id', title: '编号ID', width: '20%'},
+					        { field: 'invitationCode', title: '邀请码',align:'center', width: '12%'},
+					        { field: 'type', title: '类型',align:'center', width:'12%'},
+					        { field: 'sum', title: '优惠金额',align:'center', width: '12%'},
+					        { field: 'discount', title: '折扣',align:'center', width: '5%'},
+					        { field: 'deadline', title: '到期时间',align:'center', width: '12%',formatter: formatDatebox},
+					        { field: 'times', title: '使用次数',align:'center', width: '12%'},
+					        { field: 'remarks', title: '备注', width: '12%'},
 				]]
 			});
 			
@@ -341,8 +343,8 @@
 			iconCls="icon-redo" plain="true" onclick="sendCode()">发送</a>	
 	</div>
 	<!-- 数据表格 -->
-	<div style="width:100%;height:420px;">
-		<div id="tt" style="width:100%;height:420px;">
+	<div id="grideBox" style="width:100%;">
+		<div id="tt" style="width:100%;height:100%;">
 		</div>
 	</div>
 	<!-- 对话框 -->

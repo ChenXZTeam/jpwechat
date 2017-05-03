@@ -47,7 +47,7 @@ public class JP_orderService {
 	 */
 	public Map<String, Object>  findByInfo(int pag, int row, String Info){
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM userOrderInfo u where u.IDcase like '%"+Info+"%' OR u.orderNum like '%"+Info+"%' OR u.telNum like '%"+Info+"%'";
+		String hql = "FROM userOrderInfo u where u.IDcase like '%"+Info+"%' OR u.orderNum like '%"+Info+"%' OR u.telNum like '%"+Info+"%' order by u.createTime desc";
 		List<userOrderInfo> vList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(userOrderInfo.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", vList);

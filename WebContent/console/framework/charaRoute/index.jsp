@@ -46,8 +46,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<a href="<%=basePath%>console/framework/charaRoute/addRoute.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="sendInfo()">推送消息</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="chRouteBox" style="width:100%;height:420px;"></div>
+<div id="grideBox" style="width:100%;">
+	<div id="chRouteBox" style="width:100%;height:100%;"></div>
 </div>
 <div id="upInfoBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
@@ -103,6 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </body>
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-40);
 	$('#chRouteBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -121,10 +122,10 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'routeID', title: '编号', width: 150},
-	        { field: 'title', title: '文章标题', width: 150 },
-	        { field: 'userName', title: '创建对象', width: 150},
-	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
+	        { field: 'routeID', title: '编号',align:'center', width: '20%'},
+	        { field: 'title', title: '文章标题',align:'center', width: '25%' },
+	        { field: 'userName', title: '创建对象',align:'center', width: '25%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '27.5%',formatter:fotmateDate}
 	    ]]
 	});
 });

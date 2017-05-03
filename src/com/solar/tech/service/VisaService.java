@@ -118,7 +118,7 @@ public class VisaService {
 	 */
 	public Map<String, Object> findVisa(String countryName,int pag,int row){
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM Visa v where v.country like '%"+countryName+"%' AND v.adminDel = 1";
+		String hql = "FROM Visa v where v.country like '%"+countryName+"%' AND v.adminDel = 1 order by v.newDataNum desc";
 		List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);
@@ -391,7 +391,7 @@ public class VisaService {
 	 */
 	public Map<String, Object> FindVisaOrder(String yuyueNumber,int pag,int row){
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM VisaOrder v where v.orderNum = '"+yuyueNumber+"'";
+		String hql = "FROM VisaOrder v where v.orderNum like '%"+yuyueNumber+"%'";
 		List<Visa> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
 		Long total = this.gDao.count(Visa.class,hql); //获取影响的行数，用于前台分页
 		map.put("rows", cList);

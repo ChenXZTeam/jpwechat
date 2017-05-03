@@ -58,8 +58,8 @@
 	<a href="<%=basePath%>console/framework/contryNews/addinfo.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="sendInfo()">推送消息</a>
 </div>
-<div style="width:100%;height:420px;">
-	<div id="zixunListBox" style="width:100%;height:420px;"></div>
+<div id="grideBox" style="width:100%;">
+	<div id="zixunListBox" style="width:100%;height:100%;"></div>
 </div>
 <div id="upInfoBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
@@ -115,6 +115,7 @@
 </div>
 <script>
 $(function(){
+	$("#grideBox").css("height",$(window).height()-85);
 	$('#zixunListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -133,9 +134,9 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'title', title: '文章标题', width: 150 },
-	        { field: 'introduction', title: '简介', width: 100 },
-	        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
+	        { field: 'title', title: '文章标题', width: '33%' },
+	        { field: 'introduction', title: '简介', width: '33%' },
+	        { field: 'createTime', title: '创建时间',align:'center', width: '31%',formatter:fotmateDate}
 	       
 	    ]]
 	});
@@ -240,7 +241,6 @@ function shows(){ //查看
 //查找的方法
 function query(){
 	var title = $("#title").val();	
-	alert(title);
 	$('#zixunListBox').datagrid({
 		height: '100%',
 		fit:true,
@@ -259,9 +259,9 @@ function query(){
 		rownumbers:true,
 		columns: [[
 		           { field: 'ck', checkbox: true },
-			       { field: 'title', title: '文章标题', width: 150 },
-			       { field: 'introduction', title: '简介', width: 100},
-			       { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
+			       { field: 'title', title: '文章标题', width: '33%' },
+			       { field: 'introduction', title: '简介', width: '33%'},
+			       { field: 'createTime', title: '创建时间',align:'center', width: '31%',formatter:fotmateDate}
 	    ]]
 	});
 }

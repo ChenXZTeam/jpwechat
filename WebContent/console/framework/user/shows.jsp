@@ -75,10 +75,10 @@ $(function(){
 	    selectOnCheck:false,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: '<%=User.USERNAME%>', title: '用户名称', width: 150},
-	        { field: 'email', title: '邮箱地址', width: 200},
-	        { field: 'mobile', title: '手机号码', width: 200},
-	        { field: '<%=User.USERCLASS %>', title: '用户类型', width: 150,
+	        { field: '<%=User.USERNAME%>', title: '用户名称',align:'center', width: '14%'},
+	        { field: 'email', title: '邮箱地址',align:'center', width: '14%'},
+	        { field: 'mobile', title: '手机号码',align:'center', width: '14%'},
+	        { field: '<%=User.USERCLASS %>', title: '用户类型',align:'center', width: '14%',
 	        	 formatter:function(value,rec,index){  
                      if(value=="<%=User.UserClass.SYSADMIN%>"){
                     	 return "系统管理员";
@@ -91,7 +91,7 @@ $(function(){
                      }
                  }	
 	        },
-	        { field: 'userType', title: '用户角色', width: 150,
+	        { field: 'userType', title: '用户角色',align:'center', width: '14%',
 	        	 formatter:function(value,rec,index){  
                     if(value=="ADMIN"){
                    	 return "管理员";
@@ -102,7 +102,7 @@ $(function(){
                     }
                 }	
 	        },
-	        { field: '<%=User.USERSTATUS %>', title: '用户状态', width: 150,
+	        { field: '<%=User.USERSTATUS %>', title: '用户状态',align:'center', width: '14%',
 	        	 formatter:function(value,rec,index){  
                      if(value==<%=User.UserStatus.ACT %>){
                     	 return "活动";
@@ -113,7 +113,7 @@ $(function(){
                      }
                  }	
 	        },
-	        { field: 'createTime', title: '创建时间', width: 150,formatter:fotmateDate}
+	        { field: 'createTime', title: '创建时间',align:'center', width: '15%',formatter:fotmateDate}
 	    ]],
 
 	    onDblClickRow :function(rowIndex,rowData){
