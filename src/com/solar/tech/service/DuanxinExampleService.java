@@ -1,32 +1,17 @@
 package com.solar.tech.service;
 
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.DuanxinExample;
 import com.solar.tech.bean.PhoneNum;
-import com.solar.tech.bean.entity.Info;
 import com.solar.tech.dao.GenericDao;
-import com.solar.tech.util.Current;
-import com.solar.tech.utils.PassSend;
 @Service
 @Transactional
 public class DuanxinExampleService {
@@ -56,7 +41,7 @@ public class DuanxinExampleService {
 	 */
 	public Map<String, Object> getExampleList(int pag, int row) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String hql = "FROM DuanxinExample ";
+		String hql = "FROM DuanxinExample ORDER BY creamTime DESC";
 		if(row==10000){
 			List<DuanxinExample> iList = this.gDao.find(hql);
 			map.put("iList", iList);
@@ -108,12 +93,5 @@ public class DuanxinExampleService {
 		map.put("total", total);
 		return map;
 	}
-
-
-	
-
-	
-	
-	
 
 }

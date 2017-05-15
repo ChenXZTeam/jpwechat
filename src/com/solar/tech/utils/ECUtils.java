@@ -110,7 +110,6 @@ public class ECUtils {
 	
 	// 航班座位可利用显示
 	public List<AvSegment> av(String org, String dst, String date, String time, String airline, String direct, String nonstop, String stopCity, String fltNo){
-		System.out.println("查询可利用座位的参数："+org+", "+dst+", "+date+", "+time+", "+airline+", "+direct+", "+nonstop+", "+stopCity);
 		AVRequest avRequest=new AVRequest (); // 新建一个请求对象
 		avRequest.setOfficeNo(OFFICENO);  // 设置Office号
 		avRequest.setToken(token); // 设置令牌号
@@ -160,20 +159,17 @@ public class ECUtils {
 				}
 				
 				if(resultList != null && resultList.size() > 0){
-					System.out.println("航班座位可利用:"+resultList.size());
 					return resultList;
 				}
 			}
 		} catch (ObeException e) {
 			e.printStackTrace();
-			//System.out.println("=====>>>>>能捕获到可用座位的异常");
 		} 
 		return null;
 	}
 	
 	// 运价查询
 	public List<FDItem> fd(String org, String dst, String date, String airline, String planeModel, String passType, String fullFareBasis) {
-		System.out.println("查询运价的参数："+org+", "+dst+", "+date+", "+airline+", "+planeModel+", "+passType+", "+fullFareBasis);
 		FDRequest fdRequest = new FDRequest(); // 新建一个请求对象
 		fdRequest.setOfficeNo(OFFICENO); // 设置Office号
 		fdRequest.setToken(token); // 设置令牌号
@@ -194,19 +190,16 @@ public class ECUtils {
 		try {
 			FDResponse fdResponse = fdClient.fdForObe(fdRequest); // 新建一个响应对象
 			if(fdResponse != null && fdResponse.getResultCode() == 0){
-				System.out.println("运价信息:"+fdResponse.getFare().getSortedfares().size());
 				return fdResponse.getFare().getSortedfares(); // 返回所有的运价信息
 			}
 		} catch (ObeException e) {
 			e.printStackTrace();
-			//System.out.println("=====>>>>>能捕获到运价的异常");
 		} 
 		return null;
 	}
 	
 	// 获取飞行周期(查询一城市对在特定周期内所有航班的信息,只能查询当天、昨天及以后的周期)
 	public List<SkSegment> sk(String org, String dst, String date, String airline, String direct, String noStop){
-		System.out.println("查询飞行周期的参数："+org+", "+dst+", "+date+", "+airline+", "+direct+", "+noStop);
 		SKRequest skRequest = new SKRequest();// 新建一个请求对象
 		skRequest.setToken(token); // 设置令牌号
 		skRequest.setOfficeNo(OFFICENO); // 设置Office号
@@ -238,14 +231,12 @@ public class ECUtils {
 					}
 					
 					if(resultList != null && resultList.size() > 0){
-						System.out.println("飞行周期:"+resultList.size());
 						return resultList; // 返回所有飞行周期
 					}
 				}
 			}
 		} catch (ObeException e) { 
 			e.printStackTrace(); 
-			//System.out.println("=====>>>>>能捕获到没有指定航班的异常");
 		}
 		return null;
 	}

@@ -45,31 +45,34 @@
 <div style="height:25px; background-color:#fff;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit(this)">删除</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
-	<a href="<%=basePath%>console/framework/duanxin/addExample.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" >新增</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="newsBtn()">新增</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="ExampleListBox" style="width:100%;height:100%;"></div>
 </div>
-<div id="ExampleBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
+<div id="ExampleBox" class="easyui-dialog" style="width:506px; height:308px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
 		<table border="0" cellpadding="0" cellspacing="10">
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="exampleID"/></td>
+				<td colspan="4"><input name="id" class="easyui-textbox"/></td>
 			</tr>
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="userName"/></td>
+				<td colspan="4"><input name="creamTime" id="creamTime" class="easyui-textbox"/></td>
+			</tr>
+			<tr class="dispayNoneClass">
+				<td colspan="4"><input name="userName" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
 				<td class="titleClass">绑定人：</td>
-				<td colspan="3"><input name="banPeople"/></td>
+				<td colspan="3"><input name="banPeople" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
 				<td class="titleClass">绑定人：</td>
-				<td colspan="3"><input name="banZu"/></td>
+				<td colspan="3"><input name="banZu" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
 				<td class="titleClass">模板内容：</td>
-				<td colspan="3"><textarea id="Exampletext" name="text"  style="width:500px; height:394px;"/></textarea></td>
+				<td colspan="3"><input id="Exampletext" name="text"  class="easyui-textbox" data-options="multiline:true" style="width:300px; height:100px"/></td>
 			</tr>
 		</table>
 	</form>
@@ -77,7 +80,7 @@
 
 <div id="dlg-buttons">
 	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
-	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#upInfoBox').dialog('close')" style="width:90px">取消</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#ExampleBox').dialog('close')" style="width:90px">取消</a>
 </div>
 
 <script>
@@ -103,7 +106,7 @@ $(function(){
 	        { field: 'ck', checkbox: true },
 	        { field: 'banPeople', title: '绑定人', width: '25%' },
 	        { field: 'banZu', title: '绑定组', width: '22.5%' },
-	        { field: 'text', title: '模板内容', width: '50%' },
+	        { field: 'text', title: '模板内容', width: '50%' }
 	       
 	    ]]
 	});
@@ -151,12 +154,19 @@ function removeit(){  //删除
       });
 }
 
+var url = "";
+//新增
+function newsBtn(){
+	$('#fm').form('clear');
+	$("#creamTime").textbox("setValue", "2017-05-16 11:19:55");
+	$('#ExampleBox').dialog('open').dialog('setTitle','新增模板信息');
+	url = "<%=basePath%>framework/duanxin/addExample.action";
+}
 
 //修改信息
 function toUpdate(){  //弹出修改框
            var row = $('#ExampleListBox').datagrid('getSelected');
            var rows = $('#ExampleListBox').datagrid('getSelections');	
-           console.log(row);
            if (row == undefined||row == null||row=="") {
              	$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
              	return;
@@ -164,26 +174,23 @@ function toUpdate(){  //弹出修改框
             if(rows.length>1){
             	$.messager.alert('操作提示', "请选择一条数据！", 'warning');
              	return false;
-            } 	 
+            } 	
+            row.creamTime = fotmateDate(row.creamTime); 
 	        $('#ExampleBox').dialog('open').dialog('setTitle','修改模板信息');
 	        $('#fm').form('load',row);
+	        url = "<%=basePath%>framework/duanxin/updateExample.action";
 }
 //确认修改信息的保存按钮	    
 function saveBean(){ 	
       $('#fm').form('submit',{
-		       url: "<%=basePath%>framework/duanxin/updateExample.action",
+		       url: url,
 		       onSubmit: function(){
 		           return $(this).form('validate');
 		       },
 		       success: function(data){
-		       	var obj = JSON.parse(data);
-		       	console.log(data+", "+obj+", "+obj.state);
-		       	   if(obj.state == 1){
-			           $('#ExampleBox').dialog('close');        // close the dialog
-			           $('#ExampleListBox').datagrid('reload');    // reload the user data
-		           }else{
-		           	   $.messager.alert('操作提示', "修改不成功！", 'warning');
-		           }
+		       			var obj = JSON.parse(data);
+			            $('#ExampleBox').dialog('close');        // close the dialog
+			            $('#ExampleListBox').datagrid('reload');    // reload the user data
 		       }
 	 }); 
 }
@@ -209,10 +216,9 @@ function query(){
 		singleSelect: false,
 		rownumbers:true,
 		columns: [[
-		           { field: 'ck', checkbox: true },
-			        { field: 'banPeople', title: '绑定人', width: 150 },
-			        { field: 'banZu', title: '绑定组', width: 100 },
-			        { field: 'text', title: '模板内容', width: 200 },
+		           { field: 'banPeople', title: '绑定人', width: '25%' },
+	        	   { field: 'banZu', title: '绑定组', width: '22.5%' },
+	        	   { field: 'text', title: '模板内容', width: '50%' }
 	    ]]
 	});
 }

@@ -646,7 +646,7 @@ $(function(){
 			alert("请选择出发日期");
 			return false;	
 		}
-		window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?chufCity="+chufCity+"&daodCity="+daodCity+"&cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&chufPlan="+chufPlan+"&daodPlan="+daodPlan;
+		window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode;
 	}
 	
 	function bb(){

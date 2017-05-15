@@ -35,25 +35,32 @@ $(function(){
 	});
 	
 	//预定的方法
-	$(".aYuding").click(function(){	
+	/*$(".aYuding").click(function(){	
 		var basePath=$("#basePath").text();
 		var cangweiType = $(this).parent().next().next().children(".Eimg").text(); //舱位类型
 		//var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
 		var chufDate = $("#dateTimeID").text();//出发时间
 		var jsd = $(this).next(".choDate").text();
 		window.location.href = basePath+"wechatController/page/YDticket.action?cangweiType="+cangweiType+"&chufDate="+chufDate+"&jsd="+jsd;         
-	});
+	});*/
 	
 	//其他舱位中的预定
-	$(".anotherCW").click(function(){	
+	/*$(".anotherCW").click(function(){	
 		var basePath=$("#basePath").text();
 		var cangweiType = $(this).parent().next().next().children(".Eimg").text(); //舱位类型
 		var chufDate = $("#dateTimeID").text();//出发时间
 		var jsd = $(this).next(".choDate").text();
 		//var TekNum = obj.children(".notTjTicketDiv").children(".moneyAndTicket").children(".zuowei").text();//剩余的票数
 		window.location.href = basePath+"wechatController/page/YDticket.action?cangweiType="+cangweiType+"&chufDate="+chufDate+"&jsd="+jsd;
-	});
+	});*/
 });
+
+//直达的航班点击“预定”的时候
+function otherYdBtn(uuid,canbin){
+	alert("航班编号："+uuid+", 舱位："+canbin);
+	var basePath=$("#basePath").text();
+	window.location.href = basePath+"wechatController/page/YDticket.action?uuid="+uuid+"&canbin="+canbin;
+}
 
 
 

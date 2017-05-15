@@ -1,7 +1,5 @@
 package com.solar.tech.controller.framework;
 
-import java.io.IOException;
-
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -22,19 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.solar.tech.bean.PhoneNum;
-import com.solar.tech.bean.entity.Info;
-import com.solar.tech.service.InfoService;
 import com.solar.tech.service.PhoneNumService;
 import com.solar.tech.util.Current;
 /**
  * 类名：InfoController 
- *
  * 功能描述：短信提醒--手机号码的业务操作
- *
- * @author 曾令维
- *
- * Version info版本号：V1.0
- * © Copyright 续日科技 2016年7月29日  版权所有
  */
 @Controller
 @RequestMapping("/framework/phoneNum")

@@ -6,9 +6,8 @@
 <%	
 	String username=(String) session.getAttribute("userName");
 	String jin = (String) session.getAttribute("invId");
-	String cangweiType=new String(request.getParameter("cangweiType").getBytes("ISO-8859-1"),"utf-8");
-	String chufDate = request.getParameter("chufDate");
-	String jsd = new String(request.getParameter("jsd").getBytes("ISO-8859-1"),"utf-8");
+	String uuid = request.getParameter("uuid");
+	String canbin = request.getParameter("canbin");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,10 +44,27 @@
 <script>
 var fals=true;//防止重复提交
 var ivid = "<%=jin%>";
+var uuid = "<%=uuid%>";
+var canbin = "<%=canbin%>";
 $(function(){
-	var strRow = '<%= jsd%>';
-	var obj = JSON.parse(strRow);
-	console.log(obj);
+	//获取选中的航班
+	$.ajax({
+		url: "<%=basePath %>wechatController/find/byuuid.action",
+		type: "POST",
+		data: {
+				"uuid":uuid,
+				"canbin":canbin
+		},
+		dataType: "json",
+		success: function(result) {
+			console.log(result);
+		},
+		error: function() {
+
+		}
+	});
+	
+	
 	//获取上个界面传过来的值
 	var chufTime = changeType(obj.depTime); //出发时间
 	var arrDTime = changeType(obj.arrTime); //到达时间
@@ -62,10 +78,10 @@ $(function(){
 	var countTime = mudiPlane[1];//历时多长时间
 	var cost = ""; //价格
 	<%-- var zhekou = "<%=zhekou%>"; //折扣 --%>
-	var cangweiType = "<%=cangweiType%>"; //舱位类型
+	var cangweiType = canbin; //舱位类型
 	var chufCityID = findByCity(obj.orgCity); //出发城市
 	var daodCityID = findByCity(obj.dstCity); //目的城市
-	var chufDate = "<%=chufDate%>"; //出发日期
+	var chufDate = "2017-05-30"; //出发日期
 	var seInfo = obj.seatList;
 	for(var i=0; i<seInfo.length; i++){
 		if(seInfo[i].cangwei == cangweiType){
@@ -76,7 +92,7 @@ $(function(){
 	//为信息框赋值
 	console.log(chufTime+","+arrDTime+","+shiPlace+","+flidNum+","+zhongPlace+","+countTime+","+cost+","+cangweiType+","+chufCityID+","+daodCityID+","+chufDate); 
 	$(".chufTime").text(chufTime);
-	$(".arrDTime").text(arrDTime);
+	$(".arrDTime").html(arrDTime);
 	$(".shiPlace").text(shiPlace);
 	$(".flidNum").text(flidNum);
 	$(".zhongPlace").text(zhongPlace);
@@ -92,7 +108,7 @@ $(function(){
 	var username="<%=username%>";
 	var jin = "<%=jin%>"
 	if(username==""||username=="null"||username==null){
-		alert("登录才能订票");
+		$.alert("登录才能订票");
 		$("#touMbackground").css("display","block");
 	}else{
 		getcode("<%=jin%>");
@@ -161,7 +177,7 @@ $(function(){
 			$("#ChufDate").text(chufDate);
 			$("#ChufDateTwo").text(chufDate);
 			$("#ChufTime").text(chufTime);
-			$("#DaodTime").text(arrDTime);
+			$("#DaodTime").html(arrDTime);
 			$("#ChufCity").text(chufCityID);
 			$("#DaodCity").text(daodCityID);
 			$("#QishiPlan").text(shiPlace);
@@ -323,6 +339,8 @@ function nextPat(){
 			var ChufDate=$("#ChufDate").text();//出发日期
 			var ChufTime=$("#ChufTime").text();//出发时间
 			var DaodTime=$("#DaodTime").text();//到达时间
+			/* alert(DaodTime);
+			return; */
 			var ChufCity=$("#ChufCity").text();//出发城市
 			var DaodCity=$("#DaodCity").text();//到达城市
 			var QishiPlan=$("#QishiPlan").text();//起始机场
@@ -455,7 +473,7 @@ function ageFunc(birthday){
 			var firstTime=GoTime.substring(0,2);
 			var conterTime=GoTime.substring(2,4);
 			var lastTime=GoTime.substring(4,GoTime.length);
-			return firstTime+":"+conterTime+"<span style='color:#ff0000; font-size:10px;'>"+lastTime+"</span>";
+			return firstTime+":"+conterTime+"<span style='color:#ff0000; font-size:10px;'>+"+lastTime+"</span>";
 		}else{			
 			var firstTime=GoTime.substring(0,2);
 			var lastTime=GoTime.substring(2,GoTime.length);
@@ -466,7 +484,7 @@ function ageFunc(birthday){
 	//根据时间参数化成秒
 	function changesTime(time){
 		var ohh,omm,ocount;
-		if(time.indexOf("+")>0){
+		if(time.indexOf("+")>0||time.indexOf(" ")>0){
 			ohh = time.substring(0,2);
 			omm = time.substring(2,4);
 			ocount = ohh*3600+omm*60+24*3600;

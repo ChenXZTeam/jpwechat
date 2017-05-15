@@ -26,46 +26,106 @@
 	.seachBox ul li{float:left; margin-left:10px;}
 	.seachBox ul li span{}
 	.seachBox ul li input{height:24px; outline:none; border:1px solid #cccccc; padding-left:10px;}
-	.seachBox ul li a{padding:5px 20px; font-size:13px; border:1px solid blue; color:blue; cursor:pointer; display:block; text-align:center;}
 	.titleClass{width:100px; font-size:12px; color:#666666;}
 	textarea{width:100%; height:100px; color:#777777;}
 	input{height:20px; color:#777777;}
 	select{width:164px; height:23px; color:#777777;}
 	.dispayNoneClass{display:none;}
+	#fenziLi li{line-height:25px; overflow:hidden;}
+	#fenziLi li label{margin-top:-3px; cursor:pointer;}
+	.fzUUID{display:none;}
+	
+	.checkDisplayNot{display:none;}
+	.checkDisplay{display:line;}
+	
+	.xialaPoint-colse{background:url(<%=basePath%>scripts/common/jquery-easyui/themes/default/images/tree_icons.png) no-repeat 0px 0px;}
+  	.xialaPoint-open{background:url(<%=basePath%>scripts/common/jquery-easyui/themes/default/images/tree_icons.png) no-repeat -18px 0px;}
+  	.fileImage-colse{background:url(<%=basePath%>scripts/common/jquery-easyui/themes/default/images/tree_icons.png) no-repeat -208px 0;}
+  	.fileImage-open{background:url(<%=basePath%>scripts/common/jquery-easyui/themes/default/images/tree_icons.png) no-repeat -224px 0;}
+  	
+  	.fileImagePush{margin-right:2px; display:block; width:15px; height:20px; float:left; background:url(<%=basePath%>scripts/common/jquery-easyui/themes/default/images/tree_icons.png) no-repeat -240px 0}
 </style>
 
 </head>
-<body>
-<div class="seachBox">
-	<ul>
-		<li><span></span><input type="text" id="phoneNumber" placeholder="请输入手机号码"/></li>
-		<li><a onclick="query()">搜索</a></li>
-	</ul>
+<body style="margin:0px;padding:0px;">
+<div id="leftBox" style="border-right:1px solid #ccc; border-bottom:1px solid #ccc; float:left; width:14%; padding:10px;">
+	<a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none;" onclick="newFz()">新建分组</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none;" onclick="upFenZu()">修改分组</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none;" onclick="delFenZu()">删除分组</a>
+	<div id="fenzuBox" style="font-size:14px; margin-top:30px; margin-left:20px;">
+		<div id="btn1" style="cursor:pointer;">
+			<span class="xialaPoint-open" style="display:block; width:15px; height:15px; float:left;"></span>
+			<span class="fileImage-open" style="display:block; width:15px; height:15px; float:left;"></span>
+			<span style="display:block; float:left; margin-left: 3px; margin-top: 1px;">分组列表</span>
+			<span style="display:block; clear:both;"></span>
+		</div>
+		<ul id="fenziLi" style="list-style-type:none; margin:0px; margin-top:10px; max-height:330px; overflow-x: auto;"></ul>
+		<div><a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none; margin:15px 42px;" onclick="sureBtn()">确定选择</a></div>
+	</div>
+</div> 
+<div style="float:left; width:84.6%;">
+	<div style="height:25px; background-color:#fff; padding:10px;">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="removeit()" style="width:80px;">删除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="toUpdate()" style="width:80px;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shows()" style="width:80px;">查看</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="toImportExcel()" style="width:80px;">导入</a>
+	</div>
+	<div class="seachBox">
+		<ul>
+			<li><span></span><input type="text" id="phoneNumber" placeholder="请输入手机号码" style="border-radius:5px;"/></li>
+			<li><a href="javascript:void(0)" class="easyui-linkbutton" style="width:120px; height:28px; outline:none;" onclick="query()">搜索</a></li>
+		</ul>
+	</div>
+	<div id="grideBox" style="width:100%;">
+		<div id="phoneNumListBox" style="width:100%;height:100%;"></div>
+	</div>
 </div>
-<div style="height:25px; background-color:#fff;">
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit(this)">删除</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="toImportExcel()">导入</a>
+<div style="clear:both;"></div>
+<div id="fzNameBox" class="easyui-dialog" style="width:360px; padding:30px;" closed="true" buttons="#dlg-buttons2">
+	<form id="newFz">
+		<label>组名称：</label><input name="fzName" class="easyui-textbox"/>
+	</form>
 </div>
-<div id="grideBox" style="width:100%;">
-	<div id="phoneNumListBox" style="width:100%;height:100%;"></div>
+<div id="dlg-buttons2">
+	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveFz()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#fzNameBox').dialog('close')" style="width:90px">取消</a>
 </div>
-<div id="phoneNumBox" class="easyui-dialog" style="width:720px; height:550px; padding: 10px 20px" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
+<div id="phoneNumBox" class="easyui-dialog" style="width:360px; height:400px; padding:20px;" closed="true" buttons="#dlg-buttons" iconCls="icon-edit">
 	<form id="fm" method="post" enctype="multipart/form-data" novalidate>
 		<table border="0" cellpadding="0" cellspacing="10">
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="phoneID"/></td>
+				<td colspan="2"><input name="phoneID"/></td>
 			</tr>
 			<tr class="dispayNoneClass">
-				<td colspan="4"><input name="userName"/></td>
+				<td colspan="2"><input name="userName"/></td>
+			</tr>
+			<tr>
+				<td class="titleClass">联系用户：</td>
+				<td><input name="linkName"/></td>
 			</tr>
 			<tr>
 				<td class="titleClass">手机号：</td>
-				<td colspan="3"><input name="phoneNumber"/></td>
+				<td><input name="phoneNumber"/></td>
 			</tr>
 		</table>
 	</form>
+</div>
+<div id="lookAllMess" class="easyui-dialog" style="width:360px; height:400px; padding:20px;" closed="true" buttons="#dlg-buttons1">
+	<form id="lookAllForm">
+		<table>
+			<tr>
+				<td>联系用户：</td>
+				<td><input name="linkName" style="border:none; outline:none;" readonly/></td>
+			</tr>
+			<tr>
+				<td>手机号码：</td>
+				<td><input name="phoneNumber" style="border:none; outline:none;" readonly/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="dlg-buttons1">
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lookAllMess').dialog('close')" style="width:90px">取消</a>
 </div>
 
 <div id="dlg-buttons">
@@ -74,22 +134,20 @@
 </div>
 
 <div id="importdlg" class="easyui-dialog" style="margin-top:40px; width: 300px; height: 150px; padding: 10px 20px" closed="true">
-	  <form id="importfm" method="post"  enctype="multipart/form-data"novalidate >
-		 <input class="easyui-filebox" id="importfile" name="file" data-options="prompt:'选择文件路径'" style="width:100%">
-	  </form>
-	   <a href="javascript:void(0)" class="easyui-linkbutton c6" id="importExcel"
-			iconCls="icon-ok" style="margin-top:20px;width: 90px">确定</a> 
-		 <a href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-cancel" onclick="javascript:$('#importdlg').dialog('close')"
-			style="width: 90px; margin-top:20px">取消</a>
-	  </div>
+	 <form id="importfm" method="post"  enctype="multipart/form-data"novalidate >
+		<input class="easyui-filebox" id="importfile" name="file" data-options="prompt:'选择文件路径'" style="width:100%">
+	 </form>
+	 <a href="javascript:void(0)" class="easyui-linkbutton c6" id="importExcel" iconCls="icon-ok" style="margin-top:20px;width: 90px">确定</a> 
+	 <a href="javascript:void(0)" class="easyui-linkbutton"	iconCls="icon-cancel" onclick="javascript:$('#importdlg').dialog('close')" style="width: 90px; margin-top:20px">取消</a>
+</div>
 	  
-	  <div id="loadBox" style="display:none; position:absolute; top:30%; left:45%; background:rgba(0,0,0,0.5); z-index:99999; font-size:12px; padding:10px; border-radius:5px; color:#ffffff;">
-	  	正在导入...
-	  </div>
+<div id="loadBox" style="display:none; position:absolute; top:30%; left:45%; background:rgba(0,0,0,0.5); z-index:99999; font-size:12px; padding:10px; border-radius:5px; color:#ffffff;">
+	  正在导入...
+</div>
 <script>
 $(function(){
-	$("#grideBox").css("height",$(window).height()-83);
+	$("#grideBox").css("height",$(window).height()-93);
+	$("#leftBox").css("height",$(window).height()-21);
 	$('#phoneNumListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -108,20 +166,83 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
+	        { field: 'linkName',title: '联系用户',width: '25%'},
 	        { field: 'phoneNumber', title: '手机号码', width: '25%' },
+	        { field: 'fzName', title: '所属分组', width: '15%' },
 	        { field: 'userName', title: '用户名', width: '22.5%' },
-	        { field: 'createTime', title: '创建时间', width: '50%',formatter:fotmateDate}
+	        { field: 'createTime', title: '创建时间', width: '10%',formatter:fotmateDate}
 	       
 	    ]]
 	});
+	
+	$("#btn1").click(function(){
+		  if($(this).children("span").hasClass("xialaPoint-open")){
+			  $(".xialaPoint-open").addClass("xialaPoint-colse").removeClass("xialaPoint-open");
+			  $(".fileImage-open").addClass("fileImage-colse").removeClass("fileImage-open");
+		  }else{
+			  $(".xialaPoint-colse").addClass("xialaPoint-open").removeClass("xialaPoint-colse");
+			  $(".fileImage-colse").addClass("fileImage-open").removeClass("fileImage-colse");
+		  }
+		  $("#fenziLi").slideToggle(100);
+	});
+	
+	loadFz();
 });
+
+var fzUrl = "";
+var upORdel = "";
+//新建分组
+function newFz(){
+	fzUrl = "<%=basePath%>framework/phoneGroup/newFz.action";
+	$('#fzNameBox').dialog('open').dialog('setTitle','新建分组');
+}
+
+//修改分组
+function upFenZu(){
+	$(".checkBoxFz").attr("checked",false);
+	if($(".checkBoxFz").hasClass("checkDisplayNot")){
+		$(".checkBoxFz").removeClass("checkDisplayNot").addClass("checkDisplay");
+	}else{
+		$(".checkBoxFz").removeClass("checkDisplay").addClass("checkDisplayNot");
+	}
+	upORdel = "1";
+}
+
+//删除分组
+function delFenZu(){
+	$(".checkBoxFz").attr("checked",false);
+	if($(".checkBoxFz").hasClass("checkDisplayNot")){
+		$(".checkBoxFz").removeClass("checkDisplayNot").addClass("checkDisplay");
+	}else{
+		$(".checkBoxFz").removeClass("checkDisplay").addClass("checkDisplayNot");
+	}
+	upORdel = "0";
+}
+
+function sureBtn(){
+	if(upORdel=="1"||"1"==upORdel){
+		alert("你点击的是修改");
+	}else if(upORdel=="0"||"0"==upORdel){
+		alert("你点击的是删除");
+	}
+}
+
+//加载全部分组
+function loadFz(){
+	$.post("<%=basePath%>framework/phoneGroup/getGroupList.action",{},function(res){
+		var obj = JSON.parse(res);
+		var data = obj.rows;
+		for(var i=0; i<data.length; i++){
+			var li = '<li><input class="checkBoxFz checkDisplayNot" type="checkbox" style="float:left; margin-top:-0.5px;"/><span class="fileImagePush"></span><label class="lookSee" style="float:left;">'+data[i].fzName+'</label><div class="fzUUID" style="clear:both;">'+data[i].uuid+'</div></li>';
+			$("#fenziLi").append(li);
+		}
+	});
+}
 
 //删除方法
 function removeit(){  //删除
 	var rows = $('#phoneNumListBox').datagrid('getSelections');	
 	var row = $('#phoneNumListBox').datagrid('getSelected');
-	console.log(row);
-	//alert(row);	
 	if (row == undefined||row == null||row == "") {
          $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
          return false;
@@ -130,7 +251,6 @@ function removeit(){  //删除
          $.messager.alert('操作提示', "只能删除一条数据", 'warning');
          return false;
     }
-    //alert(row.country);
 	$.messager.confirm('确认', '真的要删除<'+row.phoneNumber+'>吗?', function (r) {
           if (r) {
                 	var phoneID = row.phoneID;
@@ -196,12 +316,7 @@ $(document).ready(function(){
  				if(obj.state==1){
 	       			$('#importdlg').dialog('close');        // close the dialog
 	           		$('#phoneNumListBox').datagrid('reload');    // reload the user data
-	           		 $.messager.alert("操作提示", "数据导入成功!");
-	           		 <%-- $.messager.confirm('确认', '导入文件数据成功！是否查看错误数据？', function (r) {
-        				if (r) {
-        					window.location.href="<%=basePath%>console/framework/order/DupDataExcel.jsp";
-        				}
-    				}); --%>
+	           		$.messager.alert("操作提示", "数据导入成功!");
 	       		}else {
 	       			$.messager.alert('操作提示', '导入excel文件失败！', 'warning');
 	       		}
@@ -213,7 +328,6 @@ $(document).ready(function(){
  		}
 		});
 });
-		//--------------------------------------结束---------------------------
 		
 //修改信息
 function toUpdate(){  //弹出修改框
@@ -251,25 +365,42 @@ function saveBean(){
 	 }); 
 }
 
+//保存分组
+function saveFz(){
+	$('#newFz').form('submit',{
+	       url: fzUrl,
+	       onSubmit: function(){
+	           return $(this).form('validate');
+	       },
+	       success: function(data){
+		       	if(data=='"1"'||'"1"'==data){
+		       	 	location.reload();
+		       	}else{
+		       		$.messager.alert('操作提示', "操作分组失败", 'warning');
+		       	}
+	       }
+	}); 
+}
+
 function shows(){ //查看
 		    var row = $('#phoneNumListBox').datagrid('getSelected');
 		    var rows = $('#phoneNumListBox').datagrid('getSelections');
 		    if (row == undefined) {
-             		$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
-             		return;
-             	 } 
+             	$.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+             	return;
+            } 
             if(rows.length>1){
             	$.messager.alert('操作提示', "请选择一条数据！", 'warning');
              	return false;
-            }  
-			if (row){
-				window.location.href="<%=basePath%>console/framework/duanxin/details.jsp?phoneID="+row.phoneID;
-			}
+            } 
+            $("#lookAllMess").dialog('open').dialog('setTitle','查看手机详情');
+            $("#lookAllForm").form("clear");
+            $("#lookAllForm").form("load",row);
 }
 
 //查找的方法
 function query(){
-	var phoneNumber = $("#phoneNumber").val();	
+	var phoneNumber = $("#phoneNumber").val().trim();	
 	$('#phoneNumListBox').datagrid({
 		height: '100%',
 		fit:true,
@@ -288,9 +419,11 @@ function query(){
 		rownumbers:true,
 		columns: [[
 		            { field: 'ck', checkbox: true },
-			        { field: 'phoneNumber', title: '手机号码', width: 150 },
-			        { field: 'userName', title: '用户名', width: 100 },
-			        { field: 'createTime', title: '创建时间', width: 200,formatter:fotmateDate}
+			        { field: 'linkName',title: '联系用户',width: '25%'},
+			        { field: 'phoneNumber', title: '手机号码', width: '25%' },
+			        { field: 'fzName', title: '所属分组', width: '15%' },
+			        { field: 'userName', title: '用户名', width: '22.5%' },
+			        { field: 'createTime', title: '创建时间', width: '25%',formatter:fotmateDate}
 	    ]]
 	});
 }
@@ -326,8 +459,6 @@ Date.prototype.format = function (format) {
 		 } 
 		 return format;  
 } 
-
-
 		
 </script>
 </body>

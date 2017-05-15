@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightInfo {
+	private String uuid; //该航班的唯一标识
 	private String airCode; // 航空公司二字码
 	private String flightNo; // 航班号
 	private String planeStyle; // 机型
@@ -94,6 +95,14 @@ public class FlightInfo {
 
 	public void setArrPlaneName(String arrPlaneName) {
 		this.arrPlaneName = arrPlaneName;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	@Override

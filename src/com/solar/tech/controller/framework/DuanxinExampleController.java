@@ -1,41 +1,25 @@
 package com.solar.tech.controller.framework;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.solar.tech.bean.DuanxinExample;
-import com.solar.tech.bean.PhoneNum;
-import com.solar.tech.bean.entity.Info;
 import com.solar.tech.service.DuanxinExampleService;
-import com.solar.tech.service.InfoService;
-import com.solar.tech.service.PhoneNumService;
 import com.solar.tech.util.Current;
 /**
  * 类名：InfoController 
- *
  * 功能描述：短信提醒---短信模板
- *
- * @author 曾令维
- *
- * Version info版本号：V1.0
- * © Copyright 续日科技 2016年7月29日  版权所有
  */
 @Controller
 @RequestMapping("/framework/duanxin")
@@ -69,19 +53,11 @@ public class DuanxinExampleController {
 	 */
 	@RequestMapping("/addExample.action")
 	@ResponseBody
-	public Map<String, Object> addExample(DuanxinExample duanxinExample,HttpServletRequest request, HttpServletResponse response, HttpSession session){
+	public Map<String, Object> addExample(DuanxinExample duanxinExample,String creamTime){
 		Map<String, Object> map = new HashMap<String, Object>();
-		Enumeration<String> paramNames = request.getParameterNames();   
-	    // 通过循环将表单参数放入键值对映射中  
-	    while(paramNames.hasMoreElements()) {  
-	       String key = paramNames.nextElement();  
-	       String value = request.getParameter(key); 
-	       if(key.equals("text"))duanxinExample.setText(value); 
-	       if(key.equals("banZu"))duanxinExample.setBanZu(value); 
-	       if(key.equals("banPeople"))duanxinExample.setBanPeople(value); 
-	    }
 	    String userName = Current.user().getUserName();
 	    duanxinExample.setUserName(userName);
+	    duanxinExample.setCreamTime(new Timestamp(new Date().getTime()));
 	    int i = duanxinExampleService.addExample(duanxinExample);
 	    if(i==1){
 	    	map.put("msg","1");
@@ -117,7 +93,7 @@ public class DuanxinExampleController {
 	    	 map.put("msg", e.getMessage());
 	     }
 	     return map;
-	   }
+	 }
 	
 	/**
 	 * 功能描述：更新模板
@@ -128,7 +104,9 @@ public class DuanxinExampleController {
 	 */
 	@RequestMapping("/updateExample.action")
 	@ResponseBody
-	public Map<String, Object> updateExample(DuanxinExample duanxinExample){
+	public Map<String, Object> updateExample(DuanxinExample duanxinExample,String id){
+		duanxinExample.setID(id);
+		duanxinExample.setUpdateTime(new Timestamp(new Date().getTime()));
 		Map<String, Object> map = new HashMap<String, Object>();
 		duanxinExampleService.updateExample(duanxinExample);
 		map.put("state", 1);
@@ -152,8 +130,5 @@ public class DuanxinExampleController {
 		map = duanxinExampleService.findExample(banPeople, page, rows);
 		return map;
 	}
-	
-	
-	
 	
 }

@@ -92,6 +92,7 @@ public class userOrderController {
 		
 		oderInfo.setChufDate(ChufDate);
 		oderInfo.setChufTime(ChufTime);
+		DaodTime = DaodTime.replaceAll(" ", "");
 		oderInfo.setDaodTime(DaodTime);
 		oderInfo.setCabin(cabin);
 		oderInfo.setUserName((String) session.getAttribute("userName"));

@@ -42,10 +42,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div style="float:left; margin-left:15px;"><button id="findBtn" style="height:31px; padding:0px 25px; cursor:pointer; background-color:blue; color:#fff; border:none;">查找</button></div>
 </div>
 
-<!-- 短信的按钮 -->
+<!-- 短信的按钮
 	<div id="toolbar" style="height:25px; background-color:#fff;">
 		<a id="SMSBtn_qx" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="sendMess()">短信发送</a>
-	</div>
+	</div> -->
 
 <!-- 短信发送页面 -->
 	<div id="sendMesBox" class="easyui-dialog"
@@ -267,7 +267,6 @@ Date.prototype.format = function (format) {
 	function details(rows){ 
 		$("#lookReason").html("");
 		var lookReason = rows.phoneNumber;
-		alert(lookReason);
 		var rs = lookReason.split(",");
 		for(var i=0; i<rs.length; i++){
 			var listyle = '<li style="overflow:hidden; padding:5px 0px; font-size:15px; text-align:center;"><span>'+(i+1)+'、</span><span>'+rs[i]+'</span></li>';

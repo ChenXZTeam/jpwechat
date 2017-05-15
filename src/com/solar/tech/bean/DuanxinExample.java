@@ -1,6 +1,5 @@
 package com.solar.tech.bean;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -18,8 +17,8 @@ public class DuanxinExample {
     @Id
     @GenericGenerator(name="uuid", strategy="uuid")
     @GeneratedValue(generator="uuid")
-    @Column(name="exampleID", length=50)
-	private String exampleID;
+    @Column(name="ID", length=50)
+	private String ID;
 
     //编辑文本
     @Column(name="text")
@@ -36,13 +35,21 @@ public class DuanxinExample {
    //登录账号
     @Column(name="userName", length=50)
     private String userName;
+    
+    //创建时间
+    @Column(name="creamTime", length=50)
+    private Timestamp creamTime;
+    
+    //修改时间
+    @Column(name="updateTime", length=50)
+    private Timestamp updateTime;
 
-	public String getExampleID() {
-		return exampleID;
+	public String getID() {
+		return ID;
 	}
 
-	public void setExampleID(String exampleID) {
-		this.exampleID = exampleID;
+	public void setID(String iD) {
+		ID = iD;
 	}
 
 	public String getText() {
@@ -76,7 +83,21 @@ public class DuanxinExample {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-    
+
+	public Timestamp getCreamTime() {
+		return creamTime;
+	}
+
+	public void setCreamTime(Timestamp creamTime) {
+		this.creamTime = creamTime;
+	}
+
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
 	
  }

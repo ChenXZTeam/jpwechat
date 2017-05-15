@@ -1,6 +1,5 @@
 package com.solar.tech.bean;
  
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -14,16 +13,24 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="FW_phoneNum")
 public class PhoneNum {
-	//签证ID
+	//ID
     @Id
     @GenericGenerator(name="uuid", strategy="uuid")
     @GeneratedValue(generator="uuid")
     @Column(name="phoneID", length=50)
 	private String phoneID;
+    
+    //手机用户
+    @Column(name="linkName",length=100)
+    private String linkName;
 
-	//入境次数
+	//手机号
     @Column(name="phoneNumber", length=50)
 	private String phoneNumber;
+    
+    //所属分组
+    @Column(name="fzName", length=25)
+    private String fzName;
     
     //登录账号
     @Column(name="userName", length=50)
@@ -64,6 +71,21 @@ public class PhoneNum {
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	public String getLinkName() {
+		return linkName;
+	}
+
+	public void setLinkName(String linkName) {
+		this.linkName = linkName;
+	}
+
+	public String getFzName() {
+		return fzName;
+	}
+
+	public void setFzName(String fzName) {
+		this.fzName = fzName;
+	}
 	
  }

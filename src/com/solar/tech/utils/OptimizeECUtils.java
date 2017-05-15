@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.Segment;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.solar.tech.bean.entity.FlightInfo;
@@ -17,15 +15,14 @@ import com.travelsky.sbeclient.obe.response.FDItem;
 import com.travelsky.sbeclient.obe.response.SkSegment;
 
 public class OptimizeECUtils {
-
+	
 	// 复合查询，返回完整的航班信息
 	public List<FlightInfo> query(String org, String dst, String date, String airCode ,String filgNo, String direct, String noStop){
 		List<SkSegment> skList = new ECUtils().sk(org, dst, date, airCode, direct, noStop); // 查询飞行周期
-		//if(skList.size()<1){return null;}//没有查找查询飞行周期就结束掉不执行下面的操作
 		List<FDItem> fdList = new ECUtils().fd(org, dst, date, airCode, null, null, null); // 查询运价
-		//if(fdList.size()<1){return null;}//没有查找查询查询运价就结束掉不执行下面的操作
 		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, airCode, direct, noStop, null, filgNo); // 查询座位可用
-		//if(avList.size()<1){return null;}//没有查找查询座位可用就结束掉不执行下面的操作
+		avList = removeGxSeat(avList); //剔除掉共享的座位
+		skList = removeGxFlight(skList,avList); //剔除掉共享的航班
 		List<FlightInfo> list = new ArrayList<FlightInfo>(); // 整合数据结果
 		
 		if(skList != null && skList.size() > 0){
@@ -107,8 +104,8 @@ public class OptimizeECUtils {
 		List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null); // 查询运价（去程）
 		if(fdList==null||fdList.size()<1){map.put("msg", 0);return map;}
 		
-		List<FDItem> rdList = new ECUtils().fd(dst, org, returnDate, null, null, null, null); // 查询运价（回程）
-		if(rdList==null||rdList.size()<1){map.put("msg", 0);return map;}
+		/*List<FDItem> rdList = new ECUtils().fd(dst, org, returnDate, null, null, null, null); // 查询运价（回程）
+		if(rdList==null||rdList.size()<1){map.put("msg", 0);return map;}*/
 		
 		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, null, null, null, null, null); // 查询座位可用（去程）
 		if(avList==null||avList.size()<1){map.put("msg", 0);return map;}
@@ -224,8 +221,8 @@ public class OptimizeECUtils {
 							seatInfo.setCangwei_data(data[k]); // 设置舱位信息
 							
 							if(SeatUtils.getSeatNum(data[k]) != null){
-								if(rdList != null && rdList.size() > 0){
-									for(FDItem item : rdList){
+								if(fdList != null && fdList.size() > 0){
+									for(FDItem item : fdList){
 										// 根据当前航司代码、及舱位获取对应的运价信息
 										if(bean.getAirCode().equals(item.getAirline()) && (index[k] + "").equals(item.getCabin())){
 											if(!StringUtils.isEmpty(item.getOnewayPrice())){
@@ -278,5 +275,66 @@ public class OptimizeECUtils {
 			}
 		}
 		return null;
+	}
+	
+	//剔除掉共享的座位
+	public List<AvSegment> removeGxSeat(List<AvSegment> AvInfo){
+		List<AvSegment> sInfo = new ArrayList<AvSegment>(); 
+		for(int i=0; i<AvInfo.size(); i++){
+			AvSegment avin = AvInfo.get(i);
+			if(avin.getCodeShare().equals("false")||"false".equals(avin.getCodeShare())){
+				sInfo.add(avin);
+			}
+		}
+		return sInfo;
+	}
+	
+	//剔除掉座位为空的航班
+	public List<AvSegment> removeNullSeat(List<AvSegment> AvInfo){
+			List<AvSegment> sInfo = new ArrayList<AvSegment>(); 
+			for(int i=0; i<AvInfo.size(); i++){
+				AvSegment avin = AvInfo.get(i);
+				if(avin.getCangwei_data()!=null&&avin.getCangwei_data().length>0){
+					sInfo.add(avin);
+				}
+			}
+			return sInfo;
+	}
+	
+	//移除掉重复的、没有座位的、共享的航班
+	public List<AvSegment> removeNullreapte(List<AvSegment> avsList){
+		List<AvSegment> resultList = new ArrayList<AvSegment>();
+		if(avsList != null && avsList.size() > 0){
+			for(AvSegment info : avsList){
+				boolean flag = true;
+				for(AvSegment rInfo : resultList){
+					if(info.getAirline().equals(rInfo.getAirline())){
+						flag = false;
+						break;
+					}
+				}
+				if(flag){
+					resultList.add(info);
+				}
+			}
+		}
+		
+		resultList = removeNullSeat(resultList); //移除掉座位为空的航班
+		resultList = removeGxSeat(resultList);  //移除掉共享的航班
+		
+		return resultList;
+	}
+	
+	//剔除掉共享的航班
+	public List<SkSegment> removeGxFlight(List<SkSegment> sks, List<AvSegment> AvInfo){
+		List<SkSegment> sInfo = new ArrayList<SkSegment>(); 
+		for(SkSegment skse : sks){
+			for(AvSegment avi : AvInfo){
+				if(avi.getAirline().equals(skse.getAirline())){
+					sInfo.add(skse);
+				}
+			}
+		}
+		return sInfo;
 	}
 }

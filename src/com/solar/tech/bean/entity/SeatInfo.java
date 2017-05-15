@@ -50,9 +50,9 @@ public class SeatInfo {
 
 	@Override
 	public String toString() {
-		return "SeatInfo [cangwei=" + cangwei + ", cangwei_data="
+		return "[cangwei=" + cangwei + ", cangwei_data="
 				+ cangwei_data + ", basicCabin=" + basicCabin
 				+ ", onewayPrice=" + onewayPrice + ", roundtripPrice="
-				+ roundtripPrice + "]";
+				+ roundtripPrice+"]";
 	}
 }
