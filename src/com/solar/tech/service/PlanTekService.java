@@ -1,11 +1,13 @@
 package com.solar.tech.service;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -38,26 +40,43 @@ public class PlanTekService {
 	private GenericDao gDao;
 	
 	//查询可用座位(出发城市、到达城市、出发时间)
-	public List<SeatInfoData> SreachSeat(String org, String dst, String date){
-		List<SeatInfoData> noStop = OnlySeatInfo(org,dst,date); //直达的
-		if(noStop.size()==0){  //如果直达的航班为空，则说明这个条件航班没有查找过记录，需要重新查找
+	public List<SeatInfoData> SreachSeat(String org, String dst, String date, Integer isWf){
+		List<SeatInfoData> noStop = SeatInfo(org,dst,date,isWf); //查找数据是否已经缓存
+		noStop = guoDateInfo(noStop); // 进一步处理看看是否有过期的航班
+		if(noStop.size()==0){  //如果数据库缓存的航班为空，则说明这个条件航班没有查找过记录，需要重新查找
 			System.out.println("符合查找接口的条件");
-			List<AvSegment> hsavList = new ECUtils().av(org, dst, date, null, null, "false", null, null, null); //查询座位可用   有中转
-			hsavList = new OptimizeECUtils().removeNullreapte(hsavList); //剔除掉重复的、没有座位的、共享的航班
+			String dayNum = "";
+			long juliDay = pointTime(date);
+			if(juliDay==0){dayNum = "1";}else if(juliDay>0&&juliDay<=3){dayNum = "2";}else if(juliDay>3&&juliDay<=7){dayNum = "3";}else if(juliDay>7&&juliDay<=15){dayNum = "4";}else if(juliDay>15&&juliDay<=30){dayNum = "5";}else if(juliDay>30){dayNum = "6";}
+			List<AvSegment> hsavList = null;
+			if(isWf==1){ //说明搜的是往返的  不需要中转
+				hsavList = new ECUtils().av(org, dst, date, null, null, "true", null, null, null); //查询座位可用   无中转
+			}else{ //否则是单程的 需要有中转
+				hsavList = new ECUtils().av(org, dst, date, null, null, "false", null, null, null); //查询座位可用   有中转
+			}
+			hsavList = new OptimizeECUtils().removeNullreapte(hsavList); //剔除没有座位的、重复的、共享的航班
 			for(int i=0; i<hsavList.size(); i++){
 				AvSegment avs = hsavList.get(i);
 				SeatInfoData aidata = new SeatInfoData(); //要保存到数据库的对象
 				UUID uuid = UUID.randomUUID();
 				aidata.setSignFilghtNum(uuid.toString());
 				aidata.setAirline(avs.getAirline());
-				aidata.setDepDate(avs.getDepDate().substring(0,8));
 				aidata.setDeptimemodify(avs.getDeptimemodify());
 				aidata.setDepTime(avs.getDepTime());
 				aidata.setDepTerm(avs.getDepTerm());
 				aidata.setOrgcity(avs.getOrgcity());
+				aidata.setDwOrgCity(org); //设置出发城市的组
+				aidata.setDwDstCity(dst); //设置到达城市的组
+				aidata.setDayNum(dayNum); //设置缓存的范围天数
 				aidata.setArriTerm(avs.getArriTerm());
 				aidata.setArriTime(avs.getArriTime());
-				aidata.setArriveDate(avs.getArriveDate().substring(0,8));
+				String depd = avs.getDepDate().substring(0,8);
+				String dd = depd.substring(0,4)+"-"+depd.substring(4,6)+"-"+depd.substring(6,8);
+				aidata.setDepDate(dd); //因为缓存原因  数据会有公用情况  如：三天之内的数据 26号 27号数据就共享，这样这个出发日期就没有固定值。
+				
+				String arrid = avs.getArriveDate().substring(0,8);
+				String ad = arrid.substring(0,4)+"-"+arrid.substring(4,6)+"-"+arrid.substring(6,8);
+				aidata.setArriveDate(ad); //因为缓存原因  数据会有公用情况  如：三天之内的数据 26号 27号数据就共享，这样这个到达日期就没有固定值。
 				aidata.setArriveTimeModify(avs.getArriveTimeModify());
 				aidata.setDstcity(avs.getDstcity());
 				//把舱位数变成字符串存到数据库中
@@ -82,17 +101,48 @@ public class PlanTekService {
 				gDao.save(aidata);
 				noStop.add(aidata);
 			}
-		}else{  //如果不为空，就说明之前已经有用户查找过，可以调用数据库中的数据即可
-			System.out.println("符合查找数据库的条件");
-			noStop = SeachSeatInfo(org,dst,date); //全部符合的数据（直达或者中转）
+		}else{
+			//因为有的信息需要公用航班数据，所以更新一下出发时间
+			for(SeatInfoData sd : noStop){
+				//有些中转航班中的第二段航班起飞时间是明天起飞的。所以有必要更新起飞日期+1
+				if(sd.getDeptimemodify().equals("+1")){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date dates = null;
+					try {
+						dates = sdf.parse(date);
+						String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
+						sd.setDepDate(sdssd);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}else{
+					sd.setDepDate(date);
+				}
+				
+				//有些中转航班中的第二段航班到达时间是明天的。所以有必要更新到达日期+1
+				if(sd.getArriveTimeModify().equals("+1")){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date dates = null;
+					try {
+						dates = sdf.parse(date);
+						String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
+						sd.setArriveDate(sdssd);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}else{
+					sd.setArriveDate(date);
+				}
+				
+			}
 		}
 		return noStop;
 	}
 	
 	//查询航班舱位运价(出发城市、到达城市、出发时间)
-	public List<SeatPriceData> seachPrice(String org, String dst, String date){
+	public List<SeatPriceData> seachPrice(String org, String dst, String date,String airline){
 		List<FDItem> fdList = null;
-		List<SeatPriceData> spd = findBySqlData(org, dst);
+		List<SeatPriceData> spd = findBySqlData(org, dst,airline);
 		if(spd!=null&&spd.size()>0){
 			System.out.println("获取到数据库中的运价数据");
 			return spd;
@@ -118,11 +168,12 @@ public class PlanTekService {
 						spd.add(spce);
 					}
 					spList = removeSp(spList);//入库之前要进行去重处理
-					System.out.println("断电："+spList.size());
+					System.out.println("断点："+spList.size());
 					gDao.save(spList);
 				}
 			} catch (Exception e) {
 				System.out.println("查询接口运价异常");
+				return spd;
 			}
 			spd = removeSp(spd); //去重
 		}
@@ -221,42 +272,206 @@ public class PlanTekService {
 		return map;
 	}
 	
-	//从数据库中查询航班的座位信息(只搜直达)
-	public List<SeatInfoData> OnlySeatInfo(String org, String dst, String date){
-		date = date.replaceAll("-", "");
-		String hql = "FROM SeatInfoData WHERE orgcity = '"+org+"' AND dstcity = '"+dst+"' AND depDate = '"+date+"'";
+	//从数据库中查询航班的座位信息
+	public List<SeatInfoData> SeatInfo(String org, String dst, String date, Integer isWf){
+		long juliDay = pointTime(date);
+		String dayNum = "";
+		if(juliDay==0){
+			System.out.println("当天的航班");
+			dayNum = "1";
+		}else if(juliDay>0&&juliDay<=3){
+			System.out.println("三天之内的航班");
+			dayNum = "2";
+		}else if(juliDay>3&&juliDay<=7){
+			System.out.println("3-7天之内的航班");
+			dayNum = "3";
+		}else if(juliDay>7&&juliDay<=15){
+			System.out.println("7-15天之内的航班");
+			dayNum = "4";
+		}else if(juliDay>15&&juliDay<=30){
+			System.out.println("15-30天之内的航班");
+			dayNum = "5";
+		}else if(juliDay>30){
+			System.out.println("30天以上的航班");
+			dayNum = "6";
+		}
+		String hql = "";
+		if(isWf==1){
+			hql = "FROM SeatInfoData WHERE orgcity = '"+org+"' AND dstcity = '"+dst+"' AND dayNum = '"+dayNum+"'";
+		}else{
+			hql = "FROM SeatInfoData WHERE dwOrgCity = '"+org+"' AND dwDstCity = '"+dst+"' AND dayNum = '"+dayNum+"'";
+		}
+		
 		List<SeatInfoData> avs = gDao.find(hql);
 		return avs;
 	}
 	
-	//从数据库中查询航班的座位信息(包括中转)
-	public List<SeatInfoData> SeachSeatInfo(String org, String dst, String date){
-		date = date.replaceAll("-", "");
-		String hql = "FROM SeatInfoData WHERE (orgcity = '"+org+"' OR dstcity = '"+dst+"') AND depDate = '"+date+"'";
-		List<SeatInfoData> avs = gDao.find(hql);
-		return avs;
+	//判断数据是否过期
+	public List<SeatInfoData> guoDateInfo(List<SeatInfoData> sif){
+		List<SeatInfoData> deleIdList = new ArrayList<SeatInfoData>();  //用于临时存放过期的航班uuid
+		List<SeatInfoData> saveSinf = new ArrayList<SeatInfoData>();  //用于临时存放没有过期的航班
+		for(SeatInfoData sid : sif){
+			if(sid.getDayNum().equals("1")){
+				//当天的航班 超过一个小时就是过期
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.HOUR_OF_DAY, -1);
+				Date NowDate = c.getTime();
+				Date creaTime = sid.getCreateTime();
+
+				if(creaTime.after(NowDate)){
+					saveSinf.add(sid);
+				}else if(NowDate.after(creaTime)){
+					deleIdList.add(sid);
+				}
+			}else if(sid.getDayNum().equals("2")){
+				//3天之内的航班 超过二个小时就是过期
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.HOUR_OF_DAY, -2);
+				Date NowDate = c.getTime();
+				Date creaTime = sid.getCreateTime();
+
+				if(creaTime.after(NowDate)){
+					saveSinf.add(sid);
+				}else if(NowDate.after(creaTime)){
+					deleIdList.add(sid);
+				}
+			}else if(sid.getDayNum().equals("3")){
+				//3-7天的航班 超过八个小时就是过期
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.HOUR_OF_DAY, -8);
+				Date NowDate = c.getTime();
+				Date creaTime = sid.getCreateTime();
+
+				if(creaTime.after(NowDate)){
+					saveSinf.add(sid);
+				}else if(NowDate.after(creaTime)){
+					deleIdList.add(sid);
+				}
+			}else if(sid.getDayNum().equals("4")){
+				//7-15天的航班 超过24个小时就是过期
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.HOUR_OF_DAY, -24);
+				Date NowDate = c.getTime();
+				Date creaTime = sid.getCreateTime();
+
+				if(creaTime.after(NowDate)){
+					saveSinf.add(sid);
+				}else if(NowDate.after(creaTime)){
+					deleIdList.add(sid);
+				}
+				
+			}else if(sid.getDayNum().equals("5")){
+				//15-30天的航班 超过2天就是过期
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.DAY_OF_YEAR, -2);
+				Date NowDate = c.getTime();
+				Date creaTime = sid.getCreateTime();
+
+				if(creaTime.after(NowDate)){
+					saveSinf.add(sid);
+				}else if(NowDate.after(creaTime)){
+					deleIdList.add(sid);
+				}
+			}else if(sid.getDayNum().equals("6")){
+				//30天以上的航班 超过5天就是过期
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.DAY_OF_YEAR, -5);
+				Date NowDate = c.getTime();
+				Date creaTime = sid.getCreateTime();
+
+				if(creaTime.after(NowDate)){
+					saveSinf.add(sid);
+				}else if(NowDate.after(creaTime)){
+					deleIdList.add(sid);
+				}
+			}
+		}
+		gDao.delete(deleIdList);//删除过期的航班
+		return saveSinf;
+	}
+	
+	/**
+	 * 封装座位价格和航班信息的方法
+	 */
+	public List<FlightInfo> priceInfo(List<SeatInfoData> avList,String dateTime){
+		List<SeatInfoData> delList = new ArrayList<SeatInfoData>();//用于删掉数据库中的运价异常的航班
+		List<FlightInfo> flightInfo = new ArrayList<FlightInfo>();
+		
+		//查找价格并且组合
+		Iterator<SeatInfoData> it = avList.iterator();
+		while(it.hasNext()){
+			SeatInfoData avs = it.next();
+			List<SeatPriceData> spList = seachPrice(avs.getOrgcity(),avs.getDstcity(),dateTime,avs.getAirline().substring(0,2)); //一个航班查找一次才符合
+			if(spList.size()==0){
+				//如果出现数据库没有缓存的运价，而且接口也没有查找到运价。那这段航班就会被剔除掉。不会缓存到数据库中
+				delList.add(avs);
+				it.remove(); //需要显示到前端的数据也不会包含该航班
+			}else{
+				List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 航班座位信息
+				FlightInfo finf = new FlightInfo();
+				finf.setUuid(avs.getSignFilghtNum());
+				finf.setAirCode(avs.getAirline().substring(0,2));
+				finf.setArrTime(avs.getArriTime());
+				finf.setDepTime(avs.getDepTime());
+				finf.setDstCity(avs.getDstcity());
+				finf.setOrgCity(avs.getOrgcity());
+				finf.setFlightNo(avs.getAirline());
+				finf.setPlaneStyle(avs.getPlanestyle());
+				finf.setDeptimemodify(avs.getDeptimemodify());
+				finf.setArriveTimeModify(avs.getArriveTimeModify());
+				
+				String cwNum = avs.getCangwei_data(); //舱位的数量
+				String[] cwNum_Org = cwNum.split(","); 
+				String cwIndex = avs.getCangwei_index(); //舱位的类别
+				String[] cwIndex_Org = cwIndex.split(",");
+
+				for(int i=0; i<cwIndex_Org.length; i++){
+					SeatInfo seatInfo = new SeatInfo();
+					String cwChiled = cwIndex_Org[i];
+					String cwNumChild = cwNum_Org[i];
+					seatInfo.setCangwei(cwChiled);
+					seatInfo.setCangwei_data(cwNumChild);
+					for(SeatPriceData spdata : spList){
+						if(finf.getAirCode().equals(spdata.getAirline())&&cwChiled.equals(spdata.getCabin())){ //如果航空公司和舱位对得上。就说明查找到结果
+							seatInfo.setBasicCabin(spdata.getBasicCabin());
+							seatInfo.setOnewayPrice(spdata.getOnewayPrice());
+							seatInfo.setRoundtripPrice((Double.parseDouble(spdata.getOnewayPrice())*2)+"");
+						}
+					}
+					seatList.add(seatInfo);
+				}
+				finf.setSeatList(seatList);
+				flightInfo.add(finf);
+			}
+		}
+		 
+		//删除没有运价的航班
+		delFlight(delList);
+		
+		return flightInfo;
 	}
 	
 	//从数据库中查询航班的运价
-	public List<SeatPriceData> findBySqlData(String org, String dst){
+	public List<SeatPriceData> findBySqlData(String org, String dst,String airline){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_YEAR, 0);
+		c.add(Calendar.DAY_OF_YEAR, -180);
 		Date date = c.getTime();
 		String pastTime = sdf.format(date);
-		List<SeatPriceData> spd = gDao.find("FROM SeatPriceData WHERE DATE_FORMAT(createTime,'%Y-%m-%d') > '"+pastTime+"'");
+		List<SeatPriceData> spd = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+org+"' AND dstCity = '"+dst+"') OR (dstCity = '"+org+"' AND orgCity = '"+dst+"')) AND airline = '"+airline+"' AND DATE_FORMAT(createTime,'%Y-%m-%d') > '"+pastTime+"'");
 		return spd;
 	}
 	
 	//根据id从数据库中获取到数据
-	public Map<String,Object> findByUUID(String uuid,String canbin){
-		Map<String,Object> map = new HashMap<String,Object>();
+	public List<SeatInfoData> findByUUID(String uuid){
 		List<SeatInfoData> sinfo = gDao.find("FROM SeatInfoData WHERE signFilghtNum = '"+uuid+"'");
-		List<SeatPriceData> spd = findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin,sinfo.get(0).getAirline());
-		map.put("canbin", spd.get(0).getCabin());
-		map.put("cost", spd.get(0).getOnewayPrice());
-		map.put("dataObj", sinfo);
-		return map;
+		return sinfo;
+	}
+	
+	//根据id从数据库中获取到数据(两个同时查找，用于预定中转和往返时候)
+	public List<SeatInfoData> findByUUID(String uuid1,String uuid2){
+			List<SeatInfoData> sinfo = gDao.find("FROM SeatInfoData WHERE signFilghtNum = '"+uuid1+"' OR signFilghtNum = '"+uuid2+"'");
+			return sinfo;
 	}
 	
 	//根据舱位、航空公司、起始城市、到达城市
@@ -264,13 +479,6 @@ public class PlanTekService {
 		List<SeatPriceData> sepList = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+org+"' AND dstCity = '"+dst+"') OR (orgCity = '"+dst+"' AND dstCity = '"+org+"')) AND cabin = '"+canbin+"' AND airline = '"+codeAir.substring(0,2)+"'");
 		return sepList;
 	}
-	
-	//返回往返的全部航班信息
-	/*public Map<String,Object> roundtripAv(String org, String dst, String date, String returnDate, String airline, Integer page){
-			Map<String,Object> map  = new OptimizeECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
-			return map;
-	}*/
-	
 	
 	// 剔除重复的数据
 	public List<FlightInfo> removeRepeat(List<FlightInfo> list){
@@ -391,69 +599,76 @@ public class PlanTekService {
 		gDao.delete(o_op);
 	}
 	
-	//组合中转航班的方法
-	/*public List<FlightInfo> zuhe(List<FlightInfo> list){
-		List<FlightInfo> resultList = new ArrayList<FlightInfo>();
-		Random random = new Random();
-		for(int i=0; i<list.size(); i++){
-			for(int j=list.size()-1; j>i; j--){
-				if((list.get(i).getDstCity()).equals(list.get(j).getOrgCity())&&(list.get(i).getAirCode()).equals(list.get(j).getAirCode())&&changeSS(list.get(i).getArrTime(),list.get(j).getDepTime())>3600){
-					String[] storeInvitationChars={"A","B","C","D","1","E","F","G","H","2","I","0","J","K","3","L","M","8","N","4","O","P","5","Q","R","9","S","T","U","V","6","W","X","Y","7","Z"};
-					String sign = ""; //为两个符合的航班加上标识，以便在前台组合
-					for(int k=0; k<20; k++){
-		    			int index = random.nextInt(35);
-		    			sign += storeInvitationChars[index];
-		    		}
-					resultList.add(list.get(i));
-					resultList.add(list.get(j));
-				}
+	public long pointTime(String dataStr){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		long sd = -1;
+		try {
+			Date MuDate = sdf.parse(dataStr);
+			Date NowDate = new Date();
+			
+			Calendar fromCalendar = Calendar.getInstance();  
+		    fromCalendar.setTime(NowDate);  
+		    fromCalendar.set(Calendar.HOUR_OF_DAY, 0);  
+		    fromCalendar.set(Calendar.MINUTE, 0);  
+		    fromCalendar.set(Calendar.SECOND, 0);  
+		    fromCalendar.set(Calendar.MILLISECOND, 0); 
+		        
+		    Calendar toCalendar = Calendar.getInstance();  
+		    toCalendar.setTime(MuDate);  
+		    toCalendar.set(Calendar.HOUR_OF_DAY, 0);  
+		    toCalendar.set(Calendar.MINUTE, 0);  
+		    toCalendar.set(Calendar.SECOND, 0);  
+		    toCalendar.set(Calendar.MILLISECOND, 0);  
+		    
+		    sd = (toCalendar.getTime().getTime() - fromCalendar.getTime().getTime()) / (1000 * 60 * 60 * 24); 
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	        
+	    
+	    return sd;
+	}
+	
+	public static void main(String[] args) {
+		PlanTekService sd = new PlanTekService();
+		long juliDay = sd.pointTime("2017-05-21");
+		if(juliDay!=-1){
+			if(juliDay==0){
+				System.out.println("当天的航班");
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.HOUR_OF_DAY, -1);
+				Date NowDate = c.getTime();
+				String pastTime = sdf.format(NowDate);
+				System.out.println(pastTime);
+				
+			}else if(juliDay>0&&juliDay<=3){
+				System.out.println("三天之内的航班");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				Calendar c = Calendar.getInstance();
+				c.add(Calendar.DAY_OF_YEAR, -1);
+				Date NowDate = c.getTime();
+				String pastTime = sdf.format(NowDate);
+				System.out.println(pastTime);
+				
+			}else if(juliDay>3&&juliDay<=7){
+				System.out.println("3-7天之内的航班");
+			}else if(juliDay>7&&juliDay<=15){
+				System.out.println("7-15天之内的航班");
+			}else if(juliDay>15&&juliDay<=30){
+				System.out.println("15-30天之内的航班");
+			}else if(juliDay>30){
+				System.out.println("30天以上的航班");
+			}else{
+				System.out.println("未知距离出发时间：不明");
 			}
 		}
-		return resultList;
-	}*/
+	}
 	
-	/**
-	 * 将时间化成秒
-	 * @param start
-	 * @param overt
-	 * @return
-	 */
-	/*public static int changeSS(String start, String overt){
-		//将时间转换成秒来比较
-		String shh=null,smm=null,sdd=null;
-		int scount;
-		int ocount; //定义总时间的两个变量
-		String ohh=null,omm=null,odd=null;
-		
-		if(start.indexOf("+")>0){
-			shh = start.substring(0,2);
-			smm = start.substring(2,4);
-			sdd = start.substring(4,start.length());
-			scount = (Integer.parseInt(shh)*3600)+(Integer.parseInt(smm)*60)+(24*3600);
-		}else{
-			shh = start.substring(0,2);
-			smm = start.substring(2,start.length());
-			sdd = "0";
-			scount = (Integer.parseInt(shh)*3600)+(Integer.parseInt(smm)*60);
-		} 
-		
-		if(overt.indexOf("+")>0){
-				ohh = overt.substring(0,2);
-				omm = overt.substring(2,4);
-				odd = overt.substring(4,overt.length());
-				ocount = (Integer.parseInt(ohh)*3600)+(Integer.parseInt(omm)*60)+(24*3600);
-		}else{
-				ohh = overt.substring(0,2);
-				omm = overt.substring(2,overt.length());
-				odd = "0";
-				ocount = (Integer.parseInt(ohh)*3600)+(Integer.parseInt(omm)*60);
-		}
-		return ocount-scount;
-	}*/
-	
-	/*//临时方法
-	public List getPlanList(){
-		String sql = "select CODE,cn_name from b_airways";
-		return this.gDao.executeJDBCSqlQuery(sql);
-	}*/
+	//根据航班号和舱位查找数据库中缓存好的价格
+	public SeatPriceData findPrice(String fildNum,String canbin,String cfCity,String ddCity){
+		List<SeatPriceData> priceInfo = gDao.find("FROM SeatPriceData WHERE airline = '"+fildNum.substring(0,2)+"' AND cabin = '"+canbin+"' AND orgCity= '"+cfCity+"' AND dstCity = '"+ddCity+"'");
+		return priceInfo.get(0);
+	}
 }

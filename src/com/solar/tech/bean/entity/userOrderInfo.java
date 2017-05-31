@@ -46,37 +46,17 @@ public class userOrderInfo {
 	@Column(name="chufTime",length=25)
 	private String chufTime;
 	
+	//到达日期
+	@Column(name="daodDate",length=25)
+	private String daodDate;
+	
 	//到达时间
 	@Column(name="daodTime",length=25)
 	private String daodTime;
-	
-	//起始机场
-	@Column(name="qishiPlane",length=50)
-	private String qishiPlane;
-	
-	//起始机场的三字码
-	@Column(name="qishiPlaneCode",length=5)
-	private String qishiPlaneCode;
-	
-	//到达机场
-	@Column(name="daodPlane",length=50)
-	private String daodPlane;
-	
-	//到达机场的三字码
-	@Column(name="daodPlaneCode",length=5)
-	private String daodPlaneCode;
 		
 	//航班号
 	@Column(name="hangbanNum",length=25)
 	private String hangbanNum;
-	
-	//航空公司的code
-	@Column(name="airCode",length=10)
-	private String airCode;
-
-	//历时多少时间
-	@Column(name="cuntTime",length=25)
-	private String cuntTime;
 	
 	//出发城市
 	@Column(name="chufCity",length=100)
@@ -146,10 +126,6 @@ public class userOrderInfo {
 	@Column(name="takePlane",length=6)
 	private String takePlane;
 	
-	//用于预约编号识别最大的
-	@Column(name = "intNum", length=20)
-	private String intNum;
-	 
 	//中航信预定成功之后的编号
 	@Column(name="PNR",length=25)
 	private String PNR;
@@ -161,6 +137,18 @@ public class userOrderInfo {
 	//用户删除
 	@Column(name="AdminDel",length=5)
 	private String AdminDel;
+	
+	//餐饮
+	@Column(name="meal",length=5)
+	private String meal;
+	
+	//出发航楼
+	@Column(name="depTerm",length=5)
+	private String depTerm;
+	
+	//到达航楼
+	@Column(name="arriTerm",length=5)
+	private String arriTerm;
 	
 	// 修改这条数据的时间
 	@Column(name = "updateTime")
@@ -174,13 +162,9 @@ public class userOrderInfo {
 	@Column(name = "telNum")
 	private String telNum;
 	
-	//标识两个订单之间是否是往返
-	@Column(name = "wfsign")
-	private String wfsign;
-	
-	//标识两个订单之间是否是中转
-	@Column(name = "zzsign")
-	private String zzsign;
+	//记录中航信接口是否预定成功
+	@Column(name="isSuccess",length=5)
+	private String isSuccess;
 
 	public String getGetTeickTime() {
 		return getTeickTime;
@@ -198,14 +182,6 @@ public class userOrderInfo {
 		PNR = pNR;
 	}
 
-	public String getIntNum() {
-		return intNum;
-	}
-
-	public void setIntNum(String intNum) {
-		this.intNum = intNum;
-	}	
-	
 	public String getBirthday() {
 		return birthday;
 	}
@@ -252,30 +228,6 @@ public class userOrderInfo {
 
 	public void setOpenID(String openID) {
 		this.openID = openID;
-	}
-	
-	public String getAirCode() {
-		return airCode;
-	}
-
-	public void setAirCode(String airCode) {
-		this.airCode = airCode;
-	}
-	
-	public String getQishiPlaneCode() {
-		return qishiPlaneCode;
-	}
-
-	public void setQishiPlaneCode(String qishiPlaneCode) {
-		this.qishiPlaneCode = qishiPlaneCode;
-	}
-
-	public String getDaodPlaneCode() {
-		return daodPlaneCode;
-	}
-
-	public void setDaodPlaneCode(String daodPlaneCode) {
-		this.daodPlaneCode = daodPlaneCode;
 	}
 
 	public String getPsgType() {
@@ -326,36 +278,12 @@ public class userOrderInfo {
 		this.daodTime = daodTime;
 	}
 
-	public String getQishiPlane() {
-		return qishiPlane;
-	}
-
-	public void setQishiPlane(String qishiPlane) {
-		this.qishiPlane = qishiPlane;
-	}
-
-	public String getDaodPlane() {
-		return daodPlane;
-	}
-
-	public void setDaodPlane(String daodPlane) {
-		this.daodPlane = daodPlane;
-	}
-
 	public String getHangbanNum() {
 		return hangbanNum;
 	}
 
 	public void setHangbanNum(String hangbanNum) {
 		this.hangbanNum = hangbanNum;
-	}
-
-	public String getCuntTime() {
-		return cuntTime;
-	}
-
-	public void setCuntTime(String cuntTime) {
-		this.cuntTime = cuntTime;
 	}
 
 	public String getChufCity() {
@@ -478,28 +406,52 @@ public class userOrderInfo {
 		this.telNum = telNum;
 	}
 
-	public String getWfsign() {
-		return wfsign;
-	}
-
-	public void setWfsign(String wfsign) {
-		this.wfsign = wfsign;
-	}
-
-	public String getZzsign() {
-		return zzsign;
-	}
-
-	public void setZzsign(String zzsign) {
-		this.zzsign = zzsign;
-	}
-
 	public Timestamp getCreateTime() {
 		return createTime;
 	}
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getMeal() {
+		return meal;
+	}
+
+	public void setMeal(String meal) {
+		this.meal = meal;
+	}
+
+	public String getDepTerm() {
+		return depTerm;
+	}
+
+	public void setDepTerm(String depTerm) {
+		this.depTerm = depTerm;
+	}
+
+	public String getArriTerm() {
+		return arriTerm;
+	}
+
+	public void setArriTerm(String arriTerm) {
+		this.arriTerm = arriTerm;
+	}
+
+	public String getDaodDate() {
+		return daodDate;
+	}
+
+	public void setDaodDate(String daodDate) {
+		this.daodDate = daodDate;
+	}
+
+	public String getIsSuccess() {
+		return isSuccess;
+	}
+
+	public void setIsSuccess(String isSuccess) {
+		this.isSuccess = isSuccess;
 	}
 
 }

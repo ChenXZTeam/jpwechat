@@ -193,6 +193,7 @@ public class ECUtils {
 				return fdResponse.getFare().getSortedfares(); // 返回所有的运价信息
 			}
 		} catch (ObeException e) {
+			System.out.println("接口运价异常  出发城市："+org+", "+"到达城市："+dst+", 出发日期："+date+", 航空公司："+airline);
 			e.printStackTrace();
 		} 
 		return null;
@@ -291,7 +292,6 @@ public class ECUtils {
 				AVDoubleResponse avResponse = avClient.avForRoundTrip(request);
 				return avResponse;
 			} catch (ObeException e) { 
-				//System.out.println("=======>>>>捕获到往返航班搜索结果的异常");
 				e.printStackTrace(); 
 				return null;
 			} 

@@ -15,7 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>填写信息_订票</title>
-<link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css?time=2016"/>
+<link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css?time=20161"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/normalize3.0.2.min.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?tt=520sd1213123254as2111"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
@@ -37,6 +37,8 @@
 	.ChoosClassBox .ChoosSmallBox{padding:5px; border-bottom:1px solid #e1e1e1;}
 	.checkboxA{ border:#C9C9C9 1px solid; background-color:#fff; width:16px; height:16px; display:block; z-index:-1; float:left; border-radius:8px; margin-top:7px;}
 	.checkboxB{ background-color:#0079FE; border-radius:4px; width:8px; height:8px; display:block; float:left; margin-left:-11.544px; margin-top:10.599999px; display:none;}
+	#costXq li{overflow:hidden;}
+	#costXq li div{float:right;}
 </style>
 </head>
 
@@ -58,51 +60,40 @@ $(function(){
 		dataType: "json",
 		success: function(result) {
 			console.log(result);
+			var vardate = result.dataObj;
+			//为信息框赋值
+			$(".chufTime").text(changeType(vardate[0].depTime));
+			$(".arrDTime").text(changeType(vardate[0].arriTime));
+			$(".shiPlace").text(findByplaneName(vardate[0].orgcity));
+			$(".flidNum").text(vardate[0].airline);
+			$(".zhongPlace").text(findByplaneName(vardate[0].dstcity));
+			$(".countTime").text(cuntTime(vardate[0].depTime,vardate[0].deptimemodify,vardate[0].arriTime,vardate[0].arriveTimeModify));
+			$("#moneyPay").text(parseInt(result.cost));
+			$("#cost").text(parseInt(result.cost)+parseInt(50)); 
+			$(".cangweiType").text(result.canbin);
+			$(".chufCityID").text(findByCity(vardate[0].orgcity));
+			$(".daodCityID").text(findByCity(vardate[0].dstcity));
+			$(".chufDate").text(vardate[0].depDate);
+			$(".arrDate").text(getArriDate(vardate[0].depDate,vardate[0].arriveTimeModify));
+			
+			//确认信息框
+			$("#ChufCity").text(findByCity(vardate[0].orgcity));
+			$("#QishiPlan").text(findByplaneName(vardate[0].orgcity));
+			$("#fildNumfly").text(vardate[0].airline);
+			$("#ChufDate").text(vardate[0].depDate);
+			$("#ChufTime").text(changeType(vardate[0].depTime));
+			
+			$("#DaodCity").text(findByCity(vardate[0].dstcity));
+			$("#DaodPlan").text(findByplaneName(vardate[0].dstcity));
+			$("#ChufDateTwo").text(getArriDate(vardate[0].depDate,vardate[0].arriveTimeModify));
+			$("#DaodTime").text(changeType(vardate[0].arriTime));
+			
+			$("#CountTime").text(cuntTime(vardate[0].depTime,vardate[0].deptimemodify,vardate[0].arriTime,vardate[0].arriveTimeModify));
 		},
 		error: function() {
 
 		}
 	});
-	
-	
-	//获取上个界面传过来的值
-	var chufTime = changeType(obj.depTime); //出发时间
-	var arrDTime = changeType(obj.arrTime); //到达时间
-	var shiPlace = findByplaneName(obj.orgCity)+" "+obj.flightNo;	//起始机场和航班（集合）
-	var chufPlane = shiPlace.split(" "); //拆分shiPlace
-	shiPlace = chufPlane[0]; //起始机场
-	var flidNum = chufPlane[1];//航班
-	var zhongPlace = findByplaneName(obj.dstCity)+" "+cuntTime(obj.depTime,obj.arrTime); //终止机场和历时（集合）
-	var mudiPlane = zhongPlace.split(" ");//拆分zhongPlace
-	zhongPlace = mudiPlane[0];//终止机场
-	var countTime = mudiPlane[1];//历时多长时间
-	var cost = ""; //价格
-	<%-- var zhekou = "<%=zhekou%>"; //折扣 --%>
-	var cangweiType = canbin; //舱位类型
-	var chufCityID = findByCity(obj.orgCity); //出发城市
-	var daodCityID = findByCity(obj.dstCity); //目的城市
-	var chufDate = "2017-05-30"; //出发日期
-	var seInfo = obj.seatList;
-	for(var i=0; i<seInfo.length; i++){
-		if(seInfo[i].cangwei == cangweiType){
-			cost = seInfo[i].onewayPrice;
-			$("#m").val(cost);
-		}
-	}
-	//为信息框赋值
-	console.log(chufTime+","+arrDTime+","+shiPlace+","+flidNum+","+zhongPlace+","+countTime+","+cost+","+cangweiType+","+chufCityID+","+daodCityID+","+chufDate); 
-	$(".chufTime").text(chufTime);
-	$(".arrDTime").html(arrDTime);
-	$(".shiPlace").text(shiPlace);
-	$(".flidNum").text(flidNum);
-	$(".zhongPlace").text(zhongPlace);
-	$(".countTime").text(countTime);
-	$(".cost").text("￥"+cost);
-	//$(".zhekou").text(zhekou);
-	$(".cangweiType").text(cangweiType);
-	$(".chufCityID").text(chufCityID);
-	$(".daodCityID").text(daodCityID);
-	$(".chufDate").text(chufDate);
 	
 	//判断是否登录
 	var username="<%=username%>";
@@ -146,72 +137,129 @@ $(function(){
 						//alert("登录失败");
 					}
 			});
-		});
+	});
 		
 		//下一步的点击事件
 		$(".aBtn").click(function(){
+			var age = ""; //年龄
+			var lvkeType = ""; //旅客类型
+			var sexType = ""; //性别
+			var birthdayNum = ""; //生日
+			var deppDate = $(".chufDate").text(); //出发日期
 			if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
-				$.alert("请填写姓名");
-				return;
+					$.alert("请填写姓名");
+					return;
 			}
-			if($("#sexIpnt").val()==""||$("#sexIpnt").val()==" "||$("#sexIpnt").val()=="null"||$("#sexIpnt").val()==null){
-				$.alert("请填写性别");
-				return;
+			if($("#caseIpntSource").text()!="NI"){
+				if($("#birthIpnt").val()==""||$("#birthIpnt").val()==" "||$("#birthIpnt").val()==null||$("#birthIpnt").val()=="null"){
+					$.alert("请选择出生日期");
+					return;
+				}else{
+					//获取年龄和出生日期
+					birthdayNum = $("#birthIpnt").val();
+					age = ageFunc(birthdayNum,$(".chufDate").text()); 
+					//旅客类型
+					if(age<2){
+						lvkeType = "INF"; //婴儿  
+					}else if(age>=2&&age<=12){
+						lvkeType = "CHD"; //儿童
+					}else{
+						lvkeType = "ADT"; //成人票
+					}
+					//旅客性别
+					sexType = $("#sexIpntSource").text();
+				}
+			}else{
+				//获取年龄
+				var idInfo = $("#IDcase").val();
+				var birth = idInfo.substring(6,14);
+				birthdayNum = birth.substring(0,4)+"-"+birth.substring(4,6)+"-"+birth.substring(6,8);
+				age = ageFunc(birthdayNum,$(".chufDate").text()); 
+				//获乘机人类型
+				if(age<2){
+					lvkeType = "INF"; //婴儿  
+				}else if(age>=2&&age<=12){
+					lvkeType = "CHD"; //儿童
+				}else{
+					lvkeType = "ADT"; //成人票
+				}
+				//获取性别
+				var sexNum = idInfo.substring(idInfo.length-2,idInfo.length-1);
+				sexType = (sexNum%2 ==0)?"女":"男";
 			}
 			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
-				$.alert("请填写手机号码");
-				return;
-			}
-			if($("#personIpnt").val()==""||$("#personIpnt").val()==" "||$("#personIpnt").val()==null||$("#personIpnt").val()=="null"){
-				$.alert("请选择旅客类型");
-				return;
-			}
-			if($("#caseIpnt").text()==""||$("#caseIpnt").text()==" "||$("#caseIpnt").text()==null||$("#caseIpnt").text()=="null"){
-				$.alert("请选择证件类型");
-				return;
+					$.alert("请填写手机号码");
+					return;
 			}
 			if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()==null||$("#IDcase").val()=="null"){
-				$.alert("请填写证件号码");
-				return;
+					$.alert("请填写证件号码");
+					return;
 			}
-			$("#ChufDate").text(chufDate);
-			$("#ChufDateTwo").text(chufDate);
-			$("#ChufTime").text(chufTime);
-			$("#DaodTime").html(arrDTime);
-			$("#ChufCity").text(chufCityID);
-			$("#DaodCity").text(daodCityID);
-			$("#QishiPlan").text(shiPlace);
-			$("#fildNumfly").text(flidNum);
-			$("#CountTime").text(countTime);
-			$("#DaodPlan").text(zhongPlace);
-			$("#CostPay").text($(".cost").text());
 			
-			$("#LinkName").text($("#linkName").val());
-			$("#Sex").text($("#sexIpnt").val());
-			$("#iDcaseType").text($("#caseIpnt").text());
-			$("#MenType").text($("#personIpnt").val());
-			$("#iDcase").text($("#IDcase").val());
-			$("#PhoneNum").text($("#phoneNum").val());
+			if($("#caseIpntSource").text()=="NI"){
+				if(codeSf()){}else{
+					$.alert("身份证号码输入错误，请认真核实！");
+					return false;
+				}
+			}
 			
 			//意外险的值
 			if($(".flindYw").is(':checked')){
-				$("#YiwaiBX").text($(".flindYw").val());
+				$("#YiwaiBX").text(1); 
 			}else{
-				$("#YiwaiBX").text("无");
+				$("#YiwaiBX").text("0");
 			}
 			//延误险值
 			if($(".delayBx").is(':checked')){
-				$("#YanwuBX").text($(".delayBx").val());
+				$("#YanwuBX").text(1);
 			}else{
-				$("#YanwuBX").text("无");
-			}	
-			if(nextPat()==false){return;}
-			$(document).attr("title","机票预定_确认信息");
-			$("#trueOrderInfo").css("display","block");
-			$("html").css("height","100%");
-			$("html").css("overflow","hidden");
-			$("body").css("height","100%");
-			$("body").css("overflow","hidden");
+				$("#YanwuBX").text("0");
+			}
+			
+			//乘机人资料
+			var LinkName=$("#linkName").val();//乘机人
+			var iDcaseType=$("#caseIpntSource").text();//证件类型
+			var iDcase=$("#IDcase").val();//证件号码
+			var PhoneNum=$("#phoneNum").val();//手机号码
+			var YiwaiBX = $("#YiwaiBX").text();//意外保险
+			var YanwuBX = $("#YanwuBX").text();//延误险
+			var jsondatastr = '{"depDate":"'+deppDate+'","uuid":"'+uuid+'","cangwei":"'+canbin+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
+			/* var jsondata = JSON.parse(jsondatastr);
+			console.log(jsondata);
+			return false; */
+			$("#CostPay").text($(".payMoney").text());
+			$("#LinkName").text(LinkName);
+			$("#Sex").text(sexType);
+			$("#iDcase").text(iDcase);
+			$("#PhoneNum").text(PhoneNum);
+			
+			if(fals==true){
+				fals=false;
+				$.ajax({
+					url:"<%=basePath%>userOrderController/add/order.action",
+					type:"POST",
+					data:{"jsStr":jsondatastr},
+					dataType:"json",
+					beforeSend:function(){$("#loading").css("display","block");},
+					complete:function(){$("#loading").css("display","none");},
+					success:function(result){
+						console.log(result);
+						var resDate = result.resAlert;
+						var tr = '<tr><td>'+findByCity(resDate.orgCity)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(resDate.depCity)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate.isOk)+'</td></tr>';
+						$("#resBoxTables").append(tr);
+						$(document).attr("title","机票预定_确认信息");
+						$("#ydresuletBox").css("display","block");
+						$("#trueOrderInfo").css("display","block");
+						$("html").css("height","100%");
+						$("html").css("overflow","hidden");
+						$("body").css("height","100%");
+						$("body").css("overflow","hidden");
+					},
+					error:function(result){
+					}
+				});			
+			}
+
 		});
 		
 		//检查手机格式是否正确
@@ -230,6 +278,16 @@ $(function(){
 				$.alert("请选择证件类型");
 				$("#IDcase").blur();
 				return false;
+			}
+		});
+		
+		//判断输入的身份证是否正确
+		$("#IDcase").change(function(){
+			//用户选择输入身份证的时候才会校验  选择护照或者其他 不会校验
+			if($("#caseIpntSource").text()=="NI"){
+				if(codeSf()){}else{
+					$.alert("身份证号码输入错误，请认真核实！");
+				}
 			}
 		});
 		
@@ -280,16 +338,17 @@ $(function(){
 		$("#sexIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'先生', 
-	            			value:'先生'
+	            			value:'男'
 	        		   },{  
 	        		   		label:'女士',
-	            			value:'女士'
+	            			value:'女'
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
 	            			},  
 	            			onConfirm: function (result) {  
-								$("#sexIpnt").val(result); 
+								$("#sexIpntSource").text(result); 
+								$("#sexIpnt").val(sourceSex(1,result));
 	            			}  
 	        	});  
     	});
@@ -297,19 +356,20 @@ $(function(){
     	$("#personIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'成人', 
-	            			value:'成人'
+	            			value:'ADT'
 	        		   },{  
 	        		   		label:'儿童',
-	            			value:'儿童'
+	            			value:'CHD'
 	        		   },{  
 	        		   		label:'婴儿',
-	            			value:'婴儿'
+	            			value:'INF'
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
 	            			},  
 	            			onConfirm: function (result) {  
-								$("#personIpnt").val(result); 
+								$("#personIpntSource").text(result); 
+								$("#personIpnt").val(sourceSex(2,result)); 
 	            			}  
 	        	});  
     	});
@@ -317,95 +377,32 @@ $(function(){
 		$("#caseIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'身份证', 
-	            			value:'身份证'
+	            			value:'NI'
 	        		   },{  
 	        		   		label:'护照',
-	            			value:'护照'
+	            			value:'PP'
 	        		   },{  
 	        		   		label:'其他',
-	            			value:'其他' 
+	            			value:'ID' 
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
 	            			},  
 	            			onConfirm: function (result) {  
-								$("#caseIpnt").text(result); 
+								$("#caseIpnt").text(sourceSex(3,result)); 
+								$("#caseIpntSource").text(result); 
+								
+								if(result=="NI"){
+	                				$("#sexBox").css("display","none");
+	                				$("#birthdayBox").css("display","none");
+	                			}else{
+	                				$("#sexBox").css("display","block");
+	                				$("#birthdayBox").css("display","block");
+	                			}
 	            			}  
 	        	});  
     	});
 });
-
-function nextPat(){
-			var ChufDate=$("#ChufDate").text();//出发日期
-			var ChufTime=$("#ChufTime").text();//出发时间
-			var DaodTime=$("#DaodTime").text();//到达时间
-			/* alert(DaodTime);
-			return; */
-			var ChufCity=$("#ChufCity").text();//出发城市
-			var DaodCity=$("#DaodCity").text();//到达城市
-			var QishiPlan=$("#QishiPlan").text();//起始机场
-			var hangbanNum=$("#fildNumfly").text();
-			var airCode = hangbanNum.substring(0,2);
-			var DaodPlan=$("#DaodPlan").text();//到达机场
-			var lishiTime=$(".countTime").text();
-			var CostPay=$("#CostPay").text().substr(1,$("#CostPay").text().length);//该付金额
-			var LinkName=$("#LinkName").text();//乘机人
-			var Sex=$("#Sex").text();//性别
-			var iDcaseType=$("#iDcaseType").text();//证件类型
-			var iDcase=$("#iDcase").text();//证件号码
-			var PhoneNum=$("#PhoneNum").text();//手机号码
-			var YiwaiBX=$("#YiwaiBX").text();//意外保险
-			var YanwuBX=$("#YanwuBX").text();//延误险
-			var cangweiType=$(".cangweiType").text();
-			var birthDay = $("#birthIpnt").val();//生日
-			var age = ageFunc(birthDay);//年龄
-			if(age==""||age==" "||age==null||age=="null"){
-				return false;
-			}
-			var menType = $("#personIpnt").val();//乘机人类型
-			var date={
-				"ChufDate":ChufDate,
-				"ChufTime":ChufTime,
-				"DaodTime":DaodTime,
-				"ChufCity":ChufCity,
-				"DaodCity":DaodCity,
-				"QishiPlan":QishiPlan,
-				"hangbanNum":hangbanNum,
-				"DaodPlan":DaodPlan,
-				"lishiTime":lishiTime,
-				"CostPay":CostPay,
-				"LinkName":LinkName,
-				"Sex":Sex,
-				"iDcaseType":iDcaseType,
-				"iDcase":iDcase,
-				"PhoneNum":PhoneNum,
-				"YiwaiBX":YiwaiBX,
-				"YanwuBX":YanwuBX,
-				"cabin":cangweiType,
-				"birthday":birthDay,
-				"menType":menType,
-				"airCode":airCode,
-				"age":age
-			};
-			if(fals==true){
-				$.ajax({
-					url:"<%=basePath%>userOrderController/add/order.action",
-					type:"POST",
-					data:date,
-					dataType:"json",
-					beforeSend:function(){$(".loading").css("display","block");},
-					complete:function(){$(".loading").css("display","none");},
-					success:function(result){
-						$.alert(result.planMsg);
-						$("#turmonp").text(result.order);
-						//fals=false;
-						<%-- window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action"; --%>
-					},
-					error:function(result){
-					}
-				});			
-			}
-}
 
 //获取邀请码
 function getcode(inc){
@@ -442,29 +439,104 @@ function getcode(inc){
 	});
 }
 
-function ageFunc(birthday){
-		var age = 0;
-		var birth = birthday.split("-");	//对生日进行拆分
-		var today=new Date();				//创建今天的日期
-	    var todayYear=today.getFullYear();	//今天的年
-	    var ageNum = todayYear*1 - birth[0]*1;
-	    if(ageNum > 0){
-	    	age = ageNum;
-	    }else{
-	    	$.alert("年龄选择错误，请重新选择！");
-	    	return "";
-	    }
-		return age;
+function isOkResult(isOk){
+	return (isOk=="1"?"锁定成功":"锁定失败");
+}
+
+function codeSf(){
+	var strVal = $("#IDcase").val();
+    var arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];//加权因子  
+    var arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];//校验码  
+    if(/^\d{17}\d|x$/i.test(strVal)){   
+        var sum = 0, idx;  
+        for(var i = 0; i < strVal.length - 1; i++){  
+            //对前17位数字与权值乘积求和  
+            sum += parseInt(strVal.substr(i, 1), 10) * arrExp[i];  
+        }  
+        //计算模（固定算法）  
+        idx = sum % 11;  
+        //检验第18为是否与校验码相等  
+        return arrValid[idx] == strVal.substr(17, 1).toUpperCase();  
+    }else{ 
+        return false;  
+    }
+}
+
+//根据出发时间和是否+1的天数推算出到达时间
+function getArriDate(depDate,isJiaOne){
+	var dedat = new Date(depDate);
+	if(isJiaOne=="+1"){
+		dedat.setDate(dedat.getDate() + 1);
+	 	var yy = dedat.getFullYear();
+	 	var mm = dedat.getMonth()+1;
+	 	var dd = dedat.getDate();
+	 	if(mm < 10){
+	 		mm = "0"+mm;
+	 	}
+	 	if(dd<10){
+	 		dd = "0"+dd;
+	 	}
+	 	return yy+"-"+mm+"-"+dd;
+	}else{
+		return depDate;
 	}
+}
+
+function ageFunc(strBirthday,goDate){
+    var returnAge;  
+    var strBirthdayArr=strBirthday.split("-");  
+    var birthYear = strBirthdayArr[0];  
+    var birthMonth = strBirthdayArr[1];  
+    var birthDay = strBirthdayArr[2];  
+      
+    d = new Date(goDate);  
+    var nowYear = d.getFullYear();  
+    var nowMonth = d.getMonth() + 1;  
+    var nowDay = d.getDate();  
+      
+    if(nowYear == birthYear){  
+        returnAge = 0;//同年 则为0岁  
+    }  
+    else{  
+        var ageDiff = nowYear - birthYear ; //年之差  
+        if(ageDiff > 0){  
+            if(nowMonth == birthMonth){  
+                var dayDiff = nowDay - birthDay;//日之差  
+                if(dayDiff < 0){  
+                    returnAge = ageDiff - 1;  
+                }  
+                else{  
+                    returnAge = ageDiff ;  
+                }  
+            }  
+            else{  
+                var monthDiff = nowMonth - birthMonth;//月之差  
+                if(monthDiff < 0){  
+                    returnAge = ageDiff - 1;  
+                }  
+                else{  
+                    returnAge = ageDiff ;  
+                }  
+            }  
+        }  
+        else{  
+            returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天  
+        }  
+    }  
+    return returnAge;//返回周岁年龄  
+}
 	
-	//计算历经多长时间到达
-	function cuntTime(depTime,arrTime){
-		var sTime = changesTime(depTime); //出发时间的秒
-		var oTime = changesTime(arrTime); //到达时间的秒
-		var chaTime = oTime-sTime; //两个时间相差的秒
-		var liTime = parseInt(chaTime/3600)+"h"+parseInt((chaTime%3600)/60)+"m";
-		//alert(depTime+"->"+changesTime(depTime)+"/"+arrTime+"->"+changesTime(arrTime)+"/"+liTime);
-		return liTime;
+//计算历经多长时间到达
+function cuntTime(depTime,isDept,arrTime,isArrt){
+	var sTime = changesTime(depTime,isDept); //出发时间的秒
+	var oTime = changesTime(arrTime,isArrt); //到达时间的秒
+	var chaTime = oTime-sTime; //两个时间相差的秒
+	var liTime = parseInt(chaTime/3600)+"h"+parseInt((chaTime%3600)/60)+"m";
+	return liTime;
+}
+	
+	function closeBox(){
+		$("#ydresuletBox").css("display","none");
 	}
 	
 	//改变出发时间和到达时间的类型
@@ -482,47 +554,80 @@ function ageFunc(birthday){
 	}
 	
 	//根据时间参数化成秒
-	function changesTime(time){
-		var ohh,omm,ocount;
-		if(time.indexOf("+")>0||time.indexOf(" ")>0){
-			ohh = time.substring(0,2);
-			omm = time.substring(2,4);
-			ocount = ohh*3600+omm*60+24*3600;
-		}else{
-			ohh = time.substring(0,2);
-			omm = time.substring(2,time.length);
-			ocount = ohh*3600+omm*60;
+	function changesTime(time,isJia){
+			var ohh,omm,ocount;
+			if(isJia=="+1"){
+				ohh = time.substring(0,2);
+				omm = time.substring(2,4);
+				ocount = ohh*3600+omm*60+24*3600;
+			}else{
+				ohh = time.substring(0,2);
+				omm = time.substring(2,time.length);
+				ocount = ohh*3600+omm*60;
+			}
+			return ocount;
+	}
+	
+	function sourceSex(num,val){
+		var value = "";
+		if(num==1){
+			if(val=="男"){
+				value = "先生";
+			}else if(val=="女"){
+				value = "女士";
+			}
+		}else if(num==2){
+			if(val=="ADT"){
+				value = "成人";
+			}else if(val=="CHD"){
+				value = "儿童";
+			}else if(val=="INF"){
+				value = "婴儿";
+			}
+		}else if(num==3){
+			if(val=="NI"){
+				value = "身份证";
+			}else if(val=="PP"){
+				value = "护照";
+			}else if(val=="ID"){
+				value = "其他证件";
+			}
 		}
-		return ocount;
+		return value;
 	}
 </script>
 <div class="massInfoBox">
 	<ul>
 		<li><span class="spanTit">出发时间：</span><span class="spanCont chufDate"></span><span class="chufTime" style="margin-left:5px;"></span></li>
-		<li><span class="spanTit">到达时间：</span><span class="spanCont chufDate"></span><span class="arrDTime" style="margin-left:5px;"></span></li>
+		<li><span class="spanTit">到达时间：</span><span class="spanCont arrDate"></span><span class="arrDTime" style="margin-left:5px;"></span></li>
 		<li><span class="spanTit">出发城市：</span><span class="spanCont chufCityID"></span></li>
 		<li><span class="spanTit">到达城市：</span><span class="spanCont daodCityID"></span></li>
 		<li><span class="spanTit">起始机场：</span><span class="spanCont shiPlace"></span><span class="flidNum" style="margin-left:5px;"></span></li>
 		<li><span class="spanTit">到达机场：</span><span class="spanCont zhongPlace"></span></li>
 		<li><span class="spanTit">飞行历时：</span><span class="spanCont countTime"></span><span class="cangweiType" style="display:none;"></span><!-- <span class="zhekou" style="display:none;"></span> --></li>
 	</ul>
-	<div class="trueCost"><span class="spanTit">实付价格：</span><span class="payMoney cost"></span></div>
+	<div class="trueCost"><span class="spanTit">实付价格：</span><span class="payMoney">￥<span id="cost"></span></span></div> 
+	<ul id="costXq" style="list-style-type:none; text-align:right; font-size:12px; color:#888;">
+		<li id="sign"></li>
+		<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span>/人</div><div style="width:100px; margin-right:50px;">成人票</div></li>
+		<li><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>
+	</ul>
 </div>
 
 <div class="writInfoBox">
 	<ul>
 		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
-		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
+		<li id="sexBox" style="display:none;"><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly" value="先生"/><span id="sexIpntSource" style="display:none;">男</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li id="birthdayBox" style="display:none;"><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
-		<li><span class="spanTit">旅客类型：</span><input type="hidden" id="m"/><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
-		<li><span class="spanTit" id="caseIpnt">证件类型</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<%-- <li><span class="spanTit">旅客类型：</span><input type="hidden" id="m"/><input type="text" id="personIpnt" readonly="readonly"/><span id="personIpntSource" style="display:none;"></span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
+		<li><span class="spanTit" id="caseIpnt">身份证</span><span id="caseIpntSource" style="display:none;">NI</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
 	</ul>
 </div>
 
 <div class="baoxianBox">
-	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="购买"/><span class="spanTitBX">航空意外险</span></div>
-	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="购买"/><span class="spanTitBX">延误取消险</span></div>
+	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="1"/><span class="spanTitBX">航空意外险</span></div>
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="1"/><span class="spanTitBX">延误取消险</span></div>
 	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBx" value="500"/><span class="spanTitBX youhuiText"></span></div>
 	<div style="clear:both;"><span id="zhekouType" style="display:none;"></span></div>
 </div>
@@ -547,23 +652,22 @@ function ageFunc(birthday){
 <div id="trueOrderInfo">
 	<div class="flidNoNumBox">
 		<div class="chufDivBox">
-			<div class="placeCity" style="text-align:right;"><span id="ChufCity"></span></div>
+			<div class="placeCity" style="text-align:right;"><span id="ChufCity">广州</span></div>
 			<div class="planeNameInfo" style="text-align:right;">
-				<span id="fildNumfly" style="margin-left:5px; display:block; float:right;"></span>
-				<span id="QishiPlan" style="width:60px; height:25px; display:block; float:right; overflow:hidden;"></span>
+				<span id="fildNumfly" style="margin-left:5px; display:block; float:right;">CZ2051</span>
+				<span id="QishiPlan" style="width:60px; height:25px; display:block; float:right; overflow:hidden;">广州新白云机场</span>
 				<span style="clear:both"></span>
-				<span id="turmonp" style="display:none;"></span>
 			</div>
-			<div class="aboutTime" style="float:right; margin-right:0px; text-align:right;"><span style="text-align:right;" id="ChufDate"></span><span id="ChufTime" style="margin-left:5px;"></span></div>
+			<div class="aboutTime" style="float:right; margin-right:0px; text-align:right;"><span style="text-align:right;" id="ChufDate">2017-05-27</span><span id="ChufTime" style="margin-left:5px;">08:25</span></div>
 		</div>
 		<div class="wanfDivBox">
 			<img src="<%=basePath %>console/images/wanfan.png"/>
-			<span id="CountTime"></span>
+			<span id="CountTime" style="font-size:11px;">5h23m</span>
 		</div>
 		<div class="daodDivBox">
-			<div class="placeCity" style="text-align:left;"><span id="DaodCity"></span></div>
-			<div class="planeNameInfo" id="DaodPlan"></div>
-			<div class="aboutTime"><span id="ChufDateTwo"></span><span id="DaodTime" style="margin-left:5px;"></span></div>		
+			<div class="placeCity" style="text-align:left;"><span id="DaodCity">北京</span></div>
+			<div class="planeNameInfo" id="DaodPlan">北京首都机场</div>
+			<div class="aboutTime"><span id="ChufDateTwo">2017-05-27</span><span id="DaodTime" style="margin-left:5px;">12:36</span></div>		
 		</div>
 		<div style="clear:both;"></div>
 	</div>
@@ -581,6 +685,17 @@ function ageFunc(birthday){
 		</div>
 	</div>
 	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
+</div>
+<div id="ydresuletBox" style="position:absolute; width:100%; height:100%; background:rgba(51,51,51,0.7); top:0px; left:0px; z-index:99; display:none;">
+	<div style="margin:60% auto; width:300px; height:160px; border-radius:5px; background:#fff;">
+		<div style="text-align:center; color:#666; font-size:18px; line-height:45px;">座位锁定结果</div>
+		<table id="resBoxTables" border="0" style="margin-left:20px; width:85%; height:55px;"></table>
+		<div style="border-top:1px #e1e1e1 solid; margin-top:10px;"> 
+			<a style="display:block; float:left; width:49%; line-height:49px; text-align:center; border-right:1px solid #e1e1e1;" onclick="LookOrderFunc()">查看订单</a>
+			<a style="display:block; float:right; width:50%; line-height:49px; text-align:center;" onclick="closeBox()">关闭</a>
+			<a style="clear:both;"></a>
+		</div>
+	</div>
 </div>
 <!-- 提交订单的时候加载等待的效果 -->
 <div id="loading">

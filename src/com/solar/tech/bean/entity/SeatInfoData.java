@@ -96,13 +96,17 @@ public class SeatInfoData {
     @Column(name="signFilghtNum")
     private String signFilghtNum;
     
-    //组合航班
-    /*@Column(name="friendiyFilght", length=50)
-    private String friendiyFilght;*/
+    //属于组的起始城市
+    @Column(name="dwOrgCity")
+    private String dwOrgCity;
     
-    //是否中转
-    /*@Column(name="isDirect", length=50)
-    private String isDirect;*/
+    //属于组的到达城市
+    @Column(name="dwDstCity")
+    private String dwDstCity;
+    
+    //属于的天数和缓存范围    1：当天出发  2：3天以内出发  3：3-7天之内出发  4：7-15天内出发  5：15-30内出发   6：30天以上出发
+    @Column(name="dayNum")
+    private String dayNum;
 
 	public String getUuid() {
 		return uuid;
@@ -255,22 +259,29 @@ public class SeatInfoData {
 	public void setSignFilghtNum(String signFilghtNum) {
 		this.signFilghtNum = signFilghtNum;
 	}
+
+	public String getDwOrgCity() {
+		return dwOrgCity;
+	}
+
+	public void setDwOrgCity(String dwOrgCity) {
+		this.dwOrgCity = dwOrgCity;
+	}
+
+	public String getDwDstCity() {
+		return dwDstCity;
+	}
+
+	public void setDwDstCity(String dwDstCity) {
+		this.dwDstCity = dwDstCity;
+	}
+
+	public String getDayNum() {
+		return dayNum;
+	}
+
+	public void setDayNum(String dayNum) {
+		this.dayNum = dayNum;
+	}
 	
-/*
-	public String getFriendiyFilght() {
-		return friendiyFilght;
-	}
-
-	public void setFriendiyFilght(String friendiyFilght) {
-		this.friendiyFilght = friendiyFilght;
-	}
-
-	public String getIsDirect() {
-		return isDirect;
-	}
-
-	public void setIsDirect(String isDirect) {
-		this.isDirect = isDirect;
-	}*/
-    
 }

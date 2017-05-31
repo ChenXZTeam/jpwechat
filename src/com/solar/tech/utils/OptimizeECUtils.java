@@ -95,169 +95,8 @@ public class OptimizeECUtils {
 		return list;
 	}	
 	
-	//返回往返的全部航班信息
-	public Map<String, Object> roundtripAv(String org, String dst, String date, String returnDate, String airline, Integer page){
-		Map<String, Object> map = new HashMap<String, Object>();
-		AVDoubleResponse AVDouble  = new ECUtils().roundtripAv(org, dst, date, returnDate, airline, page);
-		if(AVDouble==null||null==AVDouble){map.put("msg", 0);return map;}
-		
-		List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null); // 查询运价（去程）
-		if(fdList==null||fdList.size()<1){map.put("msg", 0);return map;}
-		
-		/*List<FDItem> rdList = new ECUtils().fd(dst, org, returnDate, null, null, null, null); // 查询运价（回程）
-		if(rdList==null||rdList.size()<1){map.put("msg", 0);return map;}*/
-		
-		List<AvSegment> avList = new ECUtils().av(org, dst, date, null, null, null, null, null, null); // 查询座位可用（去程）
-		if(avList==null||avList.size()<1){map.put("msg", 0);return map;}
-		
-		List<AvSegment> rvList = new ECUtils().av(dst, org, returnDate, null, null, null, null, null, null); // 查询座位可用（回程）
-		if(rvList==null||rvList.size()<1){map.put("msg", 0);return map;}
-		
-		List<FlightInfo> departAv = new ArrayList<FlightInfo>(); //去程航班的链表
-		List<FlightInfo> returnAv = new ArrayList<FlightInfo>(); //回程航班的链表
-		//处理去程的航班，重构去程航班链表
-		System.out.println("==========================去程的航班==========================");
-		for(int i=0; i<AVDouble.getDepartItemsCount(); i++){
-			for(int j=0; j<AVDouble.getDepartAvItems().get(i).getSegments().size(); j++){
-					FlightInfo bean = new FlightInfo(); // 航班信息
-					bean.setFlightNo(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getAirline());
-					bean.setAirCode((bean.getFlightNo()).substring(0,2));
-					bean.setPlaneStyle(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getPlanestyle());
-					bean.setDepTime(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDepTime());
-					bean.setArrTime(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getArriTime());
-					bean.setOrgCity(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getOrgcity()); 
-					bean.setDstCity(AVDouble.getDepartAvItems().get(i).getSegments().get(j).getDstcity()); 
-
-					List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 航班座位信息
-					String[] data = avList.get(0).getCangwei_data(); // 初始化座位数据
-					char[] index = avList.get(0).getCangwei_index(); // 初始化座位信息
-					
-					AvSegment avSeg = null;
-					for(AvSegment as : avList){
-						// 根据当前航班号、起始城市及到达城市，得到对应的座位信息
-						if(bean.getFlightNo().equals(as.getAirline()) && org.equals(as.getOrgcity()) && dst.equals(as.getDstcity())){
-							avSeg = as;
-						}
-					}
-					
-					if(avSeg != null){
-						data = avSeg.getCangwei_data(); // 得到对应的座位信息
-						index = avSeg.getCangwei_index(); // 得到对应的座位信息
-					}
-					
-					if(index != null && index.length > 0){
-						for(int k=0;k<index.length;k++){
-							SeatInfo seatInfo = new SeatInfo();
-							
-							seatInfo.setCangwei(index[k] + ""); // 设置舱位
-							seatInfo.setCangwei_data(data[k]); // 设置舱位信息
-							
-							if(SeatUtils.getSeatNum(data[k]) != null){
-								if(fdList != null && fdList.size() > 0){
-									for(FDItem item : fdList){
-										// 根据当前航司代码、及舱位获取对应的运价信息
-										if(bean.getAirCode().equals(item.getAirline()) && (index[k] + "").equals(item.getCabin())){
-											if(!StringUtils.isEmpty(item.getOnewayPrice())){
-												seatInfo.setOnewayPrice(item.getOnewayPrice()); // 设置单程运价
-											}
-											if(!StringUtils.isEmpty(item.getRoundtripPrice())){
-												seatInfo.setRoundtripPrice(item.getRoundtripPrice()); // 设置往返运价
-											}
-											if(!StringUtils.isEmpty(item.getBasicCabin())){
-												seatInfo.setBasicCabin(item.getBasicCabin()); // 设置基础舱位信息
-											}
-										}
-									}
-								}
-							}
-							if(!StringUtils.isEmpty(seatInfo.getOnewayPrice()) && !StringUtils.isEmpty(seatInfo.getRoundtripPrice())){
-								seatList.add(seatInfo); // 添加可用舱位信息
-							}
-						}
-					}
-					bean.setSeatList(seatList);
-					if(bean.getSeatList().size()>0&&!"".equals(bean.getOrgCity())&&org.equals(bean.getOrgCity())&&dst.equals(bean.getDstCity())){ //只搜直达的航班，去掉中转的航班
-						System.out.println("去程的航班信息："+bean.toString());
-						departAv.add(bean);
-					} 
-			}
-		}
-		
-		//处理回程的航班，重构回程航班链表
-		System.out.println("==========================回程的航班==========================");
-		for(int i=0; i<AVDouble.getReturnItemsCount(); i++){
-			for(int j=0; j<AVDouble.getReturnAvItems().get(i).getSegments().size(); j++){
-					FlightInfo bean = new FlightInfo(); // 航班信息
-					bean.setFlightNo(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getAirline());
-					bean.setAirCode((bean.getFlightNo()).substring(0,2));
-					bean.setPlaneStyle(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getPlanestyle());
-					bean.setDepTime(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDepTime());
-					bean.setArrTime(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getArriTime());
-					bean.setOrgCity(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getOrgcity()); 
-					bean.setDstCity(AVDouble.getReturnAvItems().get(i).getSegments().get(j).getDstcity()); 
-
-					List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 航班座位信息
-					String[] data = rvList.get(0).getCangwei_data(); // 初始化座位数据
-					char[] index = rvList.get(0).getCangwei_index(); // 初始化座位信息
-					
-					AvSegment avSeg = null;
-					for(AvSegment as : rvList){
-						// 根据当前航班号、起始城市及到达城市，得到对应的座位信息
-						if(bean.getFlightNo().equals(as.getAirline()) && org.equals(as.getOrgcity()) && dst.equals(as.getDstcity())){
-							avSeg = as;
-						}
-					}
-					
-					if(avSeg != null){
-						data = avSeg.getCangwei_data(); // 得到对应的座位信息
-						index = avSeg.getCangwei_index(); // 得到对应的座位信息
-					}
-					
-					if(index != null && index.length > 0){
-						for(int k=0;k<index.length;k++){
-							SeatInfo seatInfo = new SeatInfo();
-							
-							seatInfo.setCangwei(index[k] + ""); // 设置舱位
-							seatInfo.setCangwei_data(data[k]); // 设置舱位信息
-							
-							if(SeatUtils.getSeatNum(data[k]) != null){
-								if(fdList != null && fdList.size() > 0){
-									for(FDItem item : fdList){
-										// 根据当前航司代码、及舱位获取对应的运价信息
-										if(bean.getAirCode().equals(item.getAirline()) && (index[k] + "").equals(item.getCabin())){
-											if(!StringUtils.isEmpty(item.getOnewayPrice())){
-												seatInfo.setOnewayPrice(item.getOnewayPrice()); // 设置单程运价
-											}
-											if(!StringUtils.isEmpty(item.getRoundtripPrice())){
-												seatInfo.setRoundtripPrice(item.getRoundtripPrice()); // 设置往返运价
-											}
-											if(!StringUtils.isEmpty(item.getBasicCabin())){
-												seatInfo.setBasicCabin(item.getBasicCabin()); // 设置基础舱位信息
-											}
-										}
-									}
-								}
-							}
-							if(!StringUtils.isEmpty(seatInfo.getOnewayPrice()) && !StringUtils.isEmpty(seatInfo.getRoundtripPrice())){
-								seatList.add(seatInfo); // 添加可用舱位信息
-							}
-						}
-					}
-					bean.setSeatList(seatList);
-					if(bean.getSeatList().size()>0&&!"".equals(bean.getOrgCity())&&dst.equals(bean.getOrgCity())&&org.equals(bean.getDstCity())){  //只搜直达的航班，去掉中转的航班
-						System.out.println("回程航班："+bean);
-						returnAv.add(bean);
-					}
-			}
-		}
-		map.put("departAv", departAv); //去程的列表
-		map.put("returnAv", returnAv); //回程的列表
-		//map.put("AVDouble", AVDouble); //回程的列表
-		return map;
-	}
-	
 	// 支付前再确认该舱位是否还有空余座位
-	public Integer confirmCabin(String org, String dst, String date, String flightNo, String cabin){
+	public Integer confirmCabin(String dst, String org, String date, String flightNo, String cabin){
 		List<AvSegment> avList = new ECUtils().av(null, null, date, null, null, null, null, null, flightNo); // 查询座位可用 
 		if(avList != null && avList.size() > 0){
 			for(AvSegment avSeg : avList){
@@ -304,6 +143,10 @@ public class OptimizeECUtils {
 	//移除掉重复的、没有座位的、共享的航班
 	public List<AvSegment> removeNullreapte(List<AvSegment> avsList){
 		List<AvSegment> resultList = new ArrayList<AvSegment>();
+		//这个顺序不能变。先去掉座位为空的航班 再去掉共享的航班 然后在去掉重复的
+		avsList = removeNullSeat(avsList); //移除掉座位为空的航班
+		avsList = removeGxSeat(avsList);  //移除掉共享的航班
+		
 		if(avsList != null && avsList.size() > 0){
 			for(AvSegment info : avsList){
 				boolean flag = true;
@@ -318,9 +161,6 @@ public class OptimizeECUtils {
 				}
 			}
 		}
-		
-		resultList = removeNullSeat(resultList); //移除掉座位为空的航班
-		resultList = removeGxSeat(resultList);  //移除掉共享的航班
 		
 		return resultList;
 	}

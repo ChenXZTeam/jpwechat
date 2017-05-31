@@ -275,7 +275,7 @@ function chax(dateTime,returnTime){
 	$.ajax({
 			url:"<%=basePath%>wechatController/find/planTekTo.action",
 			type:"POST",
-			data:{"org":chufCityCode,"dst":daodCityCode,"date":dateTime,"returnDate":returnTime,"airline":airline,"page":page},
+			data:{"org":chufCityCode,"dst":daodCityCode,"date":dateTime,"retDate":returnTime},
 			dataType:"json",
 			beforeSend:function(){$("#loading").css("display","block");},
 			complete:function(){$("#loading").css("display","none");},

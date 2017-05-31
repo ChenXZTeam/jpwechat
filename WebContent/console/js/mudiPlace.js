@@ -57,9 +57,13 @@ $(function(){
 
 //直达的航班点击“预定”的时候
 function otherYdBtn(uuid,canbin){
-	alert("航班编号："+uuid+", 舱位："+canbin);
 	var basePath=$("#basePath").text();
 	window.location.href = basePath+"wechatController/page/YDticket.action?uuid="+uuid+"&canbin="+canbin;
+}
+
+function another(uuid1,uuid2,canbin){
+	var basePath=$("#basePath").text();
+	window.location.href = basePath+"console/wechat/zhzconfirmInfo.jsp?uuid1="+uuid1+"&uuid2="+uuid2+"&canbin="+canbin;
 }
 
 

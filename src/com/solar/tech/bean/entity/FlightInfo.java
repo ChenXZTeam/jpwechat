@@ -14,6 +14,8 @@ public class FlightInfo {
 	private String dstCity; // 到达城市
 	private String deplaneName; //起始机场名
 	private String arrPlaneName; //到达机场名
+	private String deptimemodify; //出发时间是否+1
+	private String arriveTimeModify; //到达时间是否+1
 	
 	private List<SeatInfo> seatList = new ArrayList<SeatInfo>(); // 可用舱位信息
 	
@@ -103,6 +105,22 @@ public class FlightInfo {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+	
+	public String getDeptimemodify() {
+		return deptimemodify;
+	}
+
+	public void setDeptimemodify(String deptimemodify) {
+		this.deptimemodify = deptimemodify;
+	}
+
+	public String getArriveTimeModify() {
+		return arriveTimeModify;
+	}
+
+	public void setArriveTimeModify(String arriveTimeModify) {
+		this.arriveTimeModify = arriveTimeModify;
 	}
 
 	@Override

@@ -1,13 +1,9 @@
 package com.solar.tech.service;
 
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -21,6 +17,11 @@ import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.airport;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
+import com.solar.tech.utils.ECUtils;
+import com.travelsky.sbeclient.obe.book.BookContact;
+import com.travelsky.sbeclient.obe.book.PassengerInfo;
+import com.travelsky.sbeclient.obe.book.SegmentInfo;
+import com.travelsky.sbeclient.obe.response.PnrResponse;
 
 /**
  * @title 执行订单数据的service方法
@@ -38,6 +39,20 @@ public class userOrderService {
 	 * @return
 	 */
 	public int addOrder(userOrderInfo orderInfo){
+		try {
+			gDao.save(orderInfo);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	/**
+	 * 保存多个订单信息
+	 * @param orderInfo
+	 * @return
+	 */
+	public int addOrder(List<userOrderInfo> orderInfo){
 		try {
 			gDao.save(orderInfo);
 			return 1;
@@ -96,7 +111,7 @@ public class userOrderService {
 	 * 产生随机且唯一的标识，标识关联两条数据的标志
 	 * @return
 	 */
-	public String getRandomString(String sign){
+	/*public String getRandomString(String sign){
 		long time = System.currentTimeMillis();//加上时间戳
 		String[] storeChars = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 		Random random = new Random();
@@ -106,7 +121,7 @@ public class userOrderService {
 			codesign += storeChars[index];
 		}
 		return sign+codesign+time;
-	}
+	}*/
 	
 	/**
 	  * 
@@ -423,6 +438,71 @@ public class userOrderService {
 			} catch (Exception e) {
 				return 0;
 			}
+		}
+		
+		/**
+		 * 预定中航信系统的机票
+		 * @param seatInfo
+		 * @return
+		 */
+		public PnrResponse Reserve(userOrderInfo fildInfo){
+			//联系组实体类
+			BookContact bookContact = new BookContact();
+			bookContact.setCity(fildInfo.getChufCity());//城市
+			bookContact.setContact(fildInfo.getLinkPhoneNum());//联系电话
+					
+			//航段组实体类
+			SegmentInfo s = new SegmentInfo();
+			s.setDeparture(fildInfo.getChufCity());//起飞城市
+			s.setArrival(fildInfo.getDaodCity());//到达城市
+			s.setFlightNo(fildInfo.getHangbanNum());//航班号	
+			s.setCabin(fildInfo.getCabin());//舱位
+			s.setDepartureDate(fildInfo.getChufDate());//起飞日期，格式如：yyyy-MM-dd
+			s.setDepartureTime(fildInfo.getChufTime());//起飞时间，格式如：HH:mm
+			SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
+					
+			//旅客组实体类（是否可以添加多个旅客）
+			PassengerInfo psg = new PassengerInfo();
+			psg.setName(fildInfo.getLinkName());//旅客姓名
+			psg.setAge(Integer.parseInt(fildInfo.getAge()));//年龄
+			psg.setGender(fildInfo.getLinkSex()); //性别
+			psg.setBirthDay(fildInfo.getBirthday());//出生日期
+			psg.setPsgType(fildInfo.getPsgType());//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
+			psg.setCertNo(fildInfo.getIDcase());//证件号码
+			psg.setCertType(fildInfo.getIDcaseType());//证件类型PP,NI		
+			PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
+					
+			//OSI组实体类 
+			/*OSIInfo osi = new OSIInfo();
+			//osi.setIdx("");
+			osi.setAirCode(fildInfo.getHangbanNum().substring(0, 2));//航空公司代码
+			osi.setOsi("CTCT18729034712");//OSI内容
+			OSIInfo[] osis = new OSIInfo[]{osi};*/
+
+			//RMK组实体类
+			/*RMKInfo rmk = new RMKInfo();
+			rmk.setPsgName(fildInfo.getLinkName());//旅客姓名
+			rmk.setRmkType("");//RMK类型
+			rmk.setRmkInfo("rmk 仁德机票出售中心");//RMK内容
+			RMKInfo[] rmks = new RMKInfo[]{rmk};*/
+			
+			//开始在中信航系统产生订票的订单
+			PnrResponse response = null;
+			//PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, null, null, null, null, null);
+			System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
+			/*System.out.println("预定的编号："+response.getPnrNo());
+			System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
+			System.out.println("到达城市："+response.getSegList().get(0).getArrival());
+			System.out.println("航班号："+response.getSegList().get(0).getFlightNo());
+			System.out.println("舱位级别："+response.getSegList().get(0).getCabin());
+			System.out.println("起飞日期："+response.getSegList().get(0).getDepartureDate());
+			System.out.println("起飞时间："+response.getSegList().get(0).getDepartureTime());
+			System.out.println("到达日期："+response.getSegList().get(0).getArrivalDate());
+			System.out.println("到达时间："+response.getSegList().get(0).getArrivalTime());
+			System.out.println("行动代码："+response.getSegList().get(0).getActionCode());
+			System.out.println("航线类型："+response.getSegList().get(0).getType());*/
+			System.out.println("-----------------------到这信息全部返回成功-------------------");
+			return response;
 		}
 		
 }
