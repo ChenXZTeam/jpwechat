@@ -165,7 +165,19 @@ public class userOrderInfo {
 	//记录中航信接口是否预定成功
 	@Column(name="isSuccess",length=5)
 	private String isSuccess;
-
+	
+	//是否打印行程单(0:不打印  1:打印)
+	@Column(name="isConsole",length=5)
+	private String isConsole;
+	
+	//行程单打印状态(0:未打印，1:打印)
+	@Column(name="consoleStatus",length=5)
+	private String consoleStatus;
+	
+	//配送地址
+	@Column(name="sendAdd")
+	private String sendAdd;
+	
 	public String getGetTeickTime() {
 		return getTeickTime;
 	}
@@ -452,6 +464,30 @@ public class userOrderInfo {
 
 	public void setIsSuccess(String isSuccess) {
 		this.isSuccess = isSuccess;
+	}
+
+	public String getIsConsole() {
+		return isConsole;
+	}
+
+	public void setIsConsole(String isConsole) {
+		this.isConsole = isConsole;
+	}
+
+	public String getSendAdd() {
+		return sendAdd;
+	}
+
+	public void setSendAdd(String sendAdd) {
+		this.sendAdd = sendAdd;
+	}
+
+	public String getConsoleStatus() {
+		return consoleStatus;
+	}
+
+	public void setConsoleStatus(String consoleStatus) {
+		this.consoleStatus = consoleStatus;
 	}
 
 }

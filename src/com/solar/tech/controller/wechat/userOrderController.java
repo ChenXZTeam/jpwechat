@@ -191,6 +191,7 @@ public class userOrderController {
 			oderInfo.setStutisPay("0"); //未支付
 			oderInfo.setTakePlane("0"); //是否登机
 			oderInfo.setAdminDel("0"); //默认不删除
+			oderInfo.setConsoleStatus("0"); //未打印
 			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
 			String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
 			oderInfo.setOrderNum(orderNumFirst); //设置流水号
@@ -336,6 +337,7 @@ public class userOrderController {
 				oderInfo.setStutisPay("0"); //未支付
 				oderInfo.setTakePlane("0"); //是否登机
 				oderInfo.setAdminDel("0"); //默认不删除
+				oderInfo.setConsoleStatus("0"); //未打印
 				oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
 				String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
 				oderInfo.setOrderNum(orderNumFirst); //设置流水号

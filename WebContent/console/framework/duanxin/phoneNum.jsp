@@ -60,7 +60,7 @@
 			<span style="display:block; clear:both;"></span>
 		</div>
 		<ul id="fenziLi" style="list-style-type:none; margin:0px; margin-top:10px; max-height:330px; overflow-x: auto;"></ul>
-		<div><a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none; margin:15px 42px;" onclick="sureBtn()">确定选择</a></div>
+		<div><a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none; margin-top: 15px;" onclick="sureBtn()">确定选择</a></div>
 	</div>
 </div> 
 <div style="float:left; width:84.6%;">

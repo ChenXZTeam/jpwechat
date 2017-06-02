@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="FW_linkman")
 public class LinkMan {
-	//签证ID
+	//ID
     @Id
     @GenericGenerator(name="uuid", strategy="uuid")
     @GeneratedValue(generator="uuid")
@@ -46,7 +46,7 @@ public class LinkMan {
     @Column(name="birthday", length=15)
     private String birthday;
     
-    //生日
+    //性别
     @Column(name="sex", length=15)
     private String sex;
     
@@ -58,13 +58,33 @@ public class LinkMan {
   	@Column(name="openID",length=100)
   	private String openID;
   	
+  	//中文名
+  	@Column(name="chinaName",length=100)
+  	private String chinaName;
+  	
+  	//证件有效期
+  	@Column(name="caseTime",length=50)
+  	private String caseTime;
+  	
+  	//国籍
+  	@Column(name="belongCtry",length=100)
+  	private String belongCtry;
+  	
   	//用户名
   	@Column(name = "UserName", length=100)
   	private String UserName;
+  	
+  	//用户名绑定的电话
+  	@Column(name = "userNamePhone", length=100)
+  	private String userNamePhone;
     
-   //创建时间
+    //创建时间
   	@Column(name = "createTime")
   	private Timestamp createTime;
+  	
+  	//备注
+  	@Column(name = "commit",length=1000)
+  	private String commit;
 
 	public String getID() {
 		return ID;
@@ -152,6 +172,57 @@ public class LinkMan {
 
 	public void setPeopleType(String peopleType) {
 		this.peopleType = peopleType;
+	}
+
+	public String getChinaName() {
+		return chinaName;
+	}
+
+	public void setChinaName(String chinaName) {
+		this.chinaName = chinaName;
+	}
+
+	public String getCaseTime() {
+		return caseTime;
+	}
+
+	public void setCaseTime(String caseTime) {
+		this.caseTime = caseTime;
+	}
+
+	public String getBelongCtry() {
+		return belongCtry;
+	}
+
+	public void setBelongCtry(String belongCtry) {
+		this.belongCtry = belongCtry;
+	}
+
+	public String getCommit() {
+		return commit;
+	}
+
+	public void setCommit(String commit) {
+		this.commit = commit;
+	}
+
+	public String getUserNamePhone() {
+		return userNamePhone;
+	}
+
+	public void setUserNamePhone(String userNamePhone) {
+		this.userNamePhone = userNamePhone;
+	}
+
+	@Override
+	public String toString() {
+		return "LinkMan [ID=" + ID + ", linkman=" + linkman + ", linkNumber="
+				+ linkNumber + ", caseType=" + caseType + ", caseNum="
+				+ caseNum + ", birthday=" + birthday + ", sex=" + sex
+				+ ", peopleType=" + peopleType + ", openID=" + openID
+				+ ", chinaName=" + chinaName + ", caseTime=" + caseTime
+				+ ", belongCtry=" + belongCtry + ", UserName=" + UserName
+				+ ", createTime=" + createTime + ", commit=" + commit + "]";
 	}
 
 }  	
