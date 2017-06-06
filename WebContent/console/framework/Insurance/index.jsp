@@ -256,7 +256,7 @@ Date.prototype.format = function (format) {
 </script>
 <div style="padding:10px;">
 	<input id="numKeyWord" style="width:173px; height:22px; outline:none; font-size:13px; padding-left:10px; border-radius:5px; border:1px solid #ccc;" placeholder="请输入保险单号"/>
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchFind()">输入单号</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchFind()">搜索单号</a>
 </div>
 <div style="height:25px; background-color:#fff;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="news()">输入单号</a>

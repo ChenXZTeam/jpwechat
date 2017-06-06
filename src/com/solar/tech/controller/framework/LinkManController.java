@@ -38,6 +38,8 @@ public class LinkManController {
 				lma.setOpenID(linkm.get(0).getOpenID());
 				lma.setUserNamePhone(linkm.get(0).getPhoneNum());
 			}
+			lma.setBirthday(lma.getBirthday().substring(0,10));
+			lma.setCaseTime(lma.getCaseTime().substring(0,10));
 			lma.setCreateTime(new Timestamp(new Date().getTime()));
 			linkMans.addInfo(lma);
 			return 1;
@@ -73,6 +75,8 @@ public class LinkManController {
 				lma.setOpenID(linkm.get(0).getOpenID());
 				lma.setUserNamePhone(linkm.get(0).getPhoneNum());
 			}
+			lma.setBirthday(lma.getBirthday().substring(0,10));
+			lma.setCaseTime(lma.getCaseTime().substring(0,10));
 			lma.setID(id);
 			linkMans.upInfo(lma);
 			return 1;

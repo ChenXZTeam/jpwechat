@@ -82,6 +82,34 @@ $(function(){
 		}
 		$("#userName").combobox("loadData", data);
 	});
+	
+	$('#birthday').datetimebox({  
+		   showSeconds:false,  
+		   required:true,  
+		   onSelect:function(date){  
+		        var y = date.getFullYear();  
+		        var m = date.getMonth() + 1;  
+		        var d = date.getDate();  
+		        var time=$('#birthday').datetimebox('spinner').spinner('getValue');  
+		        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
+		        $('#birthday').datetimebox('setText', dateTime);  
+		        $('#birthday').datetimebox('hidePanel');  
+		   }  
+	});
+	
+	$('#caseTime').datetimebox({  
+		   showSeconds:false,  
+		   required:true,  
+		   onSelect:function(date){  
+		        var y = date.getFullYear();  
+		        var m = date.getMonth() + 1;  
+		        var d = date.getDate();  
+		        var time=$('#caseTime').datetimebox('spinner').spinner('getValue');  
+		        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
+		        $('#caseTime').datetimebox('setText', dateTime);  
+		        $('#caseTime').datetimebox('hidePanel');  
+		   }  
+	});
 });
 
 var numUrl="";
@@ -255,11 +283,11 @@ $.extend($.fn.validatebox.defaults.rules, {
 			</tr>
 			<tr>
 				<td>出生日期：</td>
-				<td><input name="birthday" class="easyui-datetimebox" data-options="formatter:ww3"/></td>
+				<td><input id="birthday" name="birthday" class="easyui-datetimebox" style="width:173px;"/></td>
 			</tr>
 			<tr>
 				<td>证件有效期：</td>
-				<td><input name="caseTime" class="easyui-datetimebox" data-options="formatter:ww3"/></td>
+				<td><input id="caseTime" name="caseTime" class="easyui-datetimebox" style="width:173px;"/></td>
 			</tr>
 			<tr>
 				<td>国籍：</td>
