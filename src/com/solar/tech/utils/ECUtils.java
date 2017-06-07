@@ -96,9 +96,9 @@ import com.travelsky.sbeclient.utils.SBEUtil;
 
 public class ECUtils {
 
-	private static final String USERNAME = "GZRDAPI02";		// 账号
-	private static final String PASSWORD = "GZRDAPI0304";	// 密码
-	private static final String OFFICENO = "CAN666";		// 操作员
+	private static final String USERNAME = "tanjianqin";	// 账号
+	private static final String PASSWORD = "tanjianqin";	// 密码
+	private static final String OFFICENO = "bjs187";		// 操作员
 	
 	private String token; // 口令
 	
