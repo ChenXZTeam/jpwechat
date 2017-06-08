@@ -82,6 +82,13 @@ public class JP_orderController {
 		return map;
 	}
 	
+	@RequestMapping({"/findBy.action"})
+    @ResponseBody
+    public Map<String,Object> findByuuid(String a){
+		Map<String,Object> map = jporderService.findbyid(a);
+		return map;
+	}
+	
 	/**
 	 * 短信发送功能，在后台的订单页面使用
 	 * @param phoneNumList

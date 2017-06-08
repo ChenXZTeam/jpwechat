@@ -19,6 +19,7 @@ import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.utils.ECUtils;
 import com.travelsky.sbeclient.obe.book.BookContact;
+import com.travelsky.sbeclient.obe.book.OSIInfo;
 import com.travelsky.sbeclient.obe.book.PassengerInfo;
 import com.travelsky.sbeclient.obe.book.SegmentInfo;
 import com.travelsky.sbeclient.obe.response.PnrResponse;
@@ -458,7 +459,8 @@ public class userOrderService {
 			s.setFlightNo(fildInfo.getHangbanNum());//航班号	
 			s.setCabin(fildInfo.getCabin());//舱位
 			s.setDepartureDate(fildInfo.getChufDate());//起飞日期，格式如：yyyy-MM-dd
-			s.setDepartureTime(fildInfo.getChufTime());//起飞时间，格式如：HH:mm
+			String timeStr = fildInfo.getChufTime();
+			s.setDepartureTime(timeStr.substring(0,2)+":"+timeStr.substring(2,4));//起飞时间，格式如：HH:mm
 			SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
 					
 			//旅客组实体类（是否可以添加多个旅客）
@@ -473,11 +475,11 @@ public class userOrderService {
 			PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
 					
 			//OSI组实体类 
-			/*OSIInfo osi = new OSIInfo();
+			OSIInfo osi = new OSIInfo();
 			//osi.setIdx("");
 			osi.setAirCode(fildInfo.getHangbanNum().substring(0, 2));//航空公司代码
 			osi.setOsi("CTCT18729034712");//OSI内容
-			OSIInfo[] osis = new OSIInfo[]{osi};*/
+			OSIInfo[] osis = new OSIInfo[]{osi};
 
 			//RMK组实体类
 			/*RMKInfo rmk = new RMKInfo();
@@ -487,10 +489,10 @@ public class userOrderService {
 			RMKInfo[] rmks = new RMKInfo[]{rmk};*/
 			
 			//开始在中信航系统产生订票的订单
-			PnrResponse response = null;
-			//PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-01-30 09:00:00", null, null, null, null, null, null);
+			//PnrResponse response = null;
+			PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-06-08 09:00:00", null, osis, null, null, null, null);
 			System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
-			/*System.out.println("预定的编号："+response.getPnrNo());
+			System.out.println("预定的编号："+response.getPnrNo());
 			System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
 			System.out.println("到达城市："+response.getSegList().get(0).getArrival());
 			System.out.println("航班号："+response.getSegList().get(0).getFlightNo());
@@ -500,7 +502,7 @@ public class userOrderService {
 			System.out.println("到达日期："+response.getSegList().get(0).getArrivalDate());
 			System.out.println("到达时间："+response.getSegList().get(0).getArrivalTime());
 			System.out.println("行动代码："+response.getSegList().get(0).getActionCode());
-			System.out.println("航线类型："+response.getSegList().get(0).getType());*/
+			System.out.println("航线类型："+response.getSegList().get(0).getType());
 			System.out.println("-----------------------到这信息全部返回成功-------------------");
 			return response;
 		}

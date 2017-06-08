@@ -133,9 +133,8 @@ function removeit(){
 }
 
 function shows(){
-	var row = $('#dataBox').datagrid('getSelected');	//单选的记录
-	var rows = $('#dataBox').datagrid('getSelections');	//多选的记录
-	if (row == undefined||row == null||row == "") {
+	var rows = $('#dataBox').datagrid('getChecked');	//多选的记录
+	if (rows.length==0) {
          $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
          return false;
     }
@@ -143,8 +142,8 @@ function shows(){
          $.messager.alert('操作提示', "只能查看一条数据", 'warning');
          return false;
     }
-	var rowstr = JSON.stringify(row);
-	window.location.href="<%=basePath%>console/framework/jporder/lookInfo.jsp?strRow="+rowstr;
+	var rowstr = rows[0].id;
+	window.location.href="<%=basePath%>console/framework/jporder/lookInfo.jsp?numds="+rowstr;
 }
 
 //查找的方法

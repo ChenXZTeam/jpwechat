@@ -83,32 +83,28 @@ $(function(){
 		$("#userName").combobox("loadData", data);
 	});
 	
-	$('#birthday').datetimebox({  
-		   showSeconds:false,  
-		   required:true,  
-		   onSelect:function(date){  
-		        var y = date.getFullYear();  
-		        var m = date.getMonth() + 1;  
-		        var d = date.getDate();  
-		        var time=$('#birthday').datetimebox('spinner').spinner('getValue');  
-		        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
-		        $('#birthday').datetimebox('setText', dateTime);  
-		        $('#birthday').datetimebox('hidePanel');  
-		   }  
+	$('#birthday').datebox({  
+		onSelect:function(date){  
+	        var y = date.getFullYear();  
+	        var m = date.getMonth() + 1;  
+	        var d = date.getDate();  
+	        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
+	        $('#birthday').datebox('setText', dateTime); 
+	        $('#birthday').datebox('setValue', dateTime);
+	        $('#birthday').datebox('hidePanel');  
+	   }  
 	});
 	
-	$('#caseTime').datetimebox({  
-		   showSeconds:false,  
-		   required:true,  
-		   onSelect:function(date){  
-		        var y = date.getFullYear();  
-		        var m = date.getMonth() + 1;  
-		        var d = date.getDate();  
-		        var time=$('#caseTime').datetimebox('spinner').spinner('getValue');  
-		        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
-		        $('#caseTime').datetimebox('setText', dateTime);  
-		        $('#caseTime').datetimebox('hidePanel');  
-		   }  
+	$('#caseTime').datebox({  
+		onSelect:function(date){  
+	        var y = date.getFullYear();  
+	        var m = date.getMonth() + 1;  
+	        var d = date.getDate();  
+	        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
+	        $('#caseTime').datebox('setText', dateTime); 
+	        $('#caseTime').datebox('setValue', dateTime);
+	        $('#caseTime').datebox('hidePanel');  
+	   }  
 	});
 });
 
@@ -168,17 +164,71 @@ function removeit(){
 		
 	});
 }
-
-function ww3(date){  
-    var y = date.getFullYear();  
-    var m = date.getMonth()+1;  
-    var d = date.getDate();  
-    var h = date.getHours();  
-    var min = date.getMinutes();  
-    var sec = date.getSeconds();  
-    var str = y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);  
-    return str;  
-}  
+function reset(){
+	$("#cusAdmin").textbox("setValue","");
+	$("#custor").textbox("setValue","");
+	$("#chinaName").textbox("setValue","");
+	$("#sphoneNum").textbox("setValue","");
+}
+function searchFunc(){
+	var cusAdmin = $("#cusAdmin").textbox("getValue").trim();
+	var custor = $("#custor").textbox("getValue").trim();
+	var chinaName = $("#chinaName").textbox("getValue").trim();
+	var phoneNum = $("#sphoneNum").textbox("getValue").trim();
+	$('#numListBox').datagrid({
+	    height: '100%',
+	    fit:true,
+	    url: '<%=basePath%>framework/LinkMan/findPage.action',
+	    method: 'POST',
+	    queryParams:{cusAdmin:cusAdmin,custor:custor,chinaName:chinaName,phoneNum:phoneNum},
+	    striped: true,
+	    nowrap: true,
+	    pageSize: 10,
+	    pageNumber:1, 
+	    pageList: [10, 20, 50, 100, 150, 200],
+		pagination : true,
+	    showFooter: true, 
+		loadMsg : '数据加载中请稍后……',
+	    toolbar:"#tb",
+	    singleSelect: false,
+		rownumbers:true,
+	    columns: [[
+	        { field: 'ck', checkbox: true },
+	        { field: 'userName', title: '客户账号', width: '5%' },
+	        { field: 'userNamePhone', title: '绑定的手机',align:'center', width: '10%' },
+	        { field: 'linkman', title: '乘机人',align:'center', width: '10%' },
+	        { field: 'linkNumber', title: '手机号码',align:'center', width: '10%' },
+	        { field: 'birthday', title: '生日',align:'center', width: '10%'},
+	        { field: 'caseType', title: '证件类型', width: '8%',
+	        	formatter:function(value,rec,index){  
+	                if(value=="NI"){
+	               	 	return "身份证";
+	                }else if(value=="PP"){
+	               	 	return "护照";
+	                }else{
+	                	return "其他证件";
+	                }
+          	  	}
+	        }, 
+	        { field: 'caseNum', title: '证件号码', width: '10%'},
+	        { field: 'peopleType', title: '旅客类型',align:'center', width: '5%',
+	        	formatter:function(value,rec,index){  
+	                if(value=="ADT"){
+	               	 	return "成人";
+	                }else if(value=="CHD"){
+	               	 	return "儿童";
+	                }else if(value=="INF"){
+	                	return "婴儿";
+	                }
+          	  	}
+	        },
+	        { field: 'sex', title: '性别',align:'center', width: '5%'},
+	        { field: 'belongCtry', title: '国籍',align:'center', width: '5%'},
+	        { field: 'openID', title: '微信openID',align:'center', width: '15%'},
+	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
+	    ]]
+	});
+} 
 
 //格式化时间
 function fotmateDate(value){
@@ -226,11 +276,12 @@ $.extend($.fn.validatebox.defaults.rules, {
 <div>
 	<table cellspacing="10" style="font-size:13px;">
 		<tr>
-			<td><label>客户账号：</label><input class="easyui-textbox" data-options="prompt:'请输入客户账号'"/></td>
-			<td><label>乘机人：</label><input class="easyui-textbox" data-options="prompt:'请输入乘机人'"/></td>
-			<td><label>中文名：</label><input class="easyui-textbox" data-options="prompt:'请输入中文名'"/></td>
-			<td><label>手机号码：</label><input class="easyui-textbox" data-options="prompt:'请输入手机号'"/></td>
-			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:alert('待开发')" id="saveCancel" style="width:90px">查找</a></td>
+			<td><label>客户账号：</label><input id="cusAdmin" class="easyui-textbox" data-options="prompt:'请输入客户账号'"/></td>
+			<td><label>乘机人：</label><input id="custor" class="easyui-textbox" data-options="prompt:'请输入乘机人'"/></td>
+			<td><label>中文名：</label><input id="chinaName" class="easyui-textbox" data-options="prompt:'请输入中文名'"/></td>
+			<td><label>手机号码：</label><input id="sphoneNum" class="easyui-textbox" data-options="prompt:'请输入手机号'"/></td>
+			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchFunc()" id="saveCancel" style="width:90px">查 找</a></td>
+			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="reset()" id="saveCancel" style="width:90px">重 置</a></td>
 		</tr>
 	</table>
 </div>
@@ -283,11 +334,11 @@ $.extend($.fn.validatebox.defaults.rules, {
 			</tr>
 			<tr>
 				<td>出生日期：</td>
-				<td><input id="birthday" name="birthday" class="easyui-datetimebox" style="width:173px;"/></td>
+				<td><input id="birthday" name="birthday" class="easyui-datebox" style="width:173px;"/></td>
 			</tr>
 			<tr>
 				<td>证件有效期：</td>
-				<td><input id="caseTime" name="caseTime" class="easyui-datetimebox" style="width:173px;"/></td>
+				<td><input id="caseTime" name="caseTime" class="easyui-datebox" style="width:173px;"/></td>
 			</tr>
 			<tr>
 				<td>国籍：</td>

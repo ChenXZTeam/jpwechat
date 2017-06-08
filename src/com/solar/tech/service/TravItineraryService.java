@@ -31,6 +31,32 @@ public class TravItineraryService {
 		return map;
 	}
 	
+	public Map<String,Object> findByCondition(int page,int rows,String pingtai,String flyDate,String conStutas,String kdNum,String ordNum,String phoneNum){
+		Map<String,Object> map = new HashMap<String,Object>();
+		StringBuffer hql =  new StringBuffer("FROM TravItinerary WHERE 1=1");
+		if(!flyDate.isEmpty()){
+			hql.append(" AND filghtDate LIKE '%"+flyDate+"%'");
+		}
+		if(!conStutas.isEmpty()){
+			hql.append(" AND consoleStutas = '"+conStutas+"'");
+		}
+		if(!kdNum.isEmpty()){
+			hql.append(" AND kdOrderNum LIKE '%"+kdNum+"%'");
+		}
+		if(!ordNum.isEmpty()){
+			hql.append(" AND orderNum LIKE '%"+ordNum+"%'");
+		}
+		if(!phoneNum.isEmpty()){
+			hql.append(" AND linkPhone LIKE '%"+phoneNum+"%'");
+		}
+		hql.append(" ORDER BY createTime DESC");
+		List<TravItinerary> cList = this.gDao.findByPage(hql.toString(), Integer.valueOf(page), Integer.valueOf(rows));
+		Long total = this.gDao.count(TravItinerary.class,hql.toString()); //获取影响的行数，用于前台分页
+		map.put("rows",cList);
+		map.put("total", total);
+		return map;
+	}
+	
 	public void getOrderDate(){
 		List<userOrderInfo> consoleOrderDate = this.gDao.find("FROM userOrderInfo WHERE isConsole = '1' AND consoleStatus = '0'"); //拿订单表中的数据
 		List<TravItinerary> soleDate = this.gDao.find("FROM TravItinerary"); //拿原来存在打印表中的数据（这样做是为了防止：插入重复的数据）
@@ -39,7 +65,7 @@ public class TravItineraryService {
 			for(userOrderInfo uInfo : consoleOrderDate){
 				boolean isAdd = true;
 				for(TravItinerary tt : soleDate){
-					if(uInfo.getID().equals(tt.getOrderUuid())){
+					if(uInfo.getOrderNum().equals(tt.getOrderNum())){
 						isAdd = false;
 						break;
 					}
@@ -51,9 +77,8 @@ public class TravItineraryService {
 					ttin.setFilghtDate(uInfo.getChufDate());
 					ttin.setFilghtMan(uInfo.getLinkName());
 					ttin.setLinkPhone(uInfo.getLinkPhoneNum());
-					ttin.setOrderUuid(uInfo.getID());
+					ttin.setOrderNum(uInfo.getOrderNum());
 					ttin.setSandAdd(uInfo.getSendAdd());
-					ttin.setSandDate("2017-12-12");
 					ttin.setTicketNum(uInfo.getTelNum());
 					tempList.add(ttin);
 				}
@@ -65,7 +90,7 @@ public class TravItineraryService {
 	}
 	
 	public void upConStutas(String uuid,String stutas){
-		this.gDao.executeJDBCSql("UPDATE userorderinfo SET consoleStatus = '"+stutas+"' WHERE ID = '"+uuid+"'");
+		this.gDao.executeJDBCSql("UPDATE userorderinfo SET consoleStatus = '"+stutas+"' WHERE orderNum = '"+uuid+"'");
 	}
 	
 	public void saveDate(List<TravItinerary> titra){
@@ -78,6 +103,10 @@ public class TravItineraryService {
 	
 	public void delInfo(List<TravItinerary> ttay){
 		this.gDao.delete(ttay);
+	}
+	
+	public void disBution(String uuid,String kdOrderNum,String kdCompany,String consoleStutas){
+		this.gDao.executeJDBCSql("UPDATE fw_travitinerary SET kdOrderNum = '"+kdOrderNum+"',kdCompany = '"+kdCompany+"',consoleStutas = '"+consoleStutas+"' WHERE uuid = '"+uuid+"'");
 	}
 	
 	public TravItinerary findOld(String uuid){

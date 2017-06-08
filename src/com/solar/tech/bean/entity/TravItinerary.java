@@ -45,9 +45,9 @@ public class TravItinerary {
     @Column(name="linkPhone")
     private String linkPhone;
     
-    //匹配机票订单的uuid字段
-    @Column(name="orderUuid")
-    private String orderUuid;
+    //匹配机票订单的orderNum字段
+    @Column(name="orderNum")
+    private String orderNum;
     
     //票号
     @Column(name="ticketNum")
@@ -56,6 +56,18 @@ public class TravItinerary {
     //打印状态
     @Column(name="consoleStutas")
     private String consoleStutas;
+    
+    //快递公司
+  	@Column(name = "kdCompany")
+  	private String kdCompany;
+  	
+  	//快递单号
+  	@Column(name = "kdOrderNum")
+  	private String kdOrderNum;
+  	
+  	//微信单号
+  	@Column(name = "transaction_id")
+  	private String transaction_id;
     
     //更新时间
     @Column(name="createTime")
@@ -109,14 +121,6 @@ public class TravItinerary {
 		this.linkPhone = linkPhone;
 	}
 
-	public String getOrderUuid() {
-		return orderUuid;
-	}
-
-	public void setOrderUuid(String orderUuid) {
-		this.orderUuid = orderUuid;
-	}
-
 	public String getConsoleStutas() {
 		return consoleStutas;
 	}
@@ -139,6 +143,38 @@ public class TravItinerary {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public String getKdCompany() {
+		return kdCompany;
+	}
+
+	public void setKdCompany(String kdCompany) {
+		this.kdCompany = kdCompany;
+	}
+
+	public String getKdOrderNum() {
+		return kdOrderNum;
+	}
+
+	public void setKdOrderNum(String kdOrderNum) {
+		this.kdOrderNum = kdOrderNum;
+	}
+
+	public String getTransaction_id() {
+		return transaction_id;
+	}
+
+	public void setTransaction_id(String transaction_id) {
+		this.transaction_id = transaction_id;
 	}
     
 }

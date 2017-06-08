@@ -41,7 +41,9 @@ public class PlanTekController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		//开始查找航班
 		List<SeatInfoData> avList = PlanTekServ.SreachSeat(chufCity,daodCity,dateTime,0);
+		System.out.println("查找到座位结果："+avList.size());
 		List<FlightInfo> flightInfo = PlanTekServ.priceInfo(avList, dateTime); //将航班信息和座位信息整合
+		System.out.println("整合了座位和运价结果："+flightInfo.size());
 		//把整理好的数据分成中转和直达
 		List<FlightInfo> zdList = new ArrayList<FlightInfo>(); //直达
 		List<FlightInfo> zzList = new ArrayList<FlightInfo>(); //直达

@@ -37,9 +37,6 @@ public class InsuranceController {
 	public int addNum(String bxNum,String bxType,String cost,String commit){
 		try {
 			Insurance info = new Insurance();
-			info.setBxNum(bxNum);
-			info.setIsUse("0");
-			info.setIsOpen("0");
 			info.setCreateTime(new Timestamp(new Date().getTime()));
 			info.setBxType(bxType);
 			info.setCost(cost);
@@ -53,13 +50,10 @@ public class InsuranceController {
 	
 	@RequestMapping("/updateNum.action")
 	@ResponseBody
-	public int upNum(String uuid,String isUse,String isOpen,String createTime,String bxNum,String bxType,String cost,String commit){
+	public int upNum(String uuid,String createTime,String bxType,String cost,String commit){
 		try {
 			Insurance info = new Insurance();
 			info.setUuid(uuid);
-			info.setBxNum(bxNum);
-			info.setIsUse(isUse);
-			info.setIsOpen(isOpen);
 			info.setCreateTime(Timestamp.valueOf(createTime));
 			info.setBxType(bxType);
 			info.setCost(cost);
@@ -100,6 +94,7 @@ public class InsuranceController {
 	@RequestMapping("/upMortCost.action")
 	@ResponseBody
 	public int upCost(String num,String mon){
+		System.out.println();
 		try {
 			inService.upcost(num,mon);
 			return 1;

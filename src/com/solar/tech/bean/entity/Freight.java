@@ -13,7 +13,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="FW_FREIGHT")
 public class Freight {
-	//签证ID
     @Id
     @GenericGenerator(name="uuid", strategy="uuid")
     @GeneratedValue(generator="uuid")

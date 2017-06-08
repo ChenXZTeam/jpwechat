@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>保险配置</title>
+	<title>保险列表</title>
 	<link rel="stylesheet" type="text/css"href="<%=basePath%>scripts/common/jquery-easyui/themes/default/easyui.css"/>
 	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/icon.css"/>
 	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/default/datagrid.css"/>
@@ -18,11 +18,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <script>
 $(function(){
-	$("#grideBox").css("height",$(window).height()-42);
+	$("#grideBox").css("height",$(window).height()-87);
 	$('#numListBox').datagrid({
 	    height: '100%',
 	    fit:true,
-	    url: '<%=basePath%>framework/insurance/numList.action',
+	    url: '<%=basePath%>framework/bxList/numList.action',
 	    method: 'POST',
 	    striped: true,
 	    nowrap: true,
@@ -37,6 +37,9 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
+	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
+	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
+	        { field: 'bxNum', title: '保险单号',align:'center', width: '15%' },
 	        { field: 'bxType', title: '保险类型',align:'center', width: '5%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
@@ -46,30 +49,67 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'cost', title: '价格/元',align:'center', width: '5%' },
-	        { field: 'commit', title: '内容描述', width: '50%'},
+	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
 	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
 	});
 });
-var numUrl = "";
-function toUpdate(){
+
+function sreach(){
+	var on = $("#orderNum").textbox("getValue").trim();
+	var ct = $("#customer").textbox("getValue").trim();
+	$('#numListBox').datagrid({
+	    height: '100%',
+	    fit:true,
+	    url: '<%=basePath%>framework/bxList/seach.action',
+	    method: 'POST',
+	    queryParams:{on:on,ct:ct},
+	    striped: true,
+	    nowrap: true,
+	    pageSize: 10,
+	    pageNumber:1, 
+	    pageList: [10, 20, 50, 100, 150, 200],
+		pagination : true,
+	    showFooter: true, 
+		loadMsg : '数据加载中请稍后……',
+	    toolbar:"#tb",
+	    singleSelect: false,
+		rownumbers:true,
+	    columns: [[
+	        { field: 'ck', checkbox: true },
+	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
+	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
+	        { field: 'bxNum', title: '保险单号',align:'center', width: '15%' },
+	        { field: 'bxType', title: '保险类型',align:'center', width: '5%' ,
+	        	formatter:function(value,rec,index){  
+	                if(value=="1"){
+	               	 	return "意外险";
+	                }else if(value=="2"){
+	               	 	return "延误险";
+	                }
+          	  	}
+	        },
+	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
+	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
+	    ]]
+	});
+}
+
+var doUrl = "";
+function fpNum(){
 	var rows = $('#numListBox').datagrid('getChecked');	
 	if(rows.length<1||rows.length>1){
 		$.messager.alert('操作提示', "请选择一条数据！", 'warning');
 		return false;
 	}
-	$("#isOpen").combobox({ disabled: false });
-	rows[0].createTime = fotmateDate(rows[0].createTime);
-	$('#inputNumForm').form('load',rows[0]);
-	$('#inputNum').dialog('open').dialog('setTitle','配置价格和备注信息');
-	numUrl = "<%=basePath%>framework/insurance/updateNum.action";
+	$("#uuid").textbox("setValue",rows[0].uuid);
+	doUrl = "<%=basePath%>framework/bxList/configNum.action";
+	$('#inputNum').dialog('open').dialog('setTitle','分配保险单号');
 }
 
-//确认修改信息的保存按钮	    
 function saveBean(){ 	
-      $('#inputNumForm').form('submit',{
-		   url: numUrl,
+    $('#inputNumForm').form('submit',{
+		   url: doUrl,
 		   onSubmit: function(){
 		        return $(this).form('validate');
 		   },
@@ -85,6 +125,10 @@ function saveBean(){
 	 }); 
 }
 
+function reset(){
+	$("#orderNum").textbox("setValue","");
+	$("#customer").textbox("setValue","");
+}
 
 //格式化时间
 function fotmateDate(value){
@@ -119,42 +163,38 @@ Date.prototype.format = function (format) {
 		 return format;  
 } 
 </script>
+<div>
+	<table cellspacing="10" style="font-size:13px;">
+		<tr>
+			<td><label>订单号：</label><input id="orderNum" class="easyui-textbox"/></td>
+			<td><label>客户名称：</label><input id="customer" class="easyui-textbox"/></td>
+			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="sreach()" style="width:90px; margin-left:15px;">查 询</a></td>
+			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="reset()" style="width:90px; margin-left:15px;">重 置</a></td>
+		</tr>
+	</table>
+</div>
 <div style="height:25px; background-color:#fff;">
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">配置价格与备注</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="fpNum()">分配保险单号</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="seeInfo()">详情</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="numListBox" style="width:100%;height:100%;"></div>
 </div>
-<div id="inputNum" class="easyui-dialog" style="width:510px; padding:30px;" closed="true" buttons="#dlg-buttons">
+<div id="inputNum" class="easyui-dialog" style="width:366px; padding:30px;" closed="true" buttons="#dlg-buttons">
 	<form id="inputNumForm">
 		<table>
 			<tr style="display:none;">
-				<td colspan="2"><input name="uuid" class="easyui-textbox"/></td>
-			</tr>
-			<tr style="display:none;">
-				<td colspan="2"><input name="createTime" class="easyui-textbox"/></td>
-			</tr>
-			<tr style="display:none;">
-				<td colspan="2">
-					<select name="bxType" class="easyui-combobox" style="width:173px;" panelHeight="75">
-						<option value="1">意外险</option>
-						<option value="2">延误险</option>
-					</select>
-				</td>
+				<td colspan="2"><input id="uuid" name="uuid" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
-				<td>保险价格：</td>
-				<td><input name="cost" class="easyui-textbox" style="maring-left:11px;"/></td>
-			</tr>
-			<tr>
-				<td>保险描述：</td>
-				<td><input name="commit" class="easyui-textbox" data-options="multiline:true" style="width:350px; height:150px;"/></td>
+				<td>输入保险单号：</td>
+				<td><input id="bxNum" name="bxNum" class="easyui-textbox"/></td>
 			</tr>
 		</table>
 	</form>
 </div>
 <div id="dlg-buttons">
-	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#inputNum').dialog('close')" style="width:90px">取消</a>
 </div>
 </body>

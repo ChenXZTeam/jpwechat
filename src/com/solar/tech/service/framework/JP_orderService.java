@@ -85,6 +85,13 @@ public class JP_orderService {
 		return map;
 	}
 	
+	public Map<String,Object> findbyid(String uuid){
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<userOrderInfo> orList = this.gDao.find("FROM userOrderInfo WHERE ID = '"+uuid+"'");
+		map.put("dateStr", orList);
+		return map;
+	}
+	
 	/**
 	 * 记录短信发送的方法
 	 */

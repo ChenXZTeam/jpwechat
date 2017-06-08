@@ -174,6 +174,14 @@ public class userOrderInfo {
 	@Column(name="consoleStatus",length=5)
 	private String consoleStatus;
 	
+	//快递单号
+	@Column(name="kdOrderNum")
+	private String kdOrderNum;
+	
+	//快递公司
+	@Column(name="kdCompany")
+	private String kdCompany;
+	
 	//配送地址
 	@Column(name="sendAdd")
 	private String sendAdd;
@@ -488,6 +496,22 @@ public class userOrderInfo {
 
 	public void setConsoleStatus(String consoleStatus) {
 		this.consoleStatus = consoleStatus;
+	}
+
+	public String getKdOrderNum() {
+		return kdOrderNum;
+	}
+
+	public void setKdOrderNum(String kdOrderNum) {
+		this.kdOrderNum = kdOrderNum;
+	}
+
+	public String getKdCompany() {
+		return kdCompany;
+	}
+
+	public void setKdCompany(String kdCompany) {
+		this.kdCompany = kdCompany;
 	}
 
 }

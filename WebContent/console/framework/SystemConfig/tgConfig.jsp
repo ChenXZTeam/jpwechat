@@ -39,12 +39,7 @@ $(function(){
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'airCode', title: '航空公司', width: '15%' ,formatter:findByCode},
-	        { field: 'filgTime', title: '起飞时间规定', width: '15%' },
-	        { field: 'tickType', title: '机票类型',align:'center', width: '10%' },
-	        { field: 'tpMoney', title: '退票扣费',align:'center', width: '10%' },
-	        { field: 'tcgqMoney', title: '同舱改期费',align:'center', width: '10%' },
-	        { field: 'isQz', title: '签转',align:'center', width: '10%' },
-	        { field: 'commit', title: '备注', width: '18%' },
+	        { field: 'commit', title: '退改政策', width: '35%' },
 	        { field: 'upTime', title: '更新时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
 	});
@@ -124,12 +119,7 @@ function findCodeCompany(){
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'airCode', title: '航空公司', width: '15%' ,formatter:findByCode},
-	        { field: 'filgTime', title: '起飞时间规定', width: '15%' },
-	        { field: 'tickType', title: '机票类型',align:'center', width: '10%' },
-	        { field: 'tpMoney', title: '退票扣费',align:'center', width: '10%' },
-	        { field: 'tcgqMoney', title: '同舱改期费',align:'center', width: '10%' },
-	        { field: 'isQz', title: '签转',align:'center', width: '10%' },
-	        { field: 'commit', title: '备注', width: '18%' },
+	        { field: 'commit', title: '退改政策', width: '35%' },
 	        { field: 'upTime', title: '更新时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
 	});
@@ -213,26 +203,6 @@ Date.prototype.format = function (format) {
 			<tr>
 				<td>航空公司：</td>
 				<td><input id="airCode" name="airCode" class="easyui-combobox" data-options="panelHeight:'276',valueField:'value', textField:'text'"/></td>
-			</tr>
-			<tr>
-				<td>起飞时间规定：</td>
-				<td><input name="filgTime" class="easyui-textbox"/></td>
-			</tr>
-			<tr>
-				<td>机票类型：</td>
-				<td><input name="tickType" class="easyui-textbox"/></td>
-			</tr>
-			<tr>
-				<td>退票扣费：</td>
-				<td><input name="tpMoney" class="easyui-textbox"/></td>
-			</tr>
-			<tr>
-				<td>同舱改期费：</td>
-				<td><input name="tcgqMoney" class="easyui-textbox"/></td>
-			</tr>
-			<tr>
-				<td>签转：</td>
-				<td><input name="isQz" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
 				<td>备注：</td>

@@ -2,8 +2,7 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-String strRow = new String(request.getParameter("strRow").getBytes("ISO-8859-1"),"utf-8");
-//System.out.println(strRow);
+String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"utf-8");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,6 +10,7 @@ String strRow = new String(request.getParameter("strRow").getBytes("ISO-8859-1")
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>查看订单详情</title>
 	<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript"src="<%=basePath%>console/js/airCodeVScity.js"></script>
 	<style>
 		.InfoTypeClass{ padding:10px; background-color:#E0ECFF; color:#0E2D5F; font-weight:bold;}
 		.tableClass{ margin-top:15px; border-left:solid 1px #E0ECFF; font-size:14px;}
@@ -104,29 +104,44 @@ String strRow = new String(request.getParameter("strRow").getBytes("ISO-8859-1")
 		<td colspan="3" id="age"></td>
 	</tr>
 </table>
-<div style="margin-top:10px; text-align:center;"><button id="upcang" class="btnClass" style="background-color:#0099FF; color:#fff;">同舱改期</button><button id="upuser" class="btnClass">修改资料</button></div>
+<div style="margin-top:10px; text-align:center;">
+	<!-- <button id="upcang" class="btnClass" style="background-color:#0099FF; color:#fff;">同舱改期</button> -->
+	<button id="upuser" class="btnClass">修改资料</button>
+</div>
 <script>
 	$(function(){
-		var strRow = '<%=strRow%>';
-		var obj = JSON.parse(strRow);
-		var pnrNum=obj.pnr;
-	 	for(var key in obj) {
-		    //遍历对象，k即为key，obj[k]为当前k对应的值
-		    //console.log("key:"+key+"/ value:"+obj[key]);
-		    var value = obj[key];
-		    if(key=="cabin"){value=obj[key]+"舱";} //格式化舱位
-		    if(key=="costMoney"){value="￥"+obj[key];} //格式化价格
-		    if(key=="stutisPay"){
-		    	if(value=="0"){value="未支付"; $("#upcang").css("display","none");}else if(value=="1"){value="已支付";}else{value="出错";}
-		    }//格式化支付状态
-		    if(key=="airCode"){
-		    	if(value="CZ"){}
-		    	value="南方航空";
-		    } //格式化航空公司
-		    if(key=="idcaseType"){value=value+"：";} //格式化证件类型
-		    if(key=="age"){value=value+"岁";}
-		    $("#"+key).text(value);
-		}
+		<%-- var strRow = '<%=strRow%>'; --%>
+		var n = '<%=uuid%>';
+		$.post("<%=basePath%>framework/order/findBy.action",{a:n},function(res){
+			var obj = JSON.parse(res);
+			var s = obj.dateStr[0];
+			console.log(s);
+			$("#id").text(s.id);
+			$("#orderNum").text(s.orderNum);
+			$("#chufCity").text(findByCity(s.chufCity));
+			$("#daodCity").text(findByCity(s.daodCity));
+			$("#hangbanNum").text(s.hangbanNum);
+			$("#chufDate").text(s.chufDate);
+			$("#chufTime").text(faromTime(s.chufTime));
+			$("#daodTime").text(faromTime(s.daodTime));
+			$("#cabin").text(s.cabin);
+			$("#linkName").text(s.linkName); 
+			$("#linkPhoneNum").text(s.linkPhoneNum);
+			$("#costMoney").text(s.costMoney);
+			$("#stutisPay").text(faromStatuas(s.stutisPay));
+			$("#qishiPlane").text(findByplaneName(s.chufCity));
+			$("#daodPlane").text(findByplaneName(s.daodCity));
+			$("#yanwuBX").text(farom(s.yanwuBX));
+			$("#yiwaiBX").text(farom(s.yiwaiBX));
+			$("#airCode").text(findByCode(s.hangbanNum.substring(0,2)));
+			$("#psgType").text(faromPstMan(s.psgType));
+			$("#userName").text(s.userName);
+			$("#idcase").text(s.idcase);
+			$("#linkSex").text(s.linkSex);
+			$("#birthday").text(s.birthday);
+			$("#age").text(s.age);
+		});
+		return;
 		
 		$("#upuser").click(function(){
 			var oNum = $("#orderNum").text();
@@ -138,6 +153,28 @@ String strRow = new String(request.getParameter("strRow").getBytes("ISO-8859-1")
 			window.location.href="<%=basePath%>console/framework/jporder/up_cang.jsp?orderNum="+oNum+"&pnrNo="+pnrNum;
 		});
 	});
+	
+	function farom(fr){
+		return fr==1?"购买":"不购买";
+	}
+	
+	function faromStatuas(fr){
+		return fr==1?"已支付":"未支付";
+	}
+	
+	function faromPstMan(fr){
+		if(fr=="ADT"){
+			return "成人";
+		}else if(fr=="CHD"){
+			return "儿童";
+		}else if(fr=="INF"){
+			return "婴儿";
+		}
+	}
+	
+	function faromTime(fr){
+		return fr.substring(0,2)+":"+fr.substring(2,4);
+	}
 </script>
 </body>
 </html>

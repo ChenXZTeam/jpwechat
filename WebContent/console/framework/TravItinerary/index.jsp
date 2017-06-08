@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>行程单打印辅助</title>
+	<title>打印查询</title>
 	<link rel="stylesheet" type="text/css"href="<%=basePath%>scripts/common/jquery-easyui/themes/default/easyui.css"/>
 	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/icon.css"/>
 	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/default/datagrid.css"/>
@@ -38,7 +38,7 @@ $(function(){
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'filghtMan', title: '乘机人', width: '5%' },
-	        { field: 'filghtDate', title: '航班日期',align:'center', width: '10%' },
+	        { field: 'filghtDate', title: '航班日期',align:'center', width: '7%' },
 	        { field: 'sandDate', title: '配送日期',align:'center', width: '10%' },
 	        { field: 'sandAdd', title: '配送地址', width: '10%' },
 	        { field: 'linkPhone', title: '联系手机',align:'center', width: '10%'},
@@ -52,9 +52,34 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'orderUuid', title: '机票订单ID',align:'center', width: '18%'}, 
+	        { field: 'orderNum', title: '订单编号',align:'center', width: '10%'}, 
+	        { field: 'kdOrderNum', title: '快递单号',align:'center', width: '10%'},
+	        { field: 'kdCompany', title: '快递公司',align:'center', width: '10%'},
 	        { field: 'createTime', title: '更新时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
+	});
+	
+	$('#sandDate').datebox({  
+		   onSelect:function(date){  
+		        var y = date.getFullYear();  
+		        var m = date.getMonth() + 1;  
+		        var d = date.getDate();  
+		        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
+		        $('#sandDate').datebox('setText', dateTime); 
+		        $('#sandDate').datebox('setValue', dateTime);
+		        $('#sandDate').datebox('hidePanel');  
+		   }  
+	});
+	
+	$('#flyDate').datebox({  
+		   onSelect:function(date){  
+		        var y = date.getFullYear();  
+		        var m = date.getMonth() + 1;  
+		        var d = date.getDate();  
+		        var dateTime = y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);  
+		        $('#flyDate').datebox('setText', dateTime); 
+		        $('#flyDate').datebox('hidePanel');  
+		   }  
 	});
 
 });
@@ -79,7 +104,7 @@ function reloadDate(){
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'filghtMan', title: '乘机人', width: '5%' },
-	        { field: 'filghtDate', title: '航班日期',align:'center', width: '10%' },
+	        { field: 'filghtDate', title: '航班日期',align:'center', width: '7%' },
 	        { field: 'sandDate', title: '配送日期',align:'center', width: '10%' },
 	        { field: 'sandAdd', title: '配送地址', width: '10%' },
 	        { field: 'linkPhone', title: '联系手机',align:'center', width: '10%'},
@@ -93,7 +118,9 @@ function reloadDate(){
 	                }
           	  	}
 	        },
-	        { field: 'orderUuid', title: '机票订单ID',align:'center', width: '18%'}, 
+	        { field: 'orderNum', title: '订单编号',align:'center', width: '10%'},  
+	        { field: 'kdOrderNum', title: '快递单号',align:'center', width: '10%'},
+	        { field: 'kdCompany', title: '快递公司',align:'center', width: '10%'},
 	        { field: 'createTime', title: '更新时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
 	});
@@ -111,6 +138,64 @@ function updateBtn(){
 	$('#lvkeInfoForm').form('load',rows[0]);
 	doUrl = "<%=basePath%>framework/travItinerary/upInfo.action";
 	$('#lvkeInfoBox').dialog('open').dialog('setTitle','修改打印信息');
+}
+
+function reset(){
+	$("#pingtai").textbox("setValue","");
+	$("#flyDate").textbox("setValue","");
+	$("#conStutas").combobox("setValue","");
+	$("#kdNum").textbox("setValue","");
+	$("#ordNum").textbox("setValue","");
+	$("#phoneNum").textbox("setValue","");
+}
+
+function sreachfunc(){
+	var pingtai = $("#pingtai").textbox("getValue").trim();
+	var flyDate = $("#flyDate").textbox("getValue").trim();
+	var conStutas = $("#conStutas").combobox("getValue").trim();
+	var kdNum = $("#kdNum").textbox("getValue").trim();
+	var ordNum = $("#ordNum").textbox("getValue").trim();
+	var phoneNum = $("#phoneNum").textbox("getValue").trim();
+	$('#numListBox').datagrid({
+	    height: '100%',
+	    fit:true,
+	    url: '<%=basePath%>framework/travItinerary/findByCondition.action',
+	    method: 'POST',
+	    queryParams:{pingtai:pingtai,flyDate:flyDate,conStutas:conStutas,kdNum:kdNum,ordNum:ordNum,phoneNum:phoneNum},
+	    striped: true,
+	    nowrap: true,
+	    pageSize: 10,
+	    pageNumber:1, 
+	    pageList: [10, 20, 50, 100, 150, 200],
+		pagination : true,
+	    showFooter: true, 
+		loadMsg : '数据加载中请稍后……',
+	    toolbar:"#tb",
+	    singleSelect: false,
+		rownumbers:true,
+	    columns: [[
+	        { field: 'ck', checkbox: true },
+	        { field: 'filghtMan', title: '乘机人', width: '5%' },
+	        { field: 'filghtDate', title: '航班日期',align:'center', width: '7%' },
+	        { field: 'sandDate', title: '配送日期',align:'center', width: '10%' },
+	        { field: 'sandAdd', title: '配送地址', width: '10%' },
+	        { field: 'linkPhone', title: '联系手机',align:'center', width: '10%'},
+	        { field: 'ticketNum', title: '票号',align:'center', width: '10%'},
+	        { field: 'consoleStutas', title: '打印状态',align:'center', width: '5%',
+	        	formatter:function(value,rec,index){  
+	                if(value=="0"){
+	               	 	return "未打印";
+	                }else if(value=="1"){
+	               	 	return "已打印";
+	                }
+          	  	}
+	        },
+	        { field: 'orderNum', title: '订单编号',align:'center', width: '10%'},  
+	        { field: 'kdOrderNum', title: '快递单号',align:'center', width: '10%'},
+	        { field: 'kdCompany', title: '快递公司',align:'center', width: '10%'},
+	        { field: 'createTime', title: '更新时间',align:'center', width: '10%',formatter:fotmateDate}
+	    ]]
+	});
 }
 
 function delBtn(){
@@ -143,6 +228,35 @@ function saveBean(){
 		   success: function(data){
 			   if(data==1||data=="1"){
 				   $('#lvkeInfoBox').dialog('close');  
+				    $('#numListBox').datagrid('reload'); 
+			   }else{
+				   $.messager.alert('操作提示', "操作失败", 'warning');
+			   }
+		   }
+	 }); 
+}
+
+function pointNum(){
+	var rows = $('#numListBox').datagrid('getChecked');	
+	if(rows.length<1||rows.length>1){
+		$.messager.alert('操作提示', "请选择一条数据！", 'warning');
+		return false;
+	}
+	console.log(rows[0]);
+	$('#lvkeInfoForm2').form('load',rows[0]);
+	$('#lvkeInfoBox2').dialog('open').dialog('setTitle','打印并分配单号');
+	
+}
+
+function saveBean2(){
+	$('#lvkeInfoForm2').form('submit',{
+		   url: "<%=basePath%>framework/travItinerary/fenpeiInfo.action",
+		   onSubmit: function(){
+		        return $(this).form('validate');
+		   },
+		   success: function(data){
+			   if(data==1||data=="1"){
+				   $('#lvkeInfoBox2').dialog('close');  
 				    $('#numListBox').datagrid('reload'); 
 			   }else{
 				   $.messager.alert('操作提示', "操作失败", 'warning');
@@ -184,24 +298,50 @@ Date.prototype.format = function (format) {
 		 return format;  
 }
 </script>
+<div>
+	<table cellspacing="10" style="font-size:13px;"> 
+		<tr>
+			<td><label>平　　台：</label><input id="pingtai" class="easyui-textbox"/></td>
+			<td><label>航班日期：</label><input id="flyDate" class="easyui-datebox"/></td>
+			<td><label>打印状态：</label>
+				<select id="conStutas" class="easyui-combobox" style="width:173px;" panelHeight="auto">
+					<option value=""></option>
+					<option value="0">未打印</option>
+					<option value="1">已打印</option>
+				</select>
+			</td>
+			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="sreachfunc()" style="width:90px; margin-left:15px;">查 询</a></td>
+		</tr>
+		<tr>
+			<td><label>快递单号：</label><input id="kdNum" class="easyui-textbox" data-options="prompt:'快递单号'"/></td>
+			<td><label>订&nbsp;&nbsp;单&nbsp;&nbsp;号：</label><input id="ordNum" class="easyui-textbox" data-options="prompt:'订单号'"/></td>
+			<td><label>手机号码：&nbsp;</label><input id="phoneNum" class="easyui-textbox"/></td>
+			<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="reset()" style="width:90px; margin-left:15px;">重 置</a></td>
+		</tr>
+	</table>
+</div> 
 <div style="height:25px; background-color:#fff;">
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="reloadDate()">更新打印行程数据</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateBtn()">修改打印信息</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateBtn()">修改配送信息</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no',plain:true" onclick="delBtn()">删除</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="pointNum()">打印并分配单号</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="numListBox" style="width:100%;height:100%;"></div>
 </div>
-<div id="lvkeInfoBox" class="easyui-dialog" style="width:510px; padding:30px;" closed="true" buttons="#dlg-buttons">
+<div id="lvkeInfoBox" class="easyui-dialog" style="width:347px; padding:30px;" closed="true" buttons="#dlg-buttons">
 	<form id="lvkeInfoForm">
-		<table>
-			<tr>
+		<table cellspacing="10">
+			<tr style="display:none;">
 				<td><input name="uuid" class="easyui-textbox"/></td>
 				<td><input name="createTime" class="easyui-textbox"/></td>
 			</tr>
+			<tr style="display:none;">
+				<td colspan="2"><input name="consoleStutas" class="easyui-textbox"/></td>
+			</tr>
 			<tr>
 				<td>配送日期：</td>
-				<td><input name="sandDate" class="easyui-textbox"/></td>
+				<td><input id="sandDate" name="sandDate" class="easyui-datebox" style="width:173px;"/></td>
 			</tr>
 			<tr>
 				<td>配送地址：</td>
@@ -210,6 +350,29 @@ Date.prototype.format = function (format) {
 			<tr>
 				<td>联系手机：</td>
 				<td><input name="linkPhone" class="easyui-textbox"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="dlg-buttons">
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox').dialog('close')" style="width:90px">取消</a>
+</div>
+
+<div id="lvkeInfoBox2" class="easyui-dialog" style="width:347px; padding:30px;" closed="true" buttons="#dlg-buttons2">
+	<form id="lvkeInfoForm2">
+		<table cellspacing="10">
+			<tr style="display:none;">
+				<td><input name="uuid" class="easyui-textbox"/></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>快递单号：</td>
+				<td><input name="kdOrderNum" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td>快递公司：</td>
+				<td><input name="kdCompany" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
 				<td>打印状态：</td>
@@ -223,9 +386,9 @@ Date.prototype.format = function (format) {
 		</table>
 	</form>
 </div>
-<div id="dlg-buttons">
-	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
-	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox').dialog('close')" style="width:90px">取消</a>
+<div id="dlg-buttons2">
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBean2()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox2').dialog('close')" style="width:90px">取消</a>
 </div>
 </body>
 </html>

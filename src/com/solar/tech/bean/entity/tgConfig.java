@@ -24,26 +24,6 @@ public class tgConfig {
     @Column(name="airCode")
     private String airCode;
     
-    //起飞时间规定
-    @Column(name="filgTime")
-    private String filgTime;
-    
-    //机票类型
-    @Column(name="tickType")
-    private String tickType;
-    
-    //退票扣费
-    @Column(name="tpMoney")
-    private String tpMoney;
-    
-    //同舱改期费
-    @Column(name="tcgqMoney")
-    private String tcgqMoney;
-    
-    //签转
-    @Column(name="isQz")
-    private String isQz;
-    
     //备注
     @Column(name="commit")
     private String commit;
@@ -68,38 +48,6 @@ public class tgConfig {
 		this.airCode = airCode;
 	}
 
-	public String getTickType() {
-		return tickType;
-	}
-
-	public void setTickType(String tickType) {
-		this.tickType = tickType;
-	}
-
-	public String getTpMoney() {
-		return tpMoney;
-	}
-
-	public void setTpMoney(String tpMoney) {
-		this.tpMoney = tpMoney;
-	}
-
-	public String getTcgqMoney() {
-		return tcgqMoney;
-	}
-
-	public void setTcgqMoney(String tcgqMoney) {
-		this.tcgqMoney = tcgqMoney;
-	}
-
-	public String getIsQz() {
-		return isQz;
-	}
-
-	public void setIsQz(String isQz) {
-		this.isQz = isQz;
-	}
-
 	public String getCommit() {
 		return commit;
 	}
@@ -114,14 +62,6 @@ public class tgConfig {
 
 	public void setUpTime(Timestamp upTime) {
 		this.upTime = upTime;
-	}
-
-	public String getFilgTime() {
-		return filgTime;
-	}
-
-	public void setFilgTime(String filgTime) {
-		this.filgTime = filgTime;
 	}
     
 }

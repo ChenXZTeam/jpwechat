@@ -44,13 +44,13 @@ public class PlanTekService {
 		List<SeatInfoData> noStop = SeatInfo(org,dst,date,isWf); //查找数据是否已经缓存
 		noStop = guoDateInfo(noStop); // 进一步处理看看是否有过期的航班
 		if(noStop.size()==0){  //如果数据库缓存的航班为空，则说明这个条件航班没有查找过记录，需要重新查找
-			System.out.println("符合查找接口的条件");
+			//System.out.println("符合查找接口的条件");
 			noStop = upHcDate(org, dst, date, isWf); //封装了缓存的方法
 		}else{
 			//因为有的信息需要公用航班数据，所以更新一下出发时间(这一段功能代码不应该写在这里，应该写在前台)
 			for(SeatInfoData sd : noStop){
 				//有些中转航班中的第二段航班起飞时间是明天起飞的。所以有必要更新起飞日期+1
-				if(sd.getDeptimemodify().equals("+1")){
+				if("+1".equals(sd.getDeptimemodify())){
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					Date dates = null;
 					try {
@@ -65,7 +65,7 @@ public class PlanTekService {
 				}
 				
 				//有些中转航班中的第二段航班到达时间是明天的。所以有必要更新到达日期+1
-				if(sd.getArriveTimeModify().equals("+1")){
+				if("+1".equals(sd.getArriveTimeModify())){
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					Date dates = null;
 					try {
@@ -89,7 +89,7 @@ public class PlanTekService {
 		List<FDItem> fdList = null;
 		List<SeatPriceData> spd = findBySqlData(org, dst,airline);
 		if(spd!=null&&spd.size()>0){
-			System.out.println("获取到数据库中的运价数据");
+			//System.out.println("获取到数据库中的运价数据");
 			return spd;
 		}else{
 			try {
@@ -396,6 +396,7 @@ public class PlanTekService {
 	}
 	
 	public List<SeatInfoData> upHcDate(String org, String dst,String date, int isWf){
+		System.out.println(org+","+dst+","+date);
 		List<SeatInfoData> noStop = new ArrayList<SeatInfoData>();
 		String dayNum = "";
 		long juliDay = pointTime(date);
@@ -405,6 +406,9 @@ public class PlanTekService {
 			hsavList = new ECUtils().av(org, dst, date, null, null, "true", null, null, null); //查询座位可用   无中转
 		}else{ //否则是单程的 需要有中转
 			hsavList = new ECUtils().av(org, dst, date, null, null, "false", null, null, null); //查询座位可用   有中转
+		}
+		if(hsavList==null||hsavList.size()==0){
+			return noStop;
 		}
 		hsavList = new OptimizeECUtils().removeNullreapte(hsavList); //剔除没有座位的、重复的、共享的航班
 		for(int i=0; i<hsavList.size(); i++){

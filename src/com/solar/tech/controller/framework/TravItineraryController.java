@@ -52,11 +52,7 @@ public class TravItineraryController {
 			TravItinerary ttine = tts.findOld(ttin.getUuid());
 			ttine.setSandAdd(ttin.getSandAdd());
 			ttine.setLinkPhone(ttin.getLinkPhone());
-			ttine.setSandDate(ttin.getSandDate());
-			if(ttine.getConsoleStutas().equals(ttin.getConsoleStutas())){ //如果管理员修改了打印状态， 那订单表中的打印状态也要改变
-			}else{
-				tts.upConStutas(ttine.getOrderUuid(),ttin.getConsoleStutas());
-			}
+			ttine.setSandDate(ttin.getSandDate().substring(0,10));
 			ttine.setConsoleStutas(ttin.getConsoleStutas());
 			tts.upInfo(ttine);
 			return 1;
@@ -81,6 +77,24 @@ public class TravItineraryController {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+	
+	@RequestMapping("/fenpeiInfo.action")
+	@ResponseBody
+	public int fenpeiInfo(String uuid,String kdOrderNum,String kdCompany,String consoleStutas){
+		try {
+			tts.disBution(uuid,kdOrderNum,kdCompany,consoleStutas);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	@RequestMapping("/findByCondition.action")
+	@ResponseBody
+	public Map<String,Object> findByCondition(int page,int rows,String pingtai,String flyDate,String conStutas,String kdNum,String ordNum,String phoneNum){
+		Map<String,Object> map = tts.findByCondition(page,rows,pingtai,flyDate,conStutas,kdNum,ordNum,phoneNum);
+		return map;
 	}
 
 }

@@ -57,10 +57,10 @@ public class LinkManService {
 		return ulist;
 	}
 	
-	public Map<String,Object> findPage(int page,int rows){
+	public Map<String,Object> findPage(int page,int rows,String cusAdmin,String custor,String chinaName,String phoneNum){
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<LinkMan> cList = this.gDao.findByPage("FROM LinkMan WHERE ORDER BY createTime DESC", Integer.valueOf(page), Integer.valueOf(rows));
-		Long total = this.gDao.count(LinkMan.class,"FROM LinkMan WHERE ORDER BY createTime DESC"); //获取影响的行数，用于前台分页
+		List<LinkMan> cList = this.gDao.findByPage("FROM LinkMan WHERE UserName LIKE '%"+cusAdmin+"%' AND linkman LIKE '%"+custor+"%' AND chinaName LIKE '%"+chinaName+"%' AND linkNumber LIKE '%"+phoneNum+"%' ORDER BY createTime DESC", Integer.valueOf(page), Integer.valueOf(rows));
+		Long total = this.gDao.count(LinkMan.class,"FROM LinkMan WHERE UserName LIKE '%"+cusAdmin+"%' AND linkman LIKE '%"+custor+"%' AND chinaName LIKE '%"+chinaName+"%' AND linkNumber LIKE '%"+phoneNum+"%' ORDER BY createTime DESC"); //获取影响的行数，用于前台分页
 		map.put("rows",cList);
 		map.put("total", total);
 		return map;

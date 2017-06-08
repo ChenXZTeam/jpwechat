@@ -143,7 +143,7 @@ public class userOrderController {
 			oderInfo.setDepTerm(sifd.getDepTerm());
 			oderInfo.setMeal(sifd.getMeal());
 			//出发日期
-			if(sifd.getDeptimemodify().equals("+1")){
+			if("+1".equals(sifd.getDeptimemodify())){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date dates = null;
 				try {
@@ -157,7 +157,7 @@ public class userOrderController {
 				oderInfo.setChufDate(depDate);
 			}
 			//到达日期
-			if(sifd.getArriveTimeModify().equals("+1")){
+			if("+1".equals(sifd.getArriveTimeModify())){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date dates = null;
 				try {
@@ -200,8 +200,8 @@ public class userOrderController {
 			oderInfo.setOpenID("Zksjdhfjkkwehksdhf"); //订票的openId
 			
 			//预定中信航航班(先查找接口是否还有座位)
-			Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
-			if(seatNum!=null){
+			//Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
+			//if(seatNum!=null){
 				PnrResponse resuletData = null;
 				try {resuletData = OrderService.Reserve(oderInfo);} catch (Exception e) {}
 				if(resuletData==null){
@@ -216,12 +216,12 @@ public class userOrderController {
 					mAl.setOrgCity(oderInfo.getDaodCity());
 					mAl.setIsOk("1");
 				}
-			}else{
+			/*}else{
 				oderInfo.setIsSuccess("0");
 				mAl.setDepCity(oderInfo.getChufCity());
 				mAl.setOrgCity(oderInfo.getDaodCity());
 				mAl.setIsOk("0");
-			}
+			}*/
 			map.put("resAlert", mAl);
 			OrderService.addOrder(oderInfo); //把订单数据保存到数据库中。
 		}else{

@@ -5,7 +5,7 @@
 %>
 <%	
 	String username=(String) session.getAttribute("userName");
-	String jin = (String) session.getAttribute("invId");
+	//String jin = (String) session.getAttribute("invId");
 	String uuid = request.getParameter("uuid");
 	String canbin = request.getParameter("canbin");
  %>
@@ -45,7 +45,6 @@
 <body>
 <script>
 var fals=true;//防止重复提交
-var ivid = "<%=jin%>";
 var uuid = "<%=uuid%>";
 var canbin = "<%=canbin%>";
 $(function(){
@@ -97,13 +96,13 @@ $(function(){
 	
 	//判断是否登录
 	var username="<%=username%>";
-	var jin = "<%=jin%>"
+	<%-- var jin = "<%=jin%>" --%>
 	if(username==""||username=="null"||username==null){
 		$.alert("登录才能订票");
 		$("#touMbackground").css("display","block");
-	}else{
+	}<%-- else{
 		getcode("<%=jin%>");
-	}
+	} --%>
 	
 	//登录
 	$(".loginBtn").click(function(){
@@ -118,8 +117,8 @@ $(function(){
 					dataType: "json",
 					success: function(result) {
 						if(result.msg==1){	
-							ivid = (result.userInfo)[0].inCodeId;
-							getcode(ivid);					
+							/* ivid = (result.userInfo)[0].inCodeId;
+							getcode(ivid); */					
 							//上面的条件正确时候改变按钮格式
 							$(".loginBtn").css("background-color","#dddddd");
 							$(".loginBtn").css("color","#666666");

@@ -60,6 +60,7 @@ public class hcConfigController {
 			try {
 				String[] signStr = sign.split(",");
 				for(String chsign : signStr){
+					System.out.println("更新的缓存id:"+chsign);
 					hcConfig hcf = hcService.findByuuid(chsign);
 					String date = hcService.formDate(hcf.getHcType()); //获取默认的查找日期
 					try {

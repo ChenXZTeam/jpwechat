@@ -75,8 +75,6 @@ public class LinkManController {
 				lma.setOpenID(linkm.get(0).getOpenID());
 				lma.setUserNamePhone(linkm.get(0).getPhoneNum());
 			}
-			lma.setBirthday(lma.getBirthday().substring(0,10));
-			lma.setCaseTime(lma.getCaseTime().substring(0,10));
 			lma.setID(id);
 			linkMans.upInfo(lma);
 			return 1;
@@ -87,8 +85,8 @@ public class LinkManController {
 	
 	@RequestMapping("/findPage.action")
 	@ResponseBody
-	public Map<String,Object> findPage(int page, int rows){
-		Map<String,Object> map = linkMans.findPage(page,rows);
+	public Map<String,Object> findPage(int page, int rows,String cusAdmin,String custor,String chinaName,String phoneNum){
+		Map<String,Object> map = linkMans.findPage(page,rows,cusAdmin,custor,chinaName,phoneNum);
 		return map;
 	}
 	

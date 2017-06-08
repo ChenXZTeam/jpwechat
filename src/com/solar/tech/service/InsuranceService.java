@@ -76,10 +76,7 @@ public class InsuranceService {
 	}
 	
 	public void upcost(String uuid,String cost){
-		String[] chid = uuid.split(",");
-		for(String id : chid){
-			String sql = "UPDATE fw_insurance SET cost = '"+cost+"' WHERE uuid = '"+id+"'";
+			String sql = "UPDATE fw_insurance SET bxNum = '"+cost+"' WHERE uuid = '"+uuid+"'";
 			this.gDao.executeJDBCSql(sql);
-		}
 	}
 }
