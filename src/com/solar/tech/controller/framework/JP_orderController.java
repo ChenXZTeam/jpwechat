@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.solar.tech.bean.entity.phoneMess;
+import com.solar.tech.bean.entity.userOrderInfo;
+import com.solar.tech.service.userOrderService;
 import com.solar.tech.service.framework.JP_orderService;
 import com.solar.tech.util.Current;
 import com.solar.tech.utils.Send106msg;
@@ -26,11 +28,12 @@ public class JP_orderController {
 	Logger log = Logger.getLogger(JP_orderController.class);
 	@Autowired
 	private JP_orderService jporderService;
+	@Autowired
+	private userOrderService OrderService;
 	
 	@RequestMapping("/getOrderList.action")
 	@ResponseBody
 	public Map<String, Object> getOrderList(int page, int rows){
-		System.out.println(page+"/"+rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = jporderService.loadOrder(page, rows);
 		if(map.size()>0){
@@ -41,10 +44,28 @@ public class JP_orderController {
 		return map;
 	}
 	
+	@RequestMapping("/addOrderAdmin.action")
+	@ResponseBody
+	public int addOrderAdmin(userOrderInfo sd){
+		try {
+			sd.setOrderNum(OrderService.createOrderNum("RDOD", 8));
+			sd.setStutisPay("1");
+			sd.setAdminDel("0");
+			sd.setChufTime(sd.getChufTime().replaceAll(":", ""));
+			sd.setDaodTime(sd.getDaodTime().replaceAll(":", ""));
+			sd.setUpdateTime(new Timestamp(new Date().getTime()));
+			sd.setCreateTime(new Timestamp(new Date().getTime()));
+			sd.setIsSuccess("1");
+			jporderService.savaOrder(sd);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
 	@RequestMapping("/findOrder.action")
 	@ResponseBody
 	public Map<String, Object> findOrder(int page, int rows, String Info){
-		System.out.println(page+"/"+rows+"/"+Info);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = jporderService.findByInfo(page, rows, Info);
 		if(map.size()>0){
@@ -126,6 +147,5 @@ public class JP_orderController {
 		}
 		return map;
 	}	
-	
 	
 }

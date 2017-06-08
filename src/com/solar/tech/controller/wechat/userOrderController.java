@@ -28,6 +28,7 @@ import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.service.PlanTekService;
 import com.solar.tech.service.userOrderService;
+import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.utils.mony_av;
 import com.travelsky.sbeclient.obe.book.BookContact;
@@ -614,19 +615,23 @@ public class userOrderController {
 	//删除订单同时得删除中航信中的订单
 	@RequestMapping("/delete/order.action")
 	@ResponseBody
-	public Map<String, Object> deleteOrder(String pnrNo, String orderNum, String ID){
+	public Map<String, Object> deleteOrder(String pnrNo, String ID){
 		Map<String, Object> map = new HashMap<String, Object>();
-		//boolean YesOrNo = new ECUtils().cancelPnr(pnrNo); //执行中航信删除订单的方法
-		//if(YesOrNo){
-			int i = OrderService.deleteOrder(ID, orderNum);
-			if(i==1){
-				map.put("msg",1);
-				System.out.println("订单删除成功");
-			}else{
-				map.put("msg",0);
-				System.out.println("订单删除出错");
-			}
-		//}
+		String[] pnrNoStr = pnrNo.split(",");
+		String[] idStr = ID.split(",");
+		for(int i=0; i<idStr.length; i++){
+			//boolean YesOrNo = new ECUtils().cancelPnr(pnrNoStr[i]); //执行中航信删除订单的方法
+			//if(YesOrNo){
+				int j = OrderService.deleteOrder(idStr[i]);
+				if(j==1){
+					map.put("msg",1);
+					System.out.println("订单删除成功");
+				}else{
+					map.put("msg",0);
+					System.out.println("订单删除出错");
+				}
+			//}
+		}
 		return map;
 	}
 	

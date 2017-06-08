@@ -235,15 +235,12 @@ public class userOrderService {
 		 * @param orderNum
 		 * @return: void
 		 */
-		public int deleteOrder(String ID, String orderNum) {
+		public int deleteOrder(String ID) {
 			try {
-				if(orderNum != null){
-					String sql = "UPDATE userorderinfo SET AdminDel = 1 WHERE ID = '"+ID+"' AND orderNum = '"+orderNum+"'";
-					gDao.executeJDBCSql(sql);
-				}
+				String sql = "UPDATE userorderinfo SET AdminDel = 1 WHERE ID = '"+ID+"'";
+				gDao.executeJDBCSql(sql);
 				return 1;  
 			}catch (Exception e) {
-				//log.info("msg", e.getCause());
 				return -1;
 			}
 		}  

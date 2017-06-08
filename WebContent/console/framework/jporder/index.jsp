@@ -19,22 +19,21 @@
 	.seachBox ul{margin:0px; padding:0px; list-style-type:none; overflow:hidden;}
 	.seachBox ul li{float:left; margin-left:10px;}
 	.seachBox ul li span{}
-	.seachBox ul li input{height:24px; outline:none; border:1px solid #cccccc; padding-left:10px;}
-	.seachBox ul li a{padding:5px 20px; font-size:13px; border:1px solid blue; color:blue; cursor:pointer; display:block; text-align:center;}
+	.seachBox ul li input{height:24px; outline:none; border:1px solid #cccccc; padding-left:10px; border-radius:5px;}
 </style>
 </head>
 <body>
 <div class="seachBox">
 	<ul>
-		<li><span></span><input type="text" id="countryNameIdBox" placeholder="请输入预约编号/证件号/登机号"/></li>
-		<li><a onclick="query()">搜索</a></li>
-	</ul>
+		<li><span></span><input type="text" id="countryNameIdBox" placeholder="请输入预约编号/证件号/登机号" style="width:225px;"/></li>
+		<li><a onclick="query()" class="easyui-linkbutton" style="width:70px; height:28px;">搜索</a></li>
+	</ul> 
 </div>
 <div style="height:25px; background-color:#fff;">
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除</a>
+	<a href="<%=basePath %>console/framework/jporder/newOrder.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">录入订单</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除订单</a>
 <!-- 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a> -->
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看</a>
-	<a href="<%=basePath %>console/framework/jporder/addorder.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">预定机票</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看订单</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="dataBox" style="width:100%;height:100%;">
@@ -77,43 +76,41 @@ $(function(){
 	        },
 	        { field: 'hangbanNum', title: '航班号',align:'center', width: '11%'},
 	        { field: 'chufDate', title: '出发日期',align:'center', width: '11%'},
-	        { field: 'chufTime', title: '出发时间',align:'center', width: '6%'},
+	        { field: 'chufTime', title: '出发时间',align:'center', width: '6%',
+	        	formatter:function(value,rec,index){
+	        		if(value==undefined){
+	        			return "未知";
+	        		}else{
+	        			return value.substring(0,2)+":"+value.substring(2,4);
+	        		}
+	        	}
+	        },
 	        { field: 'idcase', title: '证件号码',align:'center', width: '16%'},
 	        { field: 'createTime', title: '创建时间',align:'center', width: '14.5%',formatter: fotmateDate},
-	    ]],
-	    onDblClickRow :function(rowIndex,rowData){
-	    	details(rowData);
-	   	}
+	    ]]
 	});
 });
 
 function removeit(){
-	var rows = $('#dataBox').datagrid('getSelections');	
-	var row = $('#dataBox').datagrid('getSelected');
-	console.log(row);
-	if (row == undefined||row == null||row == "") {
-         $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+	var rows = $('#dataBox').datagrid('getChecked');	
+	if (rows.length == "0") {
+         $.messager.alert('操作提示', "选择删除的数据！", 'warning');
          return false;
     } 
-    if(rows.length > 1){
-         $.messager.alert('操作提示', "只能删除一条数据", 'warning');
-         return false;
-    }
     
 	$.messager.confirm('确认', '真的要删除吗？', function (r) {
           if (r) {
-                	var UUID = row.id;
-                	var orderNum = row.orderNum;
-                	var pnrNo = row.pnr; 
-                    if (row){
+                	var UUID = "";
+                	var pnrNo = "";
+                	for(var i=0; i<rows.length; i++){
+                		UUID += rows[i].id+",";
+                		pnrNo += rows[i].pnr+",";
+                	}
                         $.ajax({
-                            cache: false,
-                            async: false,
                             type: "POST",
                             data:{
-                            	"ID":UUID,
-                            	"orderNum":orderNum,
-                            	"pnrNo":pnrNo
+                            	"ID":UUID.substring(0,UUID.length-1),
+                            	"pnrNo":pnrNo.substring(0,pnrNo.length-1),
                             },
                             dataType: 'json',
                             url: "<%=basePath%>userOrderController/delete/order.action",
@@ -121,13 +118,12 @@ function removeit(){
                                 console.log(data);
                                 if (data.msg == 1) {
                                     $('#dataBox').datagrid('reload');       
-                                    alert('订单删除成功！');                           
+                                    $.messager.alert('订单删除成功！');                           
                                 }else {
                                     $.messager.alert('Warning', '删除不成功！'); 
                                 }
                             }
                         });
-                    } 
              }
       });
 }
@@ -183,13 +179,18 @@ function query(){
 	        },
 	        { field: 'hangbanNum', title: '航班号',align:'center', width: '11%'},
 	        { field: 'chufDate', title: '出发日期',align:'center', width: '11%'},
-	        { field: 'chufTime', title: '出发时间',align:'center', width: '6%'},
+	        { field: 'chufTime', title: '出发时间',align:'center', width: '6%',
+	        	formatter:function(value,rec,index){
+	        		if(value==undefined){
+	        			return "未知";
+	        		}else{
+	        			return value.substring(0,2)+":"+value.substring(2,4);
+	        		}
+	        	}
+	        },
 	        { field: 'idcase', title: '证件号码',align:'center', width: '16%'},
 	        { field: 'createTime', title: '创建时间',align:'center', width: '14.5%',formatter: fotmateDate},
-	    ]],
-	    onDblClickRow :function(rowIndex,rowData){
-	    	details(rowData);
-	   	}
+	    ]]
 	});
 }
 

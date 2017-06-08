@@ -102,4 +102,11 @@ public class JP_orderService {
 		}
 	}
 	
+	/**
+	 * 记录短信发送的方法
+	 */
+	public void savaOrder(userOrderInfo ph) {
+		gDao.save(ph);
+	}
+	
 }
