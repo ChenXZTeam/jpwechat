@@ -235,9 +235,40 @@ function loadFz(){
 		var obj = JSON.parse(res);
 		var data = obj.rows;
 		for(var i=0; i<data.length; i++){
-			var li = '<li><input class="checkBoxFz checkDisplayNot" name="checkTheme" type="checkbox" style="float:left; margin-top:-0.5px;"/><span class="fileImagePush"></span><label class="lookSee" style="float:left;">'+data[i].fzName+'</label><div class="fzUUID" style="clear:both;">'+data[i].uuid+'</div></li>';
+			var li = '<li><input class="checkBoxFz checkDisplayNot" name="checkTheme" type="checkbox" style="float:left; margin-top:-0.5px;"/><span class="fileImagePush"></span><label class="lookSee" onclick="lookSeeFunc(this)" style="float:left;">'+data[i].fzName+'</label><div class="fzUUID" style="clear:both;">'+data[i].uuid+'</div></li>';
 			$("#fenziLi").append(li);
 		}
+	});
+}
+
+function lookSeeFunc(inc){
+	var keyVal = $(inc).text();
+	$('#phoneNumListBox').datagrid({
+	    height: '100%',
+	    fit:true,
+	    url: '<%=basePath%>framework/phoneNum/getKeyFz.action',
+	    method: 'POST',
+	    queryParams:{keyVal:keyVal},	 
+	    striped: true,
+	    nowrap: true,
+	    pageSize: 10,
+	    pageNumber:1, 
+	    pageList: [10, 20, 50, 100, 150, 200],
+		pagination : true,
+	    showFooter: true, 
+		loadMsg : '数据加载中请稍后……',
+	    toolbar:"#tb",
+	    singleSelect: false,
+		rownumbers:true,
+	    columns: [[
+	        { field: 'ck', checkbox: true },
+	        { field: 'linkName',title: '联系用户',width: '25%'},
+	        { field: 'phoneNumber', title: '手机号码', width: '25%' },
+	        { field: 'fzName', title: '所属分组', width: '15%' },
+	        { field: 'userName', title: '用户名', width: '22.5%' },
+	        { field: 'createTime', title: '创建时间', width: '10%',formatter:fotmateDate}
+	       
+	    ]]
 	});
 }
 
@@ -356,11 +387,10 @@ function sureBtn(){ //弹出修改框
 	   var date =[];
 	   var jsonStr={"uuid":$("input[type='checkbox']:checked").siblings("div").text(),"fzName":$("input[type='checkbox']:checked").siblings("label").text()};
 	   date.push(jsonStr);
-	   console.log(date);
 	   if(a==0){
-	       alert("请选择要修改的分组");
+		   $.messager.alert('操作提示',"请选择要修改的分组", 'warning');
 	   }else if(a>=2){
-	       alert("对不起，你只能对一个分组进行修改");
+		   $.messager.alert('操作提示',"请选择一条数据", 'warning');
 	   }
 	   else{
 	      fzUrl = "<%=basePath%>framework/phoneGroup/upFenZu.action";
@@ -374,7 +404,7 @@ function sureBtn(){ //弹出修改框
 	       $.messager.alert('操作提示', "请选中要删除了数据", 'warning');
 	       return false;
 	    }
-	    $.messager.confirm('确认', '真的要删除这'+$("input[type='checkbox']:checked").length+'记录吗?', function (r) {
+	    $.messager.confirm('确认', '真的要删除这'+$("input[type='checkbox']:checked").length+'条记录吗?', function (r) {
 	       if (r){
 	    	    var uuidStr = "";
 	    	    $("input[type='checkbox']:checked").each(function(){
@@ -400,7 +430,8 @@ function sureBtn(){ //弹出修改框
 	       }
 	       
 	    }); 
-	    
+	}else{
+		$.messager.alert('Warning', '请选择操作数据'); 
 	} 
 }
 //确认修改信息的保存按钮	    
@@ -412,7 +443,6 @@ function saveBean(){
 		       },
 		       success: function(data){
 		       	var obj = JSON.parse(data);
-		       	console.log(data+", "+obj+", "+obj.state);
 		       	   if(obj.state == 1){
 			           $('#phoneNumBox').dialog('close');        // close the dialog
 			           $('#phoneNumListBox').datagrid('reload');    // reload the user data

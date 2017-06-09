@@ -72,7 +72,7 @@ $(function(){
 <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide"><img style="height:120px;" src="<%=basePath %>console/images/banner0.png"></img></div>
-            <div class="swiper-slide"><img style="height:120px;width:100%;" src="<%=basePath %>console/images/banner1.jpg"></img></div>
+            <div class="swiper-slide"><img style="height:120px;width:100%;" src="<%=basePath %>console/images/banner1.png"></img></div>
         </div>
         <div class="swiper-pagination"></div>
 </div>

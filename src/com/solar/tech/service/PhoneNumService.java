@@ -73,6 +73,16 @@ public class PhoneNumService {
 		return map;
 	}
 	
+	public Map<String, Object> getKeyFz(int pag, int row,String keyVal) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String hql = "FROM PhoneNum WHERE FzName = '"+keyVal+"' ORDER BY createTime DESC";
+		List<PhoneNum> cList = this.gDao.findByPage(hql, Integer.valueOf(pag), Integer.valueOf(row));
+		Long total = this.gDao.count(PhoneNum.class,hql); //获取影响的行数，用于前台分页
+		map.put("rows", cList);
+		map.put("total", total);
+		return map;
+	}
+	
 	/**
 	 * 删除手机号
 	 * @param phoneID

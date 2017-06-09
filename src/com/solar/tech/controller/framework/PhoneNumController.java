@@ -50,6 +50,19 @@ public class PhoneNumController {
 		return map;
 	}
 	
+	@RequestMapping("/getKeyFz.action")
+	@ResponseBody
+	public Map<String, Object> getKeyFz(int page, int rows,String keyVal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = phoneNumService.getKeyFz(page, rows, keyVal);
+		if(map.size()>0){
+			map.put("msg", 1);
+		}else{
+			map.put("msg", 0);
+		}
+		return map;
+	}
+	
 	
 	/**
 	 * 功能描述：添加新的手机号
