@@ -3,14 +3,20 @@ package com.solar.tech.controller.framework;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
@@ -96,5 +102,44 @@ public class LinkManController {
 		List<RD_wechatUser> listDate = linkMans.getuserList();
 		return listDate;
 	}
+	
+	@RequestMapping("/importPass.action")
+	@ResponseBody
+	 public Map<String, Object> getReport(@RequestParam(value="file") MultipartFile file)  
+	            throws Exception { 
+		
+	       if(file.isEmpty()){
+	    	   return null;
+	       }
+	       Map<String, Object> map=new HashMap<String,Object>();
+	       String resultMsg = linkMans.readReport(file.getInputStream(), file.getOriginalFilename()); 
+	       if(resultMsg.equals("")||resultMsg==null){
+	    	   map.put("state", 0);
+	    	   map.put("msgRe", resultMsg);
+	    	   return map;
+	       }else{
+	    	   map.put("state", 1);
+	           return map;
+	       }
+	}
+	
+	@RequestMapping("/isExtie.action")
+	@ResponseBody
+	public boolean isExtie(String userName){
+		List<RD_wechatUser> isList = linkMans.getuserList(userName);
+		if(isList.size()>0){
+			return true;
+		}
+		return false;
+	}
+	
+	@RequestMapping(value ="/exportImformation.action", method = RequestMethod.GET)
+	 public void getXLSs(HttpServletRequest request, HttpServletResponse response){
+		linkMans.exportexcel(request, response);
+	}
+	
+
+	
+	
 	
 }

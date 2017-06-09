@@ -11,7 +11,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css"href="<%=basePath%>scripts/common/jquery-easyui/themes/default/easyui.css"/>
 	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/icon.css"/>
 	<link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/default/datagrid.css"/>
+	<link rel="stylesheet" href="<%=basePath %>kinder/themes/default/default.css" />
+    <link rel="stylesheet" href="<%=basePath %>kinder/plugins/code/prettify.css" />
 	<script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript"src="<%=basePath%>console/js/jquery.form.js"></script>
 	<script type="text/javascript"src="<%=basePath%>scripts/common/jquery-easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript"src="<%=basePath %>scripts/common/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
 </head>
@@ -272,6 +275,69 @@ $.extend($.fn.validatebox.defaults.rules, {
 	 }
 
 });
+
+function exportExcel(){
+   var obj=$('#numListBox').datagrid('getChecked');
+   var numStr="";
+   for(var i=0;i<obj.length;i++){
+      numStr += obj[i].id+"," ;
+   }
+   console.log(numStr);
+   if(obj.length<1){
+       $.messager.alert('操作提示',"请选择要导出的数据!",'warning');
+       return false;
+   }else{
+        location.href="<%=basePath%>framework/LinkMan/exportImformation.action?Nums="+numStr+"";
+   }
+}
+
+function checkData(){
+    	var fileDir = $("#importfile").filebox('getValue');
+    	var suffix = fileDir.substr(fileDir.lastIndexOf("."));
+    	if("" == fileDir){
+    		$.messager.alert('操作提示', "选择需要导入的Excel文件！", 'warning');
+    		return false;
+    	}
+    	if(".xls" != suffix && ".xlsx" != suffix ){
+    		$.messager.alert('操作提示', "选择Excel格式的文件导入！", 'warning');
+    		return false;
+    	}
+    	return true;
+    }
+
+function toImportExcel(){//打开导入对话框
+     $('#importdlg').dialog('open').dialog('setTitle','导入Excel');
+      
+}
+$(document).ready(function(){
+    $('#importExcel').click(function(){
+    if(checkData())
+    {
+       $('#importfm').ajaxSubmit({
+          url:'<%=basePath%>framework/LinkMan/importPass.action',
+          dataType:'text',
+          beforeSend:function(){$("#loadBox").show();},
+          complete:function(){$("loadBox").hide();},
+          success:resultMsg,
+          error:errorMsg
+       });
+       function resultMsg(msg){
+          var obj=JSON.parse(msg);
+          console.log(obj);
+          if(obj.state==1){
+             $("#importdlg").dialog('close');
+             history.go(0); //进行树欣当前的内容
+             $.message.alert("操作提示","数据导入成功！");
+          }else{
+             $.message.alert('操作提示','导入excel文件失败!','warning');
+          }
+          }
+        function errorMsg(){
+             $.message.alert('操作提示',"导入excel出错!",'warning');
+          }
+    } 
+    });
+});
 </script>
 <div>
 	<table cellspacing="10" style="font-size:13px;">
@@ -289,11 +355,18 @@ $.extend($.fn.validatebox.defaults.rules, {
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="news()">新增旅客信息</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除旅客信息</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改旅客信息</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="javascript:alert('待开发')">导入旅客信息</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="javascript:alert('待开发')">导出旅客信息</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="toImportExcel()">导入旅客信息</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="exportExcel()">导出旅客信息</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="numListBox" style="width:100%;height:100%;"></div>
+</div>
+<div id="importdlg" class="easyui-dialog" style="margin-top:40px; width: 300px; height: 150px; padding: 10px 20px" closed="true" >
+      <form id="importfm" method="post"  enctype="multipart/form-data"novalidate >
+            <input class="easyui-filebox" id="importfile" name="file" data-options="prompt:'选择文件路径'" style="width:100%">
+      </form>
+      <a href="javascript:void(0)" class="easyui-linkbutton c6" id="importExcel" iconCls="icon-ok" style="margin-top:20px;width: 90px">确定</a>
+      <a href="javascript:void(0)" class="easyui-linkbutton"	iconCls="icon-cancel" onclick="javascript:$('#importdlg').dialog('close')" style="width: 90px; margin-top:20px">取消</a>
 </div>
 <div id="lvkeInfoBox" class="easyui-dialog" style="width:510px; padding:30px;" closed="true" buttons="#dlg-buttons">
 	<form id="lvkeInfoForm">
@@ -374,5 +447,9 @@ $.extend($.fn.validatebox.defaults.rules, {
 	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox').dialog('close')" style="width:90px">取消</a>
 </div>
+<div id="loadBox" style="display:none; position:absolute; top:30%; left:45%; background:rgba(0,0,0,0.5); z-index:99999; font-size:12px; padding:10px; border-radius:5px; color:#ffffff;">
+	  正在导入...
+</div>
+<script>
 </body>
 </html>

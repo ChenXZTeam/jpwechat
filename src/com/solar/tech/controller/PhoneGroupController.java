@@ -42,13 +42,43 @@ public class PhoneGroupController {
 	 */
 	@RequestMapping("/newFz.action")
 	@ResponseBody
-	public String newFz(PhoneGroup pg){
-		try {
-			PGroupService.saveFz(pg);
-			return "1";
-		} catch (Exception e) {
-			return "0";
-		}
+	public Map<String,Object> newFz(PhoneGroup pg){
+		Map<String,Object> map=new HashMap<String,Object>();
+		PGroupService.saveFz(pg);
+		map.put("state",1);
+		return map;
+	  }
+	/**
+	 * 修改分组的保存功能
+	 */
+	@RequestMapping("/upFenZu.action")
+	@ResponseBody
+	public Map<String, Object> updatefzName(PhoneGroup pg){
+		Map<String,Object> map=new HashMap<String,Object>();
+		PGroupService.updatefzName(pg);
+		map.put("state", 1);
+		return map;
+		
+	}
+	
+	/**
+	 * 删除分组的确定功能
+	 */
+	@RequestMapping("/deleteGroup.action")
+	@ResponseBody
+	public Map<String, Object> DeleteGroup(String uuid){
+		Map<String,Object> map=new HashMap<String,Object>();
+	    int i=PGroupService.DeleteGroup(uuid);
+	    if(i == 1){
+				map.put("state", 1);
+				map.put("msg", "success");
+				return map;
+		}else{
+			map.put("state", 0);
+			map.put("msg", "数据删除失败");
+		} 
+		return map;
+		
 	}
 	
 	/**

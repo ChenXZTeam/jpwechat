@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.PhoneGroup;
+import com.solar.tech.bean.PhoneNum;
 import com.solar.tech.dao.GenericDao;
 
 @Service
@@ -52,6 +53,21 @@ public class PhoneGroupService {
 	 */
 	public void saveFz(PhoneGroup pg){
 		gDao.save(pg);
+	}
+	
+	/**
+	 * 修改保存分组
+	 */
+	public void updatefzName(PhoneGroup pg){
+		gDao.update(pg);
+	}
+	
+	/**
+	 * 删除分组
+	 */
+	public int DeleteGroup(String uuid){
+		gDao.deleteByIds(PhoneGroup.class, uuid);
+		return 1;
 	}
 	
 }

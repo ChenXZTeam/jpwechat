@@ -129,7 +129,8 @@ function removeit(){  //删除
     //alert(row.country);
 	$.messager.confirm('确认', '真的要删除<'+row.banPeople+'>吗?', function (r) {
           if (r) {
-                	var exampleID = row.exampleID;
+                	var exampleID = row.id;
+                	alert(exampleID)
                     console.log("ExampleID: "+exampleID);
                     if (row) {
                         $.ajax({

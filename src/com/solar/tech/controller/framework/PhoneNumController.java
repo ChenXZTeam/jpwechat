@@ -175,15 +175,15 @@ public class PhoneNumController {
     public Map<String, Object> getReadReport(@RequestParam(value="file") MultipartFile file)  
             throws Exception {  
     	if(file.isEmpty()){
-			return null;
-		}
+    		return null;
+    	}
     	
     	Map<String, Object> map = new HashMap<String, Object>();
-        String resulMsg = phoneNumService.readReport(file.getInputStream(), file.getOriginalFilename()); 
-        if(resulMsg.equals("")||resulMsg==null){
-            map.put("state", 0);
-            map.put("msgRe", resulMsg);
-            return map;
+    	String resulMsg = phoneNumService.readReports(file.getInputStream(), file.getOriginalFilename()); 
+    	if(resulMsg.equals("")||resulMsg==null){
+    		map.put("state", 0);
+    		map.put("msgRe", resulMsg);
+    		return map;
         }else{
             map.put("state", 1);
             return map;

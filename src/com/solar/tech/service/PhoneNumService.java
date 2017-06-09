@@ -26,6 +26,7 @@ import com.solar.tech.bean.entity.Info;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.util.Current;
 import com.solar.tech.utils.PassSend;
+
 @Service
 @Transactional
 public class PhoneNumService {
@@ -131,37 +132,62 @@ public class PhoneNumService {
      * 读取报表 
 	 * @throws Exception 
      */  
-    public String readReport(InputStream inp, String fileName) throws Exception { 
-    		String resultMsg = ""; //提示结果
-    	
-            String cellStr = null;  
-            
+    public String readReports(InputStream inp, String fileName) throws Exception { 
+    	    String resultMsg = ""; //提示结果
             //创建Excel工作薄
-    		Workbook work = this.getWorkbook(inp,fileName);
+    	    Workbook work = this.getWorkbook(inp,fileName);
     		
-    		if(null == work){
-    			throw new Exception("创建Excel工作薄为空！");
+    	    if(null == work){
+    	    	throw new Exception("创建Excel工作薄为空！");
     		}
   
-    		Sheet sheet = null;
-    		Row row = null;
-    		Cell cell = null;
+    	    Sheet sheet = null;
+    	    Row row = null;
+    	    Cell cell = null;
     		
     		//遍历Excel中所有的sheet
-    		for (int i = 0; i < work.getNumberOfSheets(); i++) {
-    			sheet = work.getSheetAt(i);
-    			String sheetName = sheet.getSheetName();
-    			if("手机号码表".equals(sheetName)||"手机号码表".equals(sheetName)){
+    	    for (int i = 0; i < work.getNumberOfSheets(); i++) {
+    	    	sheet = work.getSheetAt(i);
+    	    	System.out.print(sheet);
+    	    	String sheetName = sheet.getSheetName();
+    	    	System.out.print(sheetName);
+    			if("zzz".equals(sheetName)||"zzz".equals(sheetName)){
     				//循环当前sheet的所有行
     				for (int j = sheet.getFirstRowNum(); j < sheet.getLastRowNum(); j++) {
     					row = sheet.getRow(j+1);
         				if(row==null){break;}
         				int y = row.getFirstCellNum();
         				PhoneNum phoneNum=new PhoneNum();
-    					String phoneNumber = ""; try{phoneNumber = (String)this.getCellValue(row.getCell(y));}catch(Exception e){System.out.println("手机号码为空："+e);} 
-    					phoneNum.setPhoneNumber(phoneNumber);
+    					String user = ""; 
+    					
+    					try{
+    						user = (String)this.getCellValue(row.getCell(y));
+    					}catch(Exception e){
+    						System.out.println("联系用户为空："+e);
+    					} 
+    					phoneNum.setLinkName(user);
+    					String pnumber="";
+    					
+    					try{
+    						pnumber=(String)this.getCellValue(row.getCell(y+1));
+    					}catch(Exception e){
+    						System.out.println("电话号码为空:"+e);
+    					}
+    					phoneNum.setPhoneNumber(pnumber);
+    					String group="";
+    					
+    					try{
+    						group=(String)this.getCellValue(row.getCell(y+2));
+    					}catch(Exception e){
+    						System.out.println("分组为空:"+e);
+    					}
+    					phoneNum.setFzName(group);
+    					
     					phoneNum.setUserName(Current.user().getUserName());
-    					phoneNum.setCreateTime(new Timestamp(new Date().getTime())); //创建时间赋值
+    					
+    					phoneNum.setCreateTime(new Timestamp(new Date().getTime()));
+    					
+    				    //创建时间赋值
     					phoneNumService.addPhoneNum(phoneNum);
     					resultMsg="导入成功！";
     				}

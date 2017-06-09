@@ -63,7 +63,7 @@
 		<div><a href="javascript:void(0)" class="easyui-linkbutton" style="width:60px; height:28px; outline:none; margin-top: 15px;" onclick="sureBtn()">确定选择</a></div>
 	</div>
 </div> 
-<div style="float:left; width:84.6%;">
+<div style="float:left; width:84%;">
 	<div style="height:25px; background-color:#fff; padding:10px;">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="removeit()" style="width:80px;">删除</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="toUpdate()" style="width:80px;">修改</a>
@@ -83,7 +83,15 @@
 <div style="clear:both;"></div>
 <div id="fzNameBox" class="easyui-dialog" style="width:360px; padding:30px;" closed="true" buttons="#dlg-buttons2">
 	<form id="newFz">
-		<label>组名称：</label><input name="fzName" class="easyui-textbox"/>
+	  <table border="0" cellpadding="0" cellspacing="10">
+	    <tr class="dispayNoneClass">
+		     <td colspan="2"><input name="uuid" class="easyui-textbox"/></td>
+		</tr>
+		<tr>
+		     <td>组名:</td>
+		     <td><input name="fzName" class="easyui-textbox"/></td>
+		</tr>
+	  </table>
 	</form>
 </div>
 <div id="dlg-buttons2">
@@ -199,13 +207,18 @@ function newFz(){
 
 //修改分组
 function upFenZu(){
-	$(".checkBoxFz").attr("checked",false);
+    $(".checkBoxFz").attr("checked",false);
 	if($(".checkBoxFz").hasClass("checkDisplayNot")){
 		$(".checkBoxFz").removeClass("checkDisplayNot").addClass("checkDisplay");
 	}else{
 		$(".checkBoxFz").removeClass("checkDisplay").addClass("checkDisplayNot");
 	}
 	upORdel = "1";
+	
+	
+	
+	
+	
 }
 
 //删除分组
@@ -217,15 +230,10 @@ function delFenZu(){
 		$(".checkBoxFz").removeClass("checkDisplay").addClass("checkDisplayNot");
 	}
 	upORdel = "0";
+	
 }
 
-function sureBtn(){
-	if(upORdel=="1"||"1"==upORdel){
-		alert("你点击的是修改");
-	}else if(upORdel=="0"||"0"==upORdel){
-		alert("你点击的是删除");
-	}
-}
+
 
 //加载全部分组
 function loadFz(){
@@ -233,7 +241,7 @@ function loadFz(){
 		var obj = JSON.parse(res);
 		var data = obj.rows;
 		for(var i=0; i<data.length; i++){
-			var li = '<li><input class="checkBoxFz checkDisplayNot" type="checkbox" style="float:left; margin-top:-0.5px;"/><span class="fileImagePush"></span><label class="lookSee" style="float:left;">'+data[i].fzName+'</label><div class="fzUUID" style="clear:both;">'+data[i].uuid+'</div></li>';
+			var li = '<li><input class="checkBoxFz checkDisplayNot" name="checkTheme" type="checkbox" style="float:left; margin-top:-0.5px;"/><span class="fileImagePush"></span><label class="lookSee" style="float:left;">'+data[i].fzName+'</label><div class="fzUUID" style="clear:both;">'+data[i].uuid+'</div></li>';
 			$("#fenziLi").append(li);
 		}
 	});
@@ -313,9 +321,10 @@ $(document).ready(function(){
  			}); 
  			function resutlMsg(msg){
  				var obj = JSON.parse(msg);
+ 				console.log(obj);
  				if(obj.state==1){
 	       			$('#importdlg').dialog('close');        // close the dialog
-	           		$('#phoneNumListBox').datagrid('reload');    // reload the user data
+	           		history.go(0);    // reload the user data刷新当前的内容
 	           		$.messager.alert("操作提示", "数据导入成功!");
 	       		}else {
 	       			$.messager.alert('操作提示', '导入excel文件失败！', 'warning');
@@ -345,6 +354,75 @@ function toUpdate(){  //弹出修改框
 	        $('#phoneNumBox').dialog('open').dialog('setTitle','修改手机号信息');
 	        $('#fm').form('load',row);
 }
+//修改分组
+function sureBtn(){ //弹出修改框
+    
+    
+	if(upORdel=="1"||"1"==upORdel){
+	   
+	   var a=$("input[type='checkbox']:checked").length;
+	   var b=$("input[type='checkbox']:checked");
+	   var date =[];
+	   var jsonStr={"uuid":$("input[type='checkbox']:checked").siblings("div").text(),"fzName":$("input[type='checkbox']:checked").siblings("label").text()};
+	   date.push(jsonStr);
+	   console.log(date);
+	   if(a==0){
+	       alert("请选择要修改的分组");
+	   }else if(a>=2){
+	       alert("对不起，你只能对一个分组进行修改");
+	   }
+	   else{
+	     
+	      fzUrl = "<%=basePath%>framework/phoneGroup/upFenZu.action";
+	      $('#fzNameBox').dialog('open').dialog('setTitle','修改分组');
+	      $('#newFz').form('load',date[0]);
+	     
+	   }
+	
+	}else if(upORdel=="0"||"0"==upORdel){
+     var uuid=" ";
+	 var a=$("input[type='checkbox']:checked").length;
+	    if(a=0){
+	       $.messager.alert('操作提示', "请选中要删除了数据", 'warning');
+	       return false;
+	    }
+	    $.messager.confirm('确认', '真的要删除这'+$("input[type='checkbox']:checked").length+'记录吗?', function (r) {
+	       if (r){
+	         for(i=0;i<$("input[type='checkbox']:checked").length;i++){
+	             var uuid = $("input[type='checkbox']:checked:eq("+i+")").siblings("div").text();
+	             console.log(uuid);
+	          
+	        
+	            if(uuid){
+	                 $.ajax({
+	                   cache: false,
+                       async: false,
+                       type: "POST",
+                       data:{"uuid":uuid},
+                       dataType: 'json',
+                       url: "<%=basePath%>framework/phoneGroup/deleteGroup.action",
+                       success: function (data) {
+                           console.log(data);
+                           if (data.state == 1) {
+                                    $("#fenziLi").html(" ");
+                                    loadFz();
+                                    $.messager.alert('Warning','删除成功！');                                   
+                            }
+                           else {
+                                    $.messager.alert('Warning', '删除不成功！'); 
+                            }
+                       }
+	                    
+	                 });
+	             }
+	          
+	           
+	       }
+	       }
+	    }); 
+	    
+	} 
+}
 //确认修改信息的保存按钮	    
 function saveBean(){ 	
       $('#fm').form('submit',{
@@ -373,7 +451,10 @@ function saveFz(){
 	           return $(this).form('validate');
 	       },
 	       success: function(data){
-		       	if(data=='"1"'||'"1"'==data){
+	            var obj=JSON.parse(data);
+	            console.log(obj);
+		       	if(obj.state== 1){
+		       	    $('#fzNameBox').dialog('close');
 		       	 	location.reload();
 		       	}else{
 		       		$.messager.alert('操作提示', "操作分组失败", 'warning');
