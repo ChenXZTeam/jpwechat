@@ -36,6 +36,7 @@
 }
 
 .fitem {
+	padding:5px;
 	margin-bottom: 5px;
 }
 
@@ -71,7 +72,7 @@ $(function(){
 		loadMsg : '数据加载中请稍后……',
 		pagination : true,
 	    toolbar:"#toolbar",
-	    checkOnSelect:false,
+	    checkOnSelect:true,
 	    selectOnCheck:false,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
@@ -257,42 +258,36 @@ Date.prototype.format = function (format) {
 <body>
 	<div id="dg" style="width: 100%;height:100%"></div>
 	<div id="toolbar">
-		<a href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-add" plain="true" onclick="newBean()">添加用户</a> <a
-			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-remove" plain="true" onclick="destroyBean()">删除用户</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBean()">添加用户</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton"	iconCls="icon-remove" plain="true" onclick="destroyBean()">删除用户</a>
 	</div>
 
-	<div id="dlg" class="easyui-dialog"
-		style="width: 580px; height: 450px; padding: 10px 20px" closed="true"
-		buttons="#dlg-buttons">
+	<div id="dlg" class="easyui-dialog" style="width:375px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
 		<div class="ftitle" id="ftitle"></div>
 		<form id="fm" method="post" enctype="multipart/form-data" novalidate>
 			<input id="<%=User.USERUID %>" name="<%=User.USERUID %>"  type="hidden">
 			<div class="fitem">
 				<label>用户名称:</label>
-				 <input name="<%=User.USERNAME%>" class="easyui-textbox"
-				 	data-options="required:true,validType:['length[3,15]', 'isExist']"  />
-
+				 <input name="<%=User.USERNAME%>" class="easyui-textbox"　data-options="required:true,validType:['length[3,15]', 'isExist']"  />
 			</div>
 			<div id="fitemPassword">
 				<div class="fitem fitem_password">
 					<label>用户密码:</label>
-					 <input id="<%=User.PASSWORD %>" name="<%=User.PASSWORD %>" type="password" class="easyui-textbox" 
-					 	data-options="required:true,validType:['length[5,15]']" />
+					 <input id="<%=User.PASSWORD %>" name="<%=User.PASSWORD %>" type="password" class="easyui-textbox" data-options="required:true,validType:['length[5,15]']" />
 				</div>
 				<div class="<%=User.PASSWORD %>2 fitem fitem_password">
 					<label>验证密码:</label>
-					 <input name="<%=User.PASSWORD %>2" type="password" class="easyui-textbox"
-					 	data-options="required:true,validType:['equalTo[\'#password\']']"/>
+					 <input name="<%=User.PASSWORD %>2" type="password" class="easyui-textbox"　data-options="required:true,validType:['equalTo[\'#password\']']"/>
 				</div>
 			</div>
-			<%-- <div class="fitem">
-				<label>用户类型:</label>
-				 <input name="<%=User.USERCLASS %>" type="radio" value="<%=User.UserClass.SYSADMIN %>"/>系统管理员
-				 <input name="<%=User.USERCLASS %>" type="radio" value="<%=User.UserClass.SYSUSER %>"/>系统用户
-				 <input name="<%=User.USERCLASS %>" type="radio" value="<%=User.UserClass.WEBMEMB %>"/>网站成员
-			</div> --%>
+			<div class="fitem">
+				<label>电子邮件地址:</label>
+				 <input name="email" class="easyui-textbox"　data-options="validType:['email']"/>
+			</div>
+			<div class="fitem">
+				<label>手机号码:</label>
+				 <input name="mobile" class="easyui-textbox"　data-options="validType:['length[0,25]']" />
+			</div>
 			<div class="fitem">
 				<label>用户角色:</label>
 				 <input name="userType" type="radio" value="ADMIN"/>管理员
@@ -300,46 +295,14 @@ Date.prototype.format = function (format) {
 			</div>
 			<div class="fitem">
 				<label>用户状态:</label>
-				 <input name="<%=User.USERSTATUS %>" type="radio" value="1"/>活动
+				 <input name="<%=User.USERSTATUS %>" type="radio" value="1"/>活　动
 				 <input name="<%=User.USERSTATUS %>" type="radio" value="2"/>冻结
 			</div>
-			<div class="fitem">
-				<label>电子邮件地址:</label>
-				 <input name="email" class="easyui-textbox"
-				 	data-options="validType:['email']" style="width:255px;"/>
-			</div>
-			<div class="fitem">
-				<label>手机号码:</label>
-				 <input name="mobile" class="easyui-textbox"
-				 	data-options="validType:['length[0,25]']" />
-			</div>
-			<!-- <input name="headImg" type="hidden"/>
-			<div class="fitem">
-				<label>用户头像:</label>
-				<input id="headImg" type="image" onclick="return false;"/>
-			</div>
-			<div class="fitem">
-				<label>上传头像:</label>
-				 <input id="headImgFile" type="file" name="headImgFile" accept=".jpg"/>
-			</div>
-			<div class="fitem">
-				<label>用户扩展属性:</label>
-				 <input name="userExtProps" class="easyui-textbox"  style="width:300px;height:100px"
-				 	data-options="multiline:true"/>
-			</div>
-			<div class="fitem">
-				<label>描述:</label>
-				 <input name="description" class="easyui-textbox"  style="width:300px;height:100px;white-space: pre-wrap;"
-				 	data-options="multiline:true"/>
-			</div> -->
 		</form>
 	</div>
 	<div id="dlg-buttons">
-		<a href="javascript:void(0)" class="easyui-linkbutton c6"
-			iconCls="icon-ok" onclick="saveBean()" style="width: 90px">保存</a> <a
-			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"
-			style="width: 90px">取消</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveBean()" style="width: 90px">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton"	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width: 90px">取消</a>
 	</div>
 </body>
 </html>

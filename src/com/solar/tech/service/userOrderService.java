@@ -21,8 +21,11 @@ import com.solar.tech.utils.ECUtils;
 import com.travelsky.sbeclient.obe.book.BookContact;
 import com.travelsky.sbeclient.obe.book.OSIInfo;
 import com.travelsky.sbeclient.obe.book.PassengerInfo;
+import com.travelsky.sbeclient.obe.book.RMKInfo;
+import com.travelsky.sbeclient.obe.book.SSRInfo;
 import com.travelsky.sbeclient.obe.book.SegmentInfo;
 import com.travelsky.sbeclient.obe.response.PnrResponse;
+import com.travelsky.sbeclient.obe.response.rt.RTResponse;
 
 /**
  * @title 执行订单数据的service方法
@@ -437,6 +440,14 @@ public class userOrderService {
 				return 0;
 			}
 		}
+
+		/**
+		 * 提取pnr内容
+		 */
+		public static void rtPnr(String pnrNo){
+			RTResponse response = new ECUtils().rt(pnrNo);
+			System.out.println(response.toString());
+		}
 		
 		/**
 		 * 预定中航信系统的机票
@@ -448,7 +459,8 @@ public class userOrderService {
 			BookContact bookContact = new BookContact();
 			bookContact.setCity(fildInfo.getChufCity());//城市
 			bookContact.setContact(fildInfo.getLinkPhoneNum());//联系电话
-					
+			bookContact.setPsgId(fildInfo.getLinkName());
+			
 			//航段组实体类
 			SegmentInfo s = new SegmentInfo();
 			s.setDeparture(fildInfo.getChufCity());//起飞城市
@@ -459,25 +471,25 @@ public class userOrderService {
 			String timeStr = fildInfo.getChufTime();
 			s.setDepartureTime(timeStr.substring(0,2)+":"+timeStr.substring(2,4));//起飞时间，格式如：HH:mm
 			SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
-					
+			
 			//旅客组实体类（是否可以添加多个旅客）
 			PassengerInfo psg = new PassengerInfo();
 			psg.setName(fildInfo.getLinkName());//旅客姓名
 			psg.setAge(Integer.parseInt(fildInfo.getAge()));//年龄
-			psg.setGender(fildInfo.getLinkSex()); //性别
+			psg.setGender("M"); //性别
 			psg.setBirthDay(fildInfo.getBirthday());//出生日期
 			psg.setPsgType(fildInfo.getPsgType());//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
 			psg.setCertNo(fildInfo.getIDcase());//证件号码
 			psg.setCertType(fildInfo.getIDcaseType());//证件类型PP,NI		
 			PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
-					
+			
 			//OSI组实体类 
 			OSIInfo osi = new OSIInfo();
 			//osi.setIdx("");
 			osi.setAirCode(fildInfo.getHangbanNum().substring(0, 2));//航空公司代码
 			osi.setOsi("CTCT18729034712");//OSI内容
 			OSIInfo[] osis = new OSIInfo[]{osi};
-
+			
 			//RMK组实体类
 			/*RMKInfo rmk = new RMKInfo();
 			rmk.setPsgName(fildInfo.getLinkName());//旅客姓名
@@ -486,8 +498,7 @@ public class userOrderService {
 			RMKInfo[] rmks = new RMKInfo[]{rmk};*/
 			
 			//开始在中信航系统产生订票的订单
-			//PnrResponse response = null;
-			PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-06-08 09:00:00", null, osis, null, null, null, null);
+			PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-06-10 00:00:00", null, osis, null, null, null, null);
 			System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 			System.out.println("预定的编号："+response.getPnrNo());
 			System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -504,4 +515,8 @@ public class userOrderService {
 			return response;
 		}
 		
+		public static void main(String[] args) {
+			rtPnr("JM8RKQ");
+		}
+
 }

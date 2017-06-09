@@ -57,7 +57,7 @@ $(function(){
 		loadMsg : '数据加载中请稍后……',
 	    toolbar:"#tb",
 	    singleSelect: false,
-		rownumbers:true,
+		rownumbers:false,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'orderNum', title: '预约编号',align:'center', width: '15%'},

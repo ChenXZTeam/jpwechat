@@ -78,14 +78,13 @@ public class userOrderController {
 	public Map<String, Object> addOrder(String jsStr,HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		MessgesAlert mAl = new MessgesAlert();
-		String openID = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName"); 
-		//String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
-		/*if("".equals(openID)||null==openID){
+		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
+		if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
 			return map;
-		}*/
+		}
 		
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);
 		String cangBin = jsonObject.get("cangwei")+""; //获取舱位
@@ -112,6 +111,12 @@ public class userOrderController {
 		linkInfo.setLinkman(LinkName);
 		linkInfo.setLinkNumber(PhoneNum);
 		linkInfo.setOpenID(openID);
+		linkInfo.setUserName(userName);
+		linkInfo.setSex(Sex);
+		linkInfo.setBirthday(birthDay);
+		linkInfo.setPeopleType(menType);
+		linkInfo.setCaseType(iDcaseType);
+		linkInfo.setCaseNum(iDcase);
 		linkInfo.setUserName(userName);
 		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
 		OrderService.addLinkman(linkInfo);
@@ -197,8 +202,8 @@ public class userOrderController {
 			String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
 			oderInfo.setOrderNum(orderNumFirst); //设置流水号
 			//系统数据
-			oderInfo.setUserName("ttt"); //订票的账号
-			oderInfo.setOpenID("Zksjdhfjkkwehksdhf"); //订票的openId
+			oderInfo.setUserName(userName); //订票的账号 
+			oderInfo.setOpenID(openID); //订票的openId
 			
 			//预定中信航航班(先查找接口是否还有座位)
 			//Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
@@ -237,9 +242,16 @@ public class userOrderController {
 	 */
 	@RequestMapping("/add/zrorder.action")
 	@ResponseBody
-	public Map<String, Object> addzhz_res(String jsStr){
+	public Map<String, Object> addzhz_res(String jsStr,HttpSession session){
 		List<MessgesAlert> malert = new ArrayList<MessgesAlert>();  //记录是否两个全部预定成功或者只有一个，用于反馈前台提示用户
 		Map<String, Object> map = new HashMap<String, Object>();
+		String userName = (String) session.getAttribute("userName");
+		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
+		if("".equals(openID)||null==openID){
+			map.put("msg","0");
+			map.put("planMsg","订单生成失败3，系统出错");
+			return map;
+		}
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);
 		String cangBin = jsonObject.get("cangwei")+""; //获取舱位
 		String uuid1 = jsonObject.get("uuid1")+""; //第一段航班的uuid
@@ -343,8 +355,8 @@ public class userOrderController {
 				String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
 				oderInfo.setOrderNum(orderNumFirst); //设置流水号
 				//系统数据
-				oderInfo.setUserName("ttt"); //订票的账号
-				oderInfo.setOpenID("Zksjdhfjkkwehksdhf"); //订票的openId
+				oderInfo.setUserName(userName); //订票的账号  
+				oderInfo.setOpenID(openID); //订票的openId
 				
 				//预定中信航航班(先查找接口是否还有座位)
 				Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());

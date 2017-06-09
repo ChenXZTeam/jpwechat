@@ -93,7 +93,7 @@ public class PlanTekService {
 			return spd;
 		}else{
 			try {
-				fdList = new ECUtils().fd(org, dst, date, null, null, null, null);
+				fdList = new ECUtils().fd(org, dst, date, airline, null, null, null);
 				System.out.println("符合查询中航信接口中的运价条件："+fdList.size());
 				if(fdList.size()>0){
 					List<SeatPriceData> spList = new ArrayList<SeatPriceData>();
@@ -112,7 +112,6 @@ public class PlanTekService {
 						spList.add(spce);
 					}
 					spList = removeSp(spList);//入库之前要进行去重处理
-					System.out.println("去重之后的长度："+spList.size());
 					gDao.save(spList);
 					spd = spList; //把这些结果集给另一个结果集让他返回
 				}
