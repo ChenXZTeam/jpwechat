@@ -65,9 +65,8 @@ public class PhoneGroupService {
 	/**
 	 * 删除分组
 	 */
-	public int DeleteGroup(String uuid){
+	public void DeleteGroup(String uuid){
 		gDao.deleteByIds(PhoneGroup.class, uuid);
-		return 1;
 	}
 	
 }

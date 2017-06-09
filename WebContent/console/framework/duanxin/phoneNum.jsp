@@ -214,11 +214,6 @@ function upFenZu(){
 		$(".checkBoxFz").removeClass("checkDisplay").addClass("checkDisplayNot");
 	}
 	upORdel = "1";
-	
-	
-	
-	
-	
 }
 
 //删除分组
@@ -230,7 +225,6 @@ function delFenZu(){
 		$(".checkBoxFz").removeClass("checkDisplay").addClass("checkDisplayNot");
 	}
 	upORdel = "0";
-	
 }
 
 
@@ -356,10 +350,7 @@ function toUpdate(){  //弹出修改框
 }
 //修改分组
 function sureBtn(){ //弹出修改框
-    
-    
 	if(upORdel=="1"||"1"==upORdel){
-	   
 	   var a=$("input[type='checkbox']:checked").length;
 	   var b=$("input[type='checkbox']:checked");
 	   var date =[];
@@ -372,13 +363,10 @@ function sureBtn(){ //弹出修改框
 	       alert("对不起，你只能对一个分组进行修改");
 	   }
 	   else{
-	     
 	      fzUrl = "<%=basePath%>framework/phoneGroup/upFenZu.action";
 	      $('#fzNameBox').dialog('open').dialog('setTitle','修改分组');
 	      $('#newFz').form('load',date[0]);
-	     
 	   }
-	
 	}else if(upORdel=="0"||"0"==upORdel){
      var uuid=" ";
 	 var a=$("input[type='checkbox']:checked").length;
@@ -388,23 +376,19 @@ function sureBtn(){ //弹出修改框
 	    }
 	    $.messager.confirm('确认', '真的要删除这'+$("input[type='checkbox']:checked").length+'记录吗?', function (r) {
 	       if (r){
-	         for(i=0;i<$("input[type='checkbox']:checked").length;i++){
-	             var uuid = $("input[type='checkbox']:checked:eq("+i+")").siblings("div").text();
-	             console.log(uuid);
-	          
-	        
-	            if(uuid){
-	                 $.ajax({
-	                   cache: false,
-                       async: false,
+	    	    var uuidStr = "";
+	    	    $("input[type='checkbox']:checked").each(function(){
+	    		    var uuidOne = $(this).siblings("div").text();
+	    		    uuidStr += uuidOne + ",";
+	    	    });
+	            $.ajax({
                        type: "POST",
-                       data:{"uuid":uuid},
+                       data:{"uuid":uuidStr.substring(0,uuidStr.length-1)},
                        dataType: 'json',
                        url: "<%=basePath%>framework/phoneGroup/deleteGroup.action",
                        success: function (data) {
-                           console.log(data);
-                           if (data.state == 1) {
-                                    $("#fenziLi").html(" ");
+                           if (data == 1) {
+                                    $("#fenziLi").html("");
                                     loadFz();
                                     $.messager.alert('Warning','删除成功！');                                   
                             }
@@ -412,13 +396,9 @@ function sureBtn(){ //弹出修改框
                                     $.messager.alert('Warning', '删除不成功！'); 
                             }
                        }
-	                    
-	                 });
-	             }
-	          
-	           
+	            });
 	       }
-	       }
+	       
 	    }); 
 	    
 	} 

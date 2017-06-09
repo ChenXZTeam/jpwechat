@@ -66,19 +66,17 @@ public class PhoneGroupController {
 	 */
 	@RequestMapping("/deleteGroup.action")
 	@ResponseBody
-	public Map<String, Object> DeleteGroup(String uuid){
-		Map<String,Object> map=new HashMap<String,Object>();
-	    int i=PGroupService.DeleteGroup(uuid);
-	    if(i == 1){
-				map.put("state", 1);
-				map.put("msg", "success");
-				return map;
-		}else{
-			map.put("state", 0);
-			map.put("msg", "数据删除失败");
-		} 
-		return map;
-		
+	public int DeleteGroup(String uuid){
+		try {
+			String[] uuidStr = uuid.split(",");
+			for(String uuidCh : uuidStr){
+				PGroupService.DeleteGroup(uuidCh);
+			}
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	    
 	}
 	
 	/**
