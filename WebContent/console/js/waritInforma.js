@@ -58,7 +58,7 @@
 			}else if(youhuiType == "discount"){
 				$("#crTelkBox").remove();
 				var zhekou = youhuiMoney/10;
-				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(payMoney)/zhekou)+'</span>/人</div><div style="width:100px; margin-right:50px;">成人票</div></li>';
+				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(payMoney)/zhekou)+'</span>/人</div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票</div></li>';
 				$("#sign").after(liList);
 			}
 			$(this).prev().css("display","none");
@@ -107,12 +107,12 @@
 			$(this).prev().css("display","block");
 			if(youhuiType == "preferential"){
 				$("#crTelkBox").remove();
-				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(jbTekenPay)-parseInt(youhuiMoney))+'</span></div><div style="width:100px; margin-right:50px;">成人票(优惠'+youhuiMoney+')</div></li>';
+				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(jbTekenPay)-parseInt(youhuiMoney))+'</span></div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票(优惠'+youhuiMoney+')</div></li>';
 				$("#sign").after(liList);
 			}else if(youhuiType == "discount"){
 				$("#crTelkBox").remove();
 				var zhekou = youhuiMoney/10;
-				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(jbTekenPay)*zhekou)+'</span></div><div style="width:100px; margin-right:50px;">成人票(折扣'+zhekou+')</div></li>';
+				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(jbTekenPay)*zhekou)+'</span></div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票(折扣'+zhekou+')</div></li>';
 				$("#sign").after(liList);
 			}
 			for(var i = 0;i<$(".kl").length;i++){
@@ -122,7 +122,7 @@
 		}else{
 			if(youhuiType == "preferential"){
 				$("#crTelkBox").remove();
-				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(jbTekenPay)+parseInt(youhuiMoney))+'</span></div><div style="width:100px; margin-right:50px;">成人票</div></li>';
+				var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+(parseInt(jbTekenPay)+parseInt(youhuiMoney))+'</span></div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票</div></li>';
 				$("#sign").after(liList);
 			}else if(youhuiType == "discount"){
 				$("#crTelkBox").remove();

@@ -282,8 +282,8 @@ function chax(dateTime,returnTime){
 			success:function(data){
 				var depart = data.departAv; //去程的航班
 				var returnf = data.returnAv; //回程的航班
-				//console.log(depart);
-				//console.log(returnf);
+				console.log(depart);
+				console.log(returnf);
 				var countDivNum = 0; //计数器
 				for(var i=0; i<depart.length; i++){
 						var airName = findByCode(depart[i].airCode);
@@ -359,7 +359,7 @@ $(function () {
 	opt.date = {preset : 'date'};
 	opt.datetime = {preset : 'datetime'};
 	opt.time = {preset : 'time'};
-	opt.default = {
+	opt.defaults = {
 		theme: 'android-ics light', //皮肤样式
 		display: 'modal', //显示方式 
 		mode: 'scroller', //日期选择模式
@@ -371,8 +371,8 @@ $(function () {
 		endYear: currYear + 10 //结束年份
 	};
 	
-	$("#d11").mobiscroll($.extend(opt['date'], opt['default']));
-	$("#d12").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#d11").mobiscroll($.extend(opt['date'], opt['defaults']));
+	$("#d12").mobiscroll($.extend(opt['date'], opt['defaults']));
 });
 </script>
 </html>

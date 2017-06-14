@@ -1,5 +1,6 @@
 package com.solar.tech.service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -459,7 +460,9 @@ public class userOrderService {
 			BookContact bookContact = new BookContact();
 			bookContact.setCity(fildInfo.getChufCity());//城市
 			bookContact.setContact(fildInfo.getLinkPhoneNum());//联系电话
-			bookContact.setPsgId(fildInfo.getLinkName());
+			System.out.println("============联系组===========");
+			System.out.println("城市："+fildInfo.getChufCity());
+			System.out.println("联系电话："+fildInfo.getLinkPhoneNum());
 			
 			//航段组实体类
 			SegmentInfo s = new SegmentInfo();
@@ -470,17 +473,32 @@ public class userOrderService {
 			s.setDepartureDate(fildInfo.getChufDate());//起飞日期，格式如：yyyy-MM-dd
 			String timeStr = fildInfo.getChufTime();
 			s.setDepartureTime(timeStr.substring(0,2)+":"+timeStr.substring(2,4));//起飞时间，格式如：HH:mm
+			System.out.println("============航段信息 ，航班号、 起飞机场、 到达机场、 舱位、 航班日期必填===========");
+			System.out.println("起飞机场："+fildInfo.getChufCity());
+			System.out.println("到达机场："+fildInfo.getDaodCity());
+			System.out.println("航班号："+fildInfo.getHangbanNum());
+			System.out.println("舱位："+fildInfo.getCabin());
+			System.out.println("出发日期："+fildInfo.getChufDate());
+			System.out.println("出发时间："+timeStr.substring(0,2)+":"+timeStr.substring(2,4));
 			SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
 			
 			//旅客组实体类（是否可以添加多个旅客）
 			PassengerInfo psg = new PassengerInfo();
 			psg.setName(fildInfo.getLinkName());//旅客姓名
 			psg.setAge(Integer.parseInt(fildInfo.getAge()));//年龄
-			psg.setGender("M"); //性别
+			psg.setGender(fildInfo.getLinkSex()); //性别
 			psg.setBirthDay(fildInfo.getBirthday());//出生日期
 			psg.setPsgType(fildInfo.getPsgType());//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
 			psg.setCertNo(fildInfo.getIDcase());//证件号码
-			psg.setCertType(fildInfo.getIDcaseType());//证件类型PP,NI		
+			psg.setCertType(fildInfo.getIDcaseType());//证件类型PP,NI
+			System.out.println("============旅客信息 ，婴儿旅客要有出生日期===========");
+			System.out.println("姓名："+fildInfo.getLinkName());
+			System.out.println("年龄："+Integer.parseInt(fildInfo.getAge()));
+			System.out.println("性别："+fildInfo.getLinkSex());
+			System.out.println("生日："+fildInfo.getBirthday());
+			System.out.println("旅客类型："+fildInfo.getPsgType());
+			System.out.println("证件号码："+fildInfo.getIDcase());
+			System.out.println("证件类型："+fildInfo.getIDcaseType());
 			PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};
 			
 			//OSI组实体类 
@@ -488,6 +506,9 @@ public class userOrderService {
 			//osi.setIdx("");
 			osi.setAirCode(fildInfo.getHangbanNum().substring(0, 2));//航空公司代码
 			osi.setOsi("CTCT18729034712");//OSI内容
+			System.out.println("===============OSI组实体类==============");
+			System.out.println("航空公司代码："+fildInfo.getHangbanNum().substring(0, 2));
+			System.out.println("CTCT："+"CTCT18729034712");
 			OSIInfo[] osis = new OSIInfo[]{osi};
 			
 			//RMK组实体类
@@ -498,7 +519,7 @@ public class userOrderService {
 			RMKInfo[] rmks = new RMKInfo[]{rmk};*/
 			
 			//开始在中信航系统产生订票的订单
-			PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, "2017-06-10 00:00:00", null, osis, null, null, null, null);
+			/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, pointDate(fildInfo.getChufDate()), null, osis, null, null, null, null);
 			System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 			System.out.println("预定的编号："+response.getPnrNo());
 			System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -511,12 +532,30 @@ public class userOrderService {
 			System.out.println("到达时间："+response.getSegList().get(0).getArrivalTime());
 			System.out.println("行动代码："+response.getSegList().get(0).getActionCode());
 			System.out.println("航线类型："+response.getSegList().get(0).getType());
-			System.out.println("-----------------------到这信息全部返回成功-------------------");
+			System.out.println("-----------------------到这信息全部返回成功-------------------");*/
+			
+			//为了不为空而临时造的数据，别当真
+			PnrResponse response = new PnrResponse();
+			response.setPnrNo("JFFHL0");
 			return response;
 		}
 		
+		public static String pointDate(String orgDate){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date dates = null;
+			try {
+				dates = sdf.parse(orgDate+" 00:00:00");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			String sdssd = sdf.format(new Date(dates.getTime()-(long)1*24*60*60*1000));
+			System.out.println(sdssd);
+			return sdssd;
+		}
+		
 		public static void main(String[] args) {
-			rtPnr("JM8RKQ");
+			//rtPnr("JM8RKQ");
+			pointDate("2017-05-26");
 		}
 
 }

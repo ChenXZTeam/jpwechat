@@ -56,14 +56,14 @@ $(function(){
 });
 
 //直达的航班点击“预定”的时候
-function otherYdBtn(uuid,canbin){
+function otherYdBtn(uuid,canbin,dateTime){
 	var basePath=$("#basePath").text();
-	window.location.href = basePath+"wechatController/page/YDticket.action?uuid="+uuid+"&canbin="+canbin;
+	window.location.href = basePath+"wechatController/page/YDticket.action?uuid="+uuid+"&canbin="+canbin+"&dateTime="+dateTime;
 }
 
-function another(uuid1,uuid2,canbin){
+function another(uuid1,uuid2,canbin,dateTime){
 	var basePath=$("#basePath").text();
-	window.location.href = basePath+"console/wechat/zhzconfirmInfo.jsp?uuid1="+uuid1+"&uuid2="+uuid2+"&canbin="+canbin;
+	window.location.href = basePath+"console/wechat/zhzconfirmInfo.jsp?uuid1="+uuid1+"&uuid2="+uuid2+"&canbin="+canbin+"&dateTime="+dateTime;
 }
 
 

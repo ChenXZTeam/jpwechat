@@ -3,7 +3,6 @@ package com.solar.tech.controller.wechat;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.bean.entity.WX_PayCost;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.service.WXpayorderSer;
@@ -30,7 +28,8 @@ import com.solar.tech.util.ConfigUtils;
 import com.solar.tech.util.SHA1Util;
 import com.solar.tech.util.WeiXinSignAndPackage;
 import com.solar.tech.util.XMLUtil;
-import com.solar.tech.utils.mony_av;
+import com.solar.tech.utils.ECUtils;
+import com.travelsky.sbeclient.obe.response.PATFareItem;
 
 /**
  * 微信支付的控制器
@@ -53,138 +52,44 @@ public class WXpayorder {
 		String phoneNumber = (String) session.getAttribute("phoneNumber");
 		System.out.println(openId+"/"+phoneNumber);
 		if(openId==null||openId.equals("")||phoneNumber==null||phoneNumber.equals("")){
+			res.put("state", "0");
 			res.put("msg", "系统出错，请稍后再试");
 			return res;
 		}
 		//生成商品号
 		String out_trade_num = System.currentTimeMillis() + "";
 		System.out.println("商品号:" + out_trade_num); 
-		//获取航段共同的信息
-		mony_av getCost = new mony_av();
+		int lastpayCout = 0;
 		JSONObject jsonObject=JSONObject.fromObject(subDateJson);
-		String sing = jsonObject.get("sign")+""; //接收标志 就能传进来的数据是中转数据或者往返数据
-		double lastpayCout = 0.0; //最终计算后的价格
-		int yiwai = Integer.parseInt(jsonObject.get("yiwai")+"");	//是否购买意外险
-		int yanwu = Integer.parseInt(jsonObject.get("yanwu")+"");	//是否购买延误险
-		int youhui = Integer.parseInt(jsonObject.get("youhui")+"");	//是否使用优惠券
-		String activType = jsonObject.get("activType")+""; //优惠券的id
-		//判断是直达的支付还是往返或者中转
-		if(sing.equals("0")||"0".equals(sing)){
-			//获取接收的数据
-			String a = jsonObject.get("a")+""; //需要支付的订单的预约编号
-			String depCity = jsonObject.get("depCity")+""; //所购买的航班的出发城市
-			String arrCity = jsonObject.get("arrCity")+""; //所购买的航班的到达城市
-			String depDate = jsonObject.get("depDate")+""; //所购买的航班的出发日期
-			String airCode = jsonObject.get("airCode")+""; //所购买的航班的航空公司
-			String canbin = jsonObject.get("canbin")+""; //所购买的航班的舱位
-			System.out.println(a+", "+yiwai+", "+yanwu+", "+youhui+", "+activType+", "+depCity+", "+arrCity+", "+depDate+", "+airCode+", "+canbin);
-			//获取到后台查询到的价格
-			lastpayCout = getCost.getpay(depCity, arrCity, depDate, airCode, canbin);
-			System.out.println("直达单程航班的价格："+lastpayCout);
-			if(lastpayCout==0.0){
-				res.put("msg", "运价查询出错，请稍后再试");
+		String sign = jsonObject.get("sign")+""; //获取标志
+		if("0".equals(sign)){ //支付单个航班的
+			String yawai = jsonObject.get("yawai")+""; //获取是否购买航意险
+			String yanwu = jsonObject.get("yanwu")+""; //获取是否购买延误险
+			String uuid = jsonObject.get("uuid")+""; //uuid
+			System.out.println(yawai+","+yanwu+","+uuid);
+			String pn_tr = jsonObject.get("pn_tr")+""; //pnr码
+			PATFareItem[] sd = new ECUtils().patPNR(pn_tr,"A",null,null,false,null,null,null);
+			if(null==sd){
+				res.put("state", "0");
+				res.put("msg", "支付价格校验出错，请稍后再试");
 				return res;
 			}
-			
-			//创建支付表
-			int i = this.creanPay(a, openId, phoneNumber, out_trade_num);
-			if(i==0){
-				res.put("state", 0);
-				res.put("msg", "支付错误！请稍后再试");
-				return res;
+			String mongeyStr = sd[0].getPataFareResponse().getTotal();
+			mongeyStr = mongeyStr.substring(0,mongeyStr.indexOf("."));
+			lastpayCout = Integer.parseInt(mongeyStr);
+			if("1".equals(yawai)){  //是否购买航意险
+				lastpayCout = lastpayCout+30;
 			}
-			
-			//通过前台传过来的id查找相应的邀请码活动
-			if(youhui!=0){
-				List<InvitationCode> invt = PayService.findactivByid(activType);
-				if(invt.get(0).getType().equals("discount")){
-					lastpayCout = lastpayCout*((invt.get(0).getDiscount())/10);
-					//lastpayCout = lastpayCout * invt.get(0).getDiscount();
-				}else if(invt.get(0).getType().equals("preferential")){
-					lastpayCout = lastpayCout - invt.get(0).getSum();
-				}
+			if("1".equals(yanwu)){	//是否购买延误险
+				lastpayCout = lastpayCout+20;
 			}
+			lastpayCout = lastpayCout*100; //化成单位/分
+		}else if("1".equals(sign)){ //同时支付两段航班
 			
-			//是否购买航空意外险
-			if(yiwai != 0){
-				lastpayCout = lastpayCout + 30;
-			}
-			
-			//是否购买延误险
-			if(yanwu != 0){
-				lastpayCout = lastpayCout + 20;
-			}
-		}else if(sing.equals("1")||"1".equals(sing)){
-			String firstFild = jsonObject.get("firt")+""; //获取第一个航班的json数据集合
-	        String sconedFild = jsonObject.get("secd")+""; //获取第二个航班的json数据集合
-	        firstFild = firstFild.substring(1,firstFild.length()-1);
-	        sconedFild = sconedFild.substring(1,sconedFild.length()-1);
-	        JSONObject firtlist = JSONObject.fromObject(firstFild); //解析第一个航班json数据的集合
-	        JSONObject scedlist = JSONObject.fromObject(sconedFild);//解析第二个航班json数据的集合
-	        
-	        //获取第一航段的子类信息
-	        String a = firtlist.get("a")+""; //所购买的航班订单的预约编号
-	        String depCity = firtlist.get("depCity")+""; //所购买的航班的出发城市
-			String arrCity = firtlist.get("arrCity")+""; //所购买的航班的到达城市
-			String depDate = firtlist.get("depDate")+""; //所购买的航班的出发日期
-			String airCode = firtlist.get("airCode")+""; //所购买的航班的航空公司
-			String canbin = firtlist.get("canbin")+""; //所购买的航班的舱位
-			
-			//创建支付表
-			int i = this.creanPay(a, openId, phoneNumber, out_trade_num);
-			if(i==0){
-				res.put("state", 0);
-				res.put("msg", "支付错误1！请稍后再试");
-				return res;
-			}
-			
-			//获取第二航段的子类信息
-			String a1 = scedlist.get("a")+""; //第二航段的订单的预约编号
-	        String depCity2 = scedlist.get("depCity")+""; //所购买的航班的出发城市
-			String arrCity2 = scedlist.get("arrCity")+""; //所购买的航班的到达城市
-			String depDate2 = scedlist.get("depDate")+""; //所购买的航班的出发日期
-			String airCode2 = scedlist.get("airCode")+""; //所购买的航班的航空公司
-			String canbin2 = scedlist.get("canbin")+""; //所购买的航班的舱位
-			
-			//创建支付表
-			int j = this.creanPay(a1, openId, phoneNumber, out_trade_num);
-			if(j==0){
-				res.put("state", 0);
-				res.put("msg", "支付错误2！请稍后再试");
-				return res;
-			}
-
-			//进行总价计算步骤
-			double lastpayCout1 = getCost.getpay(depCity, arrCity, depDate, airCode, canbin); //查找第一段航班的价格
-			double lastpayCout2 = getCost.getpay(depCity2, arrCity2, depDate2, airCode2, canbin2); //查找第二段航班的价格
-			System.out.println("第一段航班的价格："+lastpayCout1);
-			System.out.println("第二段航班的价格："+lastpayCout2);
-			lastpayCout = lastpayCout1 + lastpayCout2; //两段航班的基础总价
-			//通过前台传过来的id查找相应的邀请码活动
-			if(youhui!=0){
-				List<InvitationCode> invt = PayService.findactivByid(activType);
-				if(invt.get(0).getType().equals("discount")){
-					lastpayCout = lastpayCout*((invt.get(0).getDiscount())/10);
-					//lastpayCout = lastpayCout * invt.get(0).getDiscount();
-				}else if(invt.get(0).getType().equals("preferential")){
-					lastpayCout = lastpayCout - invt.get(0).getSum();
-				}
-			}
-			
-			//是否购买航空意外险
-			if(yiwai != 0){
-				lastpayCout = lastpayCout + 60;
-			}
-			
-			//是否购买延误险
-			if(yanwu != 0){
-				lastpayCout = lastpayCout + 40;
-			}
 		}
-		
-        System.out.println("最终价格："+lastpayCout);
         
-		//String money = "0.1";
+		
+		
 		
 		/*以下这些代码是可以共用的*/
 		//----------------------调用微信支付接口-----------------------------
@@ -202,7 +107,7 @@ public class WXpayorder {
 		contentMap.put("nonce_str", noceStr); // 随机字符串
 		contentMap.put("body", ConfigUtils.BODY); // 商品描述
 		contentMap.put("out_trade_no", out_trade_num); // 商户订单号
-		contentMap.put("total_fee", "1"); // 订单总金额
+		contentMap.put("total_fee", lastpayCout+""); // 订单总金额
 		contentMap.put("spbill_create_ip", request.getRemoteAddr()); // 订单生成的机器IP
 		contentMap.put("notify_url", ConfigUtils.NOTIFY_URL); // 通知地址
 		contentMap.put("trade_type", ConfigUtils.TRADE_TYPE_JS); // 交易类型
@@ -242,7 +147,7 @@ public class WXpayorder {
 		res.put("timeStamp", wxPayParamMap.get("timeStamp"));
 		res.put("time", out_trade_num);
 		return res;
-}
+	}
 
 	/**
 	 * 异步处理

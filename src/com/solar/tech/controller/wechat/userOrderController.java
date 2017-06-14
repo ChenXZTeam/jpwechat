@@ -140,8 +140,8 @@ public class userOrderController {
 			oderInfo.setPsgType(menType);
 			//整理航班信息
 			oderInfo.setCabin(cangBin);
-			oderInfo.setChufCity(sifd.getDstcity());
-			oderInfo.setDaodCity(sifd.getOrgcity());
+			oderInfo.setChufCity(sifd.getOrgcity());
+			oderInfo.setDaodCity(sifd.getDstcity());
 			oderInfo.setHangbanNum(sifd.getAirline());
 			oderInfo.setChufTime(sifd.getDepTime());
 			oderInfo.setDaodTime(sifd.getArriTime());
@@ -184,13 +184,15 @@ public class userOrderController {
 			SeatPriceData SpInfo = PlanTekServ.findPrice(sifd.getAirline(),cangBin,sifd.getOrgcity(),sifd.getDstcity());
 			double num1 = Double.valueOf(SpInfo.getOnewayPrice());
 			int jbPrice = (int)num1; //这个是基本价格
-			if(YiwaiBX.equals("1")||"1".equals(YiwaiBX)){
-				jbPrice = jbPrice+30; //如果买了意外险就加上30元
+			if(YiwaiBX.equals("1")||"1".equals(YiwaiBX)){ //如果买了意外险就加上30元
+				jbPrice = jbPrice+30;
 			}
-			if(YanwuBX.equals("1")||"1".equals(YanwuBX)){
-				jbPrice = jbPrice+20; //如果买了延误险就加上20元
+			if(YanwuBX.equals("1")||"1".equals(YanwuBX)){ //如果买了延误险就加上20元
+				jbPrice = jbPrice+20;
 			}
-			jbPrice = jbPrice+50; //最后还要加上50元机场建设费（儿童和婴儿暂时先和成人一样价格）
+			if("ADT".equals(menType)){ //最后还要加上50元成人机场建设费
+				jbPrice = jbPrice+50;
+			}
 			oderInfo.setCostMoney(jbPrice+"");
 			
 			//默认的数据
@@ -206,32 +208,38 @@ public class userOrderController {
 			oderInfo.setOpenID(openID); //订票的openId
 			
 			//预定中信航航班(先查找接口是否还有座位)
-			//Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
-			//if(seatNum!=null){
+			Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
+			if(seatNum!=null){
 				PnrResponse resuletData = null;
 				try {resuletData = OrderService.Reserve(oderInfo);} catch (Exception e) {}
 				if(resuletData==null){
 					oderInfo.setIsSuccess("0");
-					mAl.setDepCity(oderInfo.getChufCity());
-					mAl.setOrgCity(oderInfo.getDaodCity());
+					mAl.setDepCity(oderInfo.getDaodCity());
+					mAl.setOrgCity(oderInfo.getChufCity());
 					mAl.setIsOk("0");
+					mAl.setCommit("系统出错，请稍后再试！");
 				}else{
 					oderInfo.setPNR(resuletData.getPnrNo());
 					oderInfo.setIsSuccess("1");
-					mAl.setDepCity(oderInfo.getChufCity());
-					mAl.setOrgCity(oderInfo.getDaodCity());
+					mAl.setDepCity(oderInfo.getDaodCity());
+					mAl.setOrgCity(oderInfo.getChufCity());
 					mAl.setIsOk("1");
+					mAl.setPntr(resuletData.getPnrNo());
 				}
-			/*}else{
+			}else{
 				oderInfo.setIsSuccess("0");
 				mAl.setDepCity(oderInfo.getChufCity());
 				mAl.setOrgCity(oderInfo.getDaodCity());
 				mAl.setIsOk("0");
-			}*/
+				mAl.setCommit("座位已为空");
+			}
 			map.put("resAlert", mAl);
 			OrderService.addOrder(oderInfo); //把订单数据保存到数据库中。
 		}else{
-			System.out.println("航班已经过期，删除掉了");
+			System.out.println("您搜索的航班已过期，请重新搜索！");
+			mAl.setIsOk("0");
+			mAl.setCommit("您搜索的航班已过期，请重新搜索！");
+			map.put("resAlert", mAl);
 		}
 
 		return map;
@@ -294,8 +302,8 @@ public class userOrderController {
 				oderInfo.setPsgType(menType);
 				//整理航班信息
 				oderInfo.setCabin(cangBin);
-				oderInfo.setChufCity(fifd.getDstcity());
-				oderInfo.setDaodCity(fifd.getOrgcity());
+				oderInfo.setChufCity(fifd.getOrgcity());
+				oderInfo.setDaodCity(fifd.getDstcity());
 				oderInfo.setHangbanNum(fifd.getAirline());
 				oderInfo.setChufTime(fifd.getDepTime());
 				oderInfo.setDaodTime(fifd.getArriTime());
@@ -759,10 +767,7 @@ public class userOrderController {
 	}
 	
 	public static void main(String[] args) {
-		//int jbPrice = Integer.valueOf("2015.01").intValue();
-		double num1 = Double.valueOf("2013");
-		int jbPrice = (int)num1;
-		System.out.println(jbPrice);
+		new ECUtils().cancelPnr("JFFHL0");
 	}
 	
 }

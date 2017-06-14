@@ -96,9 +96,9 @@ import com.travelsky.sbeclient.utils.SBEUtil;
 
 public class ECUtils {
 
-	private static final String USERNAME = "tanjianqin";	// 账号
-	private static final String PASSWORD = "tanjianqin";	// 密码
-	private static final String OFFICENO = "bjs187";		// 操作员
+	private static final String USERNAME = "GZRDAPI02";	// 账号
+	private static final String PASSWORD = "GZRDAPI0304";	// 密码
+	private static final String OFFICENO = "CAN666";		// 操作员
 	
 	private String token; // 口令
 	
@@ -545,8 +545,10 @@ public class ECUtils {
 			OBECommonResponse response = client.cancelPnr(request);// 新建一个响应对象 
 			if(response != null && response.getResultCode() == 0){
 				if("OK".equals(response.getResultMsg())){
-					System.out.println("删除成功");
+					System.out.println(pnrNo+"删除成功");
 					return true; // 返回删除结果
+				}else{
+					System.out.println(pnrNo+"删除失败");
 				}
 			}
 		} catch (ObeException e) {
@@ -617,6 +619,7 @@ public class ECUtils {
 		if(!StringUtils.isEmpty(passengerType)){
 			request.setPassengerType(passengerType); // 旅客类型 默认是成人成人:不填 IN:婴儿 CH:儿童 JC:因公带伤警察GM：伤残军人
 		}
+		request.setPriceIndex("all");
 		
 		PataFareClient client=new PataFareClient(); // 新建客户端对象
 		try { 

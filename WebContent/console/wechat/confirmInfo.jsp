@@ -8,6 +8,7 @@
 	//String jin = (String) session.getAttribute("invId");
 	String uuid = request.getParameter("uuid");
 	String canbin = request.getParameter("canbin");
+	String dateTime = request.getParameter("dateTime");
  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,6 +48,11 @@
 var fals=true;//防止重复提交
 var uuid = "<%=uuid%>";
 var canbin = "<%=canbin%>";
+var dateTime = "<%=dateTime%>";
+var orgcs = "";
+var dstcs = "";
+var costvar = 0;
+var pn_tr = "";
 $(function(){
 	//获取选中的航班
 	$.ajax({
@@ -64,6 +70,9 @@ $(function(){
 			$(".chufTime").text(changeType(vardate[0].depTime));
 			$(".arrDTime").text(changeType(vardate[0].arriTime));
 			$(".shiPlace").text(findByplaneName(vardate[0].orgcity));
+			orgcs = vardate[0].orgcity;
+			dstcs = vardate[0].dstcity;
+			costvar = parseInt(result.cost);
 			$(".flidNum").text(vardate[0].airline);
 			$(".zhongPlace").text(findByplaneName(vardate[0].dstcity));
 			$(".countTime").text(cuntTime(vardate[0].depTime,vardate[0].deptimemodify,vardate[0].arriTime,vardate[0].arriveTimeModify));
@@ -79,12 +88,12 @@ $(function(){
 			$("#ChufCity").text(findByCity(vardate[0].orgcity));
 			$("#QishiPlan").text(findByplaneName(vardate[0].orgcity));
 			$("#fildNumfly").text(vardate[0].airline);
-			$("#ChufDate").text(vardate[0].depDate);
+			$("#ChufDate").text(dateTime);
 			$("#ChufTime").text(changeType(vardate[0].depTime));
 			
 			$("#DaodCity").text(findByCity(vardate[0].dstcity));
 			$("#DaodPlan").text(findByplaneName(vardate[0].dstcity));
-			$("#ChufDateTwo").text(getArriDate(vardate[0].depDate,vardate[0].arriveTimeModify));
+			$("#ChufDateTwo").text(getArriDate(dateTime,vardate[0].arriveTimeModify));
 			$("#DaodTime").text(changeType(vardate[0].arriTime));
 			
 			$("#CountTime").text(cuntTime(vardate[0].depTime,vardate[0].deptimemodify,vardate[0].arriTime,vardate[0].arriveTimeModify));
@@ -184,7 +193,7 @@ $(function(){
 				}
 				//获取性别
 				var sexNum = idInfo.substring(idInfo.length-2,idInfo.length-1);
-				sexType = (sexNum%2 ==0)?"女":"男";
+				sexType = (sexNum%2 ==0)?"M":"F";
 			}
 			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
 					$.alert("请填写手机号码");
@@ -204,15 +213,19 @@ $(function(){
 			
 			//意外险的值
 			if($(".flindYw").is(':checked')){
-				$("#YiwaiBX").text(1); 
+				$("#YiwaiBX").text("已购买"); 
+				$("#yiwaiNum").text("1");
 			}else{
-				$("#YiwaiBX").text("0");
+				$("#YiwaiBX").text("未购买");
+				$("#yiwaiNum").text("0");
 			}
 			//延误险值
 			if($(".delayBx").is(':checked')){
-				$("#YanwuBX").text(1);
+				$("#YanwuBX").text("已购买");
+				$("#yanwuNum").text("1");
 			}else{
-				$("#YanwuBX").text("0");
+				$("#YanwuBX").text("未购买");
+				$("#yanwuNum").text("0");
 			}
 			
 			//乘机人资料
@@ -220,15 +233,15 @@ $(function(){
 			var iDcaseType=$("#caseIpntSource").text();//证件类型
 			var iDcase=$("#IDcase").val();//证件号码
 			var PhoneNum=$("#phoneNum").val();//手机号码
-			var YiwaiBX = $("#YiwaiBX").text();//意外保险
-			var YanwuBX = $("#YanwuBX").text();//延误险
+			var YiwaiBX = $("#yiwaiNum").text();//意外保险
+			var YanwuBX = $("#yanwuNum").text();//延误险
 			var jsondatastr = '{"depDate":"'+deppDate+'","uuid":"'+uuid+'","cangwei":"'+canbin+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
 			/* var jsondata = JSON.parse(jsondatastr);
 			console.log(jsondata);
 			return false; */
 			$("#CostPay").text($(".payMoney").text());
 			$("#LinkName").text(LinkName);
-			$("#Sex").text(sexType);
+			$("#Sex").text(sexType=="F"?"先生":"女士");
 			$("#iDcase").text(iDcase);
 			$("#PhoneNum").text(PhoneNum);
 			
@@ -246,17 +259,25 @@ $(function(){
 						var resDate = result.resAlert;
 						var tr = '<tr><td>'+findByCity(resDate.orgCity)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(resDate.depCity)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate.isOk)+'</td></tr>';
 						$("#resBoxTables").append(tr);
-						$(document).attr("title","机票预定_确认信息");
+						if(resDate.isOk==0||resDate.isOk=="0"){
+							$("#commitRes").text(resDate.commit);
+						}else{
+							pn_tr = resDate.pntr;
+							$("#commitRes").text("");
+							$(document).attr("title","机票预定_确认信息");
+							$("#trueOrderInfo").css("display","block");
+							$("html").css("height","100%");
+							$("html").css("overflow","hidden");
+							$("body").css("height","100%");
+							$("body").css("overflow","hidden");
+						}
 						$("#ydresuletBox").css("display","block");
-						$("#trueOrderInfo").css("display","block");
-						$("html").css("height","100%");
-						$("html").css("overflow","hidden");
-						$("body").css("height","100%");
-						$("body").css("overflow","hidden");
 					},
 					error:function(result){
 					}
 				});			
+			}else{
+				$.alert("不能重复提交订单");
 			}
 
 		});
@@ -284,7 +305,34 @@ $(function(){
 		$("#IDcase").change(function(){
 			//用户选择输入身份证的时候才会校验  选择护照或者其他 不会校验
 			if($("#caseIpntSource").text()=="NI"){
-				if(codeSf()){}else{
+				if(codeSf()){ //当身份证输入正确的时候还得判断旅客的类型
+					//获取年龄
+					var idInfo = $("#IDcase").val();
+					var birth = idInfo.substring(6,14);
+					var birthdayNumXX = birth.substring(0,4)+"-"+birth.substring(4,6)+"-"+birth.substring(6,8);
+					var ageXX = ageFunc(birthdayNumXX,$(".chufDate").text()); 
+					
+					var airline = $(".flidNum").text();
+					var canbin = "Y";
+					var cp = 0;
+					//获乘机人类型
+					if(ageXX<2){
+						findbb(airline,canbin,orgcs,dstcs,dateTime,"IN");
+					}else if(ageXX>=2&&ageXX<=12){
+						findbb(airline,canbin,orgcs,dstcs,dateTime,"CH");
+					}else{
+						$("#crTelkBox").remove();
+						$("#airBullte").remove();
+						var liList = '<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+costvar+'</span>/人</div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票</div></li>';
+						$("#sign").after(liList);
+						var jjMonty = '<li id="airBullte"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>';
+						$("#crTelkBox").after(jjMonty);
+						for(var i = 0;i<$(".kl").length;i++){
+							cp+= parseInt($(".kl:eq("+i+")").text());
+						}
+						$("#cost").text(cp);
+					}
+				}else{
 					$.alert("身份证号码输入错误，请认真核实！");
 				}
 			}
@@ -293,13 +341,10 @@ $(function(){
 		//确认付款
 		$(".truePayBtn").click(function(){
 			var a = $("#turmonp").text();
-			var yiwai = 0,yanwu = 0,youhui = 0;
+			var yiwai = 0,yanwu = 0;
 			if($(".flindYw").attr("checked")=="checked")yiwai = 1;
 			if($(".delayBx").attr("checked")=="checked")yanwu = 1;
-			if($(".youhuiBx").attr("checked")=="checked")youhui = 1;
-			var activType = ivid;
-			var infojson = '{"sign":"0","a":"'+a+'","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","youhui":"'+youhui+'","activType":"'+activType+'","depCity":"'+obj.orgCity+'","arrCity":"'+obj.dstCity+'","depDate":"'+chufDate+'","airCode":"'+obj.airCode+'","canbin":"'+cangweiType+'"}';
-			//var yiwai = $(".flindYw")
+			var infojson = '{"sign":"0","yawai":"'+yiwai+'","yanwu":"'+yanwu+'","pn_tr":"'+pn_tr+'","uuid":"'+uuid+'"}';
 			$.ajax({
 					url:"<%=basePath%>wechatController/payCost/orderPay.action",
 					type:"POST",
@@ -337,10 +382,10 @@ $(function(){
 		$("#sexIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'先生', 
-	            			value:'男'
+	            			value:'F'
 	        		   },{  
 	        		   		label:'女士',
-	            			value:'女'
+	            			value:'M'
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
@@ -481,6 +526,30 @@ function getArriDate(depDate,isJiaOne){
 	}
 }
 
+function findbb(airline,canbin,org,dst,dateTime,pstType){
+	$("#loadMoney").css("display","block");
+	$.post("<%=basePath%>wechatController/find/findBybb.action",{"airline":airline,"canbin":canbin,"org":org,"dst":dst,"dateTime":dateTime,"pstType":pstType},function(result){
+		$("#loadMoney").css("display","none");
+		var obj = JSON.parse(result);
+	    console.log(obj);
+	    //<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span>/人</div><div style="width:100px; margin-right:50px;">成人票</div></li>
+		var cp = 0;
+	    if("IN"==pstType){
+			$("#pstTypeName").text("婴儿票");
+			$("#moneyPay").text(parseInt(obj[0].total));
+			$("#airBullte").remove();
+		}else if("CH"==pstType){
+			$("#pstTypeName").text("儿童票");
+			$("#moneyPay").text(parseInt(obj[0].total));
+			$("#airBullte").remove();
+		}
+	    for(var i = 0;i<$(".kl").length;i++){
+			cp+= parseInt($(".kl:eq("+i+")").text());
+		}
+		$("#cost").text(cp);
+	});
+}
+
 function ageFunc(strBirthday,goDate){
     var returnAge;  
     var strBirthdayArr=strBirthday.split("-");  
@@ -570,9 +639,9 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 	function sourceSex(num,val){
 		var value = "";
 		if(num==1){
-			if(val=="男"){
+			if(val=="F"){
 				value = "先生";
-			}else if(val=="女"){
+			}else if(val=="M"){
 				value = "女士";
 			}
 		}else if(num==2){
@@ -608,8 +677,8 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 	<div class="trueCost"><span class="spanTit">实付价格：</span><span class="payMoney">￥<span id="cost"></span></span></div> 
 	<ul id="costXq" style="list-style-type:none; text-align:right; font-size:12px; color:#888;">
 		<li id="sign"></li>
-		<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span>/人</div><div style="width:100px; margin-right:50px;">成人票</div></li>
-		<li><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>
+		<li id="crTelkBox"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span>/人</div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票</div></li>
+		<li id="airBullte"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>
 	</ul>
 </div>
 
@@ -678,22 +747,28 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 				<li class="InfoLiClass"><span>性别：</span><span id="Sex" class="InfoValueClass"></span></li>
 				<li class="InfoLiClass"><span id="iDcaseType">证件</span><span>：</span><span id="iDcase" class="InfoValueClass"></span></li>
 				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass"></span></li>
-				<li class="InfoLiClass BXliClass"><span>购买意外险：</span><span id="YiwaiBX" class="InfoValueClass"></span></li>
-				<li class="InfoLiClass"><span>购买延误险：</span><span id="YanwuBX" class="InfoValueClass"></span></li>
+				<li class="InfoLiClass BXliClass"><span>购买意外险：</span><span id="YiwaiBX" class="InfoValueClass"></span><span id="yiwaiNum" style="display:none;"></span></li>
+				<li class="InfoLiClass"><span>购买延误险：</span><span id="YanwuBX" class="InfoValueClass"></span><span id="yanwuNum" style="display:none;"></span></li>
 			</ul>
 		</div>
 	</div>
 	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
 </div>
 <div id="ydresuletBox" style="position:absolute; width:100%; height:100%; background:rgba(51,51,51,0.7); top:0px; left:0px; z-index:99; display:none;">
-	<div style="margin:60% auto; width:300px; height:160px; border-radius:5px; background:#fff;">
+	<div style="margin:60% auto; width:300px; border-radius:5px; background:#fff;">
 		<div style="text-align:center; color:#666; font-size:18px; line-height:45px;">座位锁定结果</div>
 		<table id="resBoxTables" border="0" style="margin-left:20px; width:85%; height:55px;"></table>
-		<div style="border-top:1px #e1e1e1 solid; margin-top:10px;"> 
+		<div id="commitRes" style="color:#ff0000; text-align:center;">系统出错，请稍后再试！</div>
+		<div style="border-top:1px #e1e1e1 solid; margin-top:10px; overflow: hidden;"> 
 			<a style="display:block; float:left; width:49%; line-height:49px; text-align:center; border-right:1px solid #e1e1e1;" onclick="LookOrderFunc()">查看订单</a>
 			<a style="display:block; float:right; width:50%; line-height:49px; text-align:center;" onclick="closeBox()">关闭</a>
 			<a style="clear:both;"></a>
 		</div>
+	</div>
+</div>
+<div id="loadMoney" style="position:absolute; width:100%; height:100%; top:0px; left:0px; z-index:99; display:none;">
+	<div style="margin:65% auto; width:200px; border-radius:5px; text-align: center; font-size:12px; line-height: 50px; color:#fff; background:rgba(51,51,51,0.6);">
+		正在加载特殊旅客的票价...
 	</div>
 </div>
 <!-- 提交订单的时候加载等待的效果 -->

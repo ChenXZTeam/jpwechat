@@ -20,7 +20,10 @@ import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.service.PlanTekService;
 import com.solar.tech.service.userOrderService;
+import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
+import com.travelsky.sbeclient.obe.request.PataFareInfo;
+import com.travelsky.sbeclient.obe.response.PataFarePriceInfo;
 
 @Controller
 @RequestMapping("/wechatController")
@@ -44,7 +47,7 @@ public class PlanTekController {
 		List<FlightInfo> flightInfo = PlanTekServ.priceInfo(avList, dateTime); //将航班信息和座位信息整合
 		//把整理好的数据分成中转和直达
 		List<FlightInfo> zdList = new ArrayList<FlightInfo>(); //直达
-		List<FlightInfo> zzList = new ArrayList<FlightInfo>(); //直达
+		List<FlightInfo> zzList = new ArrayList<FlightInfo>(); //中转
 		if(flightInfo.size()==0){
 			map.put("msg", "0");
 			map.put("listDate", zdList);
@@ -61,6 +64,8 @@ public class PlanTekController {
 			map.put("listDate", zdList);
 			map.put("zzListDate", zzList);
 		}
+		System.out.println("直达："+zdList.size());
+		System.out.println("中转："+zzList.size());
 		return map;
 	}
 	
@@ -71,10 +76,23 @@ public class PlanTekController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<SeatInfoData> sinfo = PlanTekServ.findByUUID(uuid);
 		List<SeatPriceData> spd = PlanTekServ.findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin,sinfo.get(0).getAirline());
-		map.put("canbin", spd.get(0).getCabin());
+		map.put("canbin", canbin);
 		map.put("cost", spd.get(0).getOnewayPrice());
+		//map.put("cost_test", PlanTekServ.pataFare(sinfo.get(0).getAirline(), canbin, sinfo.get(0).getOrgcity(), sinfo.get(0).getDstcity(), dateTime));
 		map.put("dataObj", sinfo);
 		return map;
+	}
+	
+	//获取儿童和婴儿的运价
+	@RequestMapping("/find/findBybb.action")
+	@ResponseBody
+	public List<PataFarePriceInfo> findBybb(String airline, String canbin, String org, String dst, String dateTime, String pstType){
+		System.out.println("查找儿童或者婴儿票");
+		try {
+			List<PataFarePriceInfo> sdas = PlanTekServ.pataFare(airline, canbin, org, dst, dateTime, pstType);
+			return sdas;
+		} catch (Exception e) {}
+		return null;
 	}
 	
 	//根据uuid获取到航班的数据
@@ -86,13 +104,13 @@ public class PlanTekController {
 			if(i==1){
 				List<SeatInfoData> sinfo = PlanTekServ.findByUUID(uuid1);
 				List<SeatPriceData> spd = PlanTekServ.findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin,sinfo.get(0).getAirline());
-				map.put("canbin1", spd.get(0).getCabin());
+				map.put("canbin1", canbin);
 				map.put("cost1", spd.get(0).getOnewayPrice());
 				map.put("dataObj1", sinfo);
 			}else if(i==2){
 				List<SeatInfoData> sinfo = PlanTekServ.findByUUID(uuid2);
 				List<SeatPriceData> spd = PlanTekServ.findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin,sinfo.get(0).getAirline());
-				map.put("canbin2", spd.get(0).getCabin());
+				map.put("canbin2", canbin);
 				map.put("cost2", spd.get(0).getOnewayPrice());
 				map.put("dataObj2", sinfo);
 			}

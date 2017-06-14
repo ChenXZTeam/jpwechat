@@ -9,6 +9,7 @@ String jin = (String) session.getAttribute("invId");
 String uuid1 = request.getParameter("uuid1");
 String uuid2 = request.getParameter("uuid2");
 String canbin = request.getParameter("canbin");
+String dateTime = request.getParameter("dateTime");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -128,6 +129,7 @@ $(function(){
 	var uuid1 = '<%=uuid1%>';
 	var uuid2 = '<%=uuid2%>';
 	var cangwei = '<%=canbin%>';
+	var dateTime = "<%=dateTime%>";
 	var fals = true;
 	
 	//获取选中的航班
@@ -137,7 +139,8 @@ $(function(){
 		data: {
 				"uuid1":uuid1,
 				"uuid2":uuid2,
-				"canbin":cangwei
+				"canbin":cangwei,
+				"dateTime":dateTime
 		},
 		dataType: "json",
 		success: function(result) {

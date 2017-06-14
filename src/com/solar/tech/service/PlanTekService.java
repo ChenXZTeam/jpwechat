@@ -25,8 +25,10 @@ import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.dao.GenericDao;
+import com.travelsky.sbeclient.obe.request.PataFareInfo;
 import com.travelsky.sbeclient.obe.response.AvSegment;
 import com.travelsky.sbeclient.obe.response.FDItem;
+import com.travelsky.sbeclient.obe.response.PataFarePriceInfo;
 
 /**
  * @title PlanTekService 处理机票的查询、预定的类
@@ -486,6 +488,18 @@ public class PlanTekService {
 	public List<SeatPriceData> findByCanbin(String org,String dst,String canbin,String codeAir){
 		List<SeatPriceData> sepList = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+org+"' AND dstCity = '"+dst+"') OR (orgCity = '"+dst+"' AND dstCity = '"+org+"')) AND cabin = '"+canbin+"' AND airline = '"+codeAir.substring(0,2)+"'");
 		return sepList;
+	}
+	
+	//根据航班信息查找运价pataFare方法
+	public List<PataFarePriceInfo> pataFare(String airline, String canbin, String org, String dst, String date, String psgType){
+		PataFareInfo pf1 = new PataFareInfo();
+		pf1.setFlightNo(airline);
+		pf1.setCabin(canbin);
+		pf1.setDate(date);
+		pf1.setOrg(org);
+		pf1.setDst(dst);
+		List<PataFarePriceInfo> response = new ECUtils().pataFare(pf1, psgType);
+		return response;
 	}
 	
 	// 剔除重复的数据
