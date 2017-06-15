@@ -61,9 +61,9 @@ function otherYdBtn(uuid,canbin,dateTime){
 	window.location.href = basePath+"wechatController/page/YDticket.action?uuid="+uuid+"&canbin="+canbin+"&dateTime="+dateTime;
 }
 
-function another(uuid1,uuid2,canbin,dateTime){
+function another(uuid1,uuid2,canbin,dateTime,canbin2){
 	var basePath=$("#basePath").text();
-	window.location.href = basePath+"console/wechat/zhzconfirmInfo.jsp?uuid1="+uuid1+"&uuid2="+uuid2+"&canbin="+canbin+"&dateTime="+dateTime;
+	window.location.href = basePath+"console/wechat/zhzconfirmInfo.jsp?uuid1="+uuid1+"&uuid2="+uuid2+"&canbin="+canbin+"&dateTime="+dateTime+"&canbin2="+canbin2;
 }
 
 

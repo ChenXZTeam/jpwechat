@@ -85,10 +85,51 @@ public class WXpayorder {
 			}
 			lastpayCout = lastpayCout*100; //化成单位/分
 		}else if("1".equals(sign)){ //同时支付两段航班
+			int onePrice = 0;
+			int twoPrice = 0;
+			String yiwai = jsonObject.get("yiwai")+"";
+			String yanwu = jsonObject.get("yanwu")+"";
+			String pntrer = jsonObject.get("pntrer")+"";
+			String pntrtw = jsonObject.get("pntrtw")+"";
+			String uuid1 = jsonObject.get("uuid1")+"";
+			String uuid2 = jsonObject.get("uuid2")+"";
+			System.out.println(uuid1+"/"+uuid2+"/"+pntrer+"/"+pntrtw);
+			PATFareItem[] PAT1 = new ECUtils().patPNR("HQ65K8","A",null,null,false,null,null,null);
+			if(null==PAT1){
+				res.put("state", "0");
+				res.put("msg", "支付价格校验出错，请稍后再试");
+				return res;
+			}else{
+				String mongeyStr = PAT1[0].getPataFareResponse().getTotal();
+				mongeyStr = mongeyStr.substring(0,mongeyStr.indexOf("."));
+				onePrice = Integer.parseInt(mongeyStr);
+				if("1".equals(yiwai)){  //是否购买航意险
+					onePrice = onePrice+30;
+				}
+				if("1".equals(yanwu)){	//是否购买延误险
+					onePrice = onePrice+20;
+				}
+			}
 			
+			PATFareItem[] PAT2 = new ECUtils().patPNR("JNESHH","A",null,null,false,null,null,null);
+			if(null==PAT2){
+				res.put("state", "0");
+				res.put("msg", "支付价格校验出错，请稍后再试");
+				return res;
+			}else{
+				String mongeyStr = PAT2[0].getPataFareResponse().getTotal();
+				mongeyStr = mongeyStr.substring(0,mongeyStr.indexOf("."));
+				twoPrice = Integer.parseInt(mongeyStr);
+				if("1".equals(yiwai)){  //是否购买航意险
+					twoPrice = twoPrice+30;
+				}
+				if("1".equals(yanwu)){	//是否购买延误险
+					twoPrice = twoPrice+20;
+				}
+				lastpayCout = onePrice+twoPrice; //计算得到两个航段的价格
+			}
+			lastpayCout = lastpayCout*100; //化成单位/分
 		}
-        
-		
 		
 		
 		/*以下这些代码是可以共用的*/

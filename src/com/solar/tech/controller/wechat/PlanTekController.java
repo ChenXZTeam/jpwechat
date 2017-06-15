@@ -98,7 +98,7 @@ public class PlanTekController {
 	//根据uuid获取到航班的数据
 	@RequestMapping("/find/byuuidTwo.action")
 	@ResponseBody
-	public Map<String,Object> findByidTwo(String uuid1,String uuid2,String canbin){
+	public Map<String,Object> findByidTwo(String uuid1,String uuid2,String canbin,String canbin2){
 		Map<String,Object> map = new HashMap<String,Object>();
 		for(int i=1; i<=2; i++){
 			if(i==1){
@@ -109,8 +109,8 @@ public class PlanTekController {
 				map.put("dataObj1", sinfo);
 			}else if(i==2){
 				List<SeatInfoData> sinfo = PlanTekServ.findByUUID(uuid2);
-				List<SeatPriceData> spd = PlanTekServ.findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin,sinfo.get(0).getAirline());
-				map.put("canbin2", canbin);
+				List<SeatPriceData> spd = PlanTekServ.findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin2,sinfo.get(0).getAirline());
+				map.put("canbin2", canbin2);
 				map.put("cost2", spd.get(0).getOnewayPrice());
 				map.put("dataObj2", sinfo);
 			}

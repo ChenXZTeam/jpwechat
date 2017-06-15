@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.solar.tech.bean.FilghUser;
 import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.bean.MessgesAlert;
 import com.solar.tech.bean.VisaOrder;
@@ -124,117 +125,20 @@ public class userOrderController {
 		//根据uuid从数据库中查找航班的信息
 		List<SeatInfoData> filedInfo = PlanTekServ.findByUUID(uuid);
 		if(filedInfo.size()==1){
-			SeatInfoData sifd = filedInfo.get(0);
-			//整理数据，一边要保存到数据库中，另一边整理交给中信航接口
-			userOrderInfo oderInfo = new userOrderInfo();
-			//整理联系人信息
-			oderInfo.setIDcase(iDcase);
-			oderInfo.setIDcaseType(iDcaseType);
-			oderInfo.setLinkName(LinkName);
-			oderInfo.setLinkPhoneNum(PhoneNum);
-			oderInfo.setLinkSex(Sex);
-			oderInfo.setYiwaiBX(YiwaiBX);
-			oderInfo.setYanwuBX(YanwuBX);
-			oderInfo.setBirthday(birthDay);
-			oderInfo.setAge(age);
-			oderInfo.setPsgType(menType);
-			//整理航班信息
-			oderInfo.setCabin(cangBin);
-			oderInfo.setChufCity(sifd.getOrgcity());
-			oderInfo.setDaodCity(sifd.getDstcity());
-			oderInfo.setHangbanNum(sifd.getAirline());
-			oderInfo.setChufTime(sifd.getDepTime());
-			oderInfo.setDaodTime(sifd.getArriTime());
-			oderInfo.setArriTerm(sifd.getArriTerm());
-			oderInfo.setDepTerm(sifd.getDepTerm());
-			oderInfo.setMeal(sifd.getMeal());
-			//出发日期
-			if("+1".equals(sifd.getDeptimemodify())){
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Date dates = null;
-				try {
-					dates = sdf.parse(depDate);
-					String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
-					oderInfo.setChufDate(sdssd);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}else{
-				oderInfo.setChufDate(depDate);
-			}
-			//到达日期
-			if("+1".equals(sifd.getArriveTimeModify())){
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Date dates = null;
-				try {
-					dates = sdf.parse(depDate);
-					String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
-					oderInfo.setDaodDate(sdssd);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}else{
-				oderInfo.setDaodDate(depDate);
-			}
-			
-			/*计算价格
-			 *1、根据航班号和舱位从数据库里面查找基本价格
-			 *2、用户是否购买双保险，购买就加上
-			 */
-			SeatPriceData SpInfo = PlanTekServ.findPrice(sifd.getAirline(),cangBin,sifd.getOrgcity(),sifd.getDstcity());
-			double num1 = Double.valueOf(SpInfo.getOnewayPrice());
-			int jbPrice = (int)num1; //这个是基本价格
-			if(YiwaiBX.equals("1")||"1".equals(YiwaiBX)){ //如果买了意外险就加上30元
-				jbPrice = jbPrice+30;
-			}
-			if(YanwuBX.equals("1")||"1".equals(YanwuBX)){ //如果买了延误险就加上20元
-				jbPrice = jbPrice+20;
-			}
-			if("ADT".equals(menType)){ //最后还要加上50元成人机场建设费
-				jbPrice = jbPrice+50;
-			}
-			oderInfo.setCostMoney(jbPrice+"");
-			
-			//默认的数据
-			oderInfo.setStutisPay("0"); //未支付
-			oderInfo.setTakePlane("0"); //是否登机
-			oderInfo.setAdminDel("0"); //默认不删除
-			oderInfo.setConsoleStatus("0"); //未打印
-			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
-			String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
-			oderInfo.setOrderNum(orderNumFirst); //设置流水号
-			//系统数据
-			oderInfo.setUserName(userName); //订票的账号 
-			oderInfo.setOpenID(openID); //订票的openId
-			
-			//预定中信航航班(先查找接口是否还有座位)
-			Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
-			if(seatNum!=null){
-				PnrResponse resuletData = null;
-				try {resuletData = OrderService.Reserve(oderInfo);} catch (Exception e) {}
-				if(resuletData==null){
-					oderInfo.setIsSuccess("0");
-					mAl.setDepCity(oderInfo.getDaodCity());
-					mAl.setOrgCity(oderInfo.getChufCity());
-					mAl.setIsOk("0");
-					mAl.setCommit("系统出错，请稍后再试！");
-				}else{
-					oderInfo.setPNR(resuletData.getPnrNo());
-					oderInfo.setIsSuccess("1");
-					mAl.setDepCity(oderInfo.getDaodCity());
-					mAl.setOrgCity(oderInfo.getChufCity());
-					mAl.setIsOk("1");
-					mAl.setPntr(resuletData.getPnrNo());
-				}
-			}else{
-				oderInfo.setIsSuccess("0");
-				mAl.setDepCity(oderInfo.getChufCity());
-				mAl.setOrgCity(oderInfo.getDaodCity());
-				mAl.setIsOk("0");
-				mAl.setCommit("座位已为空");
-			}
-			map.put("resAlert", mAl);
-			OrderService.addOrder(oderInfo); //把订单数据保存到数据库中。
+			FilghUser fu = new FilghUser();
+			fu.setAge(age);
+			fu.setBirthDay(birthDay);
+			fu.setiDcase(iDcase);
+			fu.setiDcaseType(iDcaseType);
+			fu.setLinkName(LinkName);
+			fu.setMenType(menType);
+			fu.setOpenID(openID);
+			fu.setPhoneNum(PhoneNum);
+			fu.setSex(Sex);
+			fu.setUserName(userName);
+			fu.setYanwuBX(YanwuBX);
+			fu.setYiwaiBX(YiwaiBX);
+			mAl = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate);
 		}else{
 			System.out.println("您搜索的航班已过期，请重新搜索！");
 			mAl.setIsOk("0");
@@ -253,15 +157,19 @@ public class userOrderController {
 	public Map<String, Object> addzhz_res(String jsStr,HttpSession session){
 		List<MessgesAlert> malert = new ArrayList<MessgesAlert>();  //记录是否两个全部预定成功或者只有一个，用于反馈前台提示用户
 		Map<String, Object> map = new HashMap<String, Object>();
-		String userName = (String) session.getAttribute("userName");
+		/*String userName = (String) session.getAttribute("userName");
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
+*/		
+		String userName = "ttt";
+		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
 		if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
 			return map;
 		}
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);
-		String cangBin = jsonObject.get("cangwei")+""; //获取舱位
+		String cangBin = jsonObject.get("cangwei")+""; //获取第一航段舱位
+		String cangBin2 = jsonObject.get("canbin2")+""; //获取第二航段舱位
 		String uuid1 = jsonObject.get("uuid1")+""; //第一段航班的uuid
 		String uuid2 = jsonObject.get("uuid2")+""; //第二段航班的uuid
 		String depDate = jsonObject.get("depDate")+""; //出发日期
@@ -281,123 +189,56 @@ public class userOrderController {
 		String age = personInfo.get("age")+"";  //获取乘机人年龄
 		String menType = personInfo.get("menType")+"";  //获取乘机人类型
 		
-		//从数据库查找航班信息
-		List<userOrderInfo> orderList = new ArrayList<userOrderInfo>();
-		List<SeatInfoData> filedInfo = PlanTekServ.findByUUID(uuid1,uuid2);
-		if(filedInfo.size()==2){ //只有两个航班都查找到才能进行预订操作
-			for(SeatInfoData fifd : filedInfo){
-				MessgesAlert mAl = new MessgesAlert();
-				//整理数据，一边要保存到数据库中，另一边整理交给中信航接口
-				userOrderInfo oderInfo = new userOrderInfo();
-				//整理联系人信息
-				oderInfo.setIDcase(iDcase);
-				oderInfo.setIDcaseType(iDcaseType);
-				oderInfo.setLinkName(LinkName);
-				oderInfo.setLinkPhoneNum(PhoneNum);
-				oderInfo.setLinkSex(Sex);
-				oderInfo.setYiwaiBX(YiwaiBX);
-				oderInfo.setYanwuBX(YanwuBX);
-				oderInfo.setBirthday(birthDay);
-				oderInfo.setAge(age);
-				oderInfo.setPsgType(menType);
-				//整理航班信息
-				oderInfo.setCabin(cangBin);
-				oderInfo.setChufCity(fifd.getOrgcity());
-				oderInfo.setDaodCity(fifd.getDstcity());
-				oderInfo.setHangbanNum(fifd.getAirline());
-				oderInfo.setChufTime(fifd.getDepTime());
-				oderInfo.setDaodTime(fifd.getArriTime());
-				oderInfo.setArriTerm(fifd.getArriTerm());
-				oderInfo.setDepTerm(fifd.getDepTerm());
-				oderInfo.setMeal(fifd.getMeal());
-				//出发日期
-				if(fifd.getDeptimemodify().equals("+1")){
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					Date dates = null;
-					try {
-						dates = sdf.parse(depDate);
-						String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
-						oderInfo.setChufDate(sdssd);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}else{
-					oderInfo.setChufDate(depDate);
-				}
-				//到达日期
-				if(fifd.getArriveTimeModify().equals("+1")){
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					Date dates = null;
-					try {
-						dates = sdf.parse(depDate);
-						String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
-						oderInfo.setDaodDate(sdssd);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}else{
-					oderInfo.setDaodDate(depDate);
-				}
-				/*计算价格
-				 *1、根据航班号和舱位从数据库里面查找基本价格
-				 *2、用户是否购买双保险，购买就加上
-				 */
-				SeatPriceData SpInfo = PlanTekServ.findPrice(fifd.getAirline(),cangBin,fifd.getOrgcity(),fifd.getDstcity());
-				double num1 = Double.valueOf(SpInfo.getOnewayPrice());
-				int jbPrice = (int)num1; //这个是基本价格
-				if(YiwaiBX.equals("1")||"1".equals(YiwaiBX)){
-					jbPrice = jbPrice+30; //如果买了意外险就加上30元
-				}
-				if(YanwuBX.equals("1")||"1".equals(YanwuBX)){
-					jbPrice = jbPrice+20; //如果买了延误险就加上20元
-				}
-				jbPrice = jbPrice+50; //最后还要加上50元机场建设费（儿童和婴儿暂时先和成人一样价格）
-				oderInfo.setCostMoney(jbPrice+"");
-				
-				//默认的数据
-				oderInfo.setStutisPay("0"); //未支付
-				oderInfo.setTakePlane("0"); //是否登机
-				oderInfo.setAdminDel("0"); //默认不删除
-				oderInfo.setConsoleStatus("0"); //未打印
-				oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
-				String orderNumFirst = OrderService.createOrderNum("RDOD", 8);
-				oderInfo.setOrderNum(orderNumFirst); //设置流水号
-				//系统数据
-				oderInfo.setUserName(userName); //订票的账号  
-				oderInfo.setOpenID(openID); //订票的openId
-				
-				//预定中信航航班(先查找接口是否还有座位)
-				Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
-				if(seatNum!=null){
-					PnrResponse resuletData = null;
-					try {resuletData = OrderService.Reserve(oderInfo);} catch (Exception e) {}
-					if(resuletData==null){
-						oderInfo.setIsSuccess("0");
-						mAl.setDepCity(oderInfo.getChufCity());
-						mAl.setOrgCity(oderInfo.getDaodCity());
-						mAl.setIsOk("0");
-					}else{
-						oderInfo.setPNR(resuletData.getPnrNo());
-						oderInfo.setIsSuccess("1");
-						mAl.setDepCity(oderInfo.getChufCity());
-						mAl.setOrgCity(oderInfo.getDaodCity());
-						mAl.setIsOk("1");
-					}
-				}else{
-					oderInfo.setIsSuccess("0");
-					mAl.setDepCity(oderInfo.getChufCity());
-					mAl.setOrgCity(oderInfo.getDaodCity());
-					mAl.setIsOk("0");
-				}
-				malert.add(mAl);
-				orderList.add(oderInfo);
-			}
-			OrderService.addOrder(orderList);
-			map.put("resAlert", malert);
+		//从数据库查找航班信息(第一航段)
+		List<SeatInfoData> filedInfo = PlanTekServ.findByUUID(uuid1);
+		if(filedInfo.size()==1){
+			FilghUser fu = new FilghUser();
+			fu.setAge(age);
+			fu.setBirthDay(birthDay);
+			fu.setiDcase(iDcase);
+			fu.setiDcaseType(iDcaseType);
+			fu.setLinkName(LinkName);
+			fu.setMenType(menType);
+			fu.setOpenID(openID);
+			fu.setPhoneNum(PhoneNum);
+			fu.setSex(Sex);
+			fu.setUserName(userName);
+			fu.setYanwuBX(YanwuBX);
+			fu.setYiwaiBX(YiwaiBX);
+			MessgesAlert mal1 = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate);
+			malert.add(mal1);
 		}else{
-			System.out.println("你预定的航班已经过期，需要重新预定!");
+			MessgesAlert mal1 = new MessgesAlert();
+			mal1.setIsOk("0");
+			mal1.setCommit("第一航段已过期，请重新操作");
+			malert.add(mal1);
 		}
 		
+		//从数据库查找航班信息(第二航段)
+		List<SeatInfoData> filedInfo2 = PlanTekServ.findByUUID(uuid2);
+		if(filedInfo2.size()==1){
+			FilghUser fu = new FilghUser();
+			fu.setAge(age);
+			fu.setBirthDay(birthDay);
+			fu.setiDcase(iDcase);
+			fu.setiDcaseType(iDcaseType);
+			fu.setLinkName(LinkName);
+			fu.setMenType(menType);
+			fu.setOpenID(openID);
+			fu.setPhoneNum(PhoneNum);
+			fu.setSex(Sex);
+			fu.setUserName(userName);
+			fu.setYanwuBX(YanwuBX);
+			fu.setYiwaiBX(YiwaiBX);
+			MessgesAlert mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),depDate);
+			malert.add(mal2);
+		}else{
+			MessgesAlert mal2 = new MessgesAlert();
+			mal2.setIsOk("0");
+			mal2.setCommit("第二航段已过期，请重新操作");
+			malert.add(mal2);
+		}
+		map.put("resAlert", malert);
 		return map;
 	}
 	

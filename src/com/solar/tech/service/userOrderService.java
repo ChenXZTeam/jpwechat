@@ -1,24 +1,32 @@
 package com.solar.tech.service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.FilghUser;
 import com.solar.tech.bean.InvitationCode;
+import com.solar.tech.bean.MessgesAlert;
 import com.solar.tech.bean.VisaOrder;
 import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
+import com.solar.tech.bean.entity.SeatInfoData;
+import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.airport;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.utils.ECUtils;
+import com.solar.tech.utils.OptimizeECUtils;
 import com.travelsky.sbeclient.obe.book.BookContact;
 import com.travelsky.sbeclient.obe.book.OSIInfo;
 import com.travelsky.sbeclient.obe.book.PassengerInfo;
@@ -540,6 +548,7 @@ public class userOrderService {
 			return response;
 		}
 		
+		//计算出票日期的方法
 		public static String pointDate(String orgDate){
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date dates = null;
@@ -549,8 +558,133 @@ public class userOrderService {
 				e.printStackTrace();
 			}
 			String sdssd = sdf.format(new Date(dates.getTime()-(long)1*24*60*60*1000));
-			System.out.println(sdssd);
 			return sdssd;
+		}
+		
+		//封装保存订单的方法
+		public MessgesAlert saveOrder(FilghUser fu, String cangBin, SeatInfoData sifd, String depDate){
+			MessgesAlert mAl = new MessgesAlert();
+			//整理数据，一边要保存到数据库中，另一边整理交给中信航接口
+			userOrderInfo oderInfo = new userOrderInfo();
+			//整理联系人信息
+			oderInfo.setIDcase(fu.getiDcase());
+			oderInfo.setIDcaseType(fu.getiDcaseType());
+			oderInfo.setLinkName(fu.getLinkName());
+			oderInfo.setLinkPhoneNum(fu.getPhoneNum());
+			oderInfo.setLinkSex(fu.getSex());
+			oderInfo.setYiwaiBX(fu.getYiwaiBX());
+			oderInfo.setYanwuBX(fu.getYanwuBX());
+			oderInfo.setBirthday(fu.getBirthDay());
+			oderInfo.setAge(fu.getAge());
+			oderInfo.setPsgType(fu.getMenType());
+			//整理航班信息
+			oderInfo.setCabin(cangBin);
+			oderInfo.setChufCity(sifd.getOrgcity());
+			oderInfo.setDaodCity(sifd.getDstcity());
+			oderInfo.setHangbanNum(sifd.getAirline());
+			oderInfo.setChufTime(sifd.getDepTime());
+			oderInfo.setDaodTime(sifd.getArriTime());
+			oderInfo.setArriTerm(sifd.getArriTerm());
+			oderInfo.setDepTerm(sifd.getDepTerm());
+			oderInfo.setMeal(sifd.getMeal());
+			//出发日期
+			if("+1".equals(sifd.getDeptimemodify())){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date dates = null;
+				try {
+					dates = sdf.parse(depDate);
+					String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
+					oderInfo.setChufDate(sdssd);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}else{
+				oderInfo.setChufDate(depDate);
+			}
+			//到达日期
+			if("+1".equals(sifd.getArriveTimeModify())){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date dates = null;
+				try {
+					dates = sdf.parse(depDate);
+					String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
+					oderInfo.setDaodDate(sdssd);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}else{
+				oderInfo.setDaodDate(depDate);
+			}
+			
+			/*计算价格
+			 *1、根据航班号和舱位从数据库里面查找基本价格
+			 *2、用户是否购买双保险，购买就加上
+			 */
+			SeatPriceData SpInfo = findPrice(sifd.getAirline(),cangBin,sifd.getOrgcity(),sifd.getDstcity());
+			double num1 = Double.valueOf(SpInfo.getOnewayPrice());
+			int jbPrice = (int)num1; //这个是基本价格
+			if(fu.getYiwaiBX().equals("1")||"1".equals(fu.getYiwaiBX())){ //如果买了意外险就加上30元
+				jbPrice = jbPrice+30;
+			}
+			if(fu.getYanwuBX().equals("1")||"1".equals(fu.getYanwuBX())){ //如果买了延误险就加上20元
+				jbPrice = jbPrice+20;
+			}
+			if("ADT".equals(fu.getMenType())){ //最后还要加上50元成人机场建设费
+				jbPrice = jbPrice+50;
+			}
+			oderInfo.setCostMoney(jbPrice+"");
+			
+			//默认的数据
+			oderInfo.setStutisPay("0"); //未支付
+			oderInfo.setTakePlane("0"); //是否登机
+			oderInfo.setAdminDel("0"); //默认不删除
+			oderInfo.setConsoleStatus("0"); //未打印
+			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
+			String orderNumFirst = createOrderNum("RDOD", 8);
+			oderInfo.setOrderNum(orderNumFirst); //设置流水号
+			//系统数据
+			oderInfo.setUserName(fu.getUserName()); //订票的账号 
+			oderInfo.setOpenID(fu.getOpenID()); //订票的openId
+			
+			//预定中信航航班(先查找接口是否还有座位)
+			Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
+			if(seatNum!=null){
+				PnrResponse resuletData = null;
+				try {resuletData = Reserve(oderInfo);} catch (Exception e) {}
+				if(resuletData==null){
+					oderInfo.setIsSuccess("0");
+					mAl.setDepCity(oderInfo.getDaodCity());
+					mAl.setOrgCity(oderInfo.getChufCity());
+					mAl.setIsOk("0");
+					mAl.setCommit("系统出错，请稍后再试！");
+				}else{
+					oderInfo.setPNR(resuletData.getPnrNo());
+					oderInfo.setIsSuccess("1");
+					mAl.setDepCity(oderInfo.getDaodCity());
+					mAl.setOrgCity(oderInfo.getChufCity());
+					mAl.setIsOk("1");
+					mAl.setPntr(resuletData.getPnrNo());
+				}
+			}else{
+				oderInfo.setIsSuccess("0");
+				mAl.setDepCity(oderInfo.getChufCity());
+				mAl.setOrgCity(oderInfo.getDaodCity());
+				mAl.setIsOk("0");
+				mAl.setCommit("座位已为空,请预定其他航班");
+			}
+			try {
+				addOrder(oderInfo); //把订单数据保存到数据库中。
+			} catch (Exception e) {
+				
+			}
+			
+			return mAl;
+		}
+		
+		//根据航班号和舱位查找数据库中缓存好的价格
+		public SeatPriceData findPrice(String fildNum,String canbin,String cfCity,String ddCity){
+			List<SeatPriceData> priceInfo = gDao.find("FROM SeatPriceData WHERE airline = '"+fildNum.substring(0,2)+"' AND cabin = '"+canbin+"' AND orgCity= '"+cfCity+"' AND dstCity = '"+ddCity+"'");
+			return priceInfo.get(0);
 		}
 		
 		public static void main(String[] args) {
