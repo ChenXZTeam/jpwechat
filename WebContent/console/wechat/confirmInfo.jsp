@@ -16,7 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>填写信息_订票</title>
-<link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css?time=20161"/>
+<link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css?time=201161"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/normalize3.0.2.min.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
 <link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
@@ -694,8 +694,8 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 </div>
 
 <div class="baoxianBox">
-	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="1"/><span class="spanTitBX">航空意外险</span></div>
-	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="1"/><span class="spanTitBX">延误取消险</span></div>
+	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="1"/><span class="spanTitBX">航意险</span></div>
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="1"/><span class="spanTitBX">延误险</span></div>
 	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBx" value="500"/><span class="spanTitBX youhuiText"></span></div>
 	<div style="clear:both;"><span id="zhekouType" style="display:none;"></span></div>
 </div>
@@ -747,8 +747,8 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 				<li class="InfoLiClass"><span>性别：</span><span id="Sex" class="InfoValueClass"></span></li>
 				<li class="InfoLiClass"><span id="iDcaseType">证件</span><span>：</span><span id="iDcase" class="InfoValueClass"></span></li>
 				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass"></span></li>
-				<li class="InfoLiClass BXliClass"><span>购买意外险：</span><span id="YiwaiBX" class="InfoValueClass"></span><span id="yiwaiNum" style="display:none;"></span></li>
-				<li class="InfoLiClass"><span>购买延误险：</span><span id="YanwuBX" class="InfoValueClass"></span><span id="yanwuNum" style="display:none;"></span></li>
+				<li class="InfoLiClass BXliClass"><span>航意险：</span><span id="YiwaiBX" class="InfoValueClass"></span><span id="yiwaiNum" style="display:none;"></span></li>
+				<li class="InfoLiClass"><span>延误险：</span><span id="YanwuBX" class="InfoValueClass"></span><span id="yanwuNum" style="display:none;"></span></li>
 			</ul>
 		</div>
 	</div>

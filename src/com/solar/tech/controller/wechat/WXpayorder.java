@@ -94,7 +94,7 @@ public class WXpayorder {
 			String uuid1 = jsonObject.get("uuid1")+"";
 			String uuid2 = jsonObject.get("uuid2")+"";
 			System.out.println(uuid1+"/"+uuid2+"/"+pntrer+"/"+pntrtw);
-			PATFareItem[] PAT1 = new ECUtils().patPNR("HQ65K8","A",null,null,false,null,null,null);
+			PATFareItem[] PAT1 = new ECUtils().patPNR(pntrer,"A",null,null,false,null,null,null);
 			if(null==PAT1){
 				res.put("state", "0");
 				res.put("msg", "支付价格校验出错，请稍后再试");
@@ -111,7 +111,7 @@ public class WXpayorder {
 				}
 			}
 			
-			PATFareItem[] PAT2 = new ECUtils().patPNR("JNESHH","A",null,null,false,null,null,null);
+			PATFareItem[] PAT2 = new ECUtils().patPNR(pntrtw,"A",null,null,false,null,null,null);
 			if(null==PAT2){
 				res.put("state", "0");
 				res.put("msg", "支付价格校验出错，请稍后再试");

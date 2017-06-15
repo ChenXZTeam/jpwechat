@@ -5,12 +5,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <%
 String username=(String) session.getAttribute("userName");
-String jin = (String) session.getAttribute("invId");
-String onezhzDate=new String(request.getParameter("onezhzDate").getBytes("ISO-8859-1"),"utf-8");
-String twozhzDate=new String(request.getParameter("twozhzDate").getBytes("ISO-8859-1"),"utf-8");
-String dateTime=new String(request.getParameter("dateTime").getBytes("ISO-8859-1"),"utf-8");
-String returnTime=new String(request.getParameter("returnTime").getBytes("ISO-8859-1"),"utf-8");
-String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1"),"utf-8");
+/* String jin = (String) session.getAttribute("invId"); */
+String uuid1=request.getParameter("uuid1");
+String uuid2=request.getParameter("uuid2");
+String canbin1=request.getParameter("canbin1");
+String canbin2=request.getParameter("canbin2");
+String gdate=request.getParameter("gdate");
+String rdate=request.getParameter("rdate");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -86,9 +87,12 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 
 	.aBtn{margin-top:15px; display:block; background-color:#007AFF; border-radius:5px; color:#FBFDFF; text-align:center; width:88.55%; margin-left:auto; margin-right:auto; margin-bottom: 30px; height: 50px; line-height: 50px;}
 
+	#costXq li{overflow:hidden;}
+	#costXq li div{float:right;}
+	
 	/*登录*/
 	#touMbackground{ position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; display:block; display:none;}
-	#touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:78%; height:150px; left:10%; top:25%; position:absolute; padding-top:10px;}
+	#touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:90%; height:150px; left:5%; top:25%; position:absolute; padding-top:10px;}
 	#touMbackground .loginBox .inputBoxLogin{ border:#e1e1e1 solid 1px; height:30px; width:78%; margin-left:auto; margin-right:auto; margin-top:10px; border-radius:3px;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox{float:left;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox img{border-right:#e1e1e1 solid 1px; padding-right:5px; width:25px; margin-top:5px; margin-left:3px;}
@@ -101,12 +105,12 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 	#trueOrderInfo{position:absolute; top:0px; left:0px; width:100%; height:100%; background-color:#f1f1f1; z-index:1; display:none;}
 	#trueOrderInfo .flidNoNumBox{width:90%; margin:15px auto 15px auto; padding-bottom:20px; background-color:#FFFFFF; border:#e1e1e1 solid 1px; overflow:hidden;}
 	#trueOrderInfo .flidNoNumBox .chufDivBox{width:40%; float:left; height:100%;}
-	#trueOrderInfo .flidNoNumBox .wanfDivBox{width:25%; float:left; height:100%; padding-top:8px;}
+	#trueOrderInfo .flidNoNumBox .wanfDivBox{width:22%; float:left; height:100%; padding-top:8px;}
 	#trueOrderInfo .flidNoNumBox .wanfDivBox img,.wanfDivBox span{}
 	#trueOrderInfo .flidNoNumBox .wanfDivBox img{display:block; margin:auto; text-align:center; width:25px;}
 	#trueOrderInfo .flidNoNumBox .wanfDivBox span{display:block; margin:auto; text-align:center; color:#8E8E8E; margin-top:11px;}
 	#trueOrderInfo .flidNoNumBox .daodDivBox{width:32%; float:left; height:100%;}
-	#trueOrderInfo .flidNoNumBox .placeCity{font-size:23px; font-weight:500; color:#007BFD; line-height:40px;}
+	#trueOrderInfo .flidNoNumBox .placeCity{font-size:20px; font-weight:500; color:#007BFD; line-height:40px;}
 	#trueOrderInfo .flidNoNumBox .planeNameInfo{color:#666666; font-size:12px; line-height:20px; overflow:hidden; height:18px;}
 	#trueOrderInfo .flidNoNumBox .aboutTime{width:125px; color:#8E8E8E; line-height:20px; font-size:10px; -webkit-transform-origin-x:0;}
 	
@@ -124,74 +128,100 @@ String cangwei=new String(request.getParameter("cangwei").getBytes("ISO-8859-1")
 <script>
 $(function(){
 	window.history.forward(1);//禁止后退
-	var ivid = "<%=jin%>";
-	var onezhzDate = '<%=onezhzDate%>';
-	var twozhzDate = '<%=twozhzDate%>';
-	var dateTime = '<%= dateTime%>';
-	var returnTime = '<%= returnTime%>';
-	var cangwei = '<%=cangwei%>';
-	var onezhzDateJson = JSON.parse(onezhzDate);
-	var twozhzDateJson = JSON.parse(twozhzDate);
-	onezhzDateJson.sign = "1";  //为第一航班添加一个标志
-	twozhzDateJson.sign = "2";  //为第二航班也添加一个标志
-	console.log(onezhzDateJson);
-	console.log(twozhzDateJson);
+	<%-- var ivid = "<%=jin%>"; --%>
+	var uuid1 = '<%= uuid1%>'; 
+	var uuid2 = '<%= uuid2%>';
+	var canbin1 = '<%= canbin1%>';
+	var canbin2 = '<%=canbin2%>';
+	var gdate = '<%=gdate%>';
+	var rdate = '<%=rdate%>'; 
+	var orgtt = "";
+	var dsttt = "";
+	var pntrer = "";
+	var pntrtw = "";
 	
-	$(".depdayone").text(dateTime);
-	$(".weekdayone").text(conterCONTime(dateTime));
-	$(".plandepone").text(findByCity(onezhzDateJson.orgCity));
-	$(".planarrone").text(findByCity(onezhzDateJson.dstCity));
-	$(".firstair").text(onezhzDateJson.airCode);
-	$(".scondair").text(twozhzDateJson.airCode);
-	
-	$(".depdaytwo").text(returnTime);
-	$(".weekdaytwo").text(conterCONTime(returnTime));
-	$(".plandeptwo").text(findByCity(twozhzDateJson.orgCity));
-	$(".planarrtwo").text(findByCity(twozhzDateJson.dstCity));
-	
-	$(".depTimefirst").html(changeType(onezhzDateJson.depTime));
-	$(".depTimesecond").html(changeType(onezhzDateJson.arrTime));
-	$(".depAirPlanfirst").text(findByplaneName(onezhzDateJson.orgCity));
-	$(".depAirPlansecond").text(findByplaneName(onezhzDateJson.dstCity));
-	$(".lishiTime").text(cuntTime(onezhzDateJson.depTime,onezhzDateJson.arrTime));
-	$(".airNameTypech").text(findByCode(onezhzDateJson.airCode));
-	$(".flindNum").text(onezhzDateJson.flightNo);
-	
-	$(".zhzCity").text(findByCity(onezhzDateJson.dstCity));
-	$(".tingliuTime").text(cuntTime(onezhzDateJson.arrTime,twozhzDateJson.depTime));
-	
-	$(".depTimenumt").html(changeType(twozhzDateJson.depTime));
-	$(".arrTimenumt").html(changeType(twozhzDateJson.arrTime));
-	$(".depPlane_numt").text(findByplaneName(twozhzDateJson.orgCity));
-	$(".lishiTime_two").text(cuntTime(twozhzDateJson.depTime,twozhzDateJson.arrTime));
-	$(".arrPlane_numt").text(findByplaneName(twozhzDateJson.dstCity));
-	$(".airNameTypechch").text(findByCode(twozhzDateJson.airCode));
-	$(".flindNumch").text(twozhzDateJson.flightNo);
-	
-	var one_monTimey,two_monTimey;
-	var seatList_one = onezhzDateJson.seatList;
-	var seatList_two = twozhzDateJson.seatList;
-	for(var i=0; i<seatList_one.length; i++){
-		if(seatList_one[i].cangwei == cangwei){
-			one_monTimey = seatList_one[i].onewayPrice;
+	console.log(uuid1+","+uuid2+","+canbin1+","+canbin2+","+gdate+","+rdate); 
+	//获取选中的航班
+	$.ajax({
+		url: "<%=basePath %>wechatController/find/byuuidTwo.action",
+		type: "POST",
+		data: {
+				"uuid1":uuid1,
+				"uuid2":uuid2,
+				"canbin":canbin1,
+				"canbin2":canbin2
+		},
+		dataType: "json",
+		success: function(result) {
+			console.log(result);
+			orgtt = result.dataObj1[0].orgcity;
+			dsttt = result.dataObj1[0].dstcity; 
+			//第一航段信息
+			$(".depdayone").text(gdate);
+			$(".weekdayone").text(conterCONTime(gdate));
+			$(".plandepone").text(findByCity(result.dataObj1[0].orgcity));
+			$(".planarrone").text(findByCity(result.dataObj1[0].dstcity));
+			$(".depTimefirst").html(changeType(result.dataObj1[0].depTime)+"<span style='color:#666; font-size:10px;'>"+result.dataObj1[0].deptimemodify+"</span>");
+			$(".depTimesecond").html(changeType(result.dataObj1[0].arriTime)+"<span style='color:#666; font-size:10px;'>"+result.dataObj1[0].arriveTimeModify+"</span>");
+			$(".depAirPlanfirst").text(findByplaneName(result.dataObj1[0].orgcity));
+			$(".depAirPlansecond").text(findByplaneName(result.dataObj1[0].dstcity));
+			$(".lishiTime").text(cuntTime(result.dataObj1[0].flyTime));
+			$(".airNameTypech").text(findByCode((result.dataObj1[0].airline).substring(0,2)));
+			$(".flindNum").text(result.dataObj1[0].airline);
+			
+			//第二航段信息
+			$(".depdaytwo").text(rdate);
+			$(".weekdaytwo").text(conterCONTime(rdate));
+			$(".plandeptwo").text(findByCity(result.dataObj2[0].orgcity));
+			$(".planarrtwo").text(findByCity(result.dataObj2[0].dstcity));
+			$(".depTimenumt").html(changeType(result.dataObj2[0].depTime)+"<span style='color:#666; font-size:10px;'>"+result.dataObj2[0].deptimemodify+"</span>");
+			$(".arrTimenumt").html(changeType(result.dataObj2[0].arriTime)+"<span style='color:#666; font-size:10px;'>"+result.dataObj2[0].arriveTimeModify+"</span>");
+			$(".depPlane_numt").text(findByplaneName(result.dataObj2[0].orgcity));
+			$(".lishiTime_two").text(cuntTime(result.dataObj2[0].flyTime));
+			$(".arrPlane_numt").text(findByplaneName(result.dataObj2[0].dstcity));
+			$(".airNameTypechch").text(findByCode((result.dataObj2[0].airline).substring(0,2)));
+			$(".flindNumch").text(result.dataObj2[0].airline);
+			
+			$("#moneyPay").text((parseInt(result.cost1)+parseInt(result.cost2)));
+			$("#countPay").text((parseInt(result.cost1)+parseInt(result.cost2))+100);
+			
+			
+			//航班信息
+			$("#ChufCityone").text(findByCity(result.dataObj1[0].orgcity));
+			$("#DaodCityone").text(findByCity(result.dataObj1[0].dstcity));
+			$("#QishiPlanone").text(findByplaneName(result.dataObj1[0].orgcity));
+			$("#DaodPlanone").text(findByplaneName(result.dataObj1[0].dstcity));
+			$("#fildNumflyone").text(result.dataObj1[0].airline);
+			$("#CountTimeone").text(cuntTime(result.dataObj1[0].flyTime));
+			$("#ChufDateone").text(gdate);
+			$("#ChufDateone_one").text(gsDate(gdate,result.dataObj1[0].arriveTimeModify));
+			$("#ChufTimeone").text(changeType(result.dataObj1[0].depTime));
+			$("#DaodTimeone").text(changeType(result.dataObj1[0].arriTime));
+			
+			$("#ChufCitytwo").text(findByCity(result.dataObj2[0].orgcity));
+			$("#DaodCitytwo").text(findByCity(result.dataObj2[0].dstcity));
+			$("#QishiPlantwo").text(findByplaneName(result.dataObj2[0].orgcity));
+			$("#DaodPlantwo").text(findByplaneName(result.dataObj2[0].dstcity));
+			$("#fildNumflytwo").text(result.dataObj2[0].airline);
+			$("#CountTimetwo").text(cuntTime(result.dataObj2[0].flyTime));
+			$("#ChufDatetwo").text(rdate);
+			$("#ChufDatetwo_two").text(gsDate(rdate,result.dataObj2[0].arriveTimeModify));
+			$("#ChufTimetwo").text(changeType(result.dataObj2[0].depTime));
+			$("#DaodTimetwo").text(changeType(result.dataObj2[0].arriTime));
+		},
+		error: function() {
+
 		}
-	}
-	for(var i=0; i<seatList_two.length; i++){
-		if(seatList_two[i].cangwei == cangwei){
-			two_monTimey = seatList_two[i].onewayPrice;
-		}
-	}
-	$("#moneyPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
+	});
 	
 	//判断是否登录
 	var username="<%=username%>";
-	var jin = "<%=jin%>"
+	<%-- var jin = "<%=jin%>" --%>
 	if(username==""||username=="null"||username==null){
-		$.alert("登录才能订票");
 		$("#touMbackground").css("display","block");
-	}else{
+	}<%-- else{
 		getcode("<%=jin%>");
-	}
+	} --%>
 	
 	//登录
 	$(".loginBtn").click(function(){
@@ -207,7 +237,7 @@ $(function(){
 					success: function(result) {
 						if(result.msg==1){	
 							ivid = (result.userInfo)[0].inCodeId;
-							getcode(ivid);					
+							//getcode(ivid);					
 							//上面的条件正确时候改变按钮格式
 							$(".loginBtn").css("background-color","#dddddd");
 							$(".loginBtn").css("color","#666666");
@@ -229,116 +259,101 @@ $(function(){
 	
 	//下一步的按钮点击事件
 	$(".aBtn").click(function(){
-			if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
+		var age = ""; //年龄
+		var lvkeType = ""; //旅客类型
+		var sexType = ""; //性别
+		var birthdayNum = ""; //生日
+		var deppDate = $(".depdayone").text(); //第一段出发日期
+		if($("#linkName").val()==""||$("#linkName").val()==" "||$("#linkName").val()=="null"||$("#linkName").val()==null){
 				$.alert("请填写姓名");
 				return;
-			}
-			if($("#sexIpnt").val()==""||$("#sexIpnt").val()==" "||$("#sexIpnt").val()=="null"||$("#sexIpnt").val()==null){
-				$.alert("请填写性别");
+		}
+		if($("#caseIpntSource").text()!="NI"){
+			if($("#birthIpnt").val()==""||$("#birthIpnt").val()==" "||$("#birthIpnt").val()==null||$("#birthIpnt").val()=="null"){
+				$.alert("请选择出生日期");
 				return;
+			}else{
+				//获取年龄和出生日期
+				birthdayNum = $("#birthIpnt").val();
+				age = ageFunc(birthdayNum,$(".depdayone").text()); 
+				//旅客类型
+				if(age<2){
+					lvkeType = "INF"; //婴儿  
+				}else if(age>=2&&age<=12){
+					lvkeType = "CHD"; //儿童
+				}else{
+					lvkeType = "ADT"; //成人票
+				}
+				//旅客性别
+				sexType = $("#sexIpntSource").text();
 			}
-			if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
+		}else{
+			//获取年龄
+			var idInfo = $("#IDcase").val();
+			var birth = idInfo.substring(6,14);
+			birthdayNum = birth.substring(0,4)+"-"+birth.substring(4,6)+"-"+birth.substring(6,8);
+			age = ageFunc(birthdayNum,$(".depdayone").text()); 
+			//获乘机人类型
+			if(age<2){
+				lvkeType = "INF"; //婴儿  
+			}else if(age>=2&&age<=12){
+				lvkeType = "CHD"; //儿童
+			}else{
+				lvkeType = "ADT"; //成人票
+			}
+			//获取性别
+			var sexNum = idInfo.substring(idInfo.length-2,idInfo.length-1);
+			sexType = (sexNum%2 ==0)?"M":"F";
+		}
+		if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
 				$.alert("请填写手机号码");
 				return;
-			}
-			if($("#personIpnt").val()==""||$("#personIpnt").val()==" "||$("#personIpnt").val()==null||$("#personIpnt").val()=="null"){
-				$.alert("请选择旅客类型");
-				return;
-			}
-			if($("#caseIpnt").text()=="证件类型"){
-				$.alert("请选择证件类型");
-				return;
-			}
-			if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()==null||$("#IDcase").val()=="null"){
+		}
+		if($("#IDcase").val()==""||$("#IDcase").val()==" "||$("#IDcase").val()==null||$("#IDcase").val()=="null"){
 				$.alert("请填写证件号码");
 				return;
+		}
+		if($("#caseIpntSource").text()=="NI"){
+			if(codeSf()){}else{
+				$.alert("身份证号码输入错误，请认真核实！");
+				return false;
 			}
-		//航班信息
-		$("#ChufCityone").text(findByCity(onezhzDateJson.orgCity));
-		$("#DaodCityone").text(findByCity(onezhzDateJson.dstCity));
-		$("#QishiPlanone").text(findByplaneName(onezhzDateJson.orgCity));
-		$("#DaodPlanone").text(findByplaneName(onezhzDateJson.dstCity));
-		$("#fildNumflyone").text(onezhzDateJson.flightNo);
-		$("#CountTimeone").text(cuntTime(onezhzDateJson.depTime,onezhzDateJson.arrTime));
-		$("#ChufDateone").text(dateTime);
-		$("#ChufDateone_one").text(gsDate(onezhzDateJson.depTime, dateTime));
-		$("#ChufTimeone").html(changeType(onezhzDateJson.depTime));
-		$("#DaodTimeone").html(changeType(onezhzDateJson.arrTime));
+		}
 		
-		$("#ChufCitytwo").text(findByCity(twozhzDateJson.orgCity));
-		$("#DaodCitytwo").text(findByCity(twozhzDateJson.dstCity));
-		$("#QishiPlantwo").text(findByplaneName(twozhzDateJson.orgCity));
-		$("#DaodPlantwo").text(findByplaneName(twozhzDateJson.dstCity));
-		$("#fildNumflytwo").text(twozhzDateJson.flightNo);
-		$("#CountTimetwo").text(cuntTime(twozhzDateJson.depTime,twozhzDateJson.arrTime));
-		$("#ChufDatetwo").text(gsDate(twozhzDateJson.depTime, returnTime));
-		$("#ChufDatetwo_two").text(gsDate(twozhzDateJson.arrTime, returnTime));
-		$("#ChufTimetwo").text(changeTypetwo(twozhzDateJson.depTime));
-		$("#DaodTimetwo").text(changeTypetwo(twozhzDateJson.arrTime));
-		
-		//资料信息
-		$("#LinkName").text($("#linkName").val());
-		$("#Sex").text($("#sexIpnt").val());
-		$("#iDcaseType").text($("#caseIpnt").text());
-		$("#iDcase").text($("#IDcase").val());
-		$("#PhoneNum").text($("#phoneNum").val());
 		//意外险的值
 		if($(".flindYwzhz").is(':checked')){
-			$("#YiwaiBX").text($(".flindYwzhz").val());
+			$("#YiwaiBX").text("已购买");
+			$("#yiwaiNum").text("1");
 		}else{
-			$("#YiwaiBX").text("无");
+			$("#YiwaiBX").text("未购买");
+			$("#yiwaiNum").text("0");
 		}
 		//延误险值
 		if($(".delayBxzhz").is(':checked')){
-			$("#YanwuBX").text($(".delayBxzhz").val());
+			$("#YanwuBX").text("已购买");
+			$("#yanwuNum").text("1");
 		}else{
-			$("#YanwuBX").text("无");
-		}	
-		
-		//第一航段信息
-		var ChufDate1 = $(".depdayone").text();//出发日期
-		var ChufTime1 = $(".depTimefirst").text();//出发时间
-		var DaodTime1 = $(".depTimesecond").text();//到达时间
-		var ChufCity1 = findByCity(onezhzDateJson.orgCity);//出发城市
-		var DaodCity1 = findByCity(onezhzDateJson.dstCity);//到达城市
-		var QishiPlan1 = $(".depAirPlanfirst").text();//起始机场
-		var hangbanNum1 = $(".flindNum").text(); //航班号
-		var airCode1 = $(".firstair").text(); //航空公司
-		var DaodPlan1 = $(".depAirPlansecond").text();//到达机场
-		var lishiTime1 = $(".lishiTime").text(); //历时多长时间
-		var CostPay1 = $("#oneMoney").val();//该付金额
-			
-		//第二航段信息
-		var ChufDate2 = $("#ChufDatetwo").text();//出发日期
-		var ChufTime2 = $("#ChufTimetwo").text();//出发时间
-		var DaodTime2 = $("#DaodTimetwo").text();//到达时间
-		var ChufCity2 = findByCity(twozhzDateJson.orgCity);//出发城市
-		var DaodCity2 = findByCity(twozhzDateJson.dstCity);//到达城市
-		var QishiPlan2 = $(".depPlane_numt").text();//起始机场
-		var hangbanNum2 = $(".flindNumch").text(); //航班号
-		var airCode2 = $(".scondair").text(); //航空公司
-		var DaodPlan2 = $(".arrPlane_numt").text();//到达机场
-		var lishiTime2 = $(".lishiTime_two").text(); //历时多长时间
-		var CostPay2 = $("#twoMoney").val();//该付金额
+			$("#YanwuBX").text("未购买");
+			$("#yanwuNum").text("0");
+		}
 		
 		//乘机人资料
-		var LinkName = $("#linkName").val();//乘机人
-		var Sex = $("#sexIpnt").val();//性别
-		var iDcaseType = $("#caseIpnt").text();//证件类型
-		var iDcase = $("#IDcase").val();//证件号码
-		var PhoneNum = $("#phoneNum").val();//手机号码
-		var YiwaiBX = $("#YiwaiBX").text();//意外保险
-		var YanwuBX = $("#YanwuBX").text();//延误险
-		var cangweiType = cangwei;
-		var birthDay = $("#birthIpnt").val();//生日
-		var age = ageFunc(birthDay);//年龄
-		if(age==""||age==" "||age==null||age=="null"){
-				return false;
-		}
-		var menType = $("#personIpnt").val();//乘机人类型
-			
-		//将提交的订单打包成json数据
-		var jsondatastr = '{"sign":"WFF","firstFild":[{"ChufDate":"'+ChufDate1+'","ChufTime":"'+ChufTime1+'","DaodTime":"'+DaodTime1+'","ChufCity":"'+ChufCity1+'","DaodCity":"'+DaodCity1+'","QishiPlan":"'+QishiPlan1+'","hangbanNum":"'+hangbanNum1+'","airCode":"'+airCode1+'","DaodPlan":"'+DaodPlan1+'","lishiTime":"'+lishiTime1+'","CostPay":"'+CostPay1+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode1":"'+onezhzDateJson.orgCity+'","arrcityCode1":"'+onezhzDateJson.dstCity+'"}],"sconedFild":[{"ChufDate":"'+ChufDate2+'","ChufTime":"'+ChufTime2+'","DaodTime":"'+DaodTime2+'","ChufCity":"'+ChufCity2+'","DaodCity":"'+DaodCity2+'","QishiPlan":"'+QishiPlan2+'","hangbanNum":"'+hangbanNum2+'","airCode":"'+airCode2+'","DaodPlan":"'+DaodPlan2+'","lishiTime":"'+lishiTime2+'","CostPay":"'+CostPay2+'","LinkName":"'+LinkName+'","Sex":"'+Sex+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","cangweiType":"'+cangweiType+'","birthDay":"'+birthDay+'","age":"'+age+'","menType":"'+menType+'","depcityCode2":"'+twozhzDateJson.orgCity+'","arrcityCode2":"'+twozhzDateJson.dstCity+'"}]}';
+		var LinkName=$("#linkName").val();//乘机人
+		var iDcaseType=$("#caseIpntSource").text();//证件类型
+		var iDcase=$("#IDcase").val();//证件号码
+		var PhoneNum=$("#phoneNum").val();//手机号码
+		var YiwaiBX = $("#yiwaiNum").text();//意外保险
+		var YanwuBX = $("#yanwuNum").text();//延误险
+		//console.log(age+","+lvkeType+","+sexType+","+birthdayNum);
+		//将提交的订单打包成json数据      
+		var jsondatastr = '{"sign":"1","depDate":"'+gdate+'","rdate":"'+rdate+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'","cangwei":"'+canbin1+'","canbin2":"'+canbin2+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
+
+		$("#CostPay").text("￥"+$("#countPay").text());
+		$("#LinkName").text(LinkName);
+		$("#Sex").text(sexType=="F"?"先生":"女士");
+		$("#iDcase").text(iDcase);
+		$("#PhoneNum").text(PhoneNum);
+		
 		//创建订单
 		$.ajax({
 					url:"<%=basePath%>userOrderController/add/zrorder.action",
@@ -348,21 +363,37 @@ $(function(){
 					beforeSend:function(){$("#loading").css("display","block");},
 					complete:function(){$("#loading").css("display","none");},
 					success:function(result){
-						$("#firNumorder").val(result.of);
-						$("#secdNumorder ").val(result.sc);
-						if(result.msg=="1"||result.msg==1){
-							$.alert("座位订单锁定成功,请付款");
+						console.log(result);
+						var resDate = result.resAlert; 
+						$("#commitRes").html("");
+						var tr = '<tr><td>'+findByCity(orgtt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(dsttt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[0].isOk)+'</td></tr>';
+						$("#resBoxTables").append(tr);
+						var tr = '<tr><td>'+findByCity(dsttt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(orgtt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[1].isOk)+'</td></tr>';
+						$("#resBoxTables").append(tr);
+						if(resDate[0].isOk=="1"&&resDate[1].isOk=="1"){
+							pntrer = resDate[0].pntr;
+							pntrtw = resDate[1].pntr;
+							console.log("订单生成之后获取到返回的pnr，用于支付："+pntrer+"/"+pntrtw);
 							$("#trueOrderInfo").css("display","block");
 							$("html").css("height","100%");
 							$("html").css("overflow","hidden");
 							$("body").css("height","100%");
 							$("body").css("overflow","hidden");
-							<%-- window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action"; --%>
-						}else if(result.msg=="0"||result.msg==0){
-							$.alert("机票预定失败1，请稍后再试");
 						}else{
-							$.alert("机票预定失败2，请稍后再试");
+							if(resDate[0].isOk=="0"&&resDate[1].isOk=="1"){
+								var li = '<li>'+resDate[0].commit+'</li>';
+								$("#commitRes").append(li);
+							}else if(resDate[0].isOk=="1"&&resDate[1].isOk=="0"){
+								var li = '<li>'+resDate[1].commit+'</li>';
+								$("#commitRes").append(li);
+							}else{
+								for(var i=0; i<resDate.length;i++){
+									var li = '<li>'+resDate[i].commit+'</li>';
+									$("#commitRes").append(li);
+								}
+							}
 						}
+						$("#ydresuletBox").css("display","block");
 					},
 					error:function(result){
 					}
@@ -371,114 +402,180 @@ $(function(){
 	
 	//确认付款
 	$(".truePayBtn").click(function(){
-			var a = $("#turmonp").text();
-			var yiwai = 0,yanwu = 0,youhui = 0;
-			if($(".flindYwzhz").attr("checked")=="checked")yiwai = 1;
-			if($(".delayBxzhz").attr("checked")=="checked")yanwu = 1;
-			if($(".youhuiBxzhz").attr("checked")=="checked")youhui = 1;
-			var firNumorder = $("#firNumorder").val();
-			var secdNumorder = $("#secdNumorder ").val();
-			var activType = ivid;
-			var subDateJson = '{"sign":"1","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","youhui":"'+youhui+'","activType":"'+activType+'","firt":[{"a":"'+firNumorder+'","depCity":"'+onezhzDateJson.orgCity+'","arrCity":"'+onezhzDateJson.dstCity+'","depDate":"'+dateTime+'","airCode":"'+onezhzDateJson.airCode+'","canbin":"'+cangwei+'"}],"secd":[{"a":"'+secdNumorder+'","depCity":"'+twozhzDateJson.orgCity+'","arrCity":"'+twozhzDateJson.dstCity+'","depDate":"'+returnTime+'","airCode":"'+twozhzDateJson.airCode+'","canbin":"'+cangwei+'"}]}'
-			//return false;
-			//var yiwai = $(".flindYw")
-			$.ajax({
-					url:"<%=basePath%>wechatController/payCost/orderPay.action",
-					type:"POST",
-					data:{"subDateJson":subDateJson},
-					dataType:"json",
-					success:function(result){
-						//var obj = JSON.parse(result);
-						if(obj.state==1){
-							WeixinJSBridge.invoke('getBrandWCPayRequest',{
-								"appId" : obj.appId, //公众号名称，由商户传入
-								"timeStamp" : obj.timeStamp, //时间戳
-								"nonceStr" : obj.nonceStr, //随机串
-								"package" : obj.wxPackage,//统一支付接口返回的prepay_id 参数值，提交格式如：prepay_id=***
-								"signType" : obj.signType, //微信签名方式:sha1
-								"paySign" : obj.paySign //微信签名
-							},function(res){
-								if (res.err_msg == "get_brand_wcpay_request:ok") {
-										<%-- window.location.href = "<%=basePath%>/wechatController/business/paySncyNotify.action?time=" + obj.time; --%>
-										<%-- window.location.href = "<%=basePath %>console/wechat/StepFour.jsp?companyTypeJS="+companyTypeJS+"&typeCode="+typeCode; --%>
-								} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-												
-								} else if (res.err_msg == "get_brand_wcpay_request:fail") {
-										$.alert("支付失败，请重新下单！");
-								}
-							});
-						} else if(obj.state == 0) {
-									
-						}
-					},
-					error:function(result){
+		var yiwai = 0,yanwu = 0;
+		if($(".flindYwzhz").attr("checked")=="checked")yiwai = 1;
+		if($(".delayBxzhz").attr("checked")=="checked")yanwu = 1;
+		var subDateJson = '{"sign":"1","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","pntrer":"'+pntrer+'","pntrtw":"'+pntrtw+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'"}';
+		$.ajax({
+				url:"<%=basePath%>wechatController/payCost/orderPay.action",
+				type:"POST",
+				data:{"subDateJson":subDateJson},
+				dataType:"json",
+				success:function(result){
+					//var obj = JSON.parse(result);
+					if(obj.state==1){
+						WeixinJSBridge.invoke('getBrandWCPayRequest',{
+							"appId" : obj.appId, //公众号名称，由商户传入
+							"timeStamp" : obj.timeStamp, //时间戳
+							"nonceStr" : obj.nonceStr, //随机串
+							"package" : obj.wxPackage,//统一支付接口返回的prepay_id 参数值，提交格式如：prepay_id=***
+							"signType" : obj.signType, //微信签名方式:sha1
+							"paySign" : obj.paySign //微信签名
+						},function(res){
+							if (res.err_msg == "get_brand_wcpay_request:ok") {
+									<%-- window.location.href = "<%=basePath%>/wechatController/business/paySncyNotify.action?time=" + obj.time; --%>
+									<%-- window.location.href = "<%=basePath %>console/wechat/StepFour.jsp?companyTypeJS="+companyTypeJS+"&typeCode="+typeCode; --%>
+							} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+											
+							} else if (res.err_msg == "get_brand_wcpay_request:fail") {
+									$.alert("支付失败，请重新下单！");
+							}
+						});
+					} else if(obj.state == 0) {
+								
 					}
-				});
+				},
+				error:function(result){
+				}
+			});
 		});
 		
 	$("#sexIpnt").on('click',function (){  
-	        weui.picker([{
-							label:'先生', 
-	            			value:'先生'
-	        		   },{  
-	        		   		label:'女士',
-	            			value:'女士'
-	        		   }],{  
-	            			onChange: function (result) {  
-	                			//改变函数
-	            			},  
-	            			onConfirm: function (result) {  
-								$("#sexIpnt").val(result); 
-	            			}  
-	        	});  
-    	});
-    	
-    	$("#personIpnt").on('click',function (){  
-	        weui.picker([{
-							label:'成人', 
-	            			value:'成人'
-	        		   },{  
-	        		   		label:'儿童',
-	            			value:'儿童'
-	        		   },{  
-	        		   		label:'婴儿',
-	            			value:'婴儿'
-	        		   }],{  
-	            			onChange: function (result) {  
-	                			//改变函数
-	            			},  
-	            			onConfirm: function (result) {  
-								$("#personIpnt").val(result); 
-	            			}  
-	        	});  
-    	});
-		
-		$("#caseIpnt").on('click',function (){  
-	        weui.picker([{
-							label:'身份证', 
-	            			value:'身份证'
-	        		   },{  
-	        		   		label:'护照',
-	            			value:'护照'
-	        		   },{  
-	        		   		label:'其他',
-	            			value:'其他' 
-	        		   }],{  
-	            			onChange: function (result) {  
-	                			//改变函数
-	            			},  
-	            			onConfirm: function (result) {  
-								$("#caseIpnt").text(result); 
-	            			}  
-	        	});  
-    	});
+        weui.picker([{
+						label:'先生', 
+						value:'F'
+        		   },{  
+        		   		label:'女士',
+        		   		value:'M'
+        		   }],{  
+            			onChange: function (result) {  
+                			//改变函数
+            			},  
+            			onConfirm: function (result) {  
+            				$("#sexIpntSource").text(result); 
+							$("#sexIpnt").val(sourceSex(1,result));
+            			}  
+        	});  
+	});
 	
-	$("#timess_m").val((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
-	$("#truess_m").val((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
-	$("#CostPay").text((parseFloat(one_monTimey)+parseFloat(two_monTimey)).toFixed(2));
-	$("#oneMoney").val(one_monTimey);
-	$("#twoMoney").val(two_monTimey);
+	$("#personIpnt").on('click',function (){  
+        weui.picker([{
+						label:'成人',  
+						value:'ADT'
+        		   },{  
+        		   		label:'儿童',
+        		   		value:'CHD'
+        		   },{  
+        		   		label:'婴儿',
+        		   		value:'INF'
+        		   }],{  
+            			onChange: function (result) {  
+                			//改变函数
+            			},  
+            			onConfirm: function (result) {  
+            				$("#personIpntSource").text(result); 
+							$("#personIpnt").val(sourceSex(2,result)); 
+            			}  
+        	});  
+	});
+	
+	$("#caseIpnt").on('click',function (){  
+        weui.picker([{
+						label:'身份证', 
+						value:'NI'
+        		   },{  
+        		   		label:'护照',
+        		   		value:'PP'
+        		   },{  
+        		   		label:'其他',
+        		   		value:'ID' 
+        		   }],{  
+            			onChange: function (result) {  
+                			//改变函数
+            			},  
+            			onConfirm: function (result) {  
+            				$("#caseIpnt").text(sourceSex(3,result)); 
+							$("#caseIpntSource").text(result);
+
+                			if(result=="NI"){
+                				$("#sexBox").css("display","none");
+                				$("#birthdayBox").css("display","none");
+                			}else{
+                				$("#sexBox").css("display","block");
+                				$("#birthdayBox").css("display","block");
+                			}
+            			}  
+        	});  
+	});
+	
+	//判断输入的身份证是否正确
+	$("#IDcase").change(function(){
+		//用户选择输入身份证的时候才会校验  选择护照或者其他 不会校验
+		if($("#caseIpntSource").text()=="NI"){
+			if(codeSf()){}else{
+				$.alert("身份证号码输入错误，请认真核实！");
+			}
+		}
+	});
+	
+	//检查手机格式是否正确
+	$("#phoneNum").change(function(){
+		var phone=/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+		if(!phone.test($("#phoneNum").val())){
+			$.alert("请输入正确的手机号码");
+			$("#phoneNum").focus();
+			return false;
+		}
+	});
+	
 });
+
+function codeSf(){
+	var strVal = $("#IDcase").val();
+    var arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];//加权因子  
+    var arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];//校验码  
+    if(/^\d{17}\d|x$/i.test(strVal)){   
+        var sum = 0, idx;  
+        for(var i = 0; i < strVal.length - 1; i++){  
+            //对前17位数字与权值乘积求和  
+            sum += parseInt(strVal.substr(i, 1), 10) * arrExp[i];  
+        }  
+        //计算模（固定算法）  
+        idx = sum % 11;  
+        //检验第18为是否与校验码相等  
+        return arrValid[idx] == strVal.substr(17, 1).toUpperCase();  
+    }else{ 
+        return false;  
+    }
+}
+
+function sourceSex(num,val){
+	var value = "";
+	if(num==1){
+		if(val=="F"){
+			value = "先生";
+		}else if(val=="M"){
+			value = "女士";
+		}
+	}else if(num==2){
+		if(val=="ADT"){
+			value = "成人";
+		}else if(val=="CHD"){
+			value = "儿童";
+		}else if(val=="INF"){
+			value = "婴儿";
+		}
+	}else if(num==3){
+		if(val=="NI"){
+			value = "身份证";
+		}else if(val=="PP"){
+			value = "护照";
+		}else if(val=="ID"){
+			value = "其他证件";
+		}
+	}
+	return value;
+}
 
 //根据时间获取星期
 function conterCONTime(time){
@@ -520,6 +617,10 @@ function changeTypetwo(GoTime){
 	}
 }
 
+function isOkResult(isOk){
+	return (isOk=="1"?"锁定成功":"锁定失败");
+}
+
 //计算历经多长时间到达
 function cuntTime(depTime,arrTime){
 	var sTime = changesTime(depTime); //出发时间的秒
@@ -527,6 +628,11 @@ function cuntTime(depTime,arrTime){
 	var chaTime = oTime-sTime; //两个时间相差的秒
 	var liTime = parseInt(chaTime/3600)+"h"+parseInt((chaTime%3600)/60)+"m";
 	return liTime;
+}
+
+//改变历时的样式
+function cuntTime(depTime){
+	return depTime.replace(":","h")+"m";
 }
 		
 //根据时间参数化成秒
@@ -544,10 +650,18 @@ function changesTime(time){
 	return ocount;
 }
 
+function closeBox(){
+	$("#ydresuletBox").css("display","none");
+}
+
+function LookOrderFunc(){
+	window.location.href="<%=basePath%>wechatController/page/myPlaneTickek.action";
+}
+
 //格式化含有+1的出发日期
 function gsDate(detTime, chufDate){
-	if(detTime.indexOf("+")>0||detTime.indexOf(" ")>0){
-		var date = new Date(chufDate);
+	if(chufDate=="+1"){
+		var date = new Date(detTime);
 		date.setDate(date.getDate() + 1);
 		var yy = date.getFullYear();
 		var mm = date.getMonth()+1;
@@ -558,24 +672,53 @@ function gsDate(detTime, chufDate){
 		if(dd<10){
 			 dd = "0"+dd;
 		}
-		chufDate = yy+"-"+mm+"-"+dd;
+		detTime = yy+"-"+mm+"-"+dd;
 	}
-	return chufDate;
+	return detTime;
 }
 
-function ageFunc(birthday){
-	var age = 0;
-	var birth = birthday.split("-");	//对生日进行拆分
-	var today=new Date();				//创建今天的日期
-	var todayYear=today.getFullYear();	//今天的年
-	var ageNum = todayYear*1 - birth[0]*1;
-	if(ageNum > 0){
-	    age = ageNum;
-	}else{
-	    $.alert("年龄选择错误，请重新选择！");
-	    return false;
-	}
-	return age;
+function ageFunc(strBirthday,goDate){
+    var returnAge;  
+    var strBirthdayArr=strBirthday.split("-");  
+    var birthYear = strBirthdayArr[0];  
+    var birthMonth = strBirthdayArr[1];  
+    var birthDay = strBirthdayArr[2];  
+      
+    d = new Date(goDate);  
+    var nowYear = d.getFullYear();  
+    var nowMonth = d.getMonth() + 1;  
+    var nowDay = d.getDate();  
+      
+    if(nowYear == birthYear){  
+        returnAge = 0;//同年 则为0岁  
+    }  
+    else{  
+        var ageDiff = nowYear - birthYear ; //年之差  
+        if(ageDiff > 0){  
+            if(nowMonth == birthMonth){  
+                var dayDiff = nowDay - birthDay;//日之差  
+                if(dayDiff < 0){  
+                    returnAge = ageDiff - 1;  
+                }  
+                else{  
+                    returnAge = ageDiff ;  
+                }  
+            }  
+            else{  
+                var monthDiff = nowMonth - birthMonth;//月之差  
+                if(monthDiff < 0){  
+                    returnAge = ageDiff - 1;  
+                }  
+                else{  
+                    returnAge = ageDiff ;  
+                }  
+            }  
+        }  
+        else{  
+            returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天  
+        }  
+    }  
+    return returnAge;//返回周岁年龄  
 }
 
 //获取邀请码
@@ -657,26 +800,31 @@ function getcode(inc){
 		<div style="clear:both;"></div>
 	</div>
 	<div class="countNumMoney">
-		<span style="font-family:'微软雅黑'; color:#FF9A14; font-size:10px;">￥</span><span id="moneyPay">1205.00</span>
+		<span style="float:left;font-size:15px;color:#888;font-weight:bold;">实付金额</span><span style="font-family:'微软雅黑'; color:#FF9A14; font-size:10px;">￥</span><span id="countPay">1205.00</span><span id="zhekouType" style="display:none;"></span>
 	</div>
+	<ul id="costXq" style="list-style-type:none; text-align:right; font-size:12px; color:#888;">
+		<li id="sign"></li>
+		<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span></div><div style="width:100px; margin-right:50px;">成人票</div></li>
+		<li><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>
+	</ul>
 </div>
 
 <!-- 填写资料 -->
 <div class="writInfoBox">
 	<ul>
 		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><input type="hidden" id="firNumorder"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
-		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
+		<li id="sexBox" style="display:none;"><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span id="sexIpntSource" style="display:none;">F</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
+		<li id="birthdayBox" style="display:none;"><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
-		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
-		<li><span class="spanTit" id="caseIpnt">证件类型</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<%-- <li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
+		<li><span class="spanTit" id="caseIpnt">身份证</span><span id="caseIpntSource" style="display:none;">NI</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
 	</ul>
 </div>
 
 <div class="baoxianBox">
-	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="购买"/><span class="spanTitBX">航空意外险</span></div>
-	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="购买"/><span class="spanTitBX">延误取消险</span></div>
-	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBxzhz" value="500"/><span class="spanTitBX youhuiText"></span></div>
+	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="1"/><span class="spanTitBX">航意险</span><span id="yiwaiNum" style="display:none;"></span></div>
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="1"/><span class="spanTitBX">延误险</span><span id="yanwuNum" style="display:none;"></span></div>
+	<!-- <div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBxzhz" value="500"/><span class="spanTitBX youhuiText"></span></div> -->
 	<div style="clear:both;"><input id="oneMoney" type="hidden"/><span id="zhekouType" style="display:none;"></span><input id="twoMoney" type="hidden"/></div>
 </div>
 
@@ -753,10 +901,10 @@ function getcode(inc){
 				<li class="InfoLiClass"><span>价格：</span><span id="CostPay" class="payCostMoney">￥650.00</span></li>
 				<li class="InfoLiClass"><span>姓名：</span><span id="LinkName" class="InfoValueClass">李向前</span></li>
 				<li class="InfoLiClass"><span>性别：</span><span id="Sex" class="InfoValueClass">男</span></li>
-				<li class="InfoLiClass"><span id="iDcaseType">身份证</span><span>：</span><span id="iDcase" class="InfoValueClass">460003199305034638</span></li>
-				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass">15799024022</span></li>
-				<li class="InfoLiClass BXliClass"><span>购买意外险：</span><span id="YiwaiBX" class="InfoValueClass">购买</span></li>
-				<li class="InfoLiClass"><span>购买延误险：</span><span id="YanwuBX" class="InfoValueClass">购买</span></li>
+				<li class="InfoLiClass"><span id="iDcaseType">身份证</span><span>：</span><span id="iDcase" class="InfoValueClass">1111111111</span></li>
+				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass">11111111111</span></li>
+				<li class="InfoLiClass BXliClass"><span>航意险：</span><span id="YiwaiBX" class="InfoValueClass">购买</span></li>
+				<li class="InfoLiClass"><span>延误险：</span><span id="YanwuBX" class="InfoValueClass">购买</span></li>
 			</ul>
 		</div>
 	</div>
@@ -777,7 +925,18 @@ function getcode(inc){
 		<div class="inputBoxLogin loginBtn">登 录</div>
 	</div>
 </div>
-
+<div id="ydresuletBox" style="position:absolute; width:100%; height:100%; background:rgba(51,51,51,0.7); top:0px; left:0px; z-index:99; display:none;">
+	<div style="margin:60% auto; width:300px; border-radius:5px; background:#fff;">
+		<div style="text-align:center; color:#666; font-size:18px; line-height:45px;">座位锁定结果</div>
+		<table id="resBoxTables" border="0" style="margin-left:20px; width:85%; height:55px;"></table>
+		<ul id="commitRes" style="color:#ff0000; text-align:center; list-style-type:none;"></ul>
+		<div style="border-top:1px #e1e1e1 solid; margin-top:10px; overflow:hidden;"> 
+			<a style="display:block; float:left; width:49%; line-height:49px; text-align:center; border-right:1px solid #e1e1e1;" onclick="LookOrderFunc()">查看订单</a>
+			<a style="display:block; float:right; width:50%; line-height:49px; text-align:center;" onclick="closeBox()">关闭</a>
+			<a style="clear:both;"></a>
+		</div>
+	</div>
+</div>
 <!-- 加载等待界面 -->	
 	<div id="loading">
 		<div id="loading-center">

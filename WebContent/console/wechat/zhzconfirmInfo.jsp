@@ -91,7 +91,7 @@ String dateTime = request.getParameter("dateTime");
 
 	/*登录*/
 	#touMbackground{ position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; display:block; display:none;}
-	#touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:78%; height:150px; left:10%; top:25%; position:absolute; padding-top:10px;}
+	#touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:90%; height:150px; left:5%; top:25%; position:absolute; padding-top:10px;}
 	#touMbackground .loginBox .inputBoxLogin{ border:#e1e1e1 solid 1px; height:30px; width:78%; margin-left:auto; margin-right:auto; margin-top:10px; border-radius:3px;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox{float:left;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox img{border-right:#e1e1e1 solid 1px; padding-right:5px; width:25px; margin-top:5px; margin-left:3px;}
@@ -221,7 +221,6 @@ $(function(){
 	<%-- var jin = "<%=jin%>" --%>
 	//alert(username+"/"+jin);
 	if(username==""||username=="null"||username==null){
-		$.alert("登录才能订票");
 		$("#touMbackground").css("display","block");
 	}<%-- else{
 		getcode("<%=jin%>");
@@ -308,7 +307,7 @@ $(function(){
 			}
 			//获取性别
 			var sexNum = idInfo.substring(idInfo.length-2,idInfo.length-1);
-			sexType = (sexNum%2 ==0)?"女":"男";
+			sexType = (sexNum%2 ==0)?"M":"F";
 		}
 		if($("#phoneNum").val()==""||$("#phoneNum").val()==" "||$("#phoneNum").val()==null||$("#phoneNum").val()=="null"){
 				$.alert("请填写手机号码");
@@ -328,15 +327,19 @@ $(function(){
 		
 		//意外险的值
 		if($(".flindYwzhz").is(':checked')){
-			$("#YiwaiBX").text(1);
+			$("#YiwaiBX").text("已购买");
+			$("#yiwaiNum").text("1");
 		}else{
-			$("#YiwaiBX").text("0");
+			$("#YiwaiBX").text("未购买");
+			$("#yiwaiNum").text("0");
 		}
 		//延误险值
 		if($(".delayBxzhz").is(':checked')){
-			$("#YanwuBX").text(1);
+			$("#YanwuBX").text("已购买");
+			$("#yanwuNum").text("1");
 		}else{
-			$("#YanwuBX").text("0");
+			$("#YanwuBX").text("未购买");
+			$("#yanwuNum").text("0");
 		}
 		
 		//乘机人资料
@@ -344,16 +347,16 @@ $(function(){
 		var iDcaseType=$("#caseIpntSource").text();//证件类型
 		var iDcase=$("#IDcase").val();//证件号码
 		var PhoneNum=$("#phoneNum").val();//手机号码
-		var YiwaiBX = $("#YiwaiBX").text();//意外保险
-		var YanwuBX = $("#YanwuBX").text();//延误险
+		var YiwaiBX = $("#yiwaiNum").text();//意外保险
+		var YanwuBX = $("#yanwuNum").text();//延误险
 		//将航班数据打包到json数据里面
-		var jsondatastr = '{"depDate":"'+deppDate+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'","cangwei":"'+cangwei+'","canbin2":"'+canbin2+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
+		var jsondatastr = '{"sign":"0","depDate":"'+deppDate+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'","cangwei":"'+cangwei+'","canbin2":"'+canbin2+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
 		//var jsondata = JSON.parse(jsondatastr);
 		//console.log(jsondata);
 					
-		$("#CostPay").text($("#countPay").text());
+		$("#CostPay").text("￥"+$("#countPay").text());
 		$("#LinkName").text(LinkName);
-		$("#Sex").text(sexType);
+		$("#Sex").text(sexType=="F"?"先生":"女士");
 		$("#iDcase").text(iDcase);
 		$("#PhoneNum").text(PhoneNum);
 		if(fals==true){
@@ -416,13 +419,9 @@ $(function(){
 	
 	//确认付款
 	$(".truePayBtn").click(function(){
-			var a = $("#turmonp").text();
 			var yiwai = 0,yanwu = 0;
 			if($(".flindYwzhz").attr("checked")=="checked")yiwai = 1;
 			if($(".delayBxzhz").attr("checked")=="checked")yanwu = 1;
-			var firNumorder = $("#firNumorder").val();
-			var secdNumorder = $("#secdNumorder ").val(); //    
-			var sconddate = $("#ChufDatetwo").text();
 			var subDateJson = '{"sign":"1","yiwai":"'+yiwai+'","yanwu":"'+yanwu+'","pntrer":"'+pntrer+'","pntrtw":"'+pntrtw+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'"}';
 			$.ajax({
 					url:"<%=basePath%>wechatController/payCost/orderPay.action",
@@ -471,10 +470,10 @@ $(function(){
 	$("#sexIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'先生', 
-							value:'男'
+							value:'F'
 	        		   },{  
 	        		   		label:'女士',
-	        		   		value:'女'
+	        		   		value:'M'
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
@@ -726,9 +725,9 @@ function ageFunc(strBirthday,goDate){
 function sourceSex(num,val){
 	var value = "";
 	if(num==1){
-		if(val=="男"){
+		if(val=="F"){
 			value = "先生";
-		}else if(val=="女"){
+		}else if(val=="M"){
 			value = "女士";
 		}
 	}else if(num==2){
@@ -858,8 +857,8 @@ function getcode(inc){
 </div>
 
 <div class="baoxianBox">
-	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="1"/><span class="spanTitBX">航空意外险</span></div>
-	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="1"/><span class="spanTitBX">延误取消险</span></div>
+	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="1"/><span class="spanTitBX">航意险</span></div>
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="1"/><span class="spanTitBX">延误险</span></div>
 	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBxzhz" value="500"/><span class="spanTitBX youhuiText"></span></div>
 	<div style="clear:both;"></div>
 </div>
@@ -916,11 +915,11 @@ function getcode(inc){
 			<ul>
 				<li class="InfoLiClass"><span>价格：</span><span id="CostPay" class="payCostMoney">￥11111</span></li>
 				<li class="InfoLiClass"><span>姓名：</span><span id="LinkName" class="InfoValueClass">111111</span></li>
-				<li class="InfoLiClass"><span>性别：</span><span id="Sex" class="InfoValueClass">男</span></li>
+				<li class="InfoLiClass"><span>性别：</span><span id="Sex" class="InfoValueClass">1111</span></li>
 				<li class="InfoLiClass"><span id="iDcaseType">身份证</span><span>：</span><span id="iDcase" class="InfoValueClass">1111111111111</span></li>
 				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass">111111111111</span></li>
-				<li class="InfoLiClass BXliClass"><span>购买意外险：</span><span id="YiwaiBX" class="InfoValueClass">1</span></li>
-				<li class="InfoLiClass"><span>购买延误险：</span><span id="YanwuBX" class="InfoValueClass">1</span></li>
+				<li class="InfoLiClass BXliClass"><span>航意险：</span><span id="YiwaiBX" class="InfoValueClass">1</span><span id="yiwaiNum" style="display:none;"></span></li>
+				<li class="InfoLiClass"><span>延误险：</span><span id="YanwuBX" class="InfoValueClass">1</span><span id="yanwuNum" style="display:none;"></span></li>
 			</ul>
 		</div>
 	</div>

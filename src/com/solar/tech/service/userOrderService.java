@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -683,8 +684,13 @@ public class userOrderService {
 		
 		//根据航班号和舱位查找数据库中缓存好的价格
 		public SeatPriceData findPrice(String fildNum,String canbin,String cfCity,String ddCity){
-			List<SeatPriceData> priceInfo = gDao.find("FROM SeatPriceData WHERE airline = '"+fildNum.substring(0,2)+"' AND cabin = '"+canbin+"' AND orgCity= '"+cfCity+"' AND dstCity = '"+ddCity+"'");
-			return priceInfo.get(0);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar c = Calendar.getInstance();
+			c.add(Calendar.DAY_OF_YEAR, -180);
+			Date date = c.getTime();
+			String pastTime = sdf.format(date);
+			List<SeatPriceData> spd = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+cfCity+"' AND dstCity = '"+ddCity+"') OR (dstCity = '"+cfCity+"' AND orgCity = '"+ddCity+"')) AND cabin = '"+canbin+"' AND airline = '"+fildNum.substring(0,2)+"' AND DATE_FORMAT(createTime,'%Y-%m-%d') > '"+pastTime+"'");
+			return spd.get(0);
 		}
 		
 		public static void main(String[] args) {

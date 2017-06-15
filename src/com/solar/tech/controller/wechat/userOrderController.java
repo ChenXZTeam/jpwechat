@@ -157,11 +157,10 @@ public class userOrderController {
 	public Map<String, Object> addzhz_res(String jsStr,HttpSession session){
 		List<MessgesAlert> malert = new ArrayList<MessgesAlert>();  //记录是否两个全部预定成功或者只有一个，用于反馈前台提示用户
 		Map<String, Object> map = new HashMap<String, Object>();
-		/*String userName = (String) session.getAttribute("userName");
-		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
-*/		
-		String userName = "ttt";
-		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
+		String userName = (String) session.getAttribute("userName");
+		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单		
+		/*String userName = "ttt";
+		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";*/
 		if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
@@ -173,7 +172,9 @@ public class userOrderController {
 		String uuid1 = jsonObject.get("uuid1")+""; //第一段航班的uuid
 		String uuid2 = jsonObject.get("uuid2")+""; //第二段航班的uuid
 		String depDate = jsonObject.get("depDate")+""; //出发日期
-		
+		String sign = jsonObject.get("sign")+""; //标志
+		String rdate = jsonObject.get("rdate")+""; //返程的日期
+
 		//获取乘机人信息
 		String ridePersonInfo = jsonObject.get("telkInfo")+"";
 		ridePersonInfo = ridePersonInfo.substring(1, ridePersonInfo.length()-1);
@@ -230,7 +231,12 @@ public class userOrderController {
 			fu.setUserName(userName);
 			fu.setYanwuBX(YanwuBX);
 			fu.setYiwaiBX(YiwaiBX);
-			MessgesAlert mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),depDate);
+			MessgesAlert mal2 = new MessgesAlert();
+			if("1".equals(sign)){ //就说明是往返的航班
+				mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),rdate);
+			}else{ //否则就是中转的航班
+				mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),depDate);
+			}
 			malert.add(mal2);
 		}else{
 			MessgesAlert mal2 = new MessgesAlert();
@@ -608,7 +614,7 @@ public class userOrderController {
 	}
 	
 	public static void main(String[] args) {
-		new ECUtils().cancelPnr("JFFHL0");
+		new ECUtils().cancelPnr("JNESHH");
 	}
 	
 }

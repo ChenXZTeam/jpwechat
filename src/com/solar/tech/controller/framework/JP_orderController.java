@@ -1,12 +1,15 @@
 package com.solar.tech.controller.framework;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -46,8 +49,10 @@ public class JP_orderController {
 	
 	@RequestMapping("/addOrderAdmin.action")
 	@ResponseBody
-	public int addOrderAdmin(userOrderInfo sd){
+	public int addOrderAdmin(userOrderInfo sd, HttpServletRequest request, HttpServletResponse response){
 		try {
+			response.setCharacterEncoding("UTF-8");
+			request.setCharacterEncoding("UTF-8");
 			sd.setOrderNum(OrderService.createOrderNum("RDOD", 8));
 			sd.setStutisPay("1");
 			sd.setAdminDel("0");
