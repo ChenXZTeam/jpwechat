@@ -596,7 +596,7 @@ public class ECUtils {
 		if(!StringUtils.isEmpty(passengerType)){
 			request.setPassengerType(passengerType); // 旅客类型 默认是成人成人:不填 IN:婴儿 CH:儿童 JC:因公带伤警察GM：伤残军人
 		}
-		
+		request.setPriceIndex("all");
 		PataFareClient client=new PataFareClient(); // 新建客户端对象
 		try { 
 			PataFareResponse response=client.pataFare(request); 

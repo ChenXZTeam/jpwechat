@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?tt=520sd1213123254as2111"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?tt=5202sd1213123254as2111"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
@@ -107,7 +107,6 @@ $(function(){
 	var username="<%=username%>";
 	<%-- var jin = "<%=jin%>" --%>
 	if(username==""||username=="null"||username==null){
-		$.alert("登录才能订票");
 		$("#touMbackground").css("display","block");
 	}<%-- else{
 		getcode("<%=jin%>");
@@ -134,7 +133,6 @@ $(function(){
 							$(".loginBtn").css("border","#cccccc solid 1px");
 							$(".loginBtn").html("");
 							$(".loginBtn").html("加载中...");
-							$.alert("登录成功，您可以订票咯");
 							$("#touMbackground").css("display","none");
 						}else{
 							$.alert("登录失败");
@@ -696,7 +694,8 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 <div class="baoxianBox">
 	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="1"/><span class="spanTitBX">航意险</span></div>
 	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="1"/><span class="spanTitBX">延误险</span></div>
-	<div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBx" value="500"/><span class="spanTitBX youhuiText"></span></div>
+	<!-- <div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBx" value="500"/><span class="spanTitBX youhuiText"></span></div> -->
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId baoxiao" value="1"/><span class="spanTitBX">报销</span><span id="baoxiaoNum" style="display:none;"></span></div>
 	<div style="clear:both;"><span id="zhekouType" style="display:none;"></span></div>
 </div>
 <a class="aBtn">下 一 步</a>

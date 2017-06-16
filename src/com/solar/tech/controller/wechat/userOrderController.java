@@ -139,6 +139,7 @@ public class userOrderController {
 			fu.setYanwuBX(YanwuBX);
 			fu.setYiwaiBX(YiwaiBX);
 			mAl = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate);
+			map.put("resAlert", mAl);
 		}else{
 			System.out.println("您搜索的航班已过期，请重新搜索！");
 			mAl.setIsOk("0");
@@ -614,7 +615,7 @@ public class userOrderController {
 	}
 	
 	public static void main(String[] args) {
-		new ECUtils().cancelPnr("JNESHH");
+		new ECUtils().cancelPnr("HPC55L");
 	}
 	
 }
