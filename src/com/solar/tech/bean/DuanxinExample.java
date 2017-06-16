@@ -28,9 +28,10 @@ public class DuanxinExample {
     @Column(name="banPeople")
     private String banPeople;
     
-    //绑定组
-    @Column(name="banZu")
-    private String banZu;
+    
+    //模板选择
+	@Column(name="model")
+    private String model;
     
    //登录账号
     @Column(name="userName", length=50)
@@ -68,14 +69,6 @@ public class DuanxinExample {
 		this.banPeople = banPeople;
 	}
 
-	public String getBanZu() {
-		return banZu;
-	}
-
-	public void setBanZu(String banZu) {
-		this.banZu = banZu;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
@@ -99,5 +92,14 @@ public class DuanxinExample {
 	public void setUpdateTime(Timestamp updateTime) {
 		this.updateTime = updateTime;
 	}
+	
+	public void setModel(String model) {
+	    this.model = model;
+	}
+	
+	 public String getModel() {
+	    return model;
+	}
+
 	
  }

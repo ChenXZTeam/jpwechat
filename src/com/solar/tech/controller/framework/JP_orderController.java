@@ -49,10 +49,10 @@ public class JP_orderController {
 	
 	@RequestMapping("/addOrderAdmin.action")
 	@ResponseBody
-	public int addOrderAdmin(userOrderInfo sd, HttpServletRequest request, HttpServletResponse response){
+	public int addOrderAdmin(userOrderInfo sd, HttpServletRequest request){
 		try {
-			response.setCharacterEncoding("UTF-8");
-			request.setCharacterEncoding("UTF-8");
+			request.setCharacterEncoding("utf-8"); 
+			sd.setLinkName(new String(sd.getLinkName().getBytes("ISO-8859-1"),"UTF-8"));
 			sd.setOrderNum(OrderService.createOrderNum("RDOD", 8));
 			sd.setStutisPay("1");
 			sd.setAdminDel("0");

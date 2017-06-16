@@ -32,6 +32,17 @@
 	input{height:20px; color:#777777;}
 	select{width:164px; height:23px; color:#777777;}
 	.dispayNoneClass{display:none;}
+	.listClass{
+	  list-style:none;
+	}
+	.listClass li{
+	  float:left;
+	  width:20px;
+	  margin-left:7px;
+	}
+	.listClass li img{
+	  width:18px
+	}
 </style>
 
 </head>
@@ -63,19 +74,54 @@
 				<td colspan="4"><input name="userName" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">绑定人：</td>
+				<td class="titleClass">标题内容：</td>
 				<td colspan="3"><input name="banPeople" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
-				<td class="titleClass">绑定人：</td>
-				<td colspan="3"><input name="banZu" class="easyui-textbox"/></td>
+			   <td class="titleClass">模板类型：</td>
+			   <td colspan="3"><select id="group" name="model" style="width:175px;border-radius:5px;border-color:#95B8E7;"><option>无票价模板</option><option>有票价模板</option></select></td>
+			</tr>
+			<tr>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			  <td>&nbsp;</td>
+			
 			</tr>
 			<tr>
 				<td class="titleClass">模板内容：</td>
-				<td colspan="3"><input id="Exampletext" name="text"  class="easyui-textbox" data-options="multiline:true" style="width:300px; height:100px"/></td>
+				<td colspan="3"><textarea id="Nm" name="text" style="width:300px; height:100px; outline:none; resize:none;border-color:#95B8E7;border-radius:5px;"></textarea></td>
 			</tr>
+			
 		</table>
 	</form>
+ <ul class="listClass" style="margin-top:-140px;margin-left:40px">	
+  <li onclick="TP1()">
+	<img src="<%=basePath%>/console/images/7-1.png"/>
+  </li>
+  <li onclick="TP2()">
+	<img src="<%=basePath%>/console/images/6-1.png"/>
+  </li>
+  <li onclick="TP3()">
+	<img src="<%=basePath%>/console/images/3-1.png"/>
+  </li>
+  <li onclick="TP4()">
+	<img src="<%=basePath%>/console/images/4-1.png"/>
+  </li>
+  <li onclick="TP5()">
+	<img src="<%=basePath%>/console/images/2-1.png"/>
+  </li>
+  <li onclick="TP6()">
+	<img src="<%=basePath%>/console/images/9-1.png"/>
+  </li>
+  <li onclick="TP7()">
+	<img src="<%=basePath%>/console/images/8-1.png"/>
+  </li>
+</ul>
 </div>
 
 <div id="dlg-buttons">
@@ -104,13 +150,69 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'banPeople', title: '绑定人', width: '25%' },
-	        { field: 'banZu', title: '绑定组', width: '22.5%' },
-	        { field: 'text', title: '模板内容', width: '50%' }
+	        { field: 'banPeople', title: '标题内容', width: '30%' },
+	        { field: 'text', title: '模板内容', width: '36。5%' },
+	        { field: 'model',title:'模板类型',width:'30%'},
+	 
 	       
 	    ]]
 	});
 });
+
+ (function ($) {  
+            $.fn.extend({  
+                insertAtCaret: function (myValue) {  
+                    var $t = $(this)[0];  
+                    if (document.selection) {  
+                        this.focus();  
+                        sel = document.selection.createRange();  
+                        sel.text = myValue;  
+                        this.focus();  
+                    } else{  
+                        if ($t.selectionStart || $t.selectionStart == '0')
+   						{  
+                            var startPos = $t.selectionStart;  
+                            var endPos = $t.selectionEnd;  
+                            var scrollTop = $t.scrollTop;  
+                            $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos,$t.value.length);  
+                            this.focus();  
+                            $t.selectionStart = startPos + myValue.length; 
+                            $t.selectionEnd = startPos + myValue.length;  
+                            $t.scrollTop = scrollTop;  
+                        } else {  
+                            this.value += myValue;  
+                            this.focus();  
+                        } 
+					} 
+                }  
+            })  
+        })(jQuery);
+        
+     function TP1(){
+         $("#Nm").insertAtCaret("#NAME#");
+     } 
+     function TP2(){
+         $("#Nm").insertAtCaret("#NumberPlane#");
+     } 
+     function TP3(){
+         $("#Nm").insertAtCaret("#Lcity#");
+     }
+     function TP4(){
+         $("#Nm").insertAtCaret("#Tcity#");
+     }
+     function TP5(){
+         $("#Nm").insertAtCaret("#LTime#");
+     }
+     function TP6(){
+         $("#Nm").insertAtCaret("#TTime#");
+     }
+     function TP7(){
+         $("#Nm").insertAtCaret("#SumMoney#");
+     }         
+
+     function people(){
+         alert("这个是个人物")
+     }
 
 //删除方法
 function removeit(){  //删除
@@ -217,7 +319,7 @@ function query(){
 		singleSelect: false,
 		rownumbers:true,
 		columns: [[
-		           { field: 'banPeople', title: '绑定人', width: '25%' },
+		           { field: 'banPeople', title: '标题内容', width: '25%' },
 	        	   { field: 'banZu', title: '绑定组', width: '22.5%' },
 	        	   { field: 'text', title: '模板内容', width: '50%' }
 	    ]]
