@@ -191,7 +191,7 @@ public class userOrderService {
 	  * @return
 	  */
 	 public int updateGetTeickTime(userOrderInfo oInfo){
-		 String sql = "UPDATE userorderinfo SET getTeickTime = '"+oInfo.getGetTeickTime()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR = '"+oInfo.getPNR()+"'";
+		 String sql = "UPDATE userorderinfo SET getTeickTime = '"+oInfo.getGetTeickTime()+"' WHERE ID = '"+oInfo.getID()+"' AND PNR = '"+oInfo.getPNR()+"'";
 		 int i = gDao.executeJDBCSql(sql);
 		 if(i > 0){
 			return 1;
@@ -205,7 +205,7 @@ public class userOrderService {
 	  * @return
 	  */
 	 public int changeAirSegment(userOrderInfo oInfo){
-		 String sql = "UPDATE userorderinfo SET chufCity = '"+oInfo.getChufCity()+"', daodCity = '"+oInfo.getDaodCity()+"', hangbanNum = '"+oInfo.getHangbanNum()+"', cabin = '"+oInfo.getCabin()+"', chufDate = '"+oInfo.getChufDate()+"', actionCode = '"+oInfo.getActionCode()+"' WHERE orderNum = '"+oInfo.getOrderNum()+"' AND PNR='"+oInfo.getPNR()+"'";
+		 String sql = "UPDATE userorderinfo SET chufCity = '"+oInfo.getChufCity()+"', daodCity = '"+oInfo.getDaodCity()+"', hangbanNum = '"+oInfo.getHangbanNum()+"', cabin = '"+oInfo.getCabin()+"', chufDate = '"+oInfo.getChufDate()+"', actionCode = '"+oInfo.getActionCode()+"' WHERE ID = '"+oInfo.getID()+"' AND PNR='"+oInfo.getPNR()+"'";
 			int i = gDao.executeJDBCSql(sql);
 			if(i > 0){
 				return 1;
@@ -219,7 +219,7 @@ public class userOrderService {
 	  * @return
 	  */	 
 	 public int changeCertificate(userOrderInfo oInfo){
-		String sql = "UPDATE userorderinfo SET linkName = '"+oInfo.getLinkName()+"', age = '"+oInfo.getAge()+"', linkSex = '"+oInfo.getLinkSex()+"', birthday = '"+oInfo.getBirthday()+"', psgType = '"+oInfo.getPsgType()+"', IDcase = '"+oInfo.getIDcase()+"', IDcaseType = '"+oInfo.getIDcaseType()+"' WHERE orderNum = '"+oInfo.getOrderNum()/*+"' AND PNR='"+oInfo.getPNR()*/+"'";
+		String sql = "UPDATE userorderinfo SET linkName = '"+oInfo.getLinkName()+"', age = '"+oInfo.getAge()+"', linkSex = '"+oInfo.getLinkSex()+"', birthday = '"+oInfo.getBirthday()+"', psgType = '"+oInfo.getPsgType()+"', IDcase = '"+oInfo.getIDcase()+"', IDcaseType = '"+oInfo.getIDcaseType()+"' WHERE ID = '"+oInfo.getID()/*+"' AND PNR='"+oInfo.getPNR()*/+"'";
 		int i = gDao.executeJDBCSql(sql);
 		if(i > 0){
 			return 1;
@@ -528,7 +528,8 @@ public class userOrderService {
 			RMKInfo[] rmks = new RMKInfo[]{rmk};*/
 			
 			//开始在中信航系统产生订票的订单
-			/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, pointDate(fildInfo.getChufDate()), null, osis, null, null, null, null);
+			System.out.println("出票时间："+fildInfo.getGetTeickTime());
+			/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, fildInfo.getGetTeickTime(), null, osis, null, null, null, null);
 			System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 			System.out.println("预定的编号："+response.getPnrNo());
 			System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -637,12 +638,13 @@ public class userOrderService {
 			
 			//默认的数据
 			oderInfo.setStutisPay("0"); //未支付
-			oderInfo.setTakePlane("0"); //是否登机
+			oderInfo.setTakePlane("0"); //是否出票
 			oderInfo.setAdminDel("0"); //默认不删除
 			oderInfo.setConsoleStatus("0"); //未打印
 			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
 			String orderNumFirst = createOrderNum("RDOD", 8);
 			oderInfo.setOrderNum(orderNumFirst); //设置流水号
+			oderInfo.setGetTeickTime(pointDate(oderInfo.getChufDate())); //设置出票时间
 			//系统数据
 			oderInfo.setUserName(fu.getUserName()); //订票的账号 
 			oderInfo.setOpenID(fu.getOpenID()); //订票的openId
