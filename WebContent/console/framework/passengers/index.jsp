@@ -362,8 +362,8 @@ $(document).ready(function(){
 	<div id="numListBox" style="width:100%;height:100%;"></div>
 </div>
 <div id="importdlg" class="easyui-dialog" style="margin-top:40px; width: 300px; height: 150px; padding: 10px 20px" closed="true" >
-      <form id="importfm" method="post"  enctype="multipart/form-data"novalidate >
-            <input class="easyui-filebox" id="importfile" name="file" data-options="prompt:'选择文件路径'" style="width:100%">
+      <form id="importfm" method="post"  enctype="multipart/form-data" novalidate >
+            <input class="easyui-filebox" id="importfile" name="file" data-options="prompt:'选择文件路径'" style="width:100%"/>
       </form>
       <a href="javascript:void(0)" class="easyui-linkbutton c6" id="importExcel" iconCls="icon-ok" style="margin-top:20px;width: 90px">确定</a>
       <a href="javascript:void(0)" class="easyui-linkbutton"	iconCls="icon-cancel" onclick="javascript:$('#importdlg').dialog('close')" style="width: 90px; margin-top:20px">取消</a>

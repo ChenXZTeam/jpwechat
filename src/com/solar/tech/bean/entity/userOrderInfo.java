@@ -122,7 +122,7 @@ public class userOrderInfo {
 	@Column(name="stutisPay",length=6)
 	private String stutisPay;
 	
-	//是否已登机(0:未登机  1:已登机)
+	//是否出票(0:未出票  1:已出票)
 	@Column(name="takePlane",length=6)
 	private String takePlane;
 	

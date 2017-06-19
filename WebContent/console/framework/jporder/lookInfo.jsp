@@ -16,7 +16,7 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 		.tableClass{ margin-top:15px; border-left:solid 1px #E0ECFF; font-size:14px;}
 		.tableClass td{ border-right:solid 1px #E0ECFF; border-bottom:solid 1px #E0ECFF;}
 		.titleClass{ font-weight:bold; width:100px; color:#000;}
-		.btnClass{padding:5px 15px; background:none; border:1px solid #0099FF; margin-left:10px; cursor:pointer;}
+		.btnClass{padding:5px 50px; background:none; border:1px solid #0099FF; margin-left:10px; cursor:pointer; background:#0099FF; color:#fff; border-radius:5px;}
 </style>
 </head>
 <body>
@@ -53,6 +53,12 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 		<td id="linkName"></td>
 		<td class="titleClass">联系电话：</td>
 		<td id="linkPhoneNum"></td>
+	</tr>
+	<tr>
+		<td class="titleClass">票号：</td>
+		<td colspan="3" id="telNum"></td>
+		<td class="titleClass">PNR码：</td>
+		<td id="pnrNum"></td>
 	</tr>
 	
 	<tr>
@@ -105,8 +111,7 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 	</tr>
 </table>
 <div style="margin-top:10px; text-align:center;">
-	<!-- <button id="upcang" class="btnClass" style="background-color:#0099FF; color:#fff;">同舱改期</button> -->
-	<button id="upuser" class="btnClass">修改资料</button>
+	<button id="retrunBtn" class="btnClass" onclick="javascript:history.go(-1)">返回</button>
 </div>
 <script>
 	$(function(){
@@ -117,6 +122,8 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 			var s = obj.dateStr[0];
 			console.log(s);
 			$("#id").text(s.id);
+			$("#telNum").text(s.telNum);
+			$("#pnrNum").text(s.pnr);
 			$("#orderNum").text(s.orderNum);
 			$("#chufCity").text(findByCity(s.chufCity));
 			$("#daodCity").text(findByCity(s.daodCity));
@@ -143,15 +150,15 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 		});
 		return;
 		
-		$("#upuser").click(function(){
+		<%-- $("#retrunBtn").click(function(){
 			var oNum = $("#orderNum").text();
 			window.location.href="<%=basePath%>console/framework/jporder/up_user.jsp?orderNum="+oNum+"&pnrNo="+pnrNum;
-		});
+		}); --%>
 		
-		$("#upcang").click(function(){
+		<%-- $("#upcang").click(function(){
 			var oNum = $("#orderNum").text();
 			window.location.href="<%=basePath%>console/framework/jporder/up_cang.jsp?orderNum="+oNum+"&pnrNo="+pnrNum;
-		});
+		}); --%>
 	});
 	
 	function farom(fr){

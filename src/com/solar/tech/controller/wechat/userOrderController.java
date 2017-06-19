@@ -139,6 +139,7 @@ public class userOrderController {
 			fu.setYanwuBX(YanwuBX);
 			fu.setYiwaiBX(YiwaiBX);
 			mAl = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate);
+			map.put("resAlert", mAl);
 		}else{
 			System.out.println("您搜索的航班已过期，请重新搜索！");
 			mAl.setIsOk("0");
@@ -248,113 +249,6 @@ public class userOrderController {
 		return map;
 	}
 	
-	/**
-	 * @title updateCorder 修改出票时间
-	 * @param pnrNo
-	 * @param tktl(新出票的时间) yyyy-MM-dd HH:mm:ss
-	 * @return
-	 */
-	//修改出票时限
-	@RequestMapping("/update/Corder.action")
-	@ResponseBody
-	public Map<String, Object> updateCorder(String pnrNo, String tktl, String uuid, String orderNum){
-		Map<String, Object> map = new HashMap<String, Object>();
-		//boolean YesOrNo = new ECUtils().tktl("JZCBY9", tktl);//修改出票时间
-		//if(YesOrNo){
-			userOrderInfo uinfo = new userOrderInfo();
-			uinfo.setGetTeickTime(tktl);
-			uinfo.setID(uuid);
-			uinfo.setOrderNum(orderNum);
-			int i=OrderService.updateGetTeickTime(uinfo);
-			if(i==1){
-				map.put("msg", 1);
-				System.out.println("出票时限修改成功");
-			}else{
-				map.put("msg", 0);
-				System.out.println("出票时限修改失败");
-			}
-		//}
-		return map;
-	}
-	
-	//修改航段信息（未付款的时候，付款的时候就只能改舱了）
-	@RequestMapping("/update/changeAirSegment.action")
-	@ResponseBody
-	public Map<String, Object> changeAirSegment(String pnrNo, String fltNoOld, String fltDateOld ,String orderNum, String departure, String arrival, String flightNo ,String cabin, String departureDate, String DepartureTime, String actionCode){
-		Map<String, Object> map = new HashMap<String, Object>();
-		//航段组实体类
-		SegmentInfo s = new SegmentInfo();
-		s.setDeparture(departure);//起飞城市
-		s.setArrival(arrival);//到达城市
-		s.setFlightNo(flightNo);//航班号	
-		s.setCabin(cabin);//舱位
-		s.setDepartureDate(departureDate);//起飞日期，格式如：yyyy-MM-dd
-		s.setDepartureTime(DepartureTime);//起飞时间，格式如：HH:mm
-		s.setActionCode("NN");//行动代码
-		s.setType("HK");//航线类型(国内/国际)
-		SegmentInfo[] segmentInfos = new SegmentInfo[]{s};
-		//boolean YesOrNo = new ECUtils().changeAirSegment(pnrNo, fltNoOld, fltDateOld, segmentInfos);//执行中航信修改航段方法
-		//if(YesOrNo){
-			userOrderInfo uinfo = new userOrderInfo();
-			uinfo.setPNR(pnrNo);
-			uinfo.setOrderNum(orderNum);
-			uinfo.setChufCity(departure);
-			uinfo.setDaodCity(arrival);
-			uinfo.setHangbanNum(flightNo);
-			uinfo.setCabin(cabin);
-			uinfo.setChufDate(departureDate);
-			uinfo.setChufTime(DepartureTime);
-			uinfo.setActionCode("NN");
-			int i = OrderService.changeAirSegment(uinfo);
-			if(i==1){
-				map.put("msg", 1);
-				System.out.println("修改航段成功");
-			}else{
-				map.put("msg", 0);
-				System.out.println("修改航段失败");
-			}
-		//}
-		return map;
-	}
-	
-	//修改旅客证件
-	@RequestMapping("/update/changeCertificate.action")
-	@ResponseBody
-	public Map<String, Object> changeCertificate(String pnrNo, String orderNum, String username, String userage, String usergender, String userBirth, String usertype, String userIDnum, String userIDtype){
-		Map<String, Object> map = new HashMap<String, Object>();		
-		PassengerInfo psg = new PassengerInfo();
-		psg.setName(username);//旅客姓名
-		int ageNum = Integer.parseInt(userage);
-		psg.setAge(ageNum);//年龄
-		psg.setGender(usergender); //性别
-		psg.setBirthDay(userBirth);//出生日期yyyy-mm-dd
-		psg.setPsgType(usertype);//旅客类型  ADT 成人,CHD 儿童,INF 婴儿
-		psg.setCertNo(userIDnum);//证件号码
-		psg.setCertType(userIDtype);//证件类型(NI 身份证,PP 护照,ID其他证件)
-		PassengerInfo[] passengerInfos = new PassengerInfo[]{psg};		
-		//boolean YesOrNo = new ECUtils().changeCertificate(pnrNo, passengerInfos);//执行中航信修改航段方法
-		//if(YesOrNo){
-			userOrderInfo uinfo = new userOrderInfo();
-			uinfo.setOrderNum(orderNum);
-			uinfo.setPNR(pnrNo);
-			uinfo.setLinkName(username);
-			uinfo.setAge(userage);
-			uinfo.setLinkSex(usergender);
-			uinfo.setBirthday(userBirth);
-			uinfo.setPsgType(usertype);
-			uinfo.setIDcase(userIDnum);
-			uinfo.setIDcaseType(userIDtype);
-			int i = OrderService.changeCertificate(uinfo);
-			if(i==1){
-				map.put("msg", 1);
-				System.out.println("修改乘机人信息成功");
-			}else{
-				map.put("msg", 0);
-				System.out.println("修改乘机人信息失败");
-			}
-		//}
-		return map;
-	}
 	//修改常用联系人信息
 	@RequestMapping("/update/updateLinkman.action")
 	@ResponseBody
@@ -614,7 +508,7 @@ public class userOrderController {
 	}
 	
 	public static void main(String[] args) {
-		new ECUtils().cancelPnr("JNESHH");
+		new ECUtils().cancelPnr("HPC55L");
 	}
 	
 }

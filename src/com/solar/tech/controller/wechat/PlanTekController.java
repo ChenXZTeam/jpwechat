@@ -83,7 +83,7 @@ public class PlanTekController {
 		return map;
 	}
 	
-	//获取儿童和婴儿的运价
+	//获取儿童和婴儿的运价（单个）
 	@RequestMapping("/find/findBybb.action")
 	@ResponseBody
 	public List<PataFarePriceInfo> findBybb(String airline, String canbin, String org, String dst, String dateTime, String pstType){
@@ -91,6 +91,43 @@ public class PlanTekController {
 		try {
 			List<PataFarePriceInfo> sdas = PlanTekServ.pataFare(airline, canbin, org, dst, dateTime, pstType);
 			return sdas;
+		} catch (Exception e) {}
+		return null;
+	}
+	
+	//获取儿童和婴儿的运价（多段个）
+	@RequestMapping("/find/findBytwo.action")
+	@ResponseBody
+	public List<PataFarePriceInfo> findByTwo(String airline1,
+			String canbin1,
+			String org1,
+			String dst1,
+			String dateTime1,
+			String airline2,
+			String canbin2,
+			String org2,
+			String dst2,
+			String dateTime2,
+			String pstType){
+		try {
+			System.out.println(airline1+","+canbin1+","+org1+","+dst1+","+dateTime1);
+			System.out.println(airline2+","+canbin2+","+org2+","+dst2+","+dateTime2);
+			PataFareInfo pf1 = new PataFareInfo();
+			pf1.setFlightNo(airline1);
+			pf1.setCabin(canbin1);
+			pf1.setDate(dateTime1);
+			pf1.setOrg(org1);
+			pf1.setDst(dst1);
+			
+			PataFareInfo pf2 = new PataFareInfo();
+			pf2.setFlightNo(airline2);
+			pf2.setCabin(canbin2);
+			pf2.setDate(dateTime2);
+			pf2.setOrg(org2);
+			pf2.setDst(dst2);
+			
+			PataFareInfo[] pataFareInfos = new PataFareInfo[]{pf1,pf2};
+			return new ECUtils().pataFare(pataFareInfos, pstType);
 		} catch (Exception e) {}
 		return null;
 	}

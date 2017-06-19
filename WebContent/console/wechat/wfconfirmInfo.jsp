@@ -28,7 +28,7 @@ String rdate=request.getParameter("rdate");
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?yimk=50858"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script>
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
@@ -96,8 +96,8 @@ String rdate=request.getParameter("rdate");
 	#touMbackground .loginBox .inputBoxLogin{ border:#e1e1e1 solid 1px; height:30px; width:78%; margin-left:auto; margin-right:auto; margin-top:10px; border-radius:3px;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox{float:left;}
 	#touMbackground .loginBox .inputBoxLogin .loginImgBox img{border-right:#e1e1e1 solid 1px; padding-right:5px; width:25px; margin-top:5px; margin-left:3px;}
-	#touMbackground .loginBox .inputBoxLogin .logininpBox{float:right;}
-	#touMbackground .loginBox .inputBoxLogin .logininpBox input{margin-top:5px;border:none;}
+	#touMbackground .loginBox .inputBoxLogin .logininpBox{}
+	#touMbackground .loginBox .inputBoxLogin .logininpBox input{margin-top:5px;border:none;margin-left: 10px;}
 	#touMbackground .loginBox .loginBtn{ text-align:center; line-height:28px; color:#FFFFFF; background-color:#004F92;}
 
 
@@ -139,6 +139,7 @@ $(function(){
 	var dsttt = "";
 	var pntrer = "";
 	var pntrtw = "";
+	var costvar = 0;
 	
 	console.log(uuid1+","+uuid2+","+canbin1+","+canbin2+","+gdate+","+rdate); 
 	//获取选中的航班
@@ -156,6 +157,7 @@ $(function(){
 			console.log(result);
 			orgtt = result.dataObj1[0].orgcity;
 			dsttt = result.dataObj1[0].dstcity; 
+			
 			//第一航段信息
 			$(".depdayone").text(gdate);
 			$(".weekdayone").text(conterCONTime(gdate));
@@ -183,6 +185,7 @@ $(function(){
 			$(".flindNumch").text(result.dataObj2[0].airline);
 			
 			$("#moneyPay").text((parseInt(result.cost1)+parseInt(result.cost2)));
+			costvar = parseInt(result.cost1)+parseInt(result.cost2);
 			$("#countPay").text((parseInt(result.cost1)+parseInt(result.cost2))+100);
 			
 			
@@ -512,7 +515,35 @@ $(function(){
 	$("#IDcase").change(function(){
 		//用户选择输入身份证的时候才会校验  选择护照或者其他 不会校验
 		if($("#caseIpntSource").text()=="NI"){
-			if(codeSf()){}else{
+			if(codeSf()){ //当身份证输入正确的时候还得判断旅客的类型
+				//获取年龄
+				var idInfo = $("#IDcase").val();
+				var birth = idInfo.substring(6,14);
+				var birthdayNumXX = birth.substring(0,4)+"-"+birth.substring(4,6)+"-"+birth.substring(6,8);
+				var ageXX = ageFunc(birthdayNumXX,gdate); 
+				
+				var airline1 = $(".flindNum").text();
+				var airline2 = $(".flindNumch").text();
+				var canbin = "Y";
+				var cp = 0;
+				//获乘机人类型
+				if(ageXX<2){
+					findbb(airline1,canbin,orgtt,dsttt,gdate,airline2,canbin,dsttt,orgtt,rdate,"IN");
+				}else if(ageXX>=2&&ageXX<=12){
+					findbb(airline1,canbin,orgtt,dsttt,gdate,airline2,canbin,dsttt,orgtt,rdate,"CH");
+				}else{
+					$("#crTelkBox").remove();
+					$("#airBullte").remove();
+					var liList = '<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">'+costvar+'</span></div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票</div></li>';
+					$("#sign").after(liList);
+					var jjMonty = '<li id="airBullte"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>';
+					$("#crTelkBox").after(jjMonty);
+					for(var i = 0;i<$(".kl").length;i++){
+						cp+= parseInt($(".kl:eq("+i+")").text())*2;
+					}
+					$("#countPay").text(parseInt(cp)-parseInt(costvar));
+				}
+			}else{
 				$.alert("身份证号码输入错误，请认真核实！");
 			}
 		}
@@ -721,6 +752,29 @@ function ageFunc(strBirthday,goDate){
     return returnAge;//返回周岁年龄  
 }
 
+function findbb(airline1,canbin1,org1,dst1,dateTime1,airline2,canbin2,org2,dst2,dateTime2,pstType){
+	$("#loadMoney").css("display","block");
+	$.post("<%=basePath%>wechatController/find/findBytwo.action",{airline1:airline1,canbin1:canbin1,org1:org1,dst1:dst1,dateTime1:dateTime1,airline2:airline2,canbin2:canbin2,org2:org2,dst2:dst2,dateTime2:dateTime2,pstType:pstType},function(result){
+		$("#loadMoney").css("display","none");
+		var obj = JSON.parse(result);
+	    console.log(obj);
+		var cp = 0;
+	    if("IN"==pstType){
+			$("#pstTypeName").text("婴儿票");
+			$("#moneyPay").text(parseInt(obj[0].total));
+			$("#airBullte").remove();
+		}else if("CH"==pstType){
+			$("#pstTypeName").text("儿童票");
+			$("#moneyPay").text(parseInt(obj[0].total));
+			$("#airBullte").remove();
+		}
+	    for(var i = 0;i<$(".kl").length;i++){
+			cp+= parseInt($(".kl:eq("+i+")").text())*2;
+		}
+		$("#countPay").text(parseInt(cp)-parseInt(obj[0].total));
+	});
+}
+
 //获取邀请码
 function getcode(inc){
 	$.ajax({
@@ -804,8 +858,8 @@ function getcode(inc){
 	</div>
 	<ul id="costXq" style="list-style-type:none; text-align:right; font-size:12px; color:#888;">
 		<li id="sign"></li>
-		<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span></div><div style="width:100px; margin-right:50px;">成人票</div></li>
-		<li><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>
+		<li id="crTelkBox"><div style="margin-left:15px;">共</div><div style="width:80px;">￥<span id="moneyPay" class="kl">30</span></div><div id="pstTypeName" style="width:100px; margin-right:50px;">成人票</div></li>
+		<li id="airBullte"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="airportPay" class="kl">50</span>/人</div><div style="width:100px; margin-right:50px;">机建费</div></li>
 	</ul>
 </div>
 
@@ -825,6 +879,7 @@ function getcode(inc){
 	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="1"/><span class="spanTitBX">航意险</span><span id="yiwaiNum" style="display:none;"></span></div>
 	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="1"/><span class="spanTitBX">延误险</span><span id="yanwuNum" style="display:none;"></span></div>
 	<!-- <div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBxzhz" value="500"/><span class="spanTitBX youhuiText"></span></div> -->
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId baoxiao" value="1"/><span class="spanTitBX">报销</span><span id="baoxiaoNum" style="display:none;"></span></div>
 	<div style="clear:both;"><input id="oneMoney" type="hidden"/><span id="zhekouType" style="display:none;"></span><input id="twoMoney" type="hidden"/></div>
 </div>
 
@@ -935,6 +990,11 @@ function getcode(inc){
 			<a style="display:block; float:right; width:50%; line-height:49px; text-align:center;" onclick="closeBox()">关闭</a>
 			<a style="clear:both;"></a>
 		</div>
+	</div>
+</div>
+<div id="loadMoney" style="position:absolute; width:100%; height:100%; top:0px; left:0px; z-index:99; display:none;">
+	<div style="margin:65% auto; width:200px; border-radius:5px; text-align: center; font-size:12px; line-height: 50px; color:#fff; background:rgba(51,51,51,0.6);">
+		正在加载特殊旅客的票价...
 	</div>
 </div>
 <!-- 加载等待界面 -->	

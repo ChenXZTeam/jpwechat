@@ -32,12 +32,133 @@
 <div style="height:25px; background-color:#fff;">
 	<a href="<%=basePath %>console/framework/jporder/newOrder.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">录入订单</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除订单</a>
-<!-- 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改</a> -->
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看订单</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改乘机人</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="upTktlBtn()">修改出票时限</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="AirSegment()">修改航段</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="dataBox" style="width:100%;height:100%;">
 	</div>
+</div>
+<div id="lvkeInfoBox" class="easyui-dialog" style="width:360px; padding:30px;" closed="true" buttons="#dlg-buttons">
+	<form id="lvkeInfoForm">
+		<table border="0">
+			<tr style="display:none;">
+				<td><input name="id" class="easyui-textbox"/></td>
+				<td><input name="pnr" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td>旅客姓名：</td>
+				<td>
+					<input id="linkName" name="linkName" class="easyui-textbox"/>
+					<span style="display:none;"><input name="linkName" class="easyui-textbox" readonly/></span>
+				</td>
+			</tr>
+			<tr>
+				<td>年龄：</td>
+				<td><input name="age" class="easyui-textbox" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td>性别：</td>
+				<td>
+					<select name="linkSex" class="easyui-combobox" data-options="required:true" style="width:173px;" panelHeight="auto">
+						<option value="F">男</option>
+						<option value="M">女</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>生日：</td>
+				<td><input name="birthday" class="easyui-datebox" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td>旅客类型：</td>
+				<td>
+					<span style="display:none;"><input name="psgType" class="easyui-textbox"/></span>
+					<select id="psgType" name="psgType" class="easyui-combobox" style="width:173px;" panelHeight="auto">
+						<option value="ADT">成人</option>
+						<option value="CHD">儿童</option>
+						<option value="INF">婴儿</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<select name="idcaseType" class="easyui-combobox" style="width:70px;" panelHeight="auto" data-options="required:true">
+						<option value="NI">身份证</option>
+						<option value="PP">护照</option>
+						<option value="ID">其他</option>
+					</select>
+				</td>
+				<td><input id="IDcase" name="idcase" class="easyui-textbox" data-options="required:true,validType:['IDcard']"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="dlg-buttons">
+	<a href="javascript:void(0)" class="easyui-linkbutton c6" id="saveBean"	iconCls="icon-ok" onclick="saveBean()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox').dialog('close')" style="width:90px">取消</a>
+</div>
+<div id="TeickTimeBox" class="easyui-dialog" style="width:360px; padding:30px;" closed="true" buttons="#dlg-buttons2">
+	<form id="TeickTimeForm"> 
+		<table border="0">
+			<tr style="display:none;">
+				<td><input name="id" class="easyui-textbox"/></td>
+				<td><input name="pnr" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td>出票时限：</td>
+				<td><input name="getTeickTime" class="easyui-datetimebox" data-options="required:true"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="dlg-buttons2">
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBeanTltk()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#TeickTimeBox').dialog('close')" style="width:90px">取消</a>
+</div>
+<div id="SegmentBox" class="easyui-dialog" style="width:360px; padding:30px;" closed="true" buttons="#dlg-buttons3">
+	<form id="SegmentForm"> 
+		<table border="0">
+			<tr style="display:none;">
+				<td><input name="id" class="easyui-textbox"/></td>
+				<td><input name="pnr" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td>旧航班号：</td>
+				<td><input name="hangbanNum" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td>旧起飞日期：</td>
+				<td><input name="chufDate" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td>起飞城市：</td>
+				<td><input name="newFlyCity" class="easyui-datetimebox" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td>到达城市：</td>
+				<td><input name="newFlyddCity" class="easyui-datetimebox" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td>航班号：</td>
+				<td><input name="newFlyNum" class="easyui-datetimebox" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td>舱位：</td>
+				<td><input name="newCanbin" class="easyui-datetimebox" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td>起飞日期：</td>
+				<td><input name="newFlyDate" class="easyui-datetimebox" data-options="required:true"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="dlg-buttons3">
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBeanSegment()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#SegmentBox').dialog('close')" style="width:90px">取消</a>
 </div>
 <script>
 $(function(){
@@ -140,6 +261,127 @@ function shows(){
     }
 	var rowstr = rows[0].id;
 	window.location.href="<%=basePath%>console/framework/jporder/lookInfo.jsp?numds="+rowstr;
+}
+
+$.extend($.fn.validatebox.defaults.rules, {  
+	IDcard: {
+        validator:function(value){
+        	var strVal = value;
+            var arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];//加权因子  
+            var arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];//校验码  
+            if(/^\d{17}\d|x$/i.test(strVal)){   
+                var sum = 0, idx;  
+                for(var i = 0; i < strVal.length - 1; i++){  
+                    //对前17位数字与权值乘积求和  
+                    sum += parseInt(strVal.substr(i, 1), 10) * arrExp[i];  
+                }  
+                //计算模（固定算法）  
+                idx = sum % 11;  
+                //检验第18为是否与校验码相等  
+                return arrValid[idx] == strVal.substr(17, 1).toUpperCase();  
+            }else{ 
+                return false;  
+            }
+        },
+        message:'身份证格式错误'
+    }
+});
+function toUpdate(){
+	var rows = $('#dataBox').datagrid('getChecked');
+	if (rows.length==0) {
+        $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+        return false;
+   }
+   if(rows.length > 1){
+        $.messager.alert('操作提示', "只能选择一条数据", 'warning');
+        return false;
+   }
+   $("#linkName").textbox({disabled:true});
+   $("#psgType").combobox({disabled:true});
+   $('#lvkeInfoForm').form('load',rows[0]);
+   $('#lvkeInfoBox').dialog('open').dialog('setTitle','修改乘机人信息');
+}
+
+function upTktlBtn(){
+	var rows = $('#dataBox').datagrid('getChecked');
+	if (rows.length==0) {
+        $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+        return false;
+   }
+   if(rows.length > 1){
+        $.messager.alert('操作提示', "只能选择一条数据", 'warning');
+        return false;
+   } 
+   $('#TeickTimeForm').form('load',rows[0]);
+   $('#TeickTimeBox').dialog('open').dialog('setTitle','修改出票时限');
+}
+
+function AirSegment(){ 
+	var rows = $('#dataBox').datagrid('getChecked');
+	if (rows.length==0) {
+        $.messager.alert('操作提示', "没有选择被操作的记录！", 'warning');
+        return false;
+   }
+   if(rows.length > 1){
+        $.messager.alert('操作提示', "只能选择一条数据", 'warning');
+        return false;
+   } 
+   console.log(rows[0]);
+   $('#SegmentForm').form('load',rows[0]);
+   $('#SegmentBox').dialog('open').dialog('setTitle','修改航段');
+}
+
+function saveBean(){
+	 $('#lvkeInfoForm').form('submit',{
+		   url: "<%=basePath%>framework/order/upTelkMen.action",
+		   onSubmit: function(){
+		        return $(this).form('validate');
+		   },
+		   success: function(data){
+			   if(data==1||data=="1"){
+				   $('#lvkeInfoBox').dialog('close');
+				   $('#dataBox').datagrid('reload');
+			   }else{
+				   $.messager.alert('操作提示', "操作失败", 'warning');
+			   }
+		   }
+	 }); 
+}
+
+function saveBeanTltk(){
+	 $('#TeickTimeForm').form('submit',{
+		   url: "<%=basePath%>framework/order/Corder.action",
+		   onSubmit: function(){
+		        return $(this).form('validate');
+		   },
+		   success: function(data){
+			   console.log("====>>>>>"+data);
+			   if(data==1||data=="1"){
+				   $('#TeickTimeBox').dialog('close');
+				    $('#dataBox').datagrid('reload');
+			   }else{
+				   $.messager.alert('操作提示', "操作失败", 'warning');
+			   }
+		   }
+	 }); 
+}
+
+function saveBeanSegment(){
+	 $('#SegmentForm').form('submit',{
+		   url: "<%=basePath%>framework/order/hangeAirSegment.action",
+		   onSubmit: function(){
+		        return $(this).form('validate');
+		   },
+		   success: function(data){
+			   console.log("====>>>>>"+data);
+			   if(data==1||data=="1"){
+				   $('#SegmentBox').dialog('close');
+				    $('#dataBox').datagrid('reload');
+			   }else{
+				   $.messager.alert('操作提示', "操作失败", 'warning');
+			   }
+		   }
+	 }); 
 }
 
 //查找的方法
