@@ -23,9 +23,9 @@ public class jpbornService {
 	private GenericDao gDao;
 	
 	public List<userOrderInfo> queryOrder(String linkName,String chufCity,String chufTime,String hangbanNum,String daodCity,String iDcase,String Pnumber){
-		String sql="FROM userOrderInfo WHERE ";
+		String sql="FROM userOrderInfo WHERE 1=1";
 		if(linkName !=null&&linkName !=""){
-			sql+="linkName ='"+linkName+"'";
+			sql+="and linkName ='"+linkName+"'";
 			
 		}
 		if(!"".equals(chufCity)){
