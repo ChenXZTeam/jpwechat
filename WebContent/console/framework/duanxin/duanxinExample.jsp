@@ -50,7 +50,7 @@
 <div class="seachBox">
 	<ul>
 		<li><span></span><input type="text" id="banPeople" placeholder="请输入绑定人名称"/></li>
-		<li><a onclick="query()">搜索</a></li>
+		<li style="background-color:#01B5E6;border-radius:5px;height:28px;"><a onclick="query()" style="color:white;border:none;">搜索</a></li>
 	</ul>
 </div>
 <div style="height:25px; background-color:#fff;">

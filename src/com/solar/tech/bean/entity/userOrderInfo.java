@@ -186,6 +186,17 @@ public class userOrderInfo {
 	@Column(name="sendAdd")
 	private String sendAdd;
 	
+	@Column(name="tpStatus")
+	private String tpStatus;
+	
+	public String getTpStatus() {
+		return tpStatus;
+	}
+
+	public void setTpStatus(String tpStatus) {
+		this.tpStatus = tpStatus;
+	}
+
 	public String getGetTeickTime() {
 		return getTeickTime;
 	}

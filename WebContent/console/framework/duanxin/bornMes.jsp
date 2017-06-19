@@ -21,30 +21,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <div id="contain">
           <form id="qfm" action="">
                 <div id="jpHeader">
-                     <div style="width:1200px;padding-top:20px;">
+                     <div style="width:100%;padding-top:20px;">
                           <span>
+                               
                                <lable class="font-style">乘机人姓名:</lable>
-                               <input id="Name" class="easyui-textbox" data-options="prompt:'请输入乘机人姓名'" style="width:150px;height:25px"></input>
+                               <input id="Name" class="easyui-textbox" data-options="prompt:'请输入乘机人姓名(必填项)'" style="width:150px;height:25px"></input>
                           </span>
-                          <span style="margin-left:30px;">
-                               <lable class="font-style">出发城市:</lable>
-                               <input id="LCity" class="easyui-textbox" data-options="prompt:'请输入出发城市'" style="width:150px;height:25px"></input>
-                          </span>
+                          <span style="margin-left:30px">
+                               <lable class="font-style">证件号码:</lable>
+                               <input id="zjNumber" class="easyui-textbox" data-options="prompt:'请输入证件号码(必填项)'" style="width:150px;height:25px"></input>
+                               
+                         </span>
+                          
                           
                           <span style="margin-left:30px" >
-                               <label class="font-style">出发时间:</label>
+                               <lable class="font-style">出发时间:</lable>
                                <input id="Ltime" class="easyui-datebox" data-options="prompt:'请输入出发时间'"  style="width:150px;height:25px"></input>
                           </span>
                           <span style="margin-left:30px">
-                               <label class="font-style">模板类型:</label>
+                               <lable class="font-style">模板类型:</lable>
                               <select id="Mode" class="easyui-combobox" data-options="panelHeight:'auto'"  style="width:150px;height:25px;">
 						             <option value="有票价模板" selected>有票价模板</option>
 						             <option value="无票价模板">无票价模板</option>
 					         </select> 
                           </span>
-                           <span style="width:200px; position:relative;margin-left:1100px;  text-align:center;margin-right:-800px; top:-27px; display:block;  overflow:hidden;">
-			    	          <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="reset()"  style="width: 100px;height: 35px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;">
-                                 <img src="<%=basePath%>/console/images/res.png"/>
+                           <span style="position:relative;margin-left:1100px; text-align:center; top:-27px; display:block;  overflow:hidden;border-radius:5px;">
+			    	          <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="reset()"  style="width:100px;height: 32px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
+                                 <img src="<%=basePath%>/console/images/res.png" style="width:20px;height:25px;margin-left:-30px;"/>
                                  <span class="img_class">重置</span>
                               </a>
                           </span>
@@ -52,28 +55,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                          
                          
                      </div>
-                     <div style="width:1200px;">
+                     <div style="width:100%;">
                         <span>
                               <lable class="font_style">航&nbsp;&nbsp;班&nbsp;&nbsp;号&nbsp;&nbsp;:</lable>
                               <input id="number" class="easyui-textbox" data-options="prompt:'请输入航班号'" style="width:150px;height:25px"></input>
                           </span>
+                          
+                          <span style="margin-left:30px;">
+                               <lable class="font-style">出发城市:</lable>
+                               <input id="LCity" class="easyui-textbox" data-options="prompt:'请输入出发城市'" style="width:150px;height:25px"></input>
+                          </span>
+                          
                          <span style="margin-left:30px">
                                <lable class="font-style">到达城市:</lable>
                                <input id="TCity" class="easyui-textbox" data-options="prompt:'请输入到达城市'" style="width:150px;height:25px"></input>
                          </span>
                          
-                         <span style="margin-left:30px">
-                               <lable class="font-style">证件号码:</lable>
-                               <input id="zjNumber" class="easyui-textbox" data-options="prompt:'请输入证件号码'" style="width:150px;height:25px"></input>
-                               
-                         </span>
+                        
                          <span style="margin-left:30px">
                                <lable class="font-style">电话号码:</lable>
                                <input id="pnumber" class="easyui-textbox" data-options="prompt:'请输入电话号码'" style="width:150px;height:25px"></input>
                          </span>
-                         <span style="width:200px; position:relative;margin-left:1100px; text-align:center; top:-27px; display:block;  overflow:hidden;">
-                               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false"  class="btn_find"  onclick="query()" style="width:100px;height:35px;background-color:#01B5E6;border:none;cursor:pointer;outline:none;margin-left:15px;color:#fff;display:block;float:left;line-height:30px;text-decoration:none;"">
-                                  <img src="<%=basePath %>/console/images/find.png"  />
+                         <span style="position:relative;margin-left:1100px; text-align:center; top:-27px; display:block;  overflow:hidden;border-radius:5px;">
+                               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false"  class="btn_find"  onclick="query()" style="width:100px;height:32px;background-color:#01B5E6;border:none;cursor:pointer;outline:none;margin-left:15px;color:#fff;display:block;float:left;line-height:30px;text-decoration:none;border-radius:5px;">
+                                  <img src="<%=basePath %>/console/images/find.png" style="width:20px;height:25px;margin-left:-30px;" />
 						          <span class="img_class">生成</span>
                                </a>
                          </span>
@@ -197,14 +202,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           var daodCity=$("#TCity").textbox('getValue').trim();
           var PhoneNumber=$("#pnumber").textbox('getValue').trim();//获取手机号码
           var model=$("#Mode").combobox('getValue').trim();
-          if(linkName==""){
-           alert("乘机人姓名是必填项")
-            return false;
-          }
-          if(iDcase==""){
-           alert("证件号码是必填项")
-            return false;
-          }
           $('#dg').datagrid({
              height:'100%',
              fit:true,
