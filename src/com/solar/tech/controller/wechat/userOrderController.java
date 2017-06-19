@@ -356,7 +356,7 @@ public class userOrderController {
 		//}
 		return map;
 	}
-	//删除联系人信息
+	//删除签证订单信息
 	@RequestMapping("/delete/deleteVisa.action")
 	@ResponseBody
 	public Map<String, Object> deleteVisa(String visaOrderID){
@@ -393,6 +393,17 @@ public class userOrderController {
 				}
 			//}
 		}
+		return map;
+	}
+	
+	//退票的方法
+	@RequestMapping("/signout/order.action")
+	@ResponseBody
+	public Map<String, Object> tpTicket(String pnrNo, String ID){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			OrderService.tpServi(ID,pnrNo);
+		} catch (Exception e) {}
 		return map;
 	}
 	
@@ -508,7 +519,7 @@ public class userOrderController {
 	}
 	
 	public static void main(String[] args) {
-		new ECUtils().cancelPnr("HPC55L");
+		new ECUtils().cancelPnr("JF4NG9");
 	}
 	
 }

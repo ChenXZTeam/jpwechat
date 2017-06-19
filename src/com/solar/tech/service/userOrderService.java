@@ -285,12 +285,22 @@ public class userOrderService {
 		public List<userOrderInfo> loadUserMsg(String orderNum){
 			List<Object> params = new ArrayList<Object>();
 			params.add(orderNum);
-			String sql="from userOrderInfo where orderNum=?";
+			String sql="from userOrderInfo where ID=?";
 			List<userOrderInfo> list = gDao.getListByHql(userOrderInfo.class, sql, params);
 			if(list.size()>0){
 				return list;
 			}
 			return null;
+		}
+		
+		/**
+		 * 处理退票的功能
+		 * @param uuid
+		 * @param pnr
+		 */
+		public void tpServi(String uuid, String pnr){
+			String sql="UPDATE persondata SET age=age*2, age=age+1";
+			this.gDao.executeJDBCSql(sql);
 		}
 		
 		/**
@@ -528,8 +538,8 @@ public class userOrderService {
 			RMKInfo[] rmks = new RMKInfo[]{rmk};*/
 			
 			//开始在中信航系统产生订票的订单
-			System.out.println("出票时间："+fildInfo.getGetTeickTime());
-			/*PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, fildInfo.getGetTeickTime(), null, osis, null, null, null, null);
+			/*System.out.println("出票时间："+fildInfo.getGetTeickTime());
+			PnrResponse response = new ECUtils().booking(bookContact, segmentInfos, passengerInfos, fildInfo.getGetTeickTime(), null, osis, null, null, null, null);
 			System.out.println("----------------以下信息是订票成功之后返回的数据--------------");
 			System.out.println("预定的编号："+response.getPnrNo());
 			System.out.println("起飞城市："+response.getSegList().get(0).getDeparture());
@@ -546,7 +556,7 @@ public class userOrderService {
 			
 			//为了不为空而临时造的数据，别当真
 			PnrResponse response = new PnrResponse();
-			response.setPnrNo("JFFHL0");
+			response.setPnrNo("JF4NG9");
 			return response;
 		}
 		

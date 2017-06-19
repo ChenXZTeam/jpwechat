@@ -127,8 +127,8 @@ public class JP_orderController {
 	@RequestMapping("/Corder.action")
 	@ResponseBody
 	public int updateCorder(String pnr, String getTeickTime, String id){
-		boolean YesOrNo = new ECUtils().tktl(pnr, getTeickTime);//修改出票时间
-		if(YesOrNo){
+		/*boolean YesOrNo = new ECUtils().tktl(pnr, getTeickTime);//修改出票时间
+		if(YesOrNo){*/
 			userOrderInfo uinfo = new userOrderInfo();
 			uinfo.setGetTeickTime(getTeickTime);
 			uinfo.setID(id);
@@ -139,9 +139,9 @@ public class JP_orderController {
 			}else{
 				return 0;
 			}
-		}else{
+		/*}else{
 			return 0;
-		}
+		}*/
 	}
 	
 	//修改航段信息（未付款的时候，付款的时候就只能改签了）

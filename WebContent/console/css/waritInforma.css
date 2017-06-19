@@ -12,7 +12,7 @@ body{ background-color:#f1f1f1; padding:0px; margin:0px; font-family:"Microsoft 
 .writInfoBox{ border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; margin-top:10px; padding:0px; background-color:#FFFFFF; padding:0px 20px;}
 .writInfoBox ul{ list-style-type:none; padding:0px; margin:0px; border:none;}
 .writInfoBox ul li{ line-height:50px; border-bottom:1px solid #e8e8e8; height:50px;}
-.writInfoBox ul li input{border:none; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0); margin-left:10px; width:65%;}
+.writInfoBox ul li input{border:none; outline:none; -webkit-tap-highlight-color:rgba(255,255,255,0); margin-left:10px; width:55%;}
 .writInfoBox ul li span img{width:12px;}
 .writInfoBox ul li:last-child{border:none;}
 

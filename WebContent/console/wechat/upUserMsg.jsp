@@ -13,16 +13,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>修改乘机人信息</title>
-<link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css"/>
+<link rel="stylesheet" href="<%=basePath %>console/css/waritInforma.css?time=201161"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/normalize3.0.2.min.css" />
-<link rel="stylesheet" href="<%=basePath %>console/css/style.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/weui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>console/css/jquery-weui.css" />
+<link rel="stylesheet" href="<%=basePath %>console/css/style.css?time=2016" />
+<link rel="stylesheet" href="<%=basePath%>scripts/common/weui/css/weui.css" />
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
-<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
+<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js"></script>
-<script src="<%=basePath %>console/js/mobiscroll_date.js" chatset="utf-8"></script> 
+<script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
+<script src="<%=basePath %>console/js/jquery-weui.js"></script>
+<script src="<%=basePath %>scripts/common/weui/js/zepto.min.js"></script>
+<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
 <style>
 	.writInfoBox{margin-top:0px;}
 	.writInfoBox ul li{line-height:50px;}
@@ -31,13 +36,14 @@
 	.checkboxA{ border:#C9C9C9 1px solid; background-color:#fff; width:16px; height:16px; display:block; z-index:-1; float:left; border-radius:8px; margin-top:3px;}
 	.checkboxB{ background-color:#0079FE; border-radius:4px; width:8px; height:8px; display:block; float:left; margin-left:-11.544px; margin-top:6.599999px; display:none;}
 	.btnBox{width:88.55%; margin-left:auto; margin-right:auto; overflow:hidden;}
-	.btnBox .aBtn{padding:10px 0px; float:left; width:48%;}
+	.btnBox .aBtn{float:left; width:48%;}
 	.btnBox #btnQ{margin-top: 15px; float:right; display: block; padding:10px 0px; background-color:#ccc; border-radius: 5px; color: #FBFDFF; font-size: 12px; text-align: center; width:48%; margin-left: auto; margin-right: auto;}
 </style>
 <script>
 	$(function(){
 		//加载数据在表单中
 		var orderNum = "<%=orderNum%>";
+		var orgDateTime = "";
 		if(orderNum!=null||orderNum!="null"||orderNum!=""){
 			$.ajax({
 				url:"<%=basePath%>userOrderController/loading/userMsg.action",
@@ -50,48 +56,27 @@
 				complete:function(){$("#loading").css("display","none");},
 				success: function(result) {
 					var dataList = (result.orderList)[0];
+					console.log(dataList);
 					$("#linkName").val(dataList.linkName); //乘机人
 					$("#birthIpnt").val(dataList.birthday);	//生日
-					var psgTypeJs = ""; //乘机人类型
-					if(dataList.psgType=="CHD"){
-						psgTypeJs = "儿童";
-					}else if(dataList.psgType=="INF"){
-						psgTypeJs = "婴儿";
-					}else{
-						psgTypeJs = "成人";
-					}
-					$("#personIpnt").val(psgTypeJs);	//乘机人类型
 					$("#IDcase").val(dataList.idcase);//证件号码
-					$("#sexIpnt").val(dataList.linkSex);//性别
-					var idcaseTypeJs = ""; //证件类型
-					if(dataList.idcaseType=="ID"){
-						idcaseTypeJs = "其他证件";
-					}else if(dataList.idcaseType=="PP"){
-						idcaseTypeJs = "护照";
-					}else{
-						idcaseTypeJs = "身份证";
-					}
-					$("#caseIpnt").text(idcaseTypeJs);//证件类型
+					$("#sexIpnt").val(sourceSex(1,dataList.linkSex));//性别
+					$("#caseIpnt").text(sourceSex(3,dataList.idcaseType));//证件类型
+					$("#personIpnt").text(dataList.psgType);
+					orgDateTime = dataList.chufDate;
 				},error:function(){
 					
 				}
 			});			
 		}
-		//判断是否选择了证件类型
-		$("#IDcase").focus(function(){
-			if($("#caseIpnt").text()=="证件类型"){
-				alert("请选择证件类型");
-				$("#IDcase").blur();
-				return false;
-			}
-		});
+
 		//初始化日期选择控件
 		var currYear = (new Date()).getFullYear();	
 		var opt={};
 		opt.date = {preset : 'date'};
 		opt.datetime = {preset : 'datetime'};
 		opt.time = {preset : 'time'};
-		opt.default = {
+		opt.defaults = {
 			theme: 'android-ics light', //皮肤样式
 			display: 'modal', //显示方式 
 			mode: 'scroller', //日期选择模式
@@ -102,41 +87,34 @@
 			startYear: currYear - 50, //开始年份
 			endYear: currYear + 10 //结束年份
 		};
-		$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['default']));
+		$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['defaults']));
 		
 		//修改资料的方法
 		$(".aBtn").click(function(){
 			var orderNum = "<%=orderNum%>";
 			var pnrNo = "<%=pnrNo%>";
 			var username = $("#linkName").val();
-			var usergender = $("#sexIpnt").val();
+			var usergender = $("#sexIpntSource").text();
 			var userBirth = $("#birthIpnt").val();
-			var userage = ageFunc(userBirth);
+			var userage = ageFunc(userBirth,orgDateTime);
 			var usertype = $("#personIpnt").val();
 			var userIDnum = $("#IDcase").val();
-			var userIDtype = $("#caseIpnt").text();			
-			/* if(userage==""||userage==null){
-				alert("请填写年龄格式：19");
-				return false;
-			} */
-			/* if(userBirth==""||userBirth==null){
-				alert("请填写生日格式：1993-05-03");
-				return false;
-			} */
+			var userIDtype = $("#caseIpntSource").text();
+			var usertype = $("#personIpnt").text();
 			console.log(orderNum+"/"+pnrNo+"/"+username+"/"+userage+"/"+usergender+"/"+userBirth+"/"+usertype+"/"+userIDnum+"/"+userIDtype);
 			$.ajax({ 
-				url:"<%=basePath%>userOrderController/update/changeCertificate.action",
+				url:"<%=basePath%>framework/order/upTelkMen.action",
 				type:"POST",
 				data:{
-					"orderNum":orderNum,
-					"pnrNo":pnrNo,
-					"username":username,
-					"userage":userage,
-					"usergender":usergender,
-					"userBirth":userBirth,
-					"usertype":usertype,
-					"userIDnum":userIDnum,
-					"userIDtype":userIDtype
+					"id":orderNum,
+					"pnr":pnrNo,
+					"linkName":username,
+					"age":userage,
+					"linkSex":usergender,
+					"birthday":userBirth,
+					"psgType":usertype,
+					"idcase":userIDnum,
+					"idcaseType":userIDtype
 				},
 				dataType:"json",
 				success: function(result) {
@@ -152,25 +130,142 @@
 			});		
 		});
 		
+		$("#sexIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'先生', 
+	            			value:'F'
+	        		   },{  
+	        		   		label:'女士',
+	            			value:'M'
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#sexIpntSource").text(result); 
+								$("#sexIpnt").val(sourceSex(1,result));
+	            			}  
+	        	});  
+    	});
+    	
+    	$("#personIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'成人', 
+	            			value:'ADT'
+	        		   },{  
+	        		   		label:'儿童',
+	            			value:'CHD'
+	        		   },{  
+	        		   		label:'婴儿',
+	            			value:'INF'
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#personIpntSource").text(result); 
+								$("#personIpnt").val(sourceSex(2,result)); 
+	            			}  
+	        	});  
+    	});
+		
+		$("#caseIpnt").on('click',function (){  
+	        weui.picker([{
+							label:'身份证', 
+	            			value:'NI'
+	        		   },{  
+	        		   		label:'护照',
+	            			value:'PP'
+	        		   },{  
+	        		   		label:'其他',
+	            			value:'ID' 
+	        		   }],{  
+	            			onChange: function (result) {  
+	                			//改变函数
+	            			},  
+	            			onConfirm: function (result) {  
+								$("#caseIpnt").text(sourceSex(3,result)); 
+								$("#caseIpntSource").text(result); 
+	            			}  
+	        	});  
+    	});
+		
 		//取消修改的按钮
 		$("#btnQ").click(function(){
 			window.location.href="<%=basePath %>console/wechat/myPlaneTickek.jsp";
 		});
 	});
 	//对生日进行拆分求出年龄
-	function ageFunc(birthday){
-		var age = 0;
-		var birth = birthday.split("-");	//对生日进行拆分
-		var today=new Date();				//创建今天的日期
-	    var todayYear=today.getFullYear();	//今天的年
-	    var ageNum = todayYear*1 - birth[0]*1;
-	    if(ageNum > 0){
-	    	age = ageNum;
-	    }else{
-	    	alert("年龄选择错误，请重新选择！");
-	    	return false;
-	    }
-		return age;
+	function ageFunc(strBirthday,goDate){
+	    var returnAge;  
+	    var strBirthdayArr=strBirthday.split("-");  
+	    var birthYear = strBirthdayArr[0];  
+	    var birthMonth = strBirthdayArr[1];  
+	    var birthDay = strBirthdayArr[2];  
+	      
+	    d = new Date(goDate);  
+	    var nowYear = d.getFullYear();  
+	    var nowMonth = d.getMonth() + 1;  
+	    var nowDay = d.getDate();  
+	      
+	    if(nowYear == birthYear){  
+	        returnAge = 0;//同年 则为0岁  
+	    }  
+	    else{  
+	        var ageDiff = nowYear - birthYear ; //年之差  
+	        if(ageDiff > 0){  
+	            if(nowMonth == birthMonth){  
+	                var dayDiff = nowDay - birthDay;//日之差  
+	                if(dayDiff < 0){  
+	                    returnAge = ageDiff - 1;  
+	                }  
+	                else{  
+	                    returnAge = ageDiff ;  
+	                }  
+	            }  
+	            else{  
+	                var monthDiff = nowMonth - birthMonth;//月之差  
+	                if(monthDiff < 0){  
+	                    returnAge = ageDiff - 1;  
+	                }  
+	                else{  
+	                    returnAge = ageDiff ;  
+	                }  
+	            }  
+	        }  
+	        else{  
+	            returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天  
+	        }  
+	    }  
+	    return returnAge;//返回周岁年龄  
+	}
+	
+	function sourceSex(num,val){
+		var value = "";
+		if(num==1){
+			if(val=="F"){
+				value = "先生";
+			}else if(val=="M"){
+				value = "女士";
+			}
+		}else if(num==2){
+			if(val=="ADT"){
+				value = "成人";
+			}else if(val=="CHD"){
+				value = "儿童";
+			}else if(val=="INF"){
+				value = "婴儿";
+			}
+		}else if(num==3){
+			if(val=="NI"){
+				value = "身份证";
+			}else if(val=="PP"){
+				value = "护照";
+			}else if(val=="ID"){
+				value = "其他证件";
+			}
+		}
+		return value;
 	}
 </script>
 </head>
@@ -178,53 +273,13 @@
 <body>
 <div class="writInfoBox">
 	<ul>
-		<li>
-			<span class="spanTit">姓名：</span>
-			<input id="linkName" type="text"/>
-		</li>
-		<li>
-			<span class="spanTit">性别：</span>
-			<input type="text" id="sexIpnt" readonly="readonly"/>
-			<span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span>
-		</li>
-		<li>
-			<span class="spanTit">出生日期：</span>
-			<input type="text" id="birthIpnt" readonly="readonly"/>
-			<span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span>
-		</li>
-		<li>
-			<span class="spanTit">旅客类型：</span>
-			<input type="text" id="personIpnt" readonly="readonly"/>
-			<span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span>
-		</li>
-		<li>
-			<span class="spanTit" id="caseIpnt">证件类型</span>
-			<span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:5px;"/></span>
-			<input id="IDcase" type="text"/>
-		</li>
+		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/></li>
+		<li id="sexBox"><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly" value="先生"/><span id="sexIpntSource" style="display:none;">男</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li id="birthdayBox"><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
+		<%-- <li><span class="spanTit">旅客类型：</span><input type="hidden" id="m"/><input type="text" id="personIpnt" readonly="readonly"/><span id="personIpntSource" style="display:none;"></span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
+		<li style="border:none;"><span class="spanTit" id="caseIpnt">身份证</span><span id="caseIpntSource" style="display:none;">NI</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<li style="display:none;"><span id="personIpnt"></span></li>
 	</ul>
-</div>
-<!--性别选择-->
-<div class="ChoosClassBox" id="sexType">
-	<div class="ChoosSmallBox sexBoxCH">男</div>
-	<div class="ChoosSmallBox sexBoxCH" style="border:none;">女</div>
-	<div style="clear:both;"></div>
-</div>
-<!--旅客类型-->
-<div class="ChoosClassBox" id="personType">
-	<div class="ChoosSmallBox persBoxCH">成人</div>
-	<div class="ChoosSmallBox persBoxCH">儿童</div>
-	<div class="ChoosSmallBox persBoxCH" style="border:none;">婴儿</div>	
-	<input type="hidden" id="orderNum" value="<%=orderNum%>"/>
-	<input type="hidden" id="pnrNo" value="<%=pnrNo%>"/>
-	<div style="clear:both;"></div>
-</div>
-<!--证件类型-->
-<div class="ChoosClassBox" id="CaseType" style="width:30%;">
-	<div class="ChoosSmallBox caseBoxCH">身份证</div>
-	<div class="ChoosSmallBox caseBoxCH">护照</div>
-	<div class="ChoosSmallBox caseBoxCH" style="border:none;">其他</div>
-	<div style="clear:both;"></div>
 </div>
 <div class="btnBox"><a class="aBtn">确定修改</a><a id="btnQ">取消</a></div>
 
@@ -242,4 +297,5 @@
 		</div> 
 	</div>
 </body>
+<script src="<%=basePath%>scripts/common/weui/js/weui.min.js"></script>
 </html>

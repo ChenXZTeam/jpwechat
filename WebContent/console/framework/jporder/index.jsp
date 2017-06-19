@@ -33,9 +33,9 @@
 	<a href="<%=basePath %>console/framework/jporder/newOrder.jsp" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">录入订单</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cut',plain:true" onclick="removeit()">删除订单</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="shows()">查看订单</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改乘机人</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="toUpdate()">修改乘机人证件</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="upTktlBtn()">修改出票时限</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="AirSegment()">修改航段</a>
+	<!-- <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="AirSegment()">修改航段</a> -->
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="dataBox" style="width:100%;height:100%;">
