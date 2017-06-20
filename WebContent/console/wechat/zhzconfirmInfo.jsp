@@ -903,7 +903,7 @@ function getcode(inc){
 <div class="writInfoBox">
 	<ul>
 		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><input type="hidden" id="firNumorder"/></li>
-		<li id="sexBox" style="display:none;"><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly" value="先生"/><span id="sexIpntSource" style="display:none;">男</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
+		<li id="sexBox" style="display:none;"><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly" value="先生"/><span id="sexIpntSource" style="display:none;">F</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
 		<li id="birthdayBox" style="display:none;"><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
 		<%-- <li id="personBox" style="display:none;"><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly" value="成人"/><span id="personIpntSource" style="display:none;">ADT</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
@@ -1039,7 +1039,7 @@ $(function () {
 	opt.date = {preset : 'date'};
 	opt.datetime = {preset : 'datetime'};
 	opt.time = {preset : 'time'};
-	opt.default = {
+	opt.defaults = {
 		theme: 'android-ics light', //皮肤样式
 		display: 'modal', //显示方式 
 		mode: 'scroller', //日期选择模式
@@ -1051,7 +1051,7 @@ $(function () {
 		endYear: currYear + 10 //结束年份
 	};
 	
-	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['defaults']));
 });
 </script>
 <script src="<%=basePath %>scripts/common/weui/js/weui.min.js"></script>

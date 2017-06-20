@@ -40,12 +40,19 @@ public class LinkManController {
 	public int addInfo(LinkMan lma){
 		try {
 			List<RD_wechatUser> linkm = linkMans.getuserList(lma.getUserName());
+			List<LinkMan> llk = linkMans.isRepeat(lma.getCaseNum(),linkm.get(0).getUserName());
+			if(llk.size()>0){
+				return 2;
+			}
 			if(linkm.size()==1){
 				lma.setOpenID(linkm.get(0).getOpenID());
 				lma.setUserNamePhone(linkm.get(0).getPhoneNum());
 			}
 			lma.setBirthday(lma.getBirthday().substring(0,10));
 			lma.setCaseTime(lma.getCaseTime().substring(0,10));
+			lma.setLinkman(new String(lma.getLinkman().getBytes("ISO8859-1"),"utf-8"));
+			lma.setChinaName(new String(lma.getChinaName().getBytes("ISO8859-1"),"utf-8"));
+			lma.setCommit(new String(lma.getCommit().getBytes("ISO8859-1"),"utf-8"));
 			lma.setCreateTime(new Timestamp(new Date().getTime()));
 			linkMans.addInfo(lma);
 			return 1;
@@ -82,6 +89,9 @@ public class LinkManController {
 				lma.setUserNamePhone(linkm.get(0).getPhoneNum());
 			}
 			lma.setID(id);
+			lma.setLinkman(new String(lma.getLinkman().getBytes("ISO8859-1"),"utf-8"));
+			lma.setChinaName(new String(lma.getChinaName().getBytes("ISO8859-1"),"utf-8"));
+			lma.setCommit(new String(lma.getCommit().getBytes("ISO8859-1"),"utf-8"));
 			linkMans.upInfo(lma);
 			return 1;
 		} catch (Exception e) {

@@ -84,6 +84,11 @@ public class LinkManService {
 		return ulist;
 	}
 	
+	public List<LinkMan> isRepeat(String idCase,String userName){
+		List<LinkMan> ulist = this.gDao.find("FROM LinkMan WHERE caseNum = '"+idCase+"' AND UserName = '"+userName+"'");
+		return ulist;
+	}
+	
 	public Map<String,Object> findPage(int page,int rows,String cusAdmin,String custor,String chinaName,String phoneNum){
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<LinkMan> cList = this.gDao.findByPage("FROM LinkMan WHERE UserName LIKE '%"+cusAdmin+"%' AND linkman LIKE '%"+custor+"%' AND chinaName LIKE '%"+chinaName+"%' AND linkNumber LIKE '%"+phoneNum+"%' ORDER BY createTime DESC", Integer.valueOf(page), Integer.valueOf(rows));

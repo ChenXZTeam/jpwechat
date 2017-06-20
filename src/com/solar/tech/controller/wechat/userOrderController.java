@@ -1,8 +1,6 @@
 package com.solar.tech.controller.wechat;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,21 +23,12 @@ import com.solar.tech.bean.VisaOrder;
 import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.SeatInfoData;
-import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.tpRecords;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.service.PlanTekService;
 import com.solar.tech.service.TpRecordsServices;
 import com.solar.tech.service.userOrderService;
 import com.solar.tech.utils.ECUtils;
-import com.solar.tech.utils.OptimizeECUtils;
-import com.solar.tech.utils.mony_av;
-import com.travelsky.sbeclient.obe.book.BookContact;
-import com.travelsky.sbeclient.obe.book.OSIInfo;
-import com.travelsky.sbeclient.obe.book.PassengerInfo;
-import com.travelsky.sbeclient.obe.book.RMKInfo;
-import com.travelsky.sbeclient.obe.book.SegmentInfo;
-import com.travelsky.sbeclient.obe.response.PnrResponse;
 
 @Controller
 @RequestMapping("/userOrderController")
@@ -51,31 +40,35 @@ public class userOrderController {
 	@Autowired
 	private TpRecordsServices tprecords;	
 	
-	@RequestMapping("/add/addLinkman.action")
+	/**
+	 * 来自用户自己新建的
+	 * @param num
+	 * @return
+	 */
+	@RequestMapping("/addInfoForUser.action")
 	@ResponseBody
-	public Map<String, Object> addLinkman(String linkName,String linkPhoneNum,String sexIpnt,String birthIpnt,String personIpnt,String caseIpnt,String IDcase,HttpSession session){
-		Map<String, Object> map = new HashMap<String, Object>();
-		String openId = (String) session.getAttribute("openId");
-		String userName = (String) session.getAttribute("userName"); 
-		LinkMan linkInfo = new LinkMan();
-		linkInfo.setLinkman(linkName); 
-		linkInfo.setLinkNumber(linkPhoneNum);
-		linkInfo.setSex(sexIpnt);
-		linkInfo.setBirthday(birthIpnt);
-		linkInfo.setPeopleType(personIpnt);
-		linkInfo.setCaseType(caseIpnt);
-		linkInfo.setCaseNum(IDcase);
-		linkInfo.setOpenID(openId);
-		linkInfo.setUserName(userName);
-		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
-		int i = OrderService.addLinkman(linkInfo);
-		if(i==1){
-			map.put("msg", 1);
-			return map;
-		}else{
-			map.put("msg", 0);
-			return map;
+	public int addInfoForUser(LinkMan lma,HttpSession session){
+		try {
+			String userName = (String) session.getAttribute("userName"); 
+			String openID = (String) session.getAttribute("openId");
+			String phoneNumber = (String) session.getAttribute("phoneNumber"); 
+			/*String userName = "ttt"; 
+			String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
+			String phoneNumber = "15799024022"; */
+			lma.setUserNamePhone(phoneNumber);
+			lma.setOpenID(openID);
+			lma.setUserName(userName);
+			lma.setCreateTime(new Timestamp(new Date().getTime()));
+			List<LinkMan> lman = OrderService.isRepeat(lma.getCaseNum(),userName);
+			if(lman.size()>0){ //说明重复了
+				return 2;
+			}
+			OrderService.addLinkman(lma);
+			return 1;
+		} catch (Exception e) {
+			return 0;
 		}
+		
 	}
 	
 	@RequestMapping("/add/order.action")

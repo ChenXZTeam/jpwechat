@@ -40,28 +40,68 @@ $(function(){
 		$(".aBtn").click(function(){
 			var linkName = $("#linkName").val();
 			var linkPhoneNum = $("#linkPhoneNum").val();
-			var sexIpnt = $("#sexIpnt").val();
+			var sexIpnt = $("#sexIpntSource").text().trim();
 			var birthIpnt = $("#birthIpnt").val();
-			var personIpnt = $("#personIpnt").val();
-			var caseIpnt = $("#caseIpnt").text().trim();
+			var caseIpnt = $("#caseIpntSource").text().trim();
 			var IDcase = $("#IDcase").val();
-
+			var chinaName = $("#chinaName").val();
+			var caseTime = $("#caseTime").val();
+			var contryName = $("#contryName").val();
+			if(linkName==""||linkName==null){
+				$.alert("联系人不能为空");
+				return false;
+			}
+			if(linkPhoneNum==""||linkPhoneNum==null){
+				$.alert("联系电话不能为空");
+				return false;
+			}
+			if(birthIpnt==""||birthIpnt==null){
+				$.alert("出生日期不能为空");
+				return false;
+			}
+			if(IDcase==""||IDcase==null){
+				$.alert("证件号码不能为空");
+				return false;
+			}
+			if($("#caseIpntSource").text()=="NI"){
+				if(codeSf()){}else{
+					$.alert("身份证号码输入错误，请认真核实！");
+					return false;
+				}
+			}
+			var peopleType = "";
+			var ages = ageFunc(birthIpnt,nowdate());
+			//旅客类型
+			if(ages<2){
+				peopleType = "INF"; //婴儿  
+			}else if(ages>=2&&ages<=12){
+				peopleType = "CHD"; //儿童
+			}else{
+				peopleType = "ADT"; //成人票
+			}
+			console.log(linkName+","+linkPhoneNum+","+sexIpnt+","+birthIpnt+","+caseIpnt+","+IDcase+","+chinaName+","+caseTime+","+contryName+","+peopleType);
+			//return false;
 			$.ajax({ 
-				url:"<%=basePath%>userOrderController/add/addLinkman.action",
+				url:"<%=basePath%>userOrderController/addInfoForUser.action",
 				type:"POST",
 				data:{
-					"linkName":linkName,
-					"linkPhoneNum":linkPhoneNum,
-					"sexIpnt":sexIpnt,
-					"birthIpnt":birthIpnt,
-					"personIpnt":personIpnt,
-					"caseIpnt":caseIpnt,
-					"IDcase":IDcase
+					"linkman":linkName,
+					"linkNumber":linkPhoneNum,
+					"sex":sexIpnt,
+					"birthday":birthIpnt,
+					"peopleType":peopleType,
+					"caseType":caseIpnt,
+					"caseNum":IDcase,
+					"chinaName":chinaName,
+					"caseTime":caseTime,
+					"belongCtry":contryName
 				},
 				dataType:"json",
 				success: function(data) {
-					if(data.msg==1){
+					if(data==1||data=="1"){
 						window.location.href="<%=basePath %>console/wechat/linkman.jsp";
+					}else if(data==2||data=="2"){
+						$.alert("保存失败，常用联系人已存在！");
 					}else{
 						$.alert("保存失败");
 					}
@@ -76,19 +116,30 @@ $(function(){
 			window.location.href="<%=basePath %>console/wechat/linkman.jsp";
 		});
 		
+		//判断输入的身份证是否正确
+		$("#IDcase").change(function(){
+			//用户选择输入身份证的时候才会校验  选择护照或者其他 不会校验
+			if($("#caseIpntSource").text()=="NI"){
+				if(codeSf()){}else{
+					$.alert("身份证号码输入错误，请认真核实！");
+				}
+			}
+		});
+		
 		$("#sexIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'先生', 
-	            			value:'先生'
+	            			value:'F'
 	        		   },{  
 	        		   		label:'女士',
-	            			value:'女士'
+	            			value:'M'
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
 	            			},  
 	            			onConfirm: function (result) {  
-								$("#sexIpnt").val(result); 
+								$("#sexIpntSource").text(result); 
+								$("#sexIpnt").val(sourceSex(1,result));
 	            			}  
 	        	});  
     	});
@@ -96,19 +147,20 @@ $(function(){
     	$("#personIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'成人', 
-	            			value:'成人'
+	            			value:'ADT'
 	        		   },{  
 	        		   		label:'儿童',
-	            			value:'儿童'
+	            			value:'CHD'
 	        		   },{  
 	        		   		label:'婴儿',
-	            			value:'婴儿'
+	            			value:'INF'
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
 	            			},  
 	            			onConfirm: function (result) {  
-								$("#personIpnt").val(result); 
+								$("#personIpntSource").text(result); 
+								$("#personIpnt").val(sourceSex(2,result)); 
 	            			}  
 	        	});  
     	});
@@ -116,24 +168,126 @@ $(function(){
 		$("#caseIpnt").on('click',function (){  
 	        weui.picker([{
 							label:'身份证', 
-	            			value:'身份证'
+	            			value:'NI'
 	        		   },{  
 	        		   		label:'护照',
-	            			value:'护照'
+	            			value:'PP'
 	        		   },{  
 	        		   		label:'其他',
-	            			value:'其他' 
+	            			value:'ID' 
 	        		   }],{  
 	            			onChange: function (result) {  
 	                			//改变函数
 	            			},  
 	            			onConfirm: function (result) {  
-								$("#caseIpnt").text(result); 
+								$("#caseIpnt").text(sourceSex(3,result)); 
+								$("#caseIpntSource").text(result); 
 	            			}  
 	        	});  
     	});
 		
-	});
+});
+
+function codeSf(){
+	var strVal = $("#IDcase").val();
+    var arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];//加权因子  
+    var arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];//校验码  
+    if(/^\d{17}\d|x$/i.test(strVal)){   
+        var sum = 0, idx;  
+        for(var i = 0; i < strVal.length - 1; i++){  
+            //对前17位数字与权值乘积求和  
+            sum += parseInt(strVal.substr(i, 1), 10) * arrExp[i];  
+        }  
+        //计算模（固定算法）  
+        idx = sum % 11;  
+        //检验第18为是否与校验码相等  
+        return arrValid[idx] == strVal.substr(17, 1).toUpperCase();  
+    }else{ 
+        return false;  
+    }
+}
+
+function ageFunc(strBirthday,goDate){
+    var returnAge;  
+    var strBirthdayArr=strBirthday.split("-");  
+    var birthYear = strBirthdayArr[0];  
+    var birthMonth = strBirthdayArr[1];  
+    var birthDay = strBirthdayArr[2];  
+      
+    d = new Date(goDate);  
+    var nowYear = d.getFullYear();  
+    var nowMonth = d.getMonth() + 1;  
+    var nowDay = d.getDate();  
+      
+    if(nowYear == birthYear){  
+        returnAge = 0;//同年 则为0岁  
+    }  
+    else{  
+        var ageDiff = nowYear - birthYear ; //年之差  
+        if(ageDiff > 0){  
+            if(nowMonth == birthMonth){  
+                var dayDiff = nowDay - birthDay;//日之差  
+                if(dayDiff < 0){  
+                    returnAge = ageDiff - 1;  
+                }  
+                else{  
+                    returnAge = ageDiff ;  
+                }  
+            }  
+            else{  
+                var monthDiff = nowMonth - birthMonth;//月之差  
+                if(monthDiff < 0){  
+                    returnAge = ageDiff - 1;  
+                }  
+                else{  
+                    returnAge = ageDiff ;  
+                }  
+            }  
+        }  
+        else{  
+            returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天  
+        }  
+    }  
+    return returnAge;//返回周岁年龄  
+}
+
+function nowdate(){
+	 var myDate = new Date();
+	 var mon = myDate.getMonth()+1;
+	 var day = myDate.getDate();
+	 mon = mon>10?mon:"0"+mon;
+	 day = day>10?day:"0"+day;
+	 var time = myDate.getFullYear()+"-"+mon+"-"+day;
+	 return time;
+}
+
+function sourceSex(num,val){
+	var value = "";
+	if(num==1){
+		if(val=="F"){
+			value = "先生";
+		}else if(val=="M"){
+			value = "女士";
+		}
+	}else if(num==2){
+		if(val=="ADT"){
+			value = "成人";
+		}else if(val=="CHD"){
+			value = "儿童";
+		}else if(val=="INF"){
+			value = "婴儿";
+		}
+	}else if(num==3){
+		if(val=="NI"){
+			value = "身份证";
+		}else if(val=="PP"){
+			value = "护照";
+		}else if(val=="ID"){
+			value = "其他证件";
+		}
+	}
+	return value;
+}
 </script>
 </head>
 
@@ -141,23 +295,26 @@ $(function(){
 <div class="writInfoBox">
 	<ul>
 		<li><span class="spanTit">联系人：</span><input id="linkName" type="text"/></li>
-		<li><span class="spanTit">联系人电话：</span><input id="linkPhoneNum" type="text"/></li>
-		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
+		<li><span class="spanTit">联系电话：</span><input id="linkPhoneNum" type="text"/></li>
+		<li><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly" value="先生"/><span id="sexIpntSource" style="display:none;">F</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
 		<li><span class="spanTit">出生日期：</span><input type="text" id="birthIpnt" readonly="readonly"/><span style="float:right; margin-top:17px;"><img src="<%=basePath %>console/images/riliImg.png" style="width:15px;"/></span></li>
-		<li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li>
-		<li><span class="spanTit" id="caseIpnt">证件类型</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<%-- <li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
+		<li><span class="spanTit" id="caseIpnt">身份证</span><span id="caseIpntSource" style="display:none;">NI</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<li><span class="spanTit">中文姓名：</span><input id="chinaName" type="text"/></li>
+		<li><span class="spanTit">证件有效期：</span><input id="caseTime" type="text"/></li>
+		<li><span class="spanTit">国籍：</span><input id="contryName" type="text"/></li>
 	</ul>
 </div>
 <div class="btnBox"><a id="btnQ">取消</a><a class="aBtn">保存</a></div>
 
 <script>
-	$(function () {
+$(function () {
 	var currYear = (new Date()).getFullYear();	
 	var opt={};
 	opt.date = {preset : 'date'};
 	opt.datetime = {preset : 'datetime'};
 	opt.time = {preset : 'time'};
-	opt.default = {
+	opt.defaults = {
 		theme: 'android-ics light', //皮肤样式
 		display: 'modal', //显示方式 
 		mode: 'scroller', //日期选择模式
@@ -169,7 +326,7 @@ $(function(){
 		endYear: currYear + 10 //结束年份
 	};
 	
-	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['defaults']));
 });
 </script>
 <script src="<%=basePath %>scripts/common/weui/js/weui.min.js"></script>

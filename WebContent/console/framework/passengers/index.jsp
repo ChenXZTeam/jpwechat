@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <script>
 $(function(){
-	$("#grideBox").css("height",$(window).height()-41);
+	$("#grideBox").css("height",$(window).height()-90);
 	$('#numListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -68,9 +68,16 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'sex', title: '性别',align:'center', width: '5%'},
-	        { field: 'belongCtry', title: '国籍',align:'center', width: '5%'},
-	        { field: 'openID', title: '微信openID',align:'center', width: '15%'},
+	        { field: 'sex', title: '性别',align:'center', width: '5%',
+	        	formatter:function(value,rec,index){  
+	                if(value=="F"){
+	               	 	return "男";
+	                }else if(value=="M"){
+	               	 	return "女";
+	                }
+          	  	}
+	        },
+	        { field: 'belongCtry', title: '国籍',align:'center', width: '15%'},
 	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
 	});
@@ -140,7 +147,9 @@ function saveBean(){
 		   success: function(data){
 			   if(data==1||data=="1"){
 				   $('#lvkeInfoBox').dialog('close');        // close the dialog
-				    $('#numListBox').datagrid('reload');    // reload the user data
+				   $('#numListBox').datagrid('reload');    // reload the user data
+			   }else if(data==2||data=="2"){
+				   $.messager.alert('操作提示', "操作失败，联系人已存在", 'warning');
 			   }else{
 				   $.messager.alert('操作提示', "操作失败", 'warning');
 			   }
@@ -158,14 +167,19 @@ function removeit(){
 	for(var i=0; i<rows.length; i++){
 		numStr += rows[i].id+",";
 	}
-	$.post("<%=basePath%>framework/LinkMan/delInfo.action",{"num":numStr.substring(0,numStr.length-1)},function(result){
-		if(result==1||result=="1"){
-			$('#numListBox').datagrid('reload');
-		}else{
-			$.messager.alert('操作提示', "删除失败", 'warning');
+	$.messager.confirm('确认', '确定要删除已选中的数据吗？', function (r) {
+		if (r) {
+			$.post("<%=basePath%>framework/LinkMan/delInfo.action",{"num":numStr.substring(0,numStr.length-1)},function(result){
+				if(result==1||result=="1"){
+					$('#numListBox').datagrid('reload');
+				}else{
+					$.messager.alert('操作提示', "删除失败", 'warning');
+				}
+				
+			});
 		}
-		
 	});
+	
 }
 function reset(){
 	$("#cusAdmin").textbox("setValue","");
@@ -225,9 +239,16 @@ function searchFunc(){
 	                }
           	  	}
 	        },
-	        { field: 'sex', title: '性别',align:'center', width: '5%'},
-	        { field: 'belongCtry', title: '国籍',align:'center', width: '5%'},
-	        { field: 'openID', title: '微信openID',align:'center', width: '15%'},
+	        { field: 'sex', title: '性别',align:'center', width: '5%',
+	        	formatter:function(value,rec,index){  
+	                if(value=="F"){
+	               	 	return "男";
+	                }else if(value=="M"){
+	               	 	return "女";
+	                }
+          	  	}
+	        },
+	        { field: 'belongCtry', title: '国籍',align:'center', width: '15%'},
 	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
 	});
@@ -267,11 +288,32 @@ Date.prototype.format = function (format) {
 } 
 
 $.extend($.fn.validatebox.defaults.rules, {  
+	 IDcard: {
+        validator:function(value){
+        	var strVal = value;
+            var arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];//加权因子  
+            var arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];//校验码  
+            if(/^\d{17}\d|x$/i.test(strVal)){   
+                var sum = 0, idx;  
+                for(var i = 0; i < strVal.length - 1; i++){  
+                    //对前17位数字与权值乘积求和  
+                    sum += parseInt(strVal.substr(i, 1), 10) * arrExp[i];  
+                }  
+                //计算模（固定算法）  
+                idx = sum % 11;  
+                //检验第18为是否与校验码相等  
+                return arrValid[idx] == strVal.substr(17, 1).toUpperCase();  
+            }else{ 
+                return false;  
+            }
+        },
+        message:'身份证格式错误'
+     },
 	 phoneNum: { //验证手机号   
 	        validator: function(value, param){ 
 	         	return /^1[3-8]+\d{9}$/.test(value);
 	        },    
-	        message: '请输入正确的手机号码。'   
+	        message: '请输入正确的手机号码'   
 	 }
 
 });
@@ -368,7 +410,7 @@ $(document).ready(function(){
       <a href="javascript:void(0)" class="easyui-linkbutton c6" id="importExcel" iconCls="icon-ok" style="margin-top:20px;width: 90px">确定</a>
       <a href="javascript:void(0)" class="easyui-linkbutton"	iconCls="icon-cancel" onclick="javascript:$('#importdlg').dialog('close')" style="width: 90px; margin-top:20px">取消</a>
 </div>
-<div id="lvkeInfoBox" class="easyui-dialog" style="width:510px; padding:30px;" closed="true" buttons="#dlg-buttons">
+<div id="lvkeInfoBox" class="easyui-dialog" style="width:373px; padding:30px;" closed="true" buttons="#dlg-buttons">
 	<form id="lvkeInfoForm">
 		<table>
 			<tr style="display:none;">
@@ -399,7 +441,7 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>证件号码：</td>
-				<td><input name="caseNum" class="easyui-textbox" data-options="required:true"/></td>
+				<td><input name="caseNum" class="easyui-textbox" data-options="required:true,validType:['IDcard']"/></td>
 			</tr>
 			<tr>
 				<td>中文姓名：</td>
@@ -407,7 +449,7 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>出生日期：</td>
-				<td><input id="birthday" name="birthday" class="easyui-datebox" style="width:173px;"/></td>
+				<td><input id="birthday" name="birthday" class="easyui-datebox" style="width:173px;" data-options="required:true"/></td>
 			</tr>
 			<tr>
 				<td>证件有效期：</td>
@@ -431,15 +473,15 @@ $(document).ready(function(){
 				<td>性别：</td>
 				<td>
 					<select id="sex" name="sex" class="easyui-combobox" style="width:173px;" panelHeight="auto">
-						<option value="男">男</option>
-						<option value="女">女</option>
+						<option value="F">男</option>
+						<option value="M">女</option>
 					</select>
 				</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td>备注信息：</td>
 				<td><input name="commit" class="easyui-textbox" data-options="multiline:true" style="width:350px; height:150px;"/></td>
-			</tr>
+			</tr> -->
 		</table>
 	</form>
 </div>

@@ -428,6 +428,11 @@ public class userOrderService {
 				return 0;
 			}
 		}
+		
+		public List<LinkMan> isRepeat(String idCase,String userName){
+			List<LinkMan> ulist = this.gDao.find("FROM LinkMan WHERE caseNum = '"+idCase+"' AND UserName = '"+userName+"'");
+			return ulist;
+		}
 
 		/**
 		 * 微信用户删除常用联系人
