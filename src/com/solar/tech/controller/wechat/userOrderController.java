@@ -26,8 +26,10 @@ import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
+import com.solar.tech.bean.entity.tpRecords;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.service.PlanTekService;
+import com.solar.tech.service.TpRecordsServices;
 import com.solar.tech.service.userOrderService;
 import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
@@ -46,6 +48,8 @@ public class userOrderController {
 	private userOrderService OrderService;
 	@Autowired
 	private PlanTekService PlanTekServ;
+	@Autowired
+	private TpRecordsServices tprecords;	
 	
 	@RequestMapping("/add/addLinkman.action")
 	@ResponseBody
@@ -399,12 +403,32 @@ public class userOrderController {
 	//退票的方法
 	@RequestMapping("/signout/order.action")
 	@ResponseBody
-	public Map<String, Object> tpTicket(String pnrNo, String ID){
-		Map<String, Object> map = new HashMap<String, Object>();
+	public int tpTicket(String pnrNo, String ID){
 		try {
+			//更新订单表中的退票状态
 			OrderService.tpServi(ID,pnrNo);
-		} catch (Exception e) {}
-		return map;
+			//拿出该订单表
+			List<userOrderInfo> luso = OrderService.findbyPnr(ID, pnrNo);
+			userOrderInfo useror = luso.get(0);
+			//把这个订单表放到退票管理的订单表中
+			tpRecords trec = new tpRecords();
+			trec.setMatherUuid(useror.getID());
+			trec.setChufCity(useror.getChufCity());
+			trec.setChufTime(useror.getChufTime());
+			trec.setDaodCity(useror.getDaodCity());
+			trec.setHangbanNum(useror.getHangbanNum());
+			trec.setIdcase(useror.getIDcase());
+			trec.setLinkName(useror.getLinkName());
+			trec.setPnr(useror.getPNR());
+			trec.setTelNumber(useror.getTelNum());
+			trec.setPnumber(useror.getLinkPhoneNum());
+			trec.setCreateTime(new Timestamp(new Date().getTime()));
+			trec.setTpStatus("1");
+			tprecords.addtprecords(trec);//保存
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 	
 	//加载该用户的全部订单

@@ -1,5 +1,7 @@
 package com.solar.tech.bean.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,6 +51,12 @@ public class tpRecords {
 	
 	@Column(name="bornStatus",length=100)
 	private String bornStatus;
+	
+	@Column(name="matherUuid")
+	private String matherUuid;
+	
+	@Column(name="createTime")
+	private Timestamp createTime;
 
 	public String getID() {
 		return ID;
@@ -146,6 +154,20 @@ public class tpRecords {
 		this.bornStatus = bornStatus;
 	}
 
-	
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getMatherUuid() {
+		return matherUuid;
+	}
+
+	public void setMatherUuid(String matherUuid) {
+		this.matherUuid = matherUuid;
+	}
 	
 }

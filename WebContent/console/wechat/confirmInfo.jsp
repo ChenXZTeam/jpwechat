@@ -338,7 +338,8 @@ $(function(){
 		
 		//确认付款
 		$(".truePayBtn").click(function(){
-			var a = $("#turmonp").text();
+			$.alert("暂未开放支付功能！");	
+			return false;
 			var yiwai = 0,yanwu = 0;
 			if($(".flindYw").attr("checked")=="checked")yiwai = 1;
 			if($(".delayBx").attr("checked")=="checked")yanwu = 1;

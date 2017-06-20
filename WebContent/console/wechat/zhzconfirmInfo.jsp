@@ -449,6 +449,8 @@ $(function(){
 	
 	//确认付款
 	$(".truePayBtn").click(function(){
+			$.alert("暂未开放支付功能！");	
+			return false;
 			var yiwai = 0,yanwu = 0;
 			if($(".flindYwzhz").attr("checked")=="checked")yiwai = 1;
 			if($(".delayBxzhz").attr("checked")=="checked")yanwu = 1;

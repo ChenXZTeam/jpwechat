@@ -15,19 +15,21 @@ ul li{list-style:none;}
 
 	#header{
 		/* width: 100%; */
-		height: 65px;
+		height: 79px;
 		background-color: rgb(57,110,165);
 		background: url("<%=basePath %>images/framework/bg.jpg") repeat-x 0px 0px;
 	}
 	.logo{
+	    margin-top: 17px;
+    	margin-left: 20px;
 		width:295px;
 		height: 59px;
-		background: url("<%=basePath %>images/framework/logo.png") no-repeat 0px 0px;
+		background: url("<%=basePath %>images/framework/add.png") no-repeat 0px 0px;
 		float: left;
 	}
 	#header ul{
-		margin-left: 1156px;
-
+		overflow: hidden;
+    	float: right;
 	}
 	#header ul li{
 		float: left;

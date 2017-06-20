@@ -299,8 +299,13 @@ public class userOrderService {
 		 * @param pnr
 		 */
 		public void tpServi(String uuid, String pnr){
-			String sql="UPDATE persondata SET age=age*2, age=age+1";
+			String sql="UPDATE userorderinfo SET tpStatus = '1' WHERE ID = '"+uuid+"' AND PNR = '"+pnr+"'";
 			this.gDao.executeJDBCSql(sql);
+		}
+		
+		public List<userOrderInfo> findbyPnr(String uuid,String pnr){
+			List<userOrderInfo> luso = this.gDao.find("FROM userOrderInfo WHERE ID = '"+uuid+"' AND PNR = '"+pnr+"'");
+			return luso;
 		}
 		
 		/**
@@ -651,6 +656,7 @@ public class userOrderService {
 			oderInfo.setTakePlane("0"); //是否出票
 			oderInfo.setAdminDel("0"); //默认不删除
 			oderInfo.setConsoleStatus("0"); //未打印
+			oderInfo.setTpStatus("0"); //退票标识（未退票）
 			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
 			String orderNumFirst = createOrderNum("RDOD", 8);
 			oderInfo.setOrderNum(orderNumFirst); //设置流水号
