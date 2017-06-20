@@ -41,7 +41,8 @@
 	  margin-left:7px;
 	}
 	.listClass li img{
-	  width:18px
+	  width:23px;
+	  height:23px;
 	}
 </style>
 
@@ -101,25 +102,25 @@
 	</form>
  <ul class="listClass" style="margin-top:-140px;margin-left:40px">	
   <li onclick="TP1()">
-	<img src="<%=basePath%>/console/images/7-1.png"/>
+	<img src="<%=basePath%>/console/images/name-2.png"/>
   </li>
   <li onclick="TP2()">
-	<img src="<%=basePath%>/console/images/6-1.png"/>
+	<img src="<%=basePath%>/console/images/numberp-1.png"/>
   </li>
   <li onclick="TP3()">
-	<img src="<%=basePath%>/console/images/3-1.png"/>
+	<img src="<%=basePath%>/console/images/cc-3.png"/>
   </li>
   <li onclick="TP4()">
-	<img src="<%=basePath%>/console/images/4-1.png"/>
+	<img src="<%=basePath%>/console/images/dc-4.png"/>
   </li>
   <li onclick="TP5()">
-	<img src="<%=basePath%>/console/images/2-1.png"/>
+	<img src="<%=basePath%>/console/images/ct-5.png"/>
   </li>
   <li onclick="TP6()">
-	<img src="<%=basePath%>/console/images/9-1.png"/>
+	<img src="<%=basePath%>/console/images/dt-6.png"/>
   </li>
   <li onclick="TP7()">
-	<img src="<%=basePath%>/console/images/8-1.png"/>
+	<img src="<%=basePath%>/console/images/sum-8.png"/>
   </li>
 </ul>
 </div>

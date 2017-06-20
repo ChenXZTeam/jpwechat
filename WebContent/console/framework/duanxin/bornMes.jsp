@@ -45,9 +45,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						             <option value="无票价模板">无票价模板</option>
 					         </select> 
                           </span>
-                           <span style="position:relative;margin-left:1100px; text-align:center; top:-27px; display:block;  overflow:hidden;border-radius:5px;">
-			    	          <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="reset()"  style="width:100px;height: 32px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
-                                 <img src="<%=basePath%>/console/images/res.png" style="width:20px;height:25px;margin-left:-30px;"/>
+                           <span style="position:relative;margin-left:1050px; text-align:center; top:-27px; display:block;  overflow:hidden;">
+			    	          <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="reset()"  style="width:80px;height: 28px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
+                                 
                                  <span class="img_class">重置</span>
                               </a>
                           </span>
@@ -76,9 +76,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                <lable class="font-style">电话号码:</lable>
                                <input id="pnumber" class="easyui-textbox" data-options="prompt:'请输入电话号码'" style="width:150px;height:25px"></input>
                          </span>
-                         <span style="position:relative;margin-left:1100px; text-align:center; top:-27px; display:block;  overflow:hidden;border-radius:5px;">
-                               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false"  class="btn_find"  onclick="query()" style="width:100px;height:32px;background-color:#01B5E6;border:none;cursor:pointer;outline:none;margin-left:15px;color:#fff;display:block;float:left;line-height:30px;text-decoration:none;border-radius:5px;">
-                                  <img src="<%=basePath %>/console/images/find.png" style="width:20px;height:25px;margin-left:-30px;" />
+                         <span style="position:relative;margin-left:1050px; text-align:center; top:-27px; display:block;  overflow:hidden;">
+                               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false"  class="btn_find"  onclick="query()" style="width:80px;height:28px;background-color:#01B5E6;border:none;cursor:pointer;outline:none;margin-left:15px;color:#fff;display:block;float:left;line-height:30px;text-decoration:none;border-radius:5px;">
+                                 
 						          <span class="img_class">生成</span>
                                </a>
                          </span>

@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 查找手机号码 -->
 <div id="findBox" style="padding:5px; overflow:hidden;">
 	<div style="float:left;"><input type="text" id="phoneNumBox" placeholder="请输入手机号码" style="height:25px; padding-left:10px; outline:none;"/></div>
-	<div style="float:left; margin-left:15px;"><button id="findBtn" style="height:31px; padding:0px 25px; cursor:pointer; background-color:blue; color:#fff; border:none;">查找</button></div>
+	<div style="float:left; margin-left:15px;"><button id="findBtn" style="height:31px; padding:0px 25px; cursor:pointer; background-color:#01B5E6; color:#fff; border:none;border-radius:5px;">查找</button></div>
 </div>
 
 <!-- 短信的按钮
