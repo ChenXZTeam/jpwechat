@@ -40,13 +40,11 @@ public class RDwechatUserController {
 		System.out.println("userName: "+userName+", password: "+password+", userPhone: "+userPhone+", aoqing: "+aoqing);
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openId = (String) session.getAttribute("openId");
-		session.setAttribute("userPhone", userPhone);
-		session.setAttribute("userName", userName);
 		//对密码进行加密
 		String newPassWord=Current.md5(password);
-		
-		if(openId == null) {
-			System.out.println(openId);
+		if(openId == null||"".equals(openId)) {
+			map.put("msg",0);
+			System.out.println("注册失败");
 		}
 		
 		RD_wechatUser RD_User= new RD_wechatUser();
@@ -61,6 +59,8 @@ public class RDwechatUserController {
 		
 		int i = RDUserService.addUser(RD_User);
 		if(i == 1) {
+			session.setAttribute("phoneNumber", userPhone);
+			session.setAttribute("userName", userName);
 			map.put("msg",1);
 			System.out.println("注册成功");
 		}else{

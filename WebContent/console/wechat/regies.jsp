@@ -49,9 +49,9 @@
 		<div class="divInput">
 			<input type="password" id="passWordAg" placeholder="请再次输入密码"/>
 		</div>
-		<div class="divInput" style="border:none;">
+		<!-- <div class="divInput" style="border:none;">
 			<input type="text" id="Aoqing" placeholder="邀请码"/>
-		</div>
+		</div> -->
 		<span id="spanMsg" style="color:#ff0000; font-size:15px; margin-top:5px;"></span>
 		<div class="buttonRegist">
 			<a>注 册</a>		
@@ -171,7 +171,7 @@
 				var userPhone=$("#userPhone").val();
 				var password=$("#passWord").val();
 				var passwordAgr=$("#passWordAg").val();
-				var aoqing=$("#Aoqing").val();
+				/* var aoqing=$("#Aoqing").val(); */
 				
 				//用户名是否被注册
 				$.ajax({
@@ -201,7 +201,7 @@
 									if(res.msg==1){
 										$("#spanMsg").text("");
 										//判断信息是否填写完成
-										if(userName==""||userPhone==""||password==""||passwordAgr==""||aoqing==""){
+										if(userName==""||userPhone==""||password==""||passwordAgr==""){
 											$.alert("信息填写未完成","填写错误");
 											fale=false;
 											return false;
@@ -233,13 +233,13 @@
 												url: "<%=basePath %>/wechatController/register/add.action",
 												type: "POST",
 												data: {
-													"userName":userName, "password":password, "userPhone":userPhone,"aoqing":aoqing
+													"userName":userName, "password":password, "userPhone":userPhone
 												},
 												dataType: "json",
 												success: function(result) {
 													if(result.msg==1){
 														$.alert("注册成功","消息提醒");
-														window.location.href="<%=basePath%>console/wechat/logo.jsp";
+														window.location.href="<%=basePath%>console/wechat/planTek.jsp";
 													}else{
 														$.alert("注册错误","消息提醒");
 													}							
@@ -288,35 +288,6 @@
 				return false;
 			}					    
 		}
-		
-		//检查用户名或者手机是否被注册
-<%-- 		function isEixst(num){
-			var userDate='';
-			//var IsCanGo = false;
-			if(num==1){
-				userDate=$("#userName").val();
-			}else if(num==0){
-				userDate=$("#userPhone").val();
-			}			
-			$.ajax({
-					url:"<%=basePath%>/wechatController/register/userNameIsExist.action",
-					type:"POST",
-					data:{"userName":userDate},
-					dataType:"json",
-					success:function(res){
-						if(res.msg==1){
-							$("#spanMsg").text("");
-							fale=true;
-						}else if(res.msg==0){
-							$("#spanMsg").text("");
-							$("#spanMsg").text("用户名/手机号码已存在，可以进行登录");
-							fale=false;
-							return false;
-						}
-					},error:function(){
-					}
-			});
-		} --%>
 		
 		// 加载界面的时候清空原有的数据
 		function qingkong(){
