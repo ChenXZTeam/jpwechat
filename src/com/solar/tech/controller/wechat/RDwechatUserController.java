@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.service.RDwechatUserService;
 import com.solar.tech.dbutil.Encode;
@@ -132,15 +133,25 @@ public class RDwechatUserController {
 		List<RD_wechatUser> YesOrNo = RDUserService.loginService(userName,PassWords);  
 		if(YesOrNo.size()>0){
 			session.setAttribute("userName", userName);
-			session.setAttribute("invId", YesOrNo.get(0).getInCodeId());
-			String path = httpReq.getContextPath();
-		    String basePath = httpReq.getScheme() + "://" + httpReq.getServerName() + ":" + httpReq.getServerPort() + path + "/";
-		    map.put("url", basePath+"wechatController/page/index.action");//传递地址到前台，实现页面的跳转
-			map.put("userInfo", YesOrNo);
+			session.setAttribute("openId", YesOrNo.get(0).getOpenID());
+			//session.setAttribute("invId", YesOrNo.get(0).getInCodeId());
+			//String path = httpReq.getContextPath();
+		    //String basePath = httpReq.getScheme() + "://" + httpReq.getServerName() + ":" + httpReq.getServerPort() + path + "/";
+		    //map.put("url", basePath+"wechatController/page/index.action");//传递地址到前台，实现页面的跳转
+			//map.put("userInfo", YesOrNo);
+			List<LinkMan> lnkInfo = RDUserService.psgByuser(userName);
+			map.put("linkPeop", lnkInfo);
 		    map.put("msg", 1);
 		}else{
 			map.put("msg", 0);
 		}		   
 		return map;
+	}
+	
+	@RequestMapping({"/wechat/getlinkPsg.action"})
+	@ResponseBody
+	public List<LinkMan> getlinkPsg(String userName){
+		List<LinkMan> lnkInfo = RDUserService.psgByuser(userName);
+		return lnkInfo;
 	}
 }

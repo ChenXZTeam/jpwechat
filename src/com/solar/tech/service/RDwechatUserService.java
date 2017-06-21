@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.dao.GenericDao;
 
@@ -64,6 +65,21 @@ public class RDwechatUserService {
 	public List<RD_wechatUser> loginService(String userName,String password){
 		String hql="from RD_wechatUser u where (u.UserName='"+userName+"' OR u.PhoneNum='"+userName+"') AND u.PassWord='"+password+"'";
 		List<RD_wechatUser> list=gDao.find(hql);
+		if(list.size()>0){
+			return list;
+		}
+		return null;
+	}
+	
+	/**
+	 * 根据用户名查找常用联系人
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	public List<LinkMan> psgByuser(String userName){
+		String hql="FROM LinkMan WHERE UserName = '"+userName+"'";
+		List<LinkMan> list=gDao.find(hql);
 		if(list.size()>0){
 			return list;
 		}

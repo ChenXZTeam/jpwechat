@@ -68,6 +68,9 @@ $(function(){
 					$.alert("身份证号码输入错误，请认真核实！");
 					return false;
 				}
+				if(caseAndbirth(IDcase,birthIpnt)){}else{
+					return false;
+				}
 			}
 			var peopleType = "";
 			var ages = ageFunc(birthIpnt,nowdate());
@@ -288,6 +291,17 @@ function sourceSex(num,val){
 	}
 	return value;
 }
+
+function caseAndbirth(caseNum,birthday){
+	var birth = caseNum.substring(6,14);
+	var birthdayNumXX = birth.substring(0,4)+"-"+birth.substring(4,6)+"-"+birth.substring(6,8);
+	if(birthdayNumXX==birthday){
+		return true;
+	}else{
+		$.alert("您的生日和身份证不匹配");
+		return false;
+	}
+}
 </script>
 </head>
 
@@ -327,6 +341,7 @@ $(function () {
 	};
 	
 	$("#birthIpnt").mobiscroll($.extend(opt['date'], opt['defaults']));
+	$("#caseTime").mobiscroll($.extend(opt['date'], opt['defaults']));
 });
 </script>
 <script src="<%=basePath %>scripts/common/weui/js/weui.min.js"></script>

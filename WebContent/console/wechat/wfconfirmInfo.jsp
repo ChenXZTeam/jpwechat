@@ -121,6 +121,8 @@ String rdate=request.getParameter("rdate");
 	#trueOrderInfo .InfoMesBox .InfoUserMess ul li.BXliClass{ padding-top:5px;}
 	.payCostMoney{ font-size:15px; color:#C70900; font-weight:bold;}
 	#trueOrderInfo .InfoMesBox .InfoUserMess ul li .InfoValueClass{color:#666666;}
+	
+	#ulText li{overflow: hidden;}
 </style>
 </head>
 
@@ -141,7 +143,7 @@ $(function(){
 	var pntrtw = "";
 	var costvar = 0;
 	
-	console.log(uuid1+","+uuid2+","+canbin1+","+canbin2+","+gdate+","+rdate); 
+	//console.log(uuid1+","+uuid2+","+canbin1+","+canbin2+","+gdate+","+rdate); 
 	//获取选中的航班
 	$.ajax({
 		url: "<%=basePath %>wechatController/find/byuuidTwo.action",
@@ -154,7 +156,7 @@ $(function(){
 		},
 		dataType: "json",
 		success: function(result) {
-			console.log(result);
+			//console.log(result);
 			orgtt = result.dataObj1[0].orgcity;
 			dsttt = result.dataObj1[0].dstcity; 
 			
@@ -222,9 +224,20 @@ $(function(){
 	<%-- var jin = "<%=jin%>" --%>
 	if(username==""||username=="null"||username==null){
 		$("#touMbackground").css("display","block");
-	}<%-- else{
-		getcode("<%=jin%>");
-	} --%>
+	}else{
+		<%-- getcode("<%=jin%>"); --%>
+		$.post("<%=basePath%>wechatController/wechat/getlinkPsg.action",{userName:username},function(res){
+			var jsonDate = JSON.parse(res);
+			//console.log(jsonDate);
+			//加载常用旅客
+			$("#ulText").html("");
+			for(var i=0; i<jsonDate.length; i++){
+				var liStr = '<li><input class="radioClass" type="radio" name="radioName" style="float:left; margin-top:6px;"><span style="display:block; float:left; margin-left:7px;">'+jsonDate[i].linkman+'</span><span class="psgInfo" style="display:none;">'+JSON.stringify(jsonDate[i])+'</span></li>';
+				$("#ulText").append(liStr);	
+			}
+			$(".radioClass").eq(0).attr("checked",'checked');
+		});
+	}
 	
 	//登录
 	$(".loginBtn").click(function(){
@@ -239,15 +252,21 @@ $(function(){
 					dataType: "json",
 					success: function(result) {
 						if(result.msg==1){	
-							ivid = (result.userInfo)[0].inCodeId;
-							//getcode(ivid);					
+							//ivid = (result.userInfo)[0].inCodeId;
+							//getcode(ivid);	
+							//加载常用旅客
+							$("#ulText").html("");
+							for(var i=0; i<(result.linkPeop).length; i++){
+								var liStr = '<li><input class="radioClass" type="radio" name="radioName" style="float:left; margin-top:6px;"><span style="display:block; float:left; margin-left:7px;">'+(result.linkPeop)[i].linkman+'</span><span class="psgInfo" style="display:none;">'+JSON.stringify((result.linkPeop)[i])+'</span></li>';
+								$("#ulText").append(liStr);	
+							}						
+							$(".radioClass").eq(0).attr("checked",'checked');
 							//上面的条件正确时候改变按钮格式
 							$(".loginBtn").css("background-color","#dddddd");
 							$(".loginBtn").css("color","#666666");
 							$(".loginBtn").css("border","#cccccc solid 1px");
 							$(".loginBtn").html("");
 							$(".loginBtn").html("加载中...");
-							$.alert("登录成功，可以订票咯^_^");
 							$("#touMbackground").css("display","none");
 						}else{
 							$.alert("登录失败");
@@ -366,7 +385,7 @@ $(function(){
 					beforeSend:function(){$("#loading").css("display","block");},
 					complete:function(){$("#loading").css("display","none");},
 					success:function(result){
-						console.log(result);
+						//console.log(result);
 						var resDate = result.resAlert; 
 						$("#commitRes").html("");
 						var tr = '<tr><td>'+findByCity(orgtt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(dsttt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[0].isOk)+'</td></tr>';
@@ -376,7 +395,7 @@ $(function(){
 						if(resDate[0].isOk=="1"&&resDate[1].isOk=="1"){
 							pntrer = resDate[0].pntr;
 							pntrtw = resDate[1].pntr;
-							console.log("订单生成之后获取到返回的pnr，用于支付："+pntrer+"/"+pntrtw);
+							//console.log("订单生成之后获取到返回的pnr，用于支付："+pntrer+"/"+pntrtw);
 							$("#trueOrderInfo").css("display","block");
 							$("html").css("height","100%");
 							$("html").css("overflow","hidden");
@@ -561,6 +580,17 @@ $(function(){
 		}
 	});
 	
+	$("#quxiaoBtn").click(function(){
+		$(".moveBox").css("display","none");
+	});
+	
+	var heightscr = window.screen.height;
+	if(heightscr<700){
+		$(".moveBox").css("min-height",700);
+	}else{
+		$(".moveBox").css("min-height",heightscr);
+	}
+	
 });
 
 function codeSf(){
@@ -580,6 +610,10 @@ function codeSf(){
     }else{ 
         return false;  
     }
+}
+
+function addLink(){
+	$(".moveBox").css("display","block");
 }
 
 function sourceSex(num,val){
@@ -608,6 +642,33 @@ function sourceSex(num,val){
 		}
 	}
 	return value;
+}
+
+function chooseInfo(){
+	var choInfo = $(".radioClass:checked").siblings(".psgInfo").text();
+	var jsonDate = JSON.parse(choInfo);
+	//console.log(jsonDate);
+	if(jsonDate.caseType!="NI"){
+		$("#linkName").val(jsonDate.linkman);
+		$("#phoneNum").val(jsonDate.linkNumber);
+		$("#caseIpnt").text(sourceSex(3,jsonDate.caseType));
+		$("#caseIpntSource").text(jsonDate.caseType);
+		$("#sexIpnt").val(sourceSex(1,jsonDate.sex));
+		$("#sexIpntSource").text(jsonDate.sex);
+		$("#birthIpnt").val(jsonDate.birthday);
+		$("#IDcase").val(jsonDate.caseNum);
+		$("#sexBox").css("display","block");
+		$("#birthdayBox").css("display","block");
+	}else{
+		$("#linkName").val(jsonDate.linkman);
+		$("#phoneNum").val(jsonDate.linkNumber);
+		$("#caseIpnt").text(sourceSex(3,jsonDate.caseType));
+		$("#caseIpntSource").text(jsonDate.caseType);
+		$("#IDcase").val(jsonDate.caseNum);
+		$("#sexBox").css("display","none");
+		$("#birthdayBox").css("display","none");
+	}
+	$(".moveBox").css("display","none");
 }
 
 //根据时间获取星期
@@ -759,7 +820,7 @@ function findbb(airline1,canbin1,org1,dst1,dateTime1,airline2,canbin2,org2,dst2,
 	$.post("<%=basePath%>wechatController/find/findBytwo.action",{airline1:airline1,canbin1:canbin1,org1:org1,dst1:dst1,dateTime1:dateTime1,airline2:airline2,canbin2:canbin2,org2:org2,dst2:dst2,dateTime2:dateTime2,pstType:pstType},function(result){
 		$("#loadMoney").css("display","none");
 		var obj = JSON.parse(result);
-	    console.log(obj);
+	    //console.log(obj);
 		var cp = 0;
 	    if("IN"==pstType){
 			$("#pstTypeName").text("婴儿票");
@@ -786,7 +847,7 @@ function getcode(inc){
 			dataType:"json",
 			success:function(result){
 				var date = result.rows;
-				console.log(date);
+				//console.log(date);
 				if(date.length>0){
 					$("#zhekouType").text(date[0].type);
 					$.alert("您有优惠券可以使用哟！");
@@ -811,6 +872,7 @@ function getcode(inc){
 			}
 	});
 }
+
 </script>
 <div class="fildBox">
 	<div class="timeBox"><span class="depdayone">01-05</span><span class="weekdayone">周四</span><span class="plandepone">香港</span><span>—</span><span class="planarrone">杭州</span><span style="clear:both;"></span></div>
@@ -867,6 +929,7 @@ function getcode(inc){
 
 <!-- 填写资料 -->
 <div class="writInfoBox">
+	<div style="text-align:right; margin-top:10px;"><a style="font-size:13px; color:blue;" onclick="addLink()" >+选择常用联系人</a></div>
 	<ul>
 		<li><span class="spanTit">姓名：</span><input id="linkName" type="text"/><input type="hidden" id="firNumorder"/></li>
 		<li id="sexBox" style="display:none;"><span class="spanTit">性别：</span><input type="text" id="sexIpnt" readonly="readonly"/><span id="sexIpntSource" style="display:none;">F</span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span><input type="hidden" id="secdNumorder"/></li>
@@ -999,6 +1062,16 @@ function getcode(inc){
 		正在加载特殊旅客的票价...
 	</div>
 </div>
+<div class="moveBox" style="display:none; width:100%; z-index:2; border:#000; position: absolute; background:#fff; top: 0px; box-shadow: 0px -2px 5px #e1e1e1; overflow: auto; padding-bottom: 20px;">
+	<div style="background:#007AFF; text-align:center; padding:10px;"><a style="color:#fff; font-size:18px;">常用联系人</a></div>
+	<ul id="ulText" style="list-style-type:none; margin:20px;"></ul>
+	<div style="clear:both;"></div> 
+	<div>
+		<div id="quxiaoBtn" style="float:left; margin-left:5%; width:40%; line-height:35px; border-radius:5px; background:#cccccc; color:#fff; text-align:center;">取消</div>
+		<div style="float:right; margin-right:5%; width:40%; line-height:35px; border-radius:5px; background:#007AFF; color:#fff; text-align:center;" onclick="chooseInfo()">确定</div>
+		<div style="clear:both;"></div>
+	</div>
+</div>
 <!-- 加载等待界面 -->	
 	<div id="loading">
 		<div id="loading-center">
@@ -1008,14 +1081,7 @@ function getcode(inc){
 				<div class="object" id="object_two"></div>
 				<div class="object" id="object_one"></div>
 			</div>
-			<span class="textMove" id="one">广</span>
-			<span class="textMove" id="two">州</span>
-			<span class="textMove" id="three">仁</span>
-			<span class="textMove" id="four">德</span>
-			<span class="textMove" id="five">机</span>
-			<span class="textMove" id="six">票</span>
-			<span class="textMove" id="seven">系</span>
-			<span class="textMove" id="eight">统</span>
+			<span class="textMove">广州仁德机票系统</span>
 		</div> 
 	</div>
 <script>

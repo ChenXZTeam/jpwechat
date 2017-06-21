@@ -21,7 +21,7 @@ body{ background-color:#f1f1f1; padding:0px; margin:0px; font-family:"Microsoft 
 .baoxianBox .oneClassBX input{margin-top:5px; margin-left:-13px; display:block; float:left; filter:alpha(opacity=0); -moz-opacity:0; opacity:0;}
 .baoxianBox .oneClassBX .spanTitBX{color:#8D8D8D; margin-top:5px; margin-left:5px; display:block; float:left;}	
 	
-.aBtn{margin-top:15px; display:block; background-color:#007AFF; border-radius:5px; color:#FBFDFF; line-height:40px; height:40px; text-align:center; width:88.55%; margin-left:auto; margin-right:auto;}
+.aBtn{margin-top:15px; display:block; background-color:#007AFF; border-radius:5px; color:#FBFDFF; line-height:35px; text-align:center; width:88.55%; margin-left:auto; margin-right:auto;}
 
 #touMbackground{ position:absolute; top:0px; left:0px; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1; display:block; display:none;}
 #touMbackground .loginBox{ background-color:#FFFFFF; border-radius:10px; width:90%; height:150px; left:5%; top:25%; position:absolute; padding-top:10px;}

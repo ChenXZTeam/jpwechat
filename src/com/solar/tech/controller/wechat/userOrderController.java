@@ -78,6 +78,7 @@ public class userOrderController {
 		MessgesAlert mAl = new MessgesAlert();
 		String userName = (String) session.getAttribute("userName"); 
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
+		String phoneNumber = (String) session.getAttribute("phoneNumber");
 		if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
@@ -86,7 +87,7 @@ public class userOrderController {
 		
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);
 		String cangBin = jsonObject.get("cangwei")+""; //获取舱位
-		String uuid = jsonObject.get("uuid")+""; //航班的uuid
+		String uuid = jsonObject.get("uuid")+""; //航班的UUID
 		String depDate = jsonObject.get("depDate")+""; //出发日期
 		
 		//获取乘机人信息
@@ -105,19 +106,23 @@ public class userOrderController {
 		String menType = personInfo.get("menType")+"";  //获取乘机人类型
 		
 		/*保存常用联系人信息*/
-		LinkMan linkInfo = new LinkMan();
-		linkInfo.setLinkman(LinkName);
-		linkInfo.setLinkNumber(PhoneNum);
-		linkInfo.setOpenID(openID);
-		linkInfo.setUserName(userName);
-		linkInfo.setSex(Sex);
-		linkInfo.setBirthday(birthDay);
-		linkInfo.setPeopleType(menType);
-		linkInfo.setCaseType(iDcaseType);
-		linkInfo.setCaseNum(iDcase);
-		linkInfo.setUserName(userName);
-		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
-		OrderService.addLinkman(linkInfo);
+		List<LinkMan> lman = OrderService.isRepeat(iDcase,userName);
+		if(lman.size()>0){ //说明重复了
+		}else{
+			LinkMan linkInfo = new LinkMan();
+			linkInfo.setLinkman(LinkName);
+			linkInfo.setLinkNumber(PhoneNum);
+			linkInfo.setOpenID(openID);
+			linkInfo.setUserName(userName);
+			linkInfo.setSex(Sex);
+			linkInfo.setBirthday(birthDay);
+			linkInfo.setPeopleType(menType);
+			linkInfo.setCaseType(iDcaseType);
+			linkInfo.setCaseNum(iDcase);
+			linkInfo.setUserNamePhone(phoneNumber);
+			linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
+			OrderService.addLinkman(linkInfo);
+		}
 		
 		//根据uuid从数据库中查找航班的信息
 		List<SeatInfoData> filedInfo = PlanTekServ.findByUUID(uuid);
@@ -156,7 +161,8 @@ public class userOrderController {
 		List<MessgesAlert> malert = new ArrayList<MessgesAlert>();  //记录是否两个全部预定成功或者只有一个，用于反馈前台提示用户
 		Map<String, Object> map = new HashMap<String, Object>();
 		String userName = (String) session.getAttribute("userName");
-		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单		
+		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单	
+		String phoneNumber = (String) session.getAttribute("phoneNumber");
 		/*String userName = "ttt";
 		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";*/
 		if("".equals(openID)||null==openID){
@@ -187,6 +193,25 @@ public class userOrderController {
 		String birthDay = personInfo.get("birthDay")+"";  //获取乘机人生日 
 		String age = personInfo.get("age")+"";  //获取乘机人年龄
 		String menType = personInfo.get("menType")+"";  //获取乘机人类型
+		
+		/*保存常用联系人信息*/
+		List<LinkMan> lman = OrderService.isRepeat(iDcase,userName);
+		if(lman.size()>0){ //说明重复了
+		}else{
+			LinkMan linkInfo = new LinkMan();
+			linkInfo.setLinkman(LinkName);
+			linkInfo.setLinkNumber(PhoneNum);
+			linkInfo.setOpenID(openID);
+			linkInfo.setUserName(userName);
+			linkInfo.setSex(Sex);
+			linkInfo.setBirthday(birthDay);
+			linkInfo.setPeopleType(menType);
+			linkInfo.setCaseType(iDcaseType);
+			linkInfo.setCaseNum(iDcase);
+			linkInfo.setUserNamePhone(phoneNumber);
+			linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
+			OrderService.addLinkman(linkInfo);
+		}
 		
 		//从数据库查找航班信息(第一航段)
 		List<SeatInfoData> filedInfo = PlanTekServ.findByUUID(uuid1);
@@ -249,25 +274,33 @@ public class userOrderController {
 	//修改常用联系人信息
 	@RequestMapping("/update/updateLinkman.action")
 	@ResponseBody
-	public Map<String, Object> updateLinkman(String id,String linkName, String linkPhoneNum, String sexIpnt, String birthIpnt, String personIpnt, String caseIpnt, String IDcase, HttpSession session){
+	public Map<String, Object> updateLinkman(LinkMan lma,String id, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();		
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName"); 
+		String phoneNumber = (String) session.getAttribute("phoneNumber");
+		/*String userName = "ttt";
+		String openId = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
+		String phoneNumber = "15799024022";*/
 		if(openId.equals("")||openId==null||userName.equals("")||userName==null){
 			map.put("msg", 0);
 			return map;
 		}
 		LinkMan linkInfo = new LinkMan();
 		linkInfo.setID(id);
-		linkInfo.setLinkman(linkName);
-		linkInfo.setLinkNumber(linkPhoneNum);
-		linkInfo.setSex(sexIpnt);
-		linkInfo.setBirthday(birthIpnt);
-		linkInfo.setPeopleType(personIpnt);
-		linkInfo.setCaseType(caseIpnt);
-		linkInfo.setCaseNum(IDcase);
+		linkInfo.setLinkman(lma.getLinkman());
+		linkInfo.setLinkNumber(lma.getLinkNumber());
+		linkInfo.setSex(lma.getSex());
+		linkInfo.setBirthday(lma.getBirthday());
+		linkInfo.setPeopleType(lma.getPeopleType());
+		linkInfo.setCaseType(lma.getCaseType());
+		linkInfo.setCaseNum(lma.getCaseNum());
 		linkInfo.setOpenID(openId);
 		linkInfo.setUserName(userName);
+		linkInfo.setUserNamePhone(phoneNumber);
+		linkInfo.setBelongCtry(lma.getBelongCtry());
+		linkInfo.setChinaName(lma.getChinaName());
+		linkInfo.setCaseTime(lma.getCaseTime());
 		linkInfo.setCreateTime(new Timestamp(new Date().getTime()));
 		int i = OrderService.updateLinkman(linkInfo);
 		if(i==1){
@@ -277,9 +310,9 @@ public class userOrderController {
 			map.put("msg", 0);
 			System.out.println("修改常用联系人信息失败");
 		}
-		//}
 		return map;
 	}
+	
 	//修改常用联系人信息
 	@RequestMapping("/update/upqzInfo.action")
 	@ResponseBody
@@ -305,7 +338,6 @@ public class userOrderController {
 			map.put("msg", 0);
 			System.out.println("修改签证信息失败");
 		}
-		//}
 		return map;
 	}
 	
@@ -491,8 +523,8 @@ public class userOrderController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String openId = (String) session.getAttribute("openId");
 		String userName = (String) session.getAttribute("userName");
-		//String userName = "ttt";
-		//String openId = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
+		/*String userName = "ttt";
+		String openId = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";*/
 		List<LinkMan> linkList = OrderService.findLinman(userName,openId);
 		if(linkList.size()>0){
 			map.put("linkList",linkList);

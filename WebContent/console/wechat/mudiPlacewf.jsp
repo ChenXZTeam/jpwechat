@@ -123,14 +123,7 @@
 			<div class="object" id="object_two"></div>
 			<div class="object" id="object_one"></div>
 		</div>
-		<span class="textMove" id="one">广</span>
-		<span class="textMove" id="two">州</span>
-		<span class="textMove" id="three">仁</span>
-		<span class="textMove" id="four">德</span>
-		<span class="textMove" id="five">机</span>
-		<span class="textMove" id="six">票</span>
-		<span class="textMove" id="seven">系</span>
-		<span class="textMove" id="eight">统</span>
+		<span class="textMove">广州仁德机票系统</span>
 	</div> 
 </div>
 </body>
@@ -329,16 +322,45 @@ function chax(dateTime,returnTime){
 									$(".zhzLiBox:eq("+countDivNum+") .buyOver").attr("href","javascript:void(0)");
 									$(".zhzLiBox:eq("+countDivNum+") .Eimg").text(cangW);
 								}
-								for(var k=0; k<depart[i].seatList.length; k++){
-									var GcangType = (depart[i].seatList)[k].basicCabin;
-									var GcangPont = (depart[i].seatList)[k].cangwei;
-									var depart_moneyCost = (depart[i].seatList)[k].onewayPrice;
-									for(var h=0; h<returnf[j].seatList.length; h++){
-										var RcangType = (returnf[j].seatList)[h].basicCabin;
-										var RcangPont = (returnf[j].seatList)[h].cangwei;
-										var return_moneyCost = (returnf[j].seatList)[h].onewayPrice;
+								//加载舱位
+								var depDate = []; //盛装符合第一航段舱位和座位不为空的数据
+								var depLastDate = []; //第一航段最终需要打印的数据
+								for(var k=0; k<departse.length; k++){
+									if(departse[k].basicCabin==cangW && tekNum(departse[k].cangwei_data)!=0){
+										depDate.push(departse[k]);
+									}
+								}
+								if(depDate.length>1){ //如果这些数据大于1
+									depLastDate.push(depDate[parseInt(depDate.length)-2]);
+									depLastDate.push(depDate[parseInt(depDate.length)-1]);
+								}else{
+									depLastDate = depDate;
+								}
+								
+								var retDate = []; //盛装符合第二航段舱位和座位不为空的数据
+								var retLastDate = []; //第二航段最终需要打印的数据
+								for(var h=0; h<returnse.length; h++){
+									if(returnse[h].basicCabin==cangW && tekNum(returnse[h].cangwei_data)!=0){
+										retDate.push(returnse[h]);
+									}
+								}
+								if(retDate.length>1){
+									retLastDate.push(retDate[parseInt(retDate.length)-2]);
+									retLastDate.push(retDate[parseInt(retDate.length)-1]);
+								}else{
+									retLastDate = retDate;
+								}
+								
+								for(var k=0; k<depLastDate.length; k++){
+									var GcangType = depLastDate[k].basicCabin;
+									var GcangPont = depLastDate[k].cangwei;
+									var depart_moneyCost = depLastDate[k].onewayPrice;
+									for(var h=0; h<retLastDate.length; h++){
+										var RcangType = retLastDate[h].basicCabin;
+										var RcangPont = retLastDate[h].cangwei;
+										var return_moneyCost = retLastDate[h].onewayPrice;
 										var dr_countPay = parseInt(depart_moneyCost)+parseInt(return_moneyCost);
-										if(tekNum((depart[i].seatList)[k].cangwei_data) != 0 && tekNum((returnf[j].seatList)[h].cangwei_data) != 0 && (returnf[j].seatList)[h].basicCabin == cangW && (depart[i].seatList)[k].basicCabin == cangW){
+										if(tekNum(depLastDate[k].cangwei_data) != 0 && tekNum(retLastDate[h].cangwei_data) != 0 && retLastDate[h].basicCabin == cangW && depLastDate[k].basicCabin == cangW){
 											var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="zhzanotheryu" onclick="trueBtnYd(\''+depart[i].uuid+'\',\''+returnf[j].uuid+'\',\''+GcangPont+'\',\''+RcangPont+'\',\''+deTimeDate+'\',\''+reTimeDate+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+dr_countPay+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+GcangPont+'</span><span class="Eimg" style="margin-left:5px;">'+RcangPont+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span></div><div style="clear:both;"></div></div></div></div></div></div>';
 											$(".zhzLiBox:eq("+countDivNum+") .cangweiClass").append(listDiv);
 										}
@@ -347,6 +369,7 @@ function chax(dateTime,returnTime){
 								countDivNum++;
 						}
 					}
+				console.log("多久执行");
 			},error:function(){
 						
 			}
