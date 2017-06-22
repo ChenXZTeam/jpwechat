@@ -13,6 +13,8 @@ public class FilghUser {
 	private String menType;
 	private String userName;
 	private String openID;
+	private String bxiaoOr;
+	private String sendAdd;
 	public String getiDcase() {
 		return iDcase;
 	}
@@ -84,6 +86,18 @@ public class FilghUser {
 	}
 	public void setOpenID(String openID) {
 		this.openID = openID;
+	}
+	public String getBxiaoOr() {
+		return bxiaoOr;
+	}
+	public void setBxiaoOr(String bxiaoOr) {
+		this.bxiaoOr = bxiaoOr;
+	}
+	public String getSendAdd() {
+		return sendAdd;
+	}
+	public void setSendAdd(String sendAdd) {
+		this.sendAdd = sendAdd;
 	}
 	
 }

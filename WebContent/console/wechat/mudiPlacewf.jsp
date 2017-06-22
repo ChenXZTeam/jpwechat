@@ -123,7 +123,6 @@
 			<div class="object" id="object_two"></div>
 			<div class="object" id="object_one"></div>
 		</div>
-		<span class="textMove">广州仁德机票系统</span>
 	</div> 
 </div>
 </body>
@@ -369,7 +368,6 @@ function chax(dateTime,returnTime){
 								countDivNum++;
 						}
 					}
-				console.log("多久执行");
 			},error:function(){
 						
 			}

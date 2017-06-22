@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.solar.tech.bean.entity.TravItinerary;
+import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.service.TravItineraryService;
 
 @Controller
@@ -95,6 +96,24 @@ public class TravItineraryController {
 	public Map<String,Object> findByCondition(int page,int rows,String pingtai,String flyDate,String conStutas,String kdNum,String ordNum,String phoneNum){
 		Map<String,Object> map = tts.findByCondition(page,rows,pingtai,flyDate,conStutas,kdNum,ordNum,phoneNum);
 		return map;
+	}
+	
+	@RequestMapping("/kdMoney.action")
+	@ResponseBody
+	public int kdMoney(String valueMony){
+		try {
+			tts.upKdCost(valueMony);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	@RequestMapping("/findKdMoney.action")
+	@ResponseBody
+	public kdCost findKdMoney(){
+		kdCost kc = tts.findKdmoney();
+		return kc;
 	}
 
 }

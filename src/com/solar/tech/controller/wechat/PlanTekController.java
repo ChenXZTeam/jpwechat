@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 
+
+
 //import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.solar.tech.bean.entity.FlightInfo;
+import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
+import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.service.PlanTekService;
 import com.solar.tech.service.userOrderService;
 import com.solar.tech.utils.ECUtils;
@@ -76,6 +80,10 @@ public class PlanTekController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<SeatInfoData> sinfo = PlanTekServ.findByUUID(uuid);
 		List<SeatPriceData> spd = PlanTekServ.findByCanbin(sinfo.get(0).getOrgcity(),sinfo.get(0).getDstcity(),canbin,sinfo.get(0).getAirline());
+		List<Insurance> bxCost = PlanTekServ.findByBx(); //保险价格
+		List<kdCost> kdCost = PlanTekServ.kdCost();
+		map.put("bxCost", bxCost);
+		map.put("kdCost", kdCost);
 		map.put("canbin", canbin);
 		map.put("cost", spd.get(0).getOnewayPrice());
 		//map.put("cost_test", PlanTekServ.pataFare(sinfo.get(0).getAirline(), canbin, sinfo.get(0).getOrgcity(), sinfo.get(0).getDstcity(), dateTime));
@@ -98,20 +106,8 @@ public class PlanTekController {
 	//获取儿童和婴儿的运价（多段个）
 	@RequestMapping("/find/findBytwo.action")
 	@ResponseBody
-	public List<PataFarePriceInfo> findByTwo(String airline1,
-			String canbin1,
-			String org1,
-			String dst1,
-			String dateTime1,
-			String airline2,
-			String canbin2,
-			String org2,
-			String dst2,
-			String dateTime2,
-			String pstType){
+	public List<PataFarePriceInfo> findByTwo(String airline1, String canbin1, String org1, String dst1, String dateTime1, String airline2, String canbin2, String org2, String dst2, String dateTime2, String pstType){
 		try {
-			System.out.println(airline1+","+canbin1+","+org1+","+dst1+","+dateTime1);
-			System.out.println(airline2+","+canbin2+","+org2+","+dst2+","+dateTime2);
 			PataFareInfo pf1 = new PataFareInfo();
 			pf1.setFlightNo(airline1);
 			pf1.setCabin(canbin1);
@@ -137,6 +133,10 @@ public class PlanTekController {
 	@ResponseBody
 	public Map<String,Object> findByidTwo(String uuid1,String uuid2,String canbin,String canbin2){
 		Map<String,Object> map = new HashMap<String,Object>();
+		List<Insurance> bxCost = PlanTekServ.findByBx(); //保险价格
+		List<kdCost> kdCost = PlanTekServ.kdCost();
+		map.put("bxCost", bxCost);
+		map.put("kdCost", kdCost);
 		for(int i=1; i<=2; i++){
 			if(i==1){
 				List<SeatInfoData> sinfo = PlanTekServ.findByUUID(uuid1);

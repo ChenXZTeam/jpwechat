@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.bean.entity.TravItinerary;
+import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 
@@ -112,6 +113,18 @@ public class TravItineraryService {
 	public TravItinerary findOld(String uuid){
 		List<TravItinerary> ty = this.gDao.find("FROM TravItinerary WHERE uuid = '"+uuid+"'");
 		return ty.get(0);
+	}
+	
+	public void upKdCost(String money){
+		kdCost sd = new kdCost();
+		sd.setUuid("4028831c5ccdf185015ccdf2dea70000");
+		sd.setKdcost(money);
+		this.gDao.update(sd);
+	}
+	
+	public kdCost findKdmoney(){
+		List<kdCost> res = this.gDao.find("FROM kdCost WHERE uuid = '4028831c5ccdf185015ccdf2dea70000'");
+		return res.get(0);
 	}
 
 }

@@ -1,39 +1,40 @@
 ﻿$(function(){
-	//多选的单击按钮（订购航空意外险）
+	//多选的单击按钮（订购航空意外险）直达
 	$(".flindYw").click(function(){	
+		var ywaicod = $("#ywaicoid").text().trim();
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
-			var li = '<li id="yiwLi"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">30</span>/人</div><div style="width:100px; margin-right:50px;">意外险</div></li>';
+			var li = '<li id="yiwLi"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">'+ywaicod+'</span>/人</div><div style="width:100px; margin-right:50px;">意外险</div></li>';
 			$("#costXq").append(li);
-			$("#cost").text(parseInt($("#cost").text())+30);
+			$("#cost").text(parseInt($("#cost").text())+parseInt(ywaicod));
 		}else{
 			$(this).prev().css("display","none");	
 			$("#yiwLi").remove();
-			$("#cost").text(parseInt($("#cost").text())-30);
+			$("#cost").text(parseInt($("#cost").text())-parseInt(ywaicod));
 		}
 	});
 	
-	//多选的单击按钮（订购延误取消险）
-	$(".delayBx").click(function(){			
+	//多选的单击按钮（订购延误取消险）直达
+	$(".delayBx").click(function(){	
+		var ywcostid = $("#ywcostid").text().trim(); 
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
-			var li = '<li id="yawLi"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">20</span>/人</div><div style="width:100px; margin-right:50px;">延误险</div></li>';
+			var li = '<li id="yawLi"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">'+ywcostid+'</span>/人</div><div style="width:100px; margin-right:50px;">延误险</div></li>';
 			$("#costXq").append(li);
-			$("#cost").text(parseInt($("#cost").text())+20);
+			$("#cost").text(parseInt($("#cost").text())+parseInt(ywcostid));
 		}else{
 			$(this).prev().css("display","none");	
 			$("#yawLi").remove();
-			$("#cost").text(parseInt($("#cost").text())-20);
+			$("#cost").text(parseInt($("#cost").text())-parseInt(ywcostid));
 		}
 	});
 	
 	//多选的单击按钮（优惠选择）
-	$(".youhuiBx").click(function(){			
+	/*$(".youhuiBx").click(function(){			
 		var payMoney = $("#moneyPay").text();
 		var youhuiType = $("#zhekouType").text();
 		var youhuiMoney = $(this).val();
 		var cp = 0;
-		//alert("机票价："+payMoney+", 邀请码类型："+youhuiType+", 优惠或者折扣数："+youhuiMoney);
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
 			if(youhuiType == "preferential"){
@@ -67,42 +68,69 @@
 			}
 			$("#cost").text(cp);
 		}
-	});
+	});*/
 	
-	//多选的单击按钮（订购航空意外险）
+	//多选的单击按钮（订购航空意外险）中转和往返
 	$(".flindYwzhz").click(function(){	
+		var ywaicod = $("#ywaicoid").text().trim();
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
-			var li = '<li id="yiwLi"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">30</span>/人</div><div style="width:100px; margin-right:50px;">意外险</div></li>';
+			var li = '<li id="yiwLi"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">'+parseInt(ywaicod)+'</span>/人</div><div style="width:100px; margin-right:50px;">意外险</div></li>';
 			$("#costXq").append(li);
-			$("#countPay").text(parseInt($("#countPay").text())+60);
+			$("#countPay").text(parseInt($("#countPay").text())+(parseInt(ywaicod)*2));
 		}else{
 			$(this).prev().css("display","none");	
 			$("#yiwLi").remove();
-			$("#countPay").text(parseInt($("#countPay").text())-60);
+			$("#countPay").text(parseInt($("#countPay").text())-(parseInt(ywaicod)*2));
 		}
 	});
 	
-	//多选的单击按钮（订购延误取消险）
-	$(".delayBxzhz").click(function(){			
+	//多选的单击按钮（订购延误取消险）中转和往返
+	$(".delayBxzhz").click(function(){		
+		var ywcostid = $("#ywcostid").text().trim(); 
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
-			var li = '<li id="yawLi"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">20</span>/人</div><div style="width:100px; margin-right:50px;">延误险</div></li>';
+			var li = '<li id="yawLi"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">'+parseInt(ywcostid)+'</span>/人</div><div style="width:100px; margin-right:50px;">延误险</div></li>';
 			$("#costXq").append(li);
-			$("#countPay").text(parseInt($("#countPay").text())+40);
+			$("#countPay").text(parseInt($("#countPay").text())+(parseInt(ywcostid)*2));
 		}else{
 			$(this).prev().css("display","none");	
 			$("#yawLi").remove();
-			$("#countPay").text(parseInt($("#countPay").text())-40);
+			$("#countPay").text(parseInt($("#countPay").text())-(parseInt(ywcostid)*2));
 		}
 	});
 	
-	//多选的单击按钮（优惠选择）
-	$(".baoxiao").click(function(){			
+	//多选的单击按钮（报销单）直达航班
+	$(".baoxiao").click(function(){	
+		var kdcostid = $("#kdcostid").text().trim(); 
 		if($(this).attr("checked")=="checked"){
 			$(this).prev().css("display","block");
+			var li = '<li id="baoxiaoLi"><div style="margin-left:15px;">x1</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">'+kdcostid+'</span>/人</div><div style="width:100px; margin-right:50px;">快递费</div></li>';
+			$("#costXq").append(li);
+			$("#cost").text(parseInt($("#cost").text())+parseInt(kdcostid));
+			$("#sendAddBox").css("display","block");
 		}else{
 			$(this).prev().css("display","none");	
+			$("#baoxiaoLi").remove();
+			$("#cost").text(parseInt($("#cost").text())-parseInt(kdcostid));
+			$("#sendAddBox").css("display","none");
+		}
+	});
+	
+	//多选的单击按钮（报销单）中转和往返
+	$(".baoxiaoDc").click(function(){		
+		var kdcostid = $("#kdcostid").text().trim(); 
+		if($(this).attr("checked")=="checked"){
+			$(this).prev().css("display","block");
+			var li = '<li id="baoxiaoLi"><div style="margin-left:15px;">x2</div><div style="width:80px;">￥<span id="yiwaiBxPay" class="kl">'+(parseInt(kdcostid)/2)+'</span>/人</div><div style="width:100px; margin-right:50px;">快递费</div></li>';
+			$("#costXq").append(li);
+			$("#countPay").text(parseInt($("#countPay").text())+parseInt(kdcostid));
+			$("#sendAddBox").css("display","block");
+		}else{
+			$(this).prev().css("display","none");	
+			$("#baoxiaoLi").remove();
+			$("#countPay").text(parseInt($("#countPay").text())-parseInt(kdcostid));
+			$("#sendAddBox").css("display","none");
 		}
 	});
 });

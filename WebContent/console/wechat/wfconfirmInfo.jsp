@@ -28,7 +28,7 @@ String rdate=request.getParameter("rdate");
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?yimk=50858"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?yimk=520858"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script>
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
@@ -129,6 +129,7 @@ String rdate=request.getParameter("rdate");
 <body>
 <script>
 $(function(){
+	var fals=true;//防止重复提交
 	window.history.forward(1);//禁止后退
 	<%-- var ivid = "<%=jin%>"; --%>
 	var uuid1 = '<%= uuid1%>'; 
@@ -156,10 +157,11 @@ $(function(){
 		},
 		dataType: "json",
 		success: function(result) {
-			//console.log(result);
+			console.log(result);
 			orgtt = result.dataObj1[0].orgcity;
 			dsttt = result.dataObj1[0].dstcity; 
-			
+			var bxcodate = result.bxCost;
+			var kdcodate = result.kdCost;
 			//第一航段信息
 			$(".depdayone").text(gdate);
 			$(".weekdayone").text(conterCONTime(gdate));
@@ -172,6 +174,14 @@ $(function(){
 			$(".lishiTime").text(cuntTime(result.dataObj1[0].flyTime));
 			$(".airNameTypech").text(findByCode((result.dataObj1[0].airline).substring(0,2)));
 			$(".flindNum").text(result.dataObj1[0].airline);
+			for(var i=0; i<bxcodate.length; i++){
+				if(bxcodate[i].bxType==1||bxcodate[i].bxType=="1"){
+					$("#ywaicoid").text(bxcodate[i].cost);
+				}else if(bxcodate[i].bxType==2||bxcodate[i].bxType=="2"){
+					$("#ywcostid").text(bxcodate[i].cost);
+				}
+			}
+			$("#kdcostid").text(kdcodate[0].kdcost);
 			
 			//第二航段信息
 			$(".depdaytwo").text(rdate);
@@ -341,6 +351,13 @@ $(function(){
 				return false;
 			}
 		}
+		if($(".baoxiaoDc").is(':checked')){
+			var sanddren = $("#sendAdd").val().trim();
+			if(sanddren==""||sanddren==null){
+				$.alert("请填写配送地址！");
+				return false;
+			}
+		}
 		
 		//意外险的值
 		if($(".flindYwzhz").is(':checked')){
@@ -358,6 +375,14 @@ $(function(){
 			$("#YanwuBX").text("未购买");
 			$("#yanwuNum").text("0");
 		}
+		//报销单
+		if($(".baoxiaoDc").is(':checked')){
+			$("#baoxOr").text("打印");
+			$("#baoxOrNum").text("1");
+		}else{
+			$("#baoxOr").text("不打印");
+			$("#baoxOrNum").text("0");
+		}
 		
 		//乘机人资料
 		var LinkName=$("#linkName").val();//乘机人
@@ -366,9 +391,11 @@ $(function(){
 		var PhoneNum=$("#phoneNum").val();//手机号码
 		var YiwaiBX = $("#yiwaiNum").text();//意外保险
 		var YanwuBX = $("#yanwuNum").text();//延误险
+		var bxiaoOr = $("#baoxOrNum").text();//是否打印报销单
+		var sendAddren = $("#sendAdd").val(); //配送地址
 		//console.log(age+","+lvkeType+","+sexType+","+birthdayNum);
 		//将提交的订单打包成json数据      
-		var jsondatastr = '{"sign":"1","depDate":"'+gdate+'","rdate":"'+rdate+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'","cangwei":"'+canbin1+'","canbin2":"'+canbin2+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
+		var jsondatastr = '{"sign":"1","depDate":"'+gdate+'","rdate":"'+rdate+'","uuid1":"'+uuid1+'","uuid2":"'+uuid2+'","cangwei":"'+canbin1+'","canbin2":"'+canbin2+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","bxiaoOr":"'+bxiaoOr+'","sendAddren":"'+sendAddren+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
 
 		$("#CostPay").text("￥"+$("#countPay").text());
 		$("#LinkName").text(LinkName);
@@ -377,49 +404,55 @@ $(function(){
 		$("#PhoneNum").text(PhoneNum);
 		
 		//创建订单
-		$.ajax({
-					url:"<%=basePath%>userOrderController/add/zrorder.action",
-					type:"POST",
-					data:{"jsStr":jsondatastr},
-					dataType:"json",
-					beforeSend:function(){$("#loading").css("display","block");},
-					complete:function(){$("#loading").css("display","none");},
-					success:function(result){
-						//console.log(result);
-						var resDate = result.resAlert; 
-						$("#commitRes").html("");
-						var tr = '<tr><td>'+findByCity(orgtt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(dsttt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[0].isOk)+'</td></tr>';
-						$("#resBoxTables").append(tr);
-						var tr = '<tr><td>'+findByCity(dsttt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(orgtt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[1].isOk)+'</td></tr>';
-						$("#resBoxTables").append(tr);
-						if(resDate[0].isOk=="1"&&resDate[1].isOk=="1"){
-							pntrer = resDate[0].pntr;
-							pntrtw = resDate[1].pntr;
-							//console.log("订单生成之后获取到返回的pnr，用于支付："+pntrer+"/"+pntrtw);
-							$("#trueOrderInfo").css("display","block");
-							$("html").css("height","100%");
-							$("html").css("overflow","hidden");
-							$("body").css("height","100%");
-							$("body").css("overflow","hidden");
+		if(fals==true){
+			fals=false;
+			$.ajax({
+				url:"<%=basePath%>userOrderController/add/zrorder.action",
+				type:"POST",
+				data:{"jsStr":jsondatastr},
+				dataType:"json",
+				beforeSend:function(){$("#loading").css("display","block");},
+				complete:function(){$("#loading").css("display","none");},
+				success:function(result){
+					//console.log(result);
+					var resDate = result.resAlert; 
+					$("#commitRes").html("");
+					var tr = '<tr><td>'+findByCity(orgtt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(dsttt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[0].isOk)+'</td></tr>';
+					$("#resBoxTables").append(tr);
+					var tr = '<tr><td>'+findByCity(dsttt)+'</td><td><img src="<%=basePath%>console/images/resJt.png" style="width:25px;"/></td><td>'+findByCity(orgtt)+'</td><td style="width:120px; text-align:right;">'+isOkResult(resDate[1].isOk)+'</td></tr>';
+					$("#resBoxTables").append(tr);
+					if(resDate[0].isOk=="1"&&resDate[1].isOk=="1"){
+						pntrer = resDate[0].pntr;
+						pntrtw = resDate[1].pntr;
+						//console.log("订单生成之后获取到返回的pnr，用于支付："+pntrer+"/"+pntrtw);
+						$("#trueOrderInfo").css("display","block");
+						$("html").css("height","100%");
+						$("html").css("overflow","hidden");
+						$("body").css("height","100%");
+						$("body").css("overflow","hidden");
+					}else{
+						if(resDate[0].isOk=="0"&&resDate[1].isOk=="1"){
+							var li = '<li>'+resDate[0].commit+'</li>';
+							$("#commitRes").append(li);
+						}else if(resDate[0].isOk=="1"&&resDate[1].isOk=="0"){
+							var li = '<li>'+resDate[1].commit+'</li>';
+							$("#commitRes").append(li);
 						}else{
-							if(resDate[0].isOk=="0"&&resDate[1].isOk=="1"){
-								var li = '<li>'+resDate[0].commit+'</li>';
+							for(var i=0; i<resDate.length;i++){
+								var li = '<li>'+resDate[i].commit+'</li>';
 								$("#commitRes").append(li);
-							}else if(resDate[0].isOk=="1"&&resDate[1].isOk=="0"){
-								var li = '<li>'+resDate[1].commit+'</li>';
-								$("#commitRes").append(li);
-							}else{
-								for(var i=0; i<resDate.length;i++){
-									var li = '<li>'+resDate[i].commit+'</li>';
-									$("#commitRes").append(li);
-								}
 							}
 						}
-						$("#ydresuletBox").css("display","block");
-					},
-					error:function(result){
 					}
-		});
+					$("#ydresuletBox").css("display","block");
+				},
+				error:function(result){
+				}
+			});
+		}else{
+			$.alert("请勿重复提交订单");
+		}
+		
 	});
 	
 	//确认付款
@@ -937,6 +970,7 @@ function getcode(inc){
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
 		<%-- <li><span class="spanTit">旅客类型：</span><input type="text" id="personIpnt" readonly="readonly"/><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
 		<li><span class="spanTit" id="caseIpnt">身份证</span><span id="caseIpntSource" style="display:none;">NI</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<li id="sendAddBox" style="display:none;"><span class="spanTit">配送地址：</span><input id="sendAdd" type="text"/></li>
 	</ul>
 </div>
 
@@ -944,7 +978,7 @@ function getcode(inc){
 	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYwzhz" value="1"/><span class="spanTitBX">航意险</span><span id="yiwaiNum" style="display:none;"></span></div>
 	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBxzhz" value="1"/><span class="spanTitBX">延误险</span><span id="yanwuNum" style="display:none;"></span></div>
 	<!-- <div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBxzhz" value="500"/><span class="spanTitBX youhuiText"></span></div> -->
-	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId baoxiao" value="1"/><span class="spanTitBX">报销</span><span id="baoxiaoNum" style="display:none;"></span></div>
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId baoxiaoDc" value="1"/><span class="spanTitBX">报销</span><span id="baoxiaoNum" style="display:none;"></span></div>
 	<div style="clear:both;"><input id="oneMoney" type="hidden"/><span id="zhekouType" style="display:none;"></span><input id="twoMoney" type="hidden"/></div>
 </div>
 
@@ -1016,6 +1050,7 @@ function getcode(inc){
 		<div style="clear:both;"></div>
 	</div>
 	<div class="InfoMesBox">
+		<div style="display:none;"><span id="ywcostid"></span><span id="ywaicoid"></span><span id="kdcostid"></span></div>
 		<div class="InfoUserMess">
 			<ul>
 				<li class="InfoLiClass"><span>价格：</span><span id="CostPay" class="payCostMoney">￥650.00</span></li>
@@ -1025,6 +1060,7 @@ function getcode(inc){
 				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass">11111111111</span></li>
 				<li class="InfoLiClass BXliClass"><span>航意险：</span><span id="YiwaiBX" class="InfoValueClass">购买</span></li>
 				<li class="InfoLiClass"><span>延误险：</span><span id="YanwuBX" class="InfoValueClass">购买</span></li>
+				<li class="InfoLiClass"><span>报销单：</span><span id="baoxOr" class="InfoValueClass"></span><span id="baoxOrNum" style="display:none;"></span></li>
 			</ul>
 		</div>
 	</div>
@@ -1081,7 +1117,6 @@ function getcode(inc){
 				<div class="object" id="object_two"></div>
 				<div class="object" id="object_one"></div>
 			</div>
-			<span class="textMove">广州仁德机票系统</span>
 		</div> 
 	</div>
 <script>

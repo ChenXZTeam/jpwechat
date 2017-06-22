@@ -76,9 +76,12 @@ public class userOrderController {
 	public Map<String, Object> addOrder(String jsStr,HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		MessgesAlert mAl = new MessgesAlert();
-		String userName = (String) session.getAttribute("userName"); 
+		/*String userName = (String) session.getAttribute("userName"); 
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
-		String phoneNumber = (String) session.getAttribute("phoneNumber");
+		String phoneNumber = (String) session.getAttribute("phoneNumber");*/
+		String userName = "ttt";
+		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
+		String phoneNumber = "15799024022";
 		if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
@@ -101,6 +104,8 @@ public class userOrderController {
 		String PhoneNum = personInfo.get("PhoneNum")+""; //获取乘机人联系电话 
 		String YiwaiBX = personInfo.get("YiwaiBX")+""; //获取乘机人是否购买意外险
 		String YanwuBX = personInfo.get("YanwuBX")+""; //获取乘机人是否购买延误险
+		String bxiaoOr = personInfo.get("bxiaoOr")+""; //报销单是否打印
+		String sendAddren = personInfo.get("sendAddren")+""; //配送地址
 		String birthDay = personInfo.get("birthDay")+"";  //获取乘机人生日 
 		String age = personInfo.get("age")+"";  //获取乘机人年龄
 		String menType = personInfo.get("menType")+"";  //获取乘机人类型
@@ -140,7 +145,9 @@ public class userOrderController {
 			fu.setUserName(userName);
 			fu.setYanwuBX(YanwuBX);
 			fu.setYiwaiBX(YiwaiBX);
-			mAl = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate);
+			fu.setBxiaoOr(bxiaoOr);
+			fu.setSendAdd(sendAddren);
+			mAl = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate,0);
 			map.put("resAlert", mAl);
 		}else{
 			System.out.println("您搜索的航班已过期，请重新搜索！");
@@ -160,11 +167,12 @@ public class userOrderController {
 	public Map<String, Object> addzhz_res(String jsStr,HttpSession session){
 		List<MessgesAlert> malert = new ArrayList<MessgesAlert>();  //记录是否两个全部预定成功或者只有一个，用于反馈前台提示用户
 		Map<String, Object> map = new HashMap<String, Object>();
-		String userName = (String) session.getAttribute("userName");
+		/*String userName = (String) session.getAttribute("userName");
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单	
-		String phoneNumber = (String) session.getAttribute("phoneNumber");
-		/*String userName = "ttt";
-		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";*/
+		String phoneNumber = (String) session.getAttribute("phoneNumber");*/
+		String userName = "ttt";
+		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
+		String phoneNumber = "15799024022";
 		if("".equals(openID)||null==openID){
 			map.put("msg","0");
 			map.put("planMsg","订单生成失败3，系统出错");
@@ -190,6 +198,8 @@ public class userOrderController {
 		String PhoneNum = personInfo.get("PhoneNum")+""; //获取乘机人联系电话 
 		String YiwaiBX = personInfo.get("YiwaiBX")+""; //获取乘机人是否购买意外险
 		String YanwuBX = personInfo.get("YanwuBX")+""; //获取乘机人是否购买延误险
+		String bxiaoOr = personInfo.get("bxiaoOr")+""; //报销单是否打印
+		String sendAddren = personInfo.get("sendAddren")+""; //配送地址
 		String birthDay = personInfo.get("birthDay")+"";  //获取乘机人生日 
 		String age = personInfo.get("age")+"";  //获取乘机人年龄
 		String menType = personInfo.get("menType")+"";  //获取乘机人类型
@@ -229,7 +239,9 @@ public class userOrderController {
 			fu.setUserName(userName);
 			fu.setYanwuBX(YanwuBX);
 			fu.setYiwaiBX(YiwaiBX);
-			MessgesAlert mal1 = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate);
+			fu.setBxiaoOr(bxiaoOr);
+			fu.setSendAdd(sendAddren);
+			MessgesAlert mal1 = OrderService.saveOrder(fu,cangBin,filedInfo.get(0),depDate,1);
 			malert.add(mal1);
 		}else{
 			MessgesAlert mal1 = new MessgesAlert();
@@ -254,11 +266,13 @@ public class userOrderController {
 			fu.setUserName(userName);
 			fu.setYanwuBX(YanwuBX);
 			fu.setYiwaiBX(YiwaiBX);
+			fu.setBxiaoOr(bxiaoOr);
+			fu.setSendAdd(sendAddren);
 			MessgesAlert mal2 = new MessgesAlert();
 			if("1".equals(sign)){ //就说明是往返的航班
-				mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),rdate);
+				mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),rdate,1);
 			}else{ //否则就是中转的航班
-				mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),depDate);
+				mal2 = OrderService.saveOrder(fu,cangBin2,filedInfo2.get(0),depDate,1);
 			}
 			malert.add(mal2);
 		}else{

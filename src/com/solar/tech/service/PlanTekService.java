@@ -21,9 +21,11 @@ import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
 import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.bean.entity.FlightMessage;
+import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
+import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.dao.GenericDao;
 import com.travelsky.sbeclient.obe.request.PataFareInfo;
 import com.travelsky.sbeclient.obe.response.AvSegment;
@@ -487,6 +489,16 @@ public class PlanTekService {
 	//根据舱位、航空公司、起始城市、到达城市
 	public List<SeatPriceData> findByCanbin(String org,String dst,String canbin,String codeAir){
 		List<SeatPriceData> sepList = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+org+"' AND dstCity = '"+dst+"') OR (orgCity = '"+dst+"' AND dstCity = '"+org+"')) AND cabin = '"+canbin+"' AND airline = '"+codeAir.substring(0,2)+"'");
+		return sepList;
+	}
+	
+	public List<Insurance> findByBx(){
+		List<Insurance> sepList = gDao.find("FROM Insurance");
+		return sepList;
+	}
+	
+	public List<kdCost> kdCost(){
+		List<kdCost> sepList = gDao.find("FROM kdCost WHERE uuid = '4028831c5ccdf185015ccdf2dea70000'");
 		return sepList;
 	}
 	

@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css"/>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?tt=5202sd1213123254as2111"></script>
+<script type="text/javascript" src="<%=basePath %>console/js/waritInforma.js?tt=5202sd121ssq3122111"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
@@ -65,8 +65,10 @@ $(function(){
 		},
 		dataType: "json",
 		success: function(result) {
-			//console.log(result);
+			console.log(result);
 			var vardate = result.dataObj;
+			var bxcodate = result.bxCost;
+			var kdcodate = result.kdCost;
 			//为信息框赋值
 			$(".chufTime").text(changeType(vardate[0].depTime));
 			$(".arrDTime").text(changeType(vardate[0].arriTime));
@@ -84,6 +86,14 @@ $(function(){
 			$(".daodCityID").text(findByCity(vardate[0].dstcity));
 			$(".chufDate").text(vardate[0].depDate);
 			$(".arrDate").text(getArriDate(vardate[0].depDate,vardate[0].arriveTimeModify));
+			for(var i=0; i<bxcodate.length; i++){
+				if(bxcodate[i].bxType==1||bxcodate[i].bxType=="1"){
+					$("#ywaicoid").text(bxcodate[i].cost);
+				}else if(bxcodate[i].bxType==2||bxcodate[i].bxType=="2"){
+					$("#ywcostid").text(bxcodate[i].cost);
+				}
+			}
+			$("#kdcostid").text(kdcodate[0].kdcost);
 			
 			//确认信息框
 			$("#ChufCity").text(findByCity(vardate[0].orgcity));
@@ -228,6 +238,13 @@ $(function(){
 					return false;
 				}
 			}
+			if($(".baoxiao").is(':checked')){
+				var sanddren = $("#sendAdd").val().trim();
+				if(sanddren==""||sanddren==null){
+					$.alert("请填写配送地址！");
+					return false;
+				}
+			}
 			
 			//意外险的值
 			if($(".flindYw").is(':checked')){
@@ -245,7 +262,15 @@ $(function(){
 				$("#YanwuBX").text("未购买");
 				$("#yanwuNum").text("0");
 			}
-			
+			//报销单
+			if($(".baoxiao").is(':checked')){
+				$("#baoxOr").text("打印");
+				$("#baoxOrNum").text("1");
+			}else{
+				$("#baoxOr").text("不打印");
+				$("#baoxOrNum").text("0");
+			}
+
 			//乘机人资料
 			var LinkName=$("#linkName").val();//乘机人
 			var iDcaseType=$("#caseIpntSource").text();//证件类型
@@ -253,7 +278,9 @@ $(function(){
 			var PhoneNum=$("#phoneNum").val();//手机号码
 			var YiwaiBX = $("#yiwaiNum").text();//意外保险
 			var YanwuBX = $("#yanwuNum").text();//延误险
-			var jsondatastr = '{"depDate":"'+deppDate+'","uuid":"'+uuid+'","cangwei":"'+canbin+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
+			var bxiaoOr = $("#baoxOrNum").text();//是否打印报销单
+			var sendAddren = $("#sendAdd").val(); //配送地址
+			var jsondatastr = '{"depDate":"'+deppDate+'","uuid":"'+uuid+'","cangwei":"'+canbin+'","telkInfo":[{"LinkName":"'+LinkName+'","Sex":"'+sexType+'","iDcaseType":"'+iDcaseType+'","iDcase":"'+iDcase+'","PhoneNum":"'+PhoneNum+'","YiwaiBX":"'+YiwaiBX+'","YanwuBX":"'+YanwuBX+'","bxiaoOr":"'+bxiaoOr+'","sendAddren":"'+sendAddren+'","birthDay":"'+birthdayNum+'","age":"'+age+'","menType":"'+lvkeType+'"}]}';
 			/* var jsondata = JSON.parse(jsondatastr);
 			console.log(jsondata);
 			return false; */
@@ -754,6 +781,7 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 		<li><span class="spanTit">手机号：</span><input id="phoneNum" type="text"/></li>
 		<%-- <li><span class="spanTit">旅客类型：</span><input type="hidden" id="m"/><input type="text" id="personIpnt" readonly="readonly"/><span id="personIpntSource" style="display:none;"></span><span style="float:right; margin-top:18px;"><img src="<%=basePath %>console/images/xialaPonting.png"/></span></li> --%>
 		<li><span class="spanTit" id="caseIpnt">身份证</span><span id="caseIpntSource" style="display:none;">NI</span><span><img src="<%=basePath %>console/images/xialaPonting.png" style="padding-top:4px;"/></span><input id="IDcase" type="text" placeholder="请输入证件号码"/></li>
+		<li id="sendAddBox" style="display:none;"><span class="spanTit">配送地址：</span><input id="sendAdd" type="text"/></li>
 	</ul>
 </div>
 
@@ -761,7 +789,7 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 	<div class="oneClassBX"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId flindYw" value="1"/><span class="spanTitBX">航意险</span></div>
 	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId delayBx" value="1"/><span class="spanTitBX">延误险</span></div>
 	<!-- <div class="oneClassBX youhuiBox" style="margin-left:20px; display:none;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId youhuiBx" value="500"/><span class="spanTitBX youhuiText"></span></div> -->
-	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId baoxiao" value="1"/><span class="spanTitBX">报销</span><span id="baoxiaoNum" style="display:none;"></span></div>
+	<div class="oneClassBX" style="margin-left:20px;"><a class="checkboxA"></a><a class="checkboxB"></a><input type="checkbox" class="checkBoxId baoxiao" value="1"/><span class="spanTitBX">报销单</span><span id="baoxiaoNum" style="display:none;"></span></div>
 	<div style="clear:both;"><span id="zhekouType" style="display:none;"></span></div>
 </div>
 <a class="aBtn">下 一 步</a>
@@ -805,6 +833,7 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 		<div style="clear:both;"></div>
 	</div>
 	<div class="InfoMesBox">
+		<div style="display:none;"><span id="ywcostid"></span><span id="ywaicoid"></span><span id="kdcostid"></span></div>
 		<div class="InfoUserMess">
 			<ul>
 				<li class="InfoLiClass"><span>价格：</span><span id="CostPay" class="payCostMoney"></span></li>
@@ -814,6 +843,7 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 				<li class="InfoLiClass lastLiClass"><span>手机：</span><span id="PhoneNum" class="InfoValueClass"></span></li>
 				<li class="InfoLiClass BXliClass"><span>航意险：</span><span id="YiwaiBX" class="InfoValueClass"></span><span id="yiwaiNum" style="display:none;"></span></li>
 				<li class="InfoLiClass"><span>延误险：</span><span id="YanwuBX" class="InfoValueClass"></span><span id="yanwuNum" style="display:none;"></span></li>
+				<li class="InfoLiClass"><span>报销单：</span><span id="baoxOr" class="InfoValueClass"></span><span id="baoxOrNum" style="display:none;"></span></li>
 			</ul>
 		</div>
 	</div>
@@ -855,14 +885,6 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 				<div class="object" id="object_two"></div>
 				<div class="object" id="object_one"></div>
 			</div>
-			<span class="textMove" id="one">广</span>
-			<span class="textMove" id="two">州</span>
-			<span class="textMove" id="three">仁</span>
-			<span class="textMove" id="four">德</span>
-			<span class="textMove" id="five">机</span>
-			<span class="textMove" id="six">票</span>
-			<span class="textMove" id="seven">系</span>
-			<span class="textMove" id="eight">统</span>
 		</div> 
 	</div>
 <script>

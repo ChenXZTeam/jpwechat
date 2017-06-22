@@ -6,9 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -19,11 +17,13 @@ import com.solar.tech.bean.FilghUser;
 import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.bean.MessgesAlert;
 import com.solar.tech.bean.VisaOrder;
+import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.airport;
+import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.utils.ECUtils;
@@ -584,7 +584,7 @@ public class userOrderService {
 		}
 		
 		//封装保存订单的方法
-		public MessgesAlert saveOrder(FilghUser fu, String cangBin, SeatInfoData sifd, String depDate){
+		public MessgesAlert saveOrder(FilghUser fu, String cangBin, SeatInfoData sifd, String depDate,int numSign){
 			MessgesAlert mAl = new MessgesAlert();
 			//整理数据，一边要保存到数据库中，另一边整理交给中信航接口
 			userOrderInfo oderInfo = new userOrderInfo();
@@ -596,6 +596,8 @@ public class userOrderService {
 			oderInfo.setLinkSex(fu.getSex());
 			oderInfo.setYiwaiBX(fu.getYiwaiBX());
 			oderInfo.setYanwuBX(fu.getYanwuBX());
+			oderInfo.setIsConsole(fu.getBxiaoOr());
+			oderInfo.setSendAdd(fu.getSendAdd());
 			oderInfo.setBirthday(fu.getBirthDay());
 			oderInfo.setAge(fu.getAge());
 			oderInfo.setPsgType(fu.getMenType());
@@ -645,11 +647,33 @@ public class userOrderService {
 			SeatPriceData SpInfo = findPrice(sifd.getAirline(),cangBin,sifd.getOrgcity(),sifd.getDstcity());
 			double num1 = Double.valueOf(SpInfo.getOnewayPrice());
 			int jbPrice = (int)num1; //这个是基本价格
+			List<Insurance> bxco = findByBx(); //保险的价格
+			int ywaicost = 0; //航意险价格
+			int ywcost = 0; //延误险价格
+			int kdcost = 0; //快递价格
+			for(Insurance incost : bxco){
+				if("1".equals(incost.getBxType())){
+					ywaicost = Integer.parseInt(incost.getCost());
+				}else if("2".equals(incost.getBxType())){
+					ywcost = Integer.parseInt(incost.getCost());
+				}
+			}
+			List<kdCost> kdco = kdCost(); //快递的价格
+			kdcost = Integer.parseInt(kdco.get(0).getKdcost());
 			if(fu.getYiwaiBX().equals("1")||"1".equals(fu.getYiwaiBX())){ //如果买了意外险就加上30元
-				jbPrice = jbPrice+30;
+				jbPrice = jbPrice+ywaicost;
 			}
 			if(fu.getYanwuBX().equals("1")||"1".equals(fu.getYanwuBX())){ //如果买了延误险就加上20元
-				jbPrice = jbPrice+20;
+				jbPrice = jbPrice+ywcost;
+			}
+			if(numSign==1){ //中转航班和往返航班快递费是一个航段10元钱
+				if(fu.getBxiaoOr().equals("1")||"1".equals(fu.getBxiaoOr())){ //报销单快递费
+					jbPrice = jbPrice+(kdcost/2);
+				}
+			}else{ //直达航班的快递费是一个航段20元钱
+				if(fu.getBxiaoOr().equals("1")||"1".equals(fu.getBxiaoOr())){ //报销单快递费
+					jbPrice = jbPrice+kdcost;
+				}
 			}
 			if("ADT".equals(fu.getMenType())){ //最后还要加上50元成人机场建设费
 				jbPrice = jbPrice+50;
@@ -688,6 +712,7 @@ public class userOrderService {
 					mAl.setOrgCity(oderInfo.getChufCity());
 					mAl.setIsOk("1");
 					mAl.setPntr(resuletData.getPnrNo());
+					addOrder(oderInfo); //把订单数据保存到数据库中。
 				}
 			}else{
 				oderInfo.setIsSuccess("0");
@@ -697,7 +722,6 @@ public class userOrderService {
 				mAl.setCommit("座位已为空,请预定其他航班");
 			}
 			try {
-				addOrder(oderInfo); //把订单数据保存到数据库中。
 			} catch (Exception e) {
 				
 			}
@@ -714,6 +738,18 @@ public class userOrderService {
 			String pastTime = sdf.format(date);
 			List<SeatPriceData> spd = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+cfCity+"' AND dstCity = '"+ddCity+"') OR (dstCity = '"+cfCity+"' AND orgCity = '"+ddCity+"')) AND cabin = '"+canbin+"' AND airline = '"+fildNum.substring(0,2)+"' AND DATE_FORMAT(createTime,'%Y-%m-%d') > '"+pastTime+"'");
 			return spd.get(0);
+		}
+		
+		//查找保险的价格
+		public List<Insurance> findByBx(){ 
+			List<Insurance> sepList = gDao.find("FROM Insurance");
+			return sepList;
+		}
+		
+		//查找快递的价格
+		public List<kdCost> kdCost(){
+			List<kdCost> sepList = gDao.find("FROM kdCost WHERE uuid = '4028831c5ccdf185015ccdf2dea70000'");
+			return sepList;
 		}
 		
 		public static void main(String[] args) {

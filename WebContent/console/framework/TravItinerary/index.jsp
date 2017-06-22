@@ -18,7 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <script>
 $(function(){
-	$("#grideBox").css("height",$(window).height()-41);
+	$("#grideBox").css("height",$(window).height()-125);
 	$('#numListBox').datagrid({
 	    height: '100%',
 	    fit:true,
@@ -236,6 +236,27 @@ function saveBean(){
 	 }); 
 }
 
+function lvkeInfoBox3(){
+	$.post("<%=basePath%>framework/travItinerary/findKdMoney.action",{},function(res){
+		var jsonVal = JSON.parse(res);
+		$("#oldMoneyVal").text(jsonVal.kdcost+"/元");
+	});
+	$('#lvkeInfoBox3').dialog('open').dialog('setTitle','配置快递价格');
+}
+
+function saveBean3(){
+	var valueMony = $("#newMoneyInput").textbox("getValue").trim();
+	$.post("<%=basePath%>framework/travItinerary/kdMoney.action",{valueMony:valueMony},function(res){
+		if(res==1||res=="1"){
+			$.messager.alert('操作提示', "修改成功！", 'info');
+			$('#lvkeInfoBox3').dialog('close');
+			$("#newMoneyInput").textbox("setValue","");
+		}else{
+			$.messager.alert('操作提示', "修改失败！", 'warning');
+		}
+	});
+}
+
 function pointNum(){
 	var rows = $('#numListBox').datagrid('getChecked');	
 	if(rows.length<1||rows.length>1){
@@ -325,6 +346,7 @@ Date.prototype.format = function (format) {
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="updateBtn()">修改配送信息</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no',plain:true" onclick="delBtn()">删除</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="pointNum()">打印并分配单号</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="lvkeInfoBox3()">配置快递价格</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="numListBox" style="width:100%;height:100%;"></div>
@@ -389,6 +411,14 @@ Date.prototype.format = function (format) {
 <div id="dlg-buttons2">
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBean2()" style="displaly:block;width: 90px">保存</a> 
 	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox2').dialog('close')" style="width:90px">取消</a>
+</div>
+<div id="lvkeInfoBox3" class="easyui-dialog" style="width:347px; padding:40px;" closed="true" buttons="#dlg-buttons3">
+	<div><span style="color:#666; font-size:16px;">当前价格：</span><span id="oldMoneyVal" style="color:#ff0000; font-size:15px; font-weight:bold;">205元</span></div>
+	<div style="margin-top:10px;"><span style="color:#666; font-size:16px;">修改价格：</span><span><input id="newMoneyInput" type="text" class="easyui-textbox" style="width:100px;"/></span><span style="color:#888;">/元</span></div>
+</div>
+<div id="dlg-buttons3">
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveBean" iconCls="icon-ok" onclick="saveBean3()" style="displaly:block;width: 90px">保存</a> 
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCancel" iconCls="icon-cancel" onclick="javascript:$('#lvkeInfoBox3').dialog('close')" style="width:90px">取消</a>
 </div>
 </body>
 </html>
