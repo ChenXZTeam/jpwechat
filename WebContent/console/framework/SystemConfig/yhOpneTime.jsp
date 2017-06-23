@@ -82,20 +82,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div style="width:500px;margin:70px auto;">
 <table style="width:100%; margin-top:100px;" border="0"  cellspacing="10">
 	<tr>
-		
 		<td style="width:270px;margin-left:500px;"><span style="font-size:18px; font-weight:bold;">当前优惠码状态：</span><span id="yhStatus" style="font-size:14px; color:red;">未启动</span></td>
 		<td></td>
-		
 	</tr>
 	<tr>
-		
 		<td style="padding-top:20px"><span style="font-size:18px; font-weight:bold;">当前优惠码：</span><span id="yhNum" style="font-size:14px;"></span></td>
 		<td></td>
 	</tr>
 	<tr>
-	   
 		<td style="padding-top:20px"><span style="font-size:18px; font-weight:bold;">新优惠码：</span><span><input type="text" id="newNum" value="" style="height:22px;width:170px"/></span></td>
 		<td style="padding-top:20px"><a style="display:block; width:90px; text-align:center; padding:5px; border-radius:5px; background-color:blue; color:#fff; cursor:pointer;" onclick="updatenumber()">保存</a></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div style="color:#EF290E; font-size:12px;">【注】:修改新的优惠码时，系统会自动回复“未启动”状态，请记得重启</div>
+		</td>
 	</tr>
 </table>
 </div>

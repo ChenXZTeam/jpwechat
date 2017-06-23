@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          	</tr>
          </table>
          <div style="height:25px; background-color:#fff;">
-              <!-- <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="born()">生成列表</a> -->
+              <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="born()">刷新</a>
               <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="upstatus()">修改退票状态</a> 
          </div>
         <div id="grideBox" style="width:100%;">

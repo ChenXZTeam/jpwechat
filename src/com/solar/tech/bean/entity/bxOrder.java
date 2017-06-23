@@ -28,13 +28,25 @@ public class bxOrder {
 	@Column(name = "customer")
 	private String customer;
 	
-	//保险单号
-	@Column(name = "bxNum")
-	private String bxNum;
+	//证件号码
+	@Column(name = "idCard")
+	private String idCard;
 	
-	//险种
-	@Column(name = "bxType")
-	private String bxType;
+	//航意险
+	@Column(name = "yiwaiBX")
+	private String yiwaiBX;
+	
+	//航意险单号
+	@Column(name = "yiwaiNum")
+	private String yiwaiNum;
+	
+	//延误险
+	@Column(name = "yanwuBX")
+	private String yanwuBX;
+	
+	//延误险单号
+	@Column(name = "yanwuNum")
+	private String yanwuNum;
 	
 	//保险价格
 	@Column(name = "bxMoney")
@@ -68,14 +80,6 @@ public class bxOrder {
 		this.customer = customer;
 	}
 
-	public String getBxType() {
-		return bxType;
-	}
-
-	public void setBxType(String bxType) {
-		this.bxType = bxType;
-	}
-
 	public String getBxMoney() {
 		return bxMoney;
 	}
@@ -92,12 +96,44 @@ public class bxOrder {
 		this.createTime = createTime;
 	}
 
-	public String getBxNum() {
-		return bxNum;
+	public String getYiwaiBX() {
+		return yiwaiBX;
 	}
 
-	public void setBxNum(String bxNum) {
-		this.bxNum = bxNum;
+	public void setYiwaiBX(String yiwaiBX) {
+		this.yiwaiBX = yiwaiBX;
+	}
+
+	public String getYiwaiNum() {
+		return yiwaiNum;
+	}
+
+	public void setYiwaiNum(String yiwaiNum) {
+		this.yiwaiNum = yiwaiNum;
+	}
+
+	public String getYanwuBX() {
+		return yanwuBX;
+	}
+
+	public void setYanwuBX(String yanwuBX) {
+		this.yanwuBX = yanwuBX;
+	}
+
+	public String getYanwuNum() {
+		return yanwuNum;
+	}
+
+	public void setYanwuNum(String yanwuNum) {
+		this.yanwuNum = yanwuNum;
+	}
+
+	public String getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
 	}
 	
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * 保险模块
+ * 保险价格配置模块
  * @author solarpc1
  *
  */

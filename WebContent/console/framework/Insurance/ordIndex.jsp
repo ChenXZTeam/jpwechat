@@ -39,16 +39,27 @@ $(function(){
 	        { field: 'ck', checkbox: true },
 	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
 	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
-	        { field: 'bxNum', title: '保险单号',align:'center', width: '15%' },
-	        { field: 'bxType', title: '保险类型',align:'center', width: '5%' ,
+	        { field: 'idCard', title: '客户证件',align:'center', width: '7%'},
+	        { field: 'yiwaiBX', title: '航意险',align:'center', width: '15%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
-	               	 	return "意外险";
-	                }else if(value=="2"){
-	               	 	return "延误险";
+	               	 	return "已购买";
+	                }else{
+	               	 	return "未购买";
 	                }
           	  	}
 	        },
+	        { field: 'yiwaiNum', title: '航意险单号',align:'center', width: '7%'},
+	        { field: 'yanwuBX', title: '延误险',align:'center', width: '15%' ,
+	        	formatter:function(value,rec,index){  
+	                if(value=="1"){
+	               	 	return "已购买";
+	                }else{
+	               	 	return "未购买";
+	                }
+          	  	}
+	        },
+	        { field: 'yanwuNum', title: '延误险单号',align:'center', width: '7%'},
 	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
 	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
@@ -79,16 +90,27 @@ function sreach(){
 	        { field: 'ck', checkbox: true },
 	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
 	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
-	        { field: 'bxNum', title: '保险单号',align:'center', width: '15%' },
-	        { field: 'bxType', title: '保险类型',align:'center', width: '5%' ,
+	        { field: 'idCard', title: '客户证件',align:'center', width: '7%'},
+	        { field: 'yiwaiBX', title: '航意险',align:'center', width: '15%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
-	               	 	return "意外险";
-	                }else if(value=="2"){
-	               	 	return "延误险";
+	               	 	return "已购买";
+	                }else{
+	               	 	return "未购买";
 	                }
           	  	}
 	        },
+	        { field: 'yiwaiNum', title: '航意险单号',align:'center', width: '7%'},
+	        { field: 'yanwuBX', title: '延误险',align:'center', width: '15%' ,
+	        	formatter:function(value,rec,index){  
+	                if(value=="1"){
+	               	 	return "已购买";
+	                }else{
+	               	 	return "未购买";
+	                }
+          	  	}
+	        },
+	        { field: 'yanwuNum', title: '延误险单号',align:'center', width: '7%'},
 	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
 	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
@@ -123,6 +145,67 @@ function saveBean(){
 			   }
 		   }
 	 }); 
+}
+
+function seeInfo(){
+	$.post("<%=basePath%>framework/bxList/reload.action",{},function(res){
+		if(res=="1"){
+			history.go(0);
+		}else{
+			$.messager.alert('操作提示', "没有购买保险的订单！", 'warning');
+		}
+	});
+	<%-- $('#numListBox').datagrid({
+	    height: '100%',
+	    fit:true,
+	    url: '<%=basePath%>framework/bxList/reload.action',
+	    method: 'POST',
+	    striped: true,
+	    nowrap: true,
+	    pageSize: 10,
+	    pageNumber:1, 
+	    pageList: [10, 20, 50, 100, 150, 200],
+		pagination : true,
+	    showFooter: true, 
+		loadMsg : '数据加载中请稍后……',
+	    toolbar:"#tb",
+	    onLoadSuccess:function(data){
+	    	console.log(data);
+	    	if(data.total==0){
+	    		$.messager.alert('操作提示', "没有购买保险的订单！", 'warning');
+	    	}
+	    },
+	    singleSelect: false,
+		rownumbers:true,
+	    columns: [[
+	        { field: 'ck', checkbox: true },
+	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
+	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
+	        { field: 'idCard', title: '客户证件',align:'center', width: '7%'},
+	        { field: 'yiwaiBX', title: '航意险',align:'center', width: '15%' ,
+	        	formatter:function(value,rec,index){  
+	                if(value=="1"){
+	               	 	return "已购买";
+	                }else{
+	               	 	return "未购买";
+	                }
+          	  	}
+	        },
+	        { field: 'yiwaiNum', title: '航意险单号',align:'center', width: '7%'},
+	        { field: 'yanwuBX', title: '延误险',align:'center', width: '15%' ,
+	        	formatter:function(value,rec,index){  
+	                if(value=="1"){
+	               	 	return "已购买";
+	                }else{
+	               	 	return "未购买";
+	                }
+          	  	}
+	        },
+	        { field: 'yanwuNum', title: '延误险单号',align:'center', width: '7%'},
+	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
+	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
+	    ]]
+	}); --%>
 }
 
 function reset(){
@@ -174,8 +257,8 @@ Date.prototype.format = function (format) {
 	</table>
 </div>
 <div style="height:25px; background-color:#fff;">
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="seeInfo()">刷新</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="fpNum()">分配保险单号</a>
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="seeInfo()">详情</a>
 </div>
 <div id="grideBox" style="width:100%;">
 	<div id="numListBox" style="width:100%;height:100%;"></div>

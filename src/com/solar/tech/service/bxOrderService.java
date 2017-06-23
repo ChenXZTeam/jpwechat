@@ -9,7 +9,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.bxOrder;
+import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 
 @Service
@@ -38,5 +40,23 @@ public class bxOrderService {
 	
 	public void configNum(String uuid, String numStr){
 		this.gDao.executeJDBCSql("UPDATE fw_bxorder SET bxNum = '"+numStr+"' WHERE uuid = '"+uuid+"'");
+	}
+	
+	public List<userOrderInfo> load(){
+		List<userOrderInfo> cList = this.gDao.find("FROM userOrderInfo WHERE tpStatus = '0' AND stutisPay = '1' AND (yanwuBX = '1' OR yiwaiBX = '1')");
+		return cList;
+	}
+	
+	public List<Insurance> bxMoney(){
+		List<Insurance> cList = this.gDao.find("FROM Insurance WHERE uuid = '4028831c5c5d9376015c5d99512d0003' OR uuid = '4028831c5c5d9376015c5d9961200004'");
+		return cList;
+	}
+	
+	public void save(List<bxOrder> bxoder){
+		this.gDao.save(bxoder);
+	}
+	
+	public void delDate(){
+		this.gDao.executeJDBCSql("delete from fw_bxorder");
 	}
 }
