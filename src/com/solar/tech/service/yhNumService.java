@@ -1,5 +1,7 @@
 package com.solar.tech.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -32,6 +34,11 @@ public class yhNumService {
 		yh.setNumber(number);
 		yh.setStatus("1");
 		this.gDao.update(yh);
+	}
+	
+	public List<yhNum> gengx(){
+		List<yhNum> yh = this.gDao.find("FROM yhNum WHERE ID = '402881e656b0f41a0156b0f9dc5a0000'");
+		return yh;
 	}
 	
 }

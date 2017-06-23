@@ -1,9 +1,6 @@
 package com.solar.tech.controller.framework;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +26,6 @@ public class yhNumController {
 		}catch(Exception e){
 			return 0;
 		}
-		
 	}
 	
 	@RequestMapping("/xigai.action")
@@ -41,6 +37,13 @@ public class yhNumController {
 		}catch(Exception e){
 			return 0;
 		}
+	}
+	
+	@RequestMapping("/reload.action")
+	@ResponseBody
+	public List<yhNum> reload(){
+		List<yhNum> yhnum = yhnumser.gengx();
+		return yhnum;
 	}
 	
 }

@@ -58,6 +58,7 @@ public class JP_orderController {
 			sd.setOrderNum(OrderService.createOrderNum("RDOD", 8));
 			sd.setStutisPay("1");
 			sd.setAdminDel("0");
+			sd.setOrderStatus("0"); //线下预定
 			sd.setChufTime(sd.getChufTime().replaceAll(":", ""));
 			sd.setDaodTime(sd.getDaodTime().replaceAll(":", ""));
 			sd.setUpdateTime(new Timestamp(new Date().getTime()));

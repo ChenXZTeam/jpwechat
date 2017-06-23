@@ -18,7 +18,7 @@ public class CTCTnum {
 		@Column(name = "uuid", length=100)
 		private String uuid;
 		
-		//特色路线标题
+		//ctct码
 		@Column(name = "phoneNum")
 		private String phoneNum;
 

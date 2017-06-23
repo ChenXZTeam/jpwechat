@@ -76,15 +76,15 @@ public class userOrderController {
 	public Map<String, Object> addOrder(String jsStr,HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
 		MessgesAlert mAl = new MessgesAlert();
-		/*String userName = (String) session.getAttribute("userName"); 
+		String userName = (String) session.getAttribute("userName"); 
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单
-		String phoneNumber = (String) session.getAttribute("phoneNumber");*/
-		String userName = "ttt";
+		String phoneNumber = (String) session.getAttribute("phoneNumber");
+		/*String userName = "ttt";
 		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
-		String phoneNumber = "15799024022";
+		String phoneNumber = "15799024022";*/
 		if("".equals(openID)||null==openID){
-			map.put("msg","0");
-			map.put("planMsg","订单生成失败3，系统出错");
+			map.put("resAlert", mAl);
+			mAl.setCommit("openid为空，请稍后再试");
 			return map;
 		}
 		
@@ -167,15 +167,18 @@ public class userOrderController {
 	public Map<String, Object> addzhz_res(String jsStr,HttpSession session){
 		List<MessgesAlert> malert = new ArrayList<MessgesAlert>();  //记录是否两个全部预定成功或者只有一个，用于反馈前台提示用户
 		Map<String, Object> map = new HashMap<String, Object>();
-		/*String userName = (String) session.getAttribute("userName");
+		String userName = (String) session.getAttribute("userName");
 		String openID = (String) session.getAttribute("openId"); //很重要。订票没有这个就无法查看订单	
-		String phoneNumber = (String) session.getAttribute("phoneNumber");*/
-		String userName = "ttt";
+		String phoneNumber = (String) session.getAttribute("phoneNumber");
+		/*String userName = "ttt";
 		String openID = "oI6f2wDvj5glUkde-sQBTSyoyyZ4";
-		String phoneNumber = "15799024022";
+		String phoneNumber = "15799024022";*/
 		if("".equals(openID)||null==openID){
-			map.put("msg","0");
-			map.put("planMsg","订单生成失败3，系统出错");
+			MessgesAlert mAl = new MessgesAlert();
+			map.put("resAlert", mAl);
+			mAl.setCommit("openid为空，请稍后再试");
+			malert.add(mAl);
+			map.put("resAlert", malert);
 			return map;
 		}
 		JSONObject jsonObject=JSONObject.fromObject(jsStr);

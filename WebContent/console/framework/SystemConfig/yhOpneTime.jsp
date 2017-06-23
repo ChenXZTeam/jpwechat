@@ -10,22 +10,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<title>优惠开放时间设置</title>
 	<script type="text/javascript" src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
 	<style>
-	     ul{
-	       list-style:none;
-	     
-	       height:50px;
-	       width:265px;
-	       float:right;
-	       
-	       
-	     }
-	     ul li{
-	       float:left;
-	       width:130px;
-	     }
+		ul{list-style:none; height:50px; width:265px; float:right;}
+		ul li{float:left; width:130px;}
 	</style>
 	<script>
-      function updatenumber(){
+	$(function(){
+		$.post("<%=basePath%>framework/yhTime/reload.action",{},function(res){
+			var date = JSON.parse(res);
+			console.log(date);
+			$("#yhNum").text(date[0].number);
+			$("#yhStatus").text(date[0].status==1?"已启动":"未启动")
+		});
+	});
+    function updatenumber(){
          var a=$("#newNum").val();
          var b=$("#yhStatus").text();
          $.ajax({
@@ -38,18 +35,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                if(data=="1"||data==1){
                    $("#yhNum").text(a);
                    $("#newNum").val("");
+                   history.go(0);
                }else{
                    alert("保存失败")
                }
              },error:function(){
 
-        }
-         });
-         
+        	 }
+       });
    }
    
    function save(){
-      var c=$("#newNum").val();
+      var c=$("#yhNum").text();
       var a=$("input[type='checkbox']").attr("checked");
       if(a){
          $.ajax({
@@ -60,7 +57,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             success:function(data){
                if(data=="1"||data==1){
                   $("#yhStatus").text("已启动");
-                  
                }else{
                    alert("保存失败")
                }

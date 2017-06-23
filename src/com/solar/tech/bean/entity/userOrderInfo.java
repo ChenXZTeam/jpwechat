@@ -186,6 +186,15 @@ public class userOrderInfo {
 	@Column(name="sendAdd")
 	private String sendAdd;
 	
+	//订单线上线下状态（0:线下，1:线上）
+	@Column(name="orderStatus")
+	private String orderStatus;
+	
+	//大客户编码
+	@Column(name="license")
+	private String license;
+	
+	//退票状态
 	@Column(name="tpStatus")
 	private String tpStatus;
 	
@@ -523,6 +532,22 @@ public class userOrderInfo {
 
 	public void setKdCompany(String kdCompany) {
 		this.kdCompany = kdCompany;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
 	}
 
 }

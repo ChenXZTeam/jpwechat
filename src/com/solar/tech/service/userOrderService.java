@@ -17,6 +17,7 @@ import com.solar.tech.bean.FilghUser;
 import com.solar.tech.bean.InvitationCode;
 import com.solar.tech.bean.MessgesAlert;
 import com.solar.tech.bean.VisaOrder;
+import com.solar.tech.bean.entity.CTCTnum;
 import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
@@ -25,6 +26,7 @@ import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.airport;
 import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.bean.entity.userOrderInfo;
+import com.solar.tech.bean.entity.yhNum;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
@@ -537,7 +539,7 @@ public class userOrderService {
 			osi.setOsi("CTCT18729034712");//OSI内容
 			System.out.println("===============OSI组实体类==============");
 			System.out.println("航空公司代码："+fildInfo.getHangbanNum().substring(0, 2));
-			System.out.println("CTCT："+"CTCT18729034712");
+			System.out.println("CTCT："+ctctNum().get(0).getPhoneNum());
 			OSIInfo[] osis = new OSIInfo[]{osi};
 			
 			//RMK组实体类
@@ -686,6 +688,7 @@ public class userOrderService {
 			oderInfo.setAdminDel("0"); //默认不删除
 			oderInfo.setConsoleStatus("0"); //未打印
 			oderInfo.setTpStatus("0"); //退票标识（未退票）
+			oderInfo.setOrderNum("1"); //线上预定
 			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
 			String orderNumFirst = createOrderNum("RDOD", 8);
 			oderInfo.setOrderNum(orderNumFirst); //设置流水号
@@ -693,6 +696,9 @@ public class userOrderService {
 			//系统数据
 			oderInfo.setUserName(fu.getUserName()); //订票的账号 
 			oderInfo.setOpenID(fu.getOpenID()); //订票的openId
+			if(qsQidong().size()>0){
+				oderInfo.setLicense(qsQidong().get(0).getNumber());
+			}
 			
 			//预定中信航航班(先查找接口是否还有座位)
 			Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
@@ -751,10 +757,22 @@ public class userOrderService {
 			List<kdCost> sepList = gDao.find("FROM kdCost WHERE uuid = '4028831c5ccdf185015ccdf2dea70000'");
 			return sepList;
 		}
+
+		//判断优惠码是否启动
+		public List<yhNum> qsQidong(){
+			List<yhNum> sepList = gDao.find("FROM yhNum WHERE ID = '402881e656b0f41a0156b0f9dc5a0000' AND status = '1'");
+			return sepList;
+		}
+		
+		//获取ctct码
+		public List<CTCTnum> ctctNum(){
+			List<CTCTnum> sepList = gDao.find("FROM CTCTnum WHERE uuid = '402881e656b0f41a0156b0f9dc5a0000'");
+			return sepList;
+		}
 		
 		public static void main(String[] args) {
 			//rtPnr("JM8RKQ");
 			pointDate("2017-05-26");
 		}
-
+		
 }
