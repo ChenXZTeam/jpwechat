@@ -35,12 +35,12 @@ private static Logger log = Logger.getLogger(InitListener.class);
 		if(event.getApplicationContext().getParent() == null){
 			log.info("========================spring容易初始化完毕============================");
 			/** 定时器，处理订单超过一个时间，归档历史表 */
-			uTask.startTask("过期航班任务");
-			pykTime.startTask("过期运价任务");
+			//uTask.startTask("过期航班任务");
+			//pykTime.startTask("过期运价任务");
 			
 			/** 系统启动检查自定义菜单是否已经配置自定义菜单 **/
-			//uMenuManger = new MenuManger();
-			//uMenuManger.CheckMenu();
+			uMenuManger = new MenuManger();
+			uMenuManger.CheckMenu();
 		}
 	}
 	
