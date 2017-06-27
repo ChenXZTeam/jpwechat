@@ -722,7 +722,7 @@ public class userOrderService {
 				savebxOrder(bxb);
 			}
 			
-			//预定中信航航班(先查找接口是否还有座位)
+			//预定中信航航班(先查找接口是否还有座位) 
 			Integer seatNum = new OptimizeECUtils().confirmCabin(oderInfo.getChufCity(), oderInfo.getDaodCity(), oderInfo.getChufDate(), oderInfo.getHangbanNum(), oderInfo.getCabin());
 			if(seatNum!=null){
 				PnrResponse resuletData = null;
