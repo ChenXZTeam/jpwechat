@@ -24,6 +24,7 @@ import com.solar.tech.bean.entity.RD_wechatUser;
 import com.solar.tech.bean.entity.SeatInfoData;
 import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.airport;
+import com.solar.tech.bean.entity.bxOrder;
 import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.bean.entity.yhNum;
@@ -662,10 +663,10 @@ public class userOrderService {
 			}
 			List<kdCost> kdco = kdCost(); //快递的价格
 			kdcost = Integer.parseInt(kdco.get(0).getKdcost());
-			if(fu.getYiwaiBX().equals("1")||"1".equals(fu.getYiwaiBX())){ //如果买了意外险就加上30元
+			if(fu.getYiwaiBX().equals("1")||"1".equals(fu.getYiwaiBX())){ //如果买了意外险就加上
 				jbPrice = jbPrice+ywaicost;
 			}
-			if(fu.getYanwuBX().equals("1")||"1".equals(fu.getYanwuBX())){ //如果买了延误险就加上20元
+			if(fu.getYanwuBX().equals("1")||"1".equals(fu.getYanwuBX())){ //如果买了延误险就加上
 				jbPrice = jbPrice+ywcost;
 			}
 			if(numSign==1){ //中转航班和往返航班快递费是一个航段10元钱
@@ -696,8 +697,29 @@ public class userOrderService {
 			//系统数据
 			oderInfo.setUserName(fu.getUserName()); //订票的账号 
 			oderInfo.setOpenID(fu.getOpenID()); //订票的openId
-			if(qsQidong().size()>0){
+			if(qsQidong().size()>0){ //判断优惠活动是否启动
 				oderInfo.setLicense(qsQidong().get(0).getNumber());
+			}
+			
+			//收集保险信息，如果用户选择的买保险则保存到保险表里面
+			bxOrder bxb = new bxOrder();
+			bxb.setCreateTime(new Timestamp(new Date().getTime()));
+			bxb.setCustomer(fu.getLinkName());
+			bxb.setIdCard(fu.getiDcase());
+			bxb.setOrderNum(oderInfo.getOrderNum());
+			if("1".equals(fu.getYiwaiBX())&&"1".equals(fu.getYanwuBX())){
+				bxb.setBxMoney(ywcost+ywaicost+"");
+			}
+			if("1".equals(fu.getYanwuBX())&&"0".equals(fu.getYiwaiBX())){
+				bxb.setYanwuBX("1"); 
+				bxb.setBxMoney(ywcost+"");
+			}
+			if("1".equals(fu.getYiwaiBX())&&"0".equals(fu.getYanwuBX())){
+				bxb.setYiwaiBX("1");
+				bxb.setBxMoney(ywaicost+"");
+			}
+			if("1".equals(fu.getYiwaiBX())||"1".equals(fu.getYanwuBX())){ //如果有其中一个符合就把保险信息保存
+				savebxOrder(bxb);
 			}
 			
 			//预定中信航航班(先查找接口是否还有座位)
@@ -768,6 +790,11 @@ public class userOrderService {
 		public List<CTCTnum> ctctNum(){
 			List<CTCTnum> sepList = gDao.find("FROM CTCTnum WHERE uuid = '402881e656b0f41a0156b0f9dc5a0000'");
 			return sepList;
+		}
+		
+		//保存买了保险的订单信息
+		public void savebxOrder(bxOrder bxo){
+			this.gDao.save(bxo);
 		}
 		
 		public static void main(String[] args) {

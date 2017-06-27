@@ -28,6 +28,7 @@ import com.solar.tech.bean.entity.SeatPriceData;
 @Component
 public class PriceTaskTimer {
 	private static Logger log = Logger.getLogger(PriceTaskTimer.class);
+	final long DAY_PERIOD = 3600*24*180*1000;  //半年时间
 	@Autowired
 	private PlanTekService ptService;
 	/**
@@ -38,7 +39,8 @@ public class PriceTaskTimer {
 	public void startTask(String time) {
 		Timer timer = new Timer();
 		Task uTask = new Task(time);
-		timer.schedule(uTask, 10000, 3600000);
+		//timer.schedule(uTask, 10000, 3600*24*180*1000);
+		timer.scheduleAtFixedRate(uTask,1000,DAY_PERIOD);
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class PriceTaskTimer {
 			System.out.println("条件时间："+pastTime);
 			List<SeatPriceData> flightInfo = ptService.SeatPriceList(pastTime);
 			if(flightInfo.size()>0){
-				System.out.println("有运价过期了，10秒之后重新开始缓存");
+				System.out.println("有运价过期了，现在开始缓存");
 				/*
 				 *缓存步骤：
 				 *1、删除之前的
@@ -80,11 +82,11 @@ public class PriceTaskTimer {
 				
 				List<SeatPriceData> flign = removeFm(flightInfo);
 				for(SeatPriceData fli : flign){
-					ptService.loadBronAv(fli.getOrgCity(), fli.getDstCity(), pastTime);
+					ptService.reloadfd(fli.getOrgCity(), fli.getDstCity(), pastTime);
 				}
 				
 			}else{
-				System.out.println("没有符合的过期的运价，不用缓存");
+				System.out.println("没有符合的过期的运价，半年之后重新开始缓存");
 			}
 			//System.out.println("现在的日期："+pastTime.toString());
 		}

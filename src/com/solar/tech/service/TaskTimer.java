@@ -57,15 +57,15 @@ public class TaskTimer {
 
 		@Override
 		public void run() {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Calendar c = Calendar.getInstance();
-			c.add(Calendar.DAY_OF_YEAR, 0);
-			Date date = c.getTime();
-			String pastTime = sdf.format(date);
-			System.out.println("条件时间："+pastTime);
-			List<SeatInfoData> flightInfo = ptService.pastFlightMessageList(pastTime.replaceAll("-", ""));
+			c.add(Calendar.HOUR_OF_DAY, -1);
+			Date NowDate = c.getTime();
+			String pastTime = sdf.format(NowDate);
+			
+			List<SeatInfoData> flightInfo = ptService.pastFlightMessageList("1",pastTime);
 			if(flightInfo.size()>0){
-				System.out.println("有航班，10秒之后重新开始缓存");
+				System.out.println("有当天出发的航班已经过期，开始缓存");
 				/*
 				 *缓存步骤：
 				 *1、删除之前的
@@ -79,11 +79,11 @@ public class TaskTimer {
 				
 				List<SeatInfoData> flign = removeFm(flightInfo);
 				for(SeatInfoData fli : flign){
-					ptService.loadBronAv(fli.getOrgcity(), fli.getDstcity(), pastTime);
+					ptService.loadBronAv(fli.getDwOrgCity(), fli.getDwDstCity(), pastTime.substring(0,10));
 				}
-				
+				System.out.println("当天的缓存航班已经缓存完成");
 			}else{
-				System.out.println("没有符合的过期航班，不用缓存");
+				System.out.println("没有符合的过期航班，1个小时之后开始重新缓存");
 			}
 			//System.out.println("现在的日期："+pastTime.toString());
 		}
@@ -96,7 +96,7 @@ public class TaskTimer {
 			for(SeatInfoData fmes : fm){
 				boolean flag = true;
 				for(SeatInfoData rInfo : fmg){
-					if(fmes.getOrgcity().equals(rInfo.getOrgcity())&&fmes.getDstcity().equals(rInfo.getDstcity())){
+					if(fmes.getDwOrgCity().equals(rInfo.getDwOrgCity())&&fmes.getDwDstCity().equals(rInfo.getDwDstCity())){
 						flag = false;
 						break;
 					}

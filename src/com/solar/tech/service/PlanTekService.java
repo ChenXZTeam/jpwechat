@@ -588,9 +588,14 @@ public class PlanTekService {
 	public void loadBronAv(String org, String dst, String date){
 		List<AvSegment> hsavList = new ECUtils().av(org, dst, date, null, null, "false", null, null, null); //查询座位可用   有中转
 		hsavList = new OptimizeECUtils().removeNullreapte(hsavList); //剔除掉重复的、没有座位的、共享的航班
+		String dayNum = "";
+		long juliDay = pointTime(date);
+		if(juliDay==0){dayNum = "1";}else if(juliDay>0&&juliDay<=3){dayNum = "2";}else if(juliDay>3&&juliDay<=7){dayNum = "3";}else if(juliDay>7&&juliDay<=15){dayNum = "4";}else if(juliDay>15&&juliDay<=30){dayNum = "5";}else if(juliDay>30){dayNum = "6";}
 		for(int i=0; i<hsavList.size(); i++){
 			AvSegment avs = hsavList.get(i);
 			SeatInfoData aidata = new SeatInfoData(); //要保存到数据库的对象
+			UUID uuid = UUID.randomUUID();
+			aidata.setSignFilghtNum(uuid.toString());
 			aidata.setAirline(avs.getAirline());
 			aidata.setDepDate(avs.getDepDate().substring(0,8));
 			aidata.setDeptimemodify(avs.getDeptimemodify());
@@ -602,6 +607,9 @@ public class PlanTekService {
 			aidata.setArriveDate(avs.getArriveDate().substring(0,8));
 			aidata.setArriveTimeModify(avs.getArriveTimeModify());
 			aidata.setDstcity(avs.getDstcity());
+			aidata.setDwOrgCity(org); //设置出发城市的组
+			aidata.setDwDstCity(dst); //设置到达城市的组
+			aidata.setDayNum(dayNum); //设置缓存的范围天数
 			//把舱位数变成字符串存到数据库中
 			String[] cangData = avs.getCangwei_data(); 
 			String sd = "";
@@ -625,11 +633,38 @@ public class PlanTekService {
 		}
 	}
 	
+	//重新缓存运价的方法
+	public void reloadfd(String org, String dst, String date){
+		try {
+			List<FDItem> fdList = new ECUtils().fd(org, dst, date, null, null, null, null);
+			if(fdList.size()>0){
+				List<SeatPriceData> spList = new ArrayList<SeatPriceData>();
+				for(FDItem fdt : fdList){
+					SeatPriceData spce = new SeatPriceData();
+					spce.setAirline(fdt.getAirline());
+					spce.setAirportTax(fdt.getAirportTax());
+					spce.setBasicCabin(fdt.getBasicCabin());
+					spce.setCabin(fdt.getCabin());
+					spce.setDstCity(fdt.getDstCity());
+					spce.setFueltax(fdt.getFueltax());
+					spce.setOnewayPrice(fdt.getOnewayPrice());
+					spce.setRoundtripPrice(fdt.getRoundtripPrice());
+					spce.setOrgCity(fdt.getOrgCity());
+					spce.setCreateTime(new Timestamp(new Date().getTime()));
+					spList.add(spce);
+				}
+				spList = removeSp(spList);//入库之前要进行去重处理
+				gDao.save(spList);
+			}
+		} catch (Exception e) {
+			System.out.println("查询接口运价异常");
+		}
+	}
+	
 	//查找航班是否过期，如果过期就重新缓存
-	public List<SeatInfoData> pastFlightMessageList(String pastTime) {
-		StringBuffer hql = new StringBuffer();
-		hql.append("FROM SeatInfoData WHERE depDate = '").append(pastTime).append("'");
-		List<SeatInfoData> datas = gDao.queryHQL(hql.toString());
+	public List<SeatInfoData> pastFlightMessageList(String num,String pastTime) {
+		String hql = "FROM SeatInfoData WHERE dayNum = '"+num+"' AND DATE_FORMAT(createTime,'%Y-%m-%d %H:%i') <= '"+pastTime+"'";
+		List<SeatInfoData> datas = gDao.find(hql);
 		return datas;
 	}
 	
@@ -682,7 +717,8 @@ public class PlanTekService {
 	}
 	
 	public static void main(String[] args) {
-		PlanTekService sd = new PlanTekService();
+		//new PlanTekService().pastFlightMessageList("1");
+		/*PlanTekService sd = new PlanTekService();
 		long juliDay = sd.pointTime("2017-05-21");
 		if(juliDay!=-1){
 			if(juliDay==0){
@@ -715,7 +751,7 @@ public class PlanTekService {
 			}else{
 				System.out.println("未知距离出发时间：不明");
 			}
-		}
+		}*/
 	}
 	
 	//根据航班号和舱位查找数据库中缓存好的价格
@@ -723,4 +759,5 @@ public class PlanTekService {
 		List<SeatPriceData> priceInfo = gDao.find("FROM SeatPriceData WHERE airline = '"+fildNum.substring(0,2)+"' AND cabin = '"+canbin+"' AND orgCity= '"+cfCity+"' AND dstCity = '"+ddCity+"'");
 		return priceInfo.get(0);
 	}
+	
 }

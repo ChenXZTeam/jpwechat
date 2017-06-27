@@ -124,7 +124,19 @@ function fpNum(){
 		$.messager.alert('操作提示', "请选择一条数据！", 'warning');
 		return false;
 	}
+	if(rows[0].yiwaiBX==1||rows[0].yiwaiBX=="1"){
+		$("#flyBxBox").css("display","block");
+	}else{
+		$("#flyBxBox").css("display","none");
+	}
+	if(rows[0].yanwuBX==1||rows[0].yanwuBX=="1"){
+		$("#ywuBxBox").css("display","block");
+	}else{
+		$("#ywuBxBox").css("display","none");
+	}
+	$('#inputNumForm').form("clear");
 	$("#uuid").textbox("setValue",rows[0].uuid);
+	$("#orderNumInpt").textbox("setValue",rows[0].orderNum);
 	doUrl = "<%=basePath%>framework/bxList/configNum.action";
 	$('#inputNum').dialog('open').dialog('setTitle','分配保险单号');
 }
@@ -136,7 +148,6 @@ function saveBean(){
 		        return $(this).form('validate');
 		   },
 		   success: function(data){
-			   console.log(data);
 			   if(data==1||data=="1"){
 				   $('#inputNum').dialog('close');        // close the dialog
 				    $('#numListBox').datagrid('reload');    // reload the user data
@@ -155,57 +166,6 @@ function seeInfo(){
 			$.messager.alert('操作提示', "没有购买保险的订单！", 'warning');
 		}
 	});
-	<%-- $('#numListBox').datagrid({
-	    height: '100%',
-	    fit:true,
-	    url: '<%=basePath%>framework/bxList/reload.action',
-	    method: 'POST',
-	    striped: true,
-	    nowrap: true,
-	    pageSize: 10,
-	    pageNumber:1, 
-	    pageList: [10, 20, 50, 100, 150, 200],
-		pagination : true,
-	    showFooter: true, 
-		loadMsg : '数据加载中请稍后……',
-	    toolbar:"#tb",
-	    onLoadSuccess:function(data){
-	    	console.log(data);
-	    	if(data.total==0){
-	    		$.messager.alert('操作提示', "没有购买保险的订单！", 'warning');
-	    	}
-	    },
-	    singleSelect: false,
-		rownumbers:true,
-	    columns: [[
-	        { field: 'ck', checkbox: true },
-	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
-	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
-	        { field: 'idCard', title: '客户证件',align:'center', width: '7%'},
-	        { field: 'yiwaiBX', title: '航意险',align:'center', width: '15%' ,
-	        	formatter:function(value,rec,index){  
-	                if(value=="1"){
-	               	 	return "已购买";
-	                }else{
-	               	 	return "未购买";
-	                }
-          	  	}
-	        },
-	        { field: 'yiwaiNum', title: '航意险单号',align:'center', width: '7%'},
-	        { field: 'yanwuBX', title: '延误险',align:'center', width: '15%' ,
-	        	formatter:function(value,rec,index){  
-	                if(value=="1"){
-	               	 	return "已购买";
-	                }else{
-	               	 	return "未购买";
-	                }
-          	  	}
-	        },
-	        { field: 'yanwuNum', title: '延误险单号',align:'center', width: '7%'},
-	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
-	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
-	    ]]
-	}); --%>
 }
 
 function reset(){
@@ -267,11 +227,16 @@ Date.prototype.format = function (format) {
 	<form id="inputNumForm">
 		<table>
 			<tr style="display:none;">
-				<td colspan="2"><input id="uuid" name="uuid" class="easyui-textbox"/></td>
+				<td><input id="uuid" name="uuid" class="easyui-textbox"/></td>
+				<td><input id="orderNumInpt" name="orderNum" class="easyui-textbox"/></td>
 			</tr>
-			<tr>
-				<td>输入保险单号：</td>
-				<td><input id="bxNum" name="bxNum" class="easyui-textbox"/></td>
+			<tr id="flyBxBox">
+				<td>航意险保险单号：</td>
+				<td><input id="yiwaiNum" name="yiwaiNum" class="easyui-textbox" data-options="prompt:'请输入航意险保险单号'"/></td>
+			</tr>
+			<tr id="ywuBxBox">
+				<td>延误险保险单号：</td>
+				<td><input id="yanwuNum" name="yanwuNum" class="easyui-textbox" data-options="prompt:'请输入延误险保险单号'"/></td>
 			</tr>
 		</table>
 	</form>

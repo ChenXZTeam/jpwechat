@@ -1,5 +1,6 @@
 package com.solar.tech.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,12 @@ public class bxOrderService {
 		return map;
 	}
 	
-	public void configNum(String uuid, String numStr){
-		this.gDao.executeJDBCSql("UPDATE fw_bxorder SET bxNum = '"+numStr+"' WHERE uuid = '"+uuid+"'");
+	public void configNum(String uuid, String yiwaiNum, String yanwuNum){
+		this.gDao.executeJDBCSql("UPDATE fw_bxorder SET yiwaiNum = '"+yiwaiNum+"', yanwuNum = '"+yanwuNum+"' WHERE uuid = '"+uuid+"'");
+	}
+	
+	public void upOrderBXnum(String orderNum, String yiwaiNum, String yanwuNum){
+		this.gDao.executeJDBCSql("UPDATE userorderinfo SET yiwaiNum = '"+yiwaiNum+"', yanwuNum = '"+yanwuNum+"' WHERE orderNum = '"+orderNum+"'");
 	}
 	
 	public List<userOrderInfo> load(){
@@ -58,5 +63,27 @@ public class bxOrderService {
 	
 	public void delDate(){
 		this.gDao.executeJDBCSql("delete from fw_bxorder");
+	}
+	
+	public List<userOrderInfo> removeNotDate(List<userOrderInfo> userOrderList){
+		List<userOrderInfo> usList = new ArrayList<userOrderInfo>();
+		for(userOrderInfo usor : userOrderList){
+			if("1".equals(usor.getYanwuBX())&&"0".equals(usor.getYiwaiBX())){ //如果购买了延误险,没有购买航意险
+				if(null==usor.getYanwuNum()||"".equals(usor.getYanwuNum().trim())){ //并且还没有分配延误单号
+					usList.add(usor);
+				}
+			}
+			if("0".equals(usor.getYanwuBX())&&"1".equals(usor.getYiwaiBX())){ //如果没有购买延误险，购买了航意险
+				if(null==usor.getYiwaiNum()||"".equals(usor.getYiwaiNum().trim())){ //并且还没有分配航意险单号
+					usList.add(usor);
+				}
+			}
+			if("1".equals(usor.getYanwuBX())&&"1".equals(usor.getYiwaiBX())){
+				if(null==usor.getYanwuNum()||"".equals(usor.getYanwuNum().trim())||null==usor.getYiwaiNum()||"".equals(usor.getYiwaiNum().trim())){ //并且还没有分配单号
+					usList.add(usor);
+				}
+			}
+		}
+		return usList;
 	}
 }

@@ -198,6 +198,14 @@ public class userOrderInfo {
 	@Column(name="tpStatus")
 	private String tpStatus;
 	
+	//航意险的单号
+	@Column(name="yiwaiNum")
+	private String yiwaiNum;
+	
+	//延误险的单号
+	@Column(name="yanwuNum")
+	private String yanwuNum;
+	
 	public String getTpStatus() {
 		return tpStatus;
 	}
@@ -548,6 +556,22 @@ public class userOrderInfo {
 
 	public void setLicense(String license) {
 		this.license = license;
+	}
+
+	public String getYiwaiNum() {
+		return yiwaiNum;
+	}
+
+	public void setYiwaiNum(String yiwaiNum) {
+		this.yiwaiNum = yiwaiNum;
+	}
+
+	public String getYanwuNum() {
+		return yanwuNum;
+	}
+
+	public void setYanwuNum(String yanwuNum) {
+		this.yanwuNum = yanwuNum;
 	}
 
 }

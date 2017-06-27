@@ -37,9 +37,10 @@ public class bxOrderController {
 	
 	@RequestMapping("/configNum.action")
 	@ResponseBody
-	public int configNum(String uuid, String bxNum){
+	public int configNum(String uuid, String orderNum, String yiwaiNum, String yanwuNum){
 		try {
-			bxOrderSer.configNum(uuid,bxNum);
+			bxOrderSer.configNum(uuid,yiwaiNum,yanwuNum);
+			bxOrderSer.upOrderBXnum(orderNum,yiwaiNum,yanwuNum);
 			return 1;
 		} catch (Exception e) {
 			return 0;
@@ -60,6 +61,7 @@ public class bxOrderController {
 			}
 		}
 		List<userOrderInfo> usOr =  bxOrderSer.load();
+		usOr = bxOrderSer.removeNotDate(usOr);//去掉已经分配有单号的订单
 		if(usOr.size()>0){
 			List<bxOrder> bxord = new ArrayList<bxOrder>();
 			for(userOrderInfo uinf : usOr){
@@ -78,6 +80,7 @@ public class bxOrderController {
 				bxo.setOrderNum(uinf.getOrderNum());
 				bxo.setCustomer(uinf.getLinkName());
 				bxo.setIdCard(uinf.getIDcase());
+				bxo.setCreateTime(uinf.getCreateTime());
 				bxord.add(bxo);
 			}
 			bxOrderSer.delDate();
