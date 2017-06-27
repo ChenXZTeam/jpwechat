@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +47,7 @@ public class SellDateController {
 	public Map<String,Object> showDate(){
 		Map<String,Object> map=new HashMap<String,Object>();
 		List<userOrderInfo> list=selldate.chazhao();
+		 
 		if(list.size()<=0){
 			String a=" ";
 			map.put("state", a);
@@ -54,6 +59,12 @@ public class SellDateController {
 			return map;
 		}
 	}
+	@RequestMapping(value="/exportSellDate.action",method = RequestMethod.GET)
+	public void getXLSs(HttpServletRequest request, HttpServletResponse response){
+		selldate.exportSellDate(request,response);
+	}
+	
+	
 	
 	
 	

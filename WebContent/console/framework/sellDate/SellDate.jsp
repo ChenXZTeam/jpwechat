@@ -13,11 +13,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" type="text/css"href="<%=basePath %>scripts/common/jquery-easyui/themes/default/datagrid.css">
     <script src="<%=basePath%>console/js/jquery-1.8.3.min.js"></script>
     <script src="<%=basePath%>scripts/common/jquery-easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>scripts/common/fusioncharts.js"></script>
-    <script type="text/javascript" src="<%=basePath%>scripts/common/fusioncharts.theme.fint.js"></script>
-    <script type="text/javascript" src="<%=basePath %>console/js/airCodeVScity.js"></script>
     <script type="text/javascript" src="<%=basePath %>console/js/echarts.min.js"></script>
     <script type="text/javascript" src="<%=basePath %>scripts/common/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="<%=basePath %>console/js/airCodeVScity.js"></script>
 </head>
 <body>
      <div id="contain">
@@ -32,7 +30,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                           <lable class="font-style">至</lable>
                           <input type="text" id="TTime" class="easyui-datebox" data-options="prompt:'请输入时间'" style="width:150px;height:25px">
                      </span>
-                     <span style="position:relative;margin-left:500px; text-align:center; top:-27px; display:block;  overflow:hidden;">
+                     <span style="margin-left:50px">
+                          <lable class="font-style">航空二字码</lable>
+                          <input id="airCode" name="airCode" class="easyui-combobox" data-options="prompt:'航空公司二字码',panelHeight:'276',valueField:'value', textField:'text'"/>
+                     </span>
+                     <span style="position:relative;margin-left:800px; text-align:center; top:-27px; display:block;  overflow:hidden;">
 			    	          <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="find()"  style="width:80px;height: 28px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
                                  
                                  <span class="img_class">查询</span>
@@ -41,15 +43,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
           </form>
           <div id="grideBox" style="width:100%;">
-               
+               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="DCdate()"  style="width:80px;height: 28px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
+                                 
+                                 <span class="img_class">导出</span>
+                    </a>
                <div  style="width:80%;height:600px;border:1px solid #C1C1C1;margin:0px auto">
-                   <a style="display:block; width:60px; text-align:center; padding:5px; border-radius:5px; background-color:#26B8F3; color:#fff; cursor:pointer;float:right" onclick="save()">导出</a>
+                    
                     <div id="canvasDiv" style="width:100%;height:570px;"></div>
+                   
                </div>
                
           </div>
       </div>
       <script type="text/javascript">
+           var tempdate;
+           function DCdate(){
+             
+              var numID=[];
+              for(var i=0;i<tempdate.length;i++){
+                 numID.push(tempdate[i].orderNum);
+                 
+              }
+             
+                 location.href="<%=basePath%>framework/SellDate/exportSellDate.action?numID="+numID+"";
+                
+           }
            $(function(){
                $.ajax({
                   type:'POST',
@@ -58,10 +76,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   data:{},
                   success:function(data){
                       ss=data.state;
-                      //console.log(ss);
+                      console.log(ss);
+                      tempdate=ss;
                       canvas();
                   }
                })
+               var data = [];
+					var airCompany = JSON.stringify(getAircode());
+					airCompany = airCompany.substring(1,airCompany.length-1);
+					var chCompany = airCompany.split(",");
+					for(var i=0; i<chCompany.length; i++){
+						var codeAndName = chCompany[i].split(":");
+						data.push({"value":codeAndName[0].substring(1,codeAndName[0].length-1),"text":codeAndName[0].substring(1,codeAndName[0].length-1)+"("+codeAndName[1].substring(1,codeAndName[1].length-1)+")"});
+					}
+					$("#airCode").combobox("loadData", data);	
            });
            
            function canvas(){
@@ -102,11 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     inline.push(dateLast[a].upmoney);
                     offline.push(dateLast[a].dewomoney);
                  }
-                 //console.log(date);
-                 //console.log(dateLast)
-                 //console.log(hstype);
-                 //console.log(inline);
-                 //console.log(offline);
+                
                  
                  
                   
@@ -252,6 +276,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
              var TTime = $("#TTime").datebox("getValue");
             
              var a=ltime+TTime;
+             
              if(a){
                $.ajax({
                    type:'POST',
@@ -260,8 +285,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    data:{"ltime":ltime,"TTime":TTime},
                    success:function(data){
                        aa=data.state;
-                       
-                       //console.log(aa);
+                       tempdate=aa;
                        ywtype();
                    }
                    
@@ -270,20 +294,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            }
           
            function ywtype(){
+               var air = $("#airCode").combobox("getValue").trim();
                var List=[];
                var dateList=[];
                var gsType=[];
                var oninternet=[];
                var offinternet=[];
-               for(var i=0; i<aa.length;i++){
-                    var status=aa[i].orderStatus;
-                    var a=aa[i].hangbanNum.substr(0, 2);
-                    var b=findByCode(a)+"("+a+")";
-                    //console.log("截取之后的b:"+b);
-                    var Money=aa[i].costMoney;
-                	List.push(formdate(b,status,Money));
-                	
-                }
+               if(air==""){
+                  for(var i=0; i<aa.length;i++){
+	                    
+		                    var status=aa[i].orderStatus;
+		                    var a=aa[i].hangbanNum.substr(0, 2);
+		                    var b=findByCode(a)+"("+a+")";
+		                    //console.log("截取之后的b:"+b);
+		                    var Money=aa[i].costMoney;
+		                	List.push(formdate(b,status,Money));
+	                	
+	                }
+               }else{
+               
+	               for(var i=0; i<aa.length;i++){
+	                    if(air==aa[i].hangbanNum.substr(0, 2)){
+		                    var status=aa[i].orderStatus;
+		                    var a=aa[i].hangbanNum.substr(0, 2);
+		                    var b=findByCode(a)+"("+a+")";
+		                    //console.log("截取之后的b:"+b);
+		                    var Money=aa[i].costMoney;
+		                	List.push(formdate(b,status,Money));
+	                	}
+	                }
+               }
                  
                 //console.log(List);
                 
@@ -361,7 +401,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     };
                     myChart.setOption(option);
                 }
-              
+               
+                
+           
       
       </script>
 </body>
