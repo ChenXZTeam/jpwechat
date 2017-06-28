@@ -43,31 +43,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
           </form>
           <div id="grideBox" style="width:100%;">
-               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="DCdate()"  style="width:80px;height: 28px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
-                                 
-                                 <span class="img_class">导出</span>
-                    </a>
-               <div  style="width:80%;height:600px;border:1px solid #C1C1C1;margin:0px auto">
-                    
+               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="DCdate()" style="width:80px;height: 28px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
+                    <span class="img_class">导出</span>
+               </a>
+               <div style="width:80%;height:600px;border:1px solid #C1C1C1; margin:0px auto">
                     <div id="canvasDiv" style="width:100%;height:570px;"></div>
-                   
                </div>
                
           </div>
       </div>
       <script type="text/javascript">
-           var tempdate;
-           function DCdate(){
-             
-              var numID=[];
-              for(var i=0;i<tempdate.length;i++){
-                 numID.push(tempdate[i].orderNum);
-                 
-              }
-             
-                 location.href="<%=basePath%>framework/SellDate/exportSellDate.action?numID="+numID+"";
-                
-           }
            $(function(){
                $.ajax({
                   type:'POST',
@@ -77,7 +62,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   success:function(data){
                       ss=data.state;
                       console.log(ss);
-                      tempdate=ss;
                       canvas();
                   }
                })
@@ -130,12 +114,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     inline.push(dateLast[a].upmoney);
                     offline.push(dateLast[a].dewomoney);
                  }
-                
-                 
-                 
-                  
-                 
-             
             
        var myChart = echarts.init(document.getElementById('canvasDiv'));
               var option = {
@@ -285,12 +263,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    data:{"ltime":ltime,"TTime":TTime},
                    success:function(data){
                        aa=data.state;
-                       tempdate=aa;
                        ywtype();
                    }
                    
                })
              }
+           }
+           
+           function DCdate(){
+        	   	 var lTime=$("#lTime").datebox("getValue").trim();
+        	   	 var TTime=$("#TTime").datebox("getValue").trim();
+        	   	 var airCode=$("#airCode").combobox("getValue").trim();
+                 location.href="<%=basePath%>framework/SellDate/exportSellDate.action?lTime="+lTime+"&TTime="+TTime+"&airCode="+airCode;
            }
           
            function ywtype(){

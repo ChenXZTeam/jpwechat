@@ -72,7 +72,7 @@ public class ExportSellDate {
 				
 				//Cell赋值开始	
 				cell = row.createCell(0);
-				cell.setCellValue(vo.get("hangs").substring(0,2));
+				cell.setCellValue(vo.get("hangs"));
 				cell.setCellStyle(cs);
 				
 				cell = row.createCell(1);
@@ -80,23 +80,23 @@ public class ExportSellDate {
 				cell.setCellStyle(cs);
 				
 				cell = row.createCell(2);
-				cell.setCellValue(vo.get("money"));
+				cell.setCellValue(vo.get("sjTekMoney"));
 				cell.setCellStyle(cs);
 				
 				cell=row.createCell(3);
-				cell.setCellValue(vo.get("money"));
+				cell.setCellValue(vo.get("countMoney"));
 				cell.setCellStyle(cs);
 				
 				cell=row.createCell(4);
-				cell.setCellValue("1");
+				cell.setCellValue(vo.get("sjTekNum"));
 				cell.setCellStyle(cs);
 				
 				cell=row.createCell(5);
-				cell.setCellValue("0%");
+				cell.setCellValue(vo.get("biliCount"));
 				cell.setCellStyle(cs);
 				
 				cell=row.createCell(6);
-				cell.setCellValue(vo.get("time"));
+				cell.setCellValue(vo.get("tekFw"));
 				cell.setCellStyle(cs);
 				
 			}

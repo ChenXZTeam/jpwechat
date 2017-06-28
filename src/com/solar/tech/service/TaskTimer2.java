@@ -19,14 +19,15 @@ import com.solar.tech.bean.entity.SeatInfoData;
 /**
  * 
  * @ClassName: TaskTimer
- * @Description: 定时任务，对过期订单处理（缓存当天的航班）
+ * @Description: 定时任务，对过期订单处理（缓存1~3天内出发的航班）
  * @author: ChenXZ
  * @date: 2016年5月6日 下午8:05:31
  */
 
 @Component
-public class TaskTimer {
-	private static Logger log = Logger.getLogger(TaskTimer.class);
+public class TaskTimer2 {
+	private static Logger log = Logger.getLogger(TaskTimer2.class);
+	final long DAY_PERIOD = Long.parseLong("7200000");  //2小时
 	@Autowired
 	private PlanTekService ptService;
 	/**
@@ -37,7 +38,7 @@ public class TaskTimer {
 	public void startTask(String time) {
 		Timer timer = new Timer();
 		Task uTask = new Task(time);
-		timer.schedule(uTask, 30000, 3600000);
+		timer.scheduleAtFixedRate(uTask, 40000, DAY_PERIOD);
 	}
 
 	/**
@@ -59,13 +60,12 @@ public class TaskTimer {
 		public void run() {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Calendar c = Calendar.getInstance();
-			c.add(Calendar.HOUR_OF_DAY, -1);
+			c.add(Calendar.HOUR_OF_DAY, -2);
 			Date NowDate = c.getTime();
 			String pastTime = sdf.format(NowDate);
-			
-			List<SeatInfoData> flightInfo = ptService.pastFlightMessageList("1",pastTime);
+			List<SeatInfoData> flightInfo = ptService.pastFlightMessageList("2",pastTime);
 			if(flightInfo.size()>0){
-				System.out.println("有当天出发的航班已经过期，开始缓存");
+				System.out.println("有1~3天内出发的航班已经过期，开始缓存");
 				/*
 				 *缓存步骤：
 				 *1、删除之前的
@@ -77,15 +77,21 @@ public class TaskTimer {
 				}
 				ptService.delFlight(delFli);
 				
+				//默认获取后天的航班作为1~3天内的缓存数据
+				Date d = new Date();  
+		        Calendar calendar = Calendar.getInstance();  
+		        calendar.setTime(d);  
+		        calendar.add(Calendar.DAY_OF_MONTH, +2);  
+		        d = calendar.getTime();
+		        String dateNowStr = sdf.format(d);
 				List<SeatInfoData> flign = removeFm(flightInfo);
 				for(SeatInfoData fli : flign){
-					ptService.loadBronAv(fli.getDwOrgCity(), fli.getDwDstCity(), pastTime.substring(0,10));
+					ptService.loadBronAv(fli.getDwOrgCity(), fli.getDwDstCity(), dateNowStr.substring(0,10));
 				}
-				System.out.println("当天的缓存航班已经缓存完成");
+				System.out.println("1~3天内的缓存航班已经缓存完成");
 			}else{
-				System.out.println("没有符合的过期航班，1个小时之后开始重新缓存");
+				System.out.println("没有符合的过期航班，2个小时之后开始重新缓存");
 			}
-			//System.out.println("现在的日期："+pastTime.toString());
 		}
 	}
 	
@@ -111,7 +117,7 @@ public class TaskTimer {
 
 	public static void main(String[] args) {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		TaskTimer dao = ac.getBean("taskTimer", TaskTimer.class);
+		TaskTimer2 dao = ac.getBean("taskTimer", TaskTimer2.class);
 		dao.startTask("订单删除");
 	}
 

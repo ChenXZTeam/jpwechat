@@ -689,7 +689,7 @@ public class userOrderService {
 			oderInfo.setAdminDel("0"); //默认不删除
 			oderInfo.setConsoleStatus("0"); //未打印
 			oderInfo.setTpStatus("0"); //退票标识（未退票）
-			oderInfo.setOrderNum("1"); //线上预定
+			oderInfo.setOrderStatus("1"); //线上预定
 			oderInfo.setCreateTime(new Timestamp(new Date().getTime()));
 			String orderNumFirst = createOrderNum("RDOD", 8);
 			oderInfo.setOrderNum(orderNumFirst); //设置流水号

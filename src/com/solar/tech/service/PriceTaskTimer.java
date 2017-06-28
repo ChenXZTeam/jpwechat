@@ -28,7 +28,7 @@ import com.solar.tech.bean.entity.SeatPriceData;
 @Component
 public class PriceTaskTimer {
 	private static Logger log = Logger.getLogger(PriceTaskTimer.class);
-	final long DAY_PERIOD = 3600*24*180*1000;  //半年时间
+	final long DAY_PERIOD = Long.parseLong("15552000000");  //半年时间
 	@Autowired
 	private PlanTekService ptService;
 	/**
@@ -40,7 +40,7 @@ public class PriceTaskTimer {
 		Timer timer = new Timer();
 		Task uTask = new Task(time);
 		//timer.schedule(uTask, 10000, 3600*24*180*1000);
-		timer.scheduleAtFixedRate(uTask,1000,DAY_PERIOD);
+		timer.scheduleAtFixedRate(uTask,120000,DAY_PERIOD);
 	}
 
 	/**
@@ -65,7 +65,6 @@ public class PriceTaskTimer {
 			c.add(Calendar.DAY_OF_YEAR, -180);
 			Date date = c.getTime();
 			String pastTime = sdf.format(date);
-			System.out.println("条件时间："+pastTime);
 			List<SeatPriceData> flightInfo = ptService.SeatPriceList(pastTime);
 			if(flightInfo.size()>0){
 				System.out.println("有运价过期了，现在开始缓存");
@@ -80,11 +79,14 @@ public class PriceTaskTimer {
 				}
 				ptService.delSeatPrice(delFli);
 				
-				List<SeatPriceData> flign = removeFm(flightInfo);
+				//默认查询当天的时间作为起始运价时间
+				Date d = new Date();  
+		        String dateNowStr = sdf.format(d);
+				List<SeatPriceData> flign = removeFm(flightInfo);  
 				for(SeatPriceData fli : flign){
-					ptService.reloadfd(fli.getOrgCity(), fli.getDstCity(), pastTime);
+					ptService.reloadfd(fli.getOrgCity(), fli.getDstCity(), dateNowStr);
 				}
-				
+				System.out.println("过期运价缓存完成");
 			}else{
 				System.out.println("没有符合的过期的运价，半年之后重新开始缓存");
 			}

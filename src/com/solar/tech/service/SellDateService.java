@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solar.tech.bean.airCompanyDade;
+import com.solar.tech.bean.airCompayMoney;
+import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.bean.entity.userOrderInfo;
 import com.solar.tech.dao.GenericDao;
 import com.solar.tech.util.ExportSellDate;
@@ -38,15 +42,12 @@ public class SellDateService {
 	@Resource
 	private GenericDao gDao;
 	
-	public List<userOrderInfo> find(String ltime,String TTime) throws ParseException{
+	public List<userOrderInfo> find(String ltime,String TTime){
 		String ctime=ltime+" "+"00:00:00";
 		String dtime=TTime+" "+"24:59:59";
 		String hql="FROM userOrderInfo WHERE createTime >='"+ctime+"' and createTime <='"+dtime+"'";
-		//System.out.println(hql);
 		List<userOrderInfo> Orders=this.gDao.find(hql);
-		//System.out.println(Orders);
 		return Orders;
-		
 	}
 	
 	public List<userOrderInfo> chazhao(){
@@ -66,38 +67,32 @@ public class SellDateService {
 		
 	}
 	
-	public Map<String,String> getAlls(userOrderInfo userOrderInfo){
-		Map<String,String> obj=new HashMap<String,String>();
-	   
-			
-		obj.put("hangs", userOrderInfo.getHangbanNum());
-		obj.put("time",userOrderInfo.getChufDate());
-		obj.put("orderStatus", userOrderInfo.getOrderStatus());
-		obj.put("money", userOrderInfo.getCostMoney());
-		return obj;
-	}
-	
 	public void exportSellDate(HttpServletRequest request,HttpServletResponse response){
 		OutputStream os = null;  //输出流
 		Workbook wb = null;  //工作薄
 		try{
-			String numID=request.getParameter("numID");
-			String[] array1=numID.split(",");
+			String lTime=request.getParameter("lTime");
+			String TTime=request.getParameter("TTime");
+			String airCode=request.getParameter("airCode");
 			List<Map<String,String>> lo=new ArrayList<Map<String,String>>();
-			for(int i=0;i<array1.length;i++){
-				List<userOrderInfo> list=gDao.find("FROM userOrderInfo WHERE orderNum='"+array1[i]+"'");
-				
-				if(null !=list&&list.size()>0){
-					userOrderInfo userOrderInfo=list.get(0);
-					
-					Map<String,String> obj=getAlls(userOrderInfo);
-					lo.add(obj);
-					System.out.println("obj:"+obj);
-					System.out.println("lo:"+lo);
+			List<userOrderInfo> list = find(lTime,TTime);
+			int countMoney = 0;
+			for(userOrderInfo uo : list){
+				countMoney = Integer.parseInt(uo.getCostMoney())+countMoney;
+			}
+			if("".equals(airCode)||airCode==null){}else{ //然后在判断用户是否查找针对航空公司的数据
+				List<userOrderInfo> listTemp = new ArrayList<userOrderInfo>();
+				for(userOrderInfo userSx : list){
+					if(airCode.equals(userSx.getHangbanNum().substring(0,2))){
+						listTemp.add(userSx);
+					}
 				}
-				
+				list = listTemp;
 			}
 			
+			if(null !=list&&list.size()>0){ //先判断是否查找到数据
+				lo = getAlls(list,lTime,TTime,countMoney);
+			}
 		
 			ExportSellDate util=new ExportSellDate();  //这个是new一个导出工具
 			File file=util.getExcelDemoFile("template/航司销售数据详情表.xlsx");
@@ -126,8 +121,81 @@ public class SellDateService {
 		       e.printStackTrace();
 	       }
         } 
-	
          
-	}    
+	}  
+	
+	public List<Map<String,String>> getAlls(List<userOrderInfo> userOrderInfo, String starTime, String overTime,int countMoney){
+		List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
+		List<airCompanyDade> listAir = new ArrayList<airCompanyDade>();
+		List<String> airStr = new ArrayList<String>();
+		List<airCompayMoney> listAc = new ArrayList<airCompayMoney>();
+		for(userOrderInfo uinfo : userOrderInfo){
+			airCompanyDade airBean = new airCompanyDade();
+			airBean.setAirCompay(uinfo.getHangbanNum().substring(0,2));
+			airBean.setOrderStatus(uinfo.getOrderStatus());
+			airBean.setMoney(Integer.parseInt(uinfo.getCostMoney()));
+			listAir.add(airBean);
+			airStr.add(uinfo.getHangbanNum().substring(0,2));
+		}
+		airStr = repleace(airStr); //去掉航空公司重复的数据
+		for(String str : airStr){
+			airCompayMoney ac = new airCompayMoney();
+			ac.setAirCompay(str);
+			listAc.add(ac);
+		}
+		
+		for(airCompanyDade airDate : listAir){
+			for(int i=0; i<listAc.size(); i++){
+				if(listAc.get(i).getAirCompay().equals(airDate.getAirCompay())&&"0".equals(airDate.getOrderStatus())){
+					listAc.get(i).setDownMoney(listAc.get(i).getDownMoney()+airDate.getMoney());
+					listAc.get(i).setDownTekNum(listAc.get(i).getDownTekNum()+1);
+					break;
+				}
+				if(listAc.get(i).getAirCompay().equals(airDate.getAirCompay())&&"1".equals(airDate.getOrderStatus())){
+					listAc.get(i).setUpMoney(listAc.get(i).getUpMoney()+airDate.getMoney());
+					listAc.get(i).setUpTekNum(listAc.get(i).getUpTekNum()+1);
+					break;
+				}
+				
+			}
+		}
+		
+		//计算总的销售额
+		NumberFormat numberFormat = NumberFormat.getInstance();
+		numberFormat.setMaximumFractionDigits(2);
+		for(airCompayMoney airc : listAc){
+			String result = numberFormat.format((float) (airc.getDownMoney()+airc.getUpMoney()) / (float) countMoney * 100);
+			Map<String,String> obj=new HashMap<String,String>();
+			obj.put("hangs", airc.getAirCompay());
+			obj.put("orderStatus", "线上/线下");
+			obj.put("sjTekMoney", airc.getUpMoney()+"/"+airc.getDownMoney());
+			obj.put("countMoney",(airc.getUpMoney()+airc.getDownMoney())+"");
+			obj.put("sjTekNum", airc.getUpTekNum()+"/"+airc.getDownTekNum());
+			obj.put("biliCount", result+"%");
+			obj.put("tekFw", starTime+"~"+overTime);
+			listMap.add(obj);
+		}
+		return listMap;
+		
+	}  
+	
+	public List<String> repleace(List<String> airStr){
+		List<String> resStr = new ArrayList<String>();
+		if(airStr != null && airStr.size() > 0){
+			for(String info : airStr){
+				boolean flag = true;
+				for(String rInfo : resStr){
+					if(info.equals(rInfo)){
+						flag = false;
+						break;
+					}
+				}
+				if(flag){
+					resStr.add(info);
+				}
+			}
+		}
+		return resStr;
+	}
   
 }
