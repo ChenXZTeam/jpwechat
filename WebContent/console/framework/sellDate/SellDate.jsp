@@ -43,17 +43,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
           </form>
           <div id="grideBox" style="width:100%;">
-               <a href="javascript:void(0)" data-options="iconCls:'icon-search',plain:false" class="btnRes" onclick="DCdate()" style="width:80px;height: 28px;background-color: #01B5E6;border: none;cursor: pointer;outline: none;margin-left: 15px;color: #fff;display: block;float: left;line-height: 30px;text-decoration: none;border-radius:5px;">
-                    <span class="img_class">导出</span>
-               </a>
-               <div style="width:80%;height:600px;border:1px solid #C1C1C1; margin:0px auto">
+               <a href="javascript:void(0)" id="daochuBtn" onclick="DCdate()" style="margin-bottom:5px; color:#fff; background:#01B5E6; text-decoration:none; padding:5px 10px; border-radius:5px 5px 0px 0px;">导出统计图中的数据</a>
+               <div style="clear:both;"></div>
+               <div id="tuImgPot" style="width:80%;height:600px;border:1px solid #C1C1C1; margin:5px auto;">
                     <div id="canvasDiv" style="width:100%;height:570px;"></div>
                </div>
-               
           </div>
       </div>
       <script type="text/javascript">
            $(function(){
+        	   var X = $('#tuImgPot').offset().left
+        	   var sd = $('#tuImgPot').width();
+        	   $("#daochuBtn").css("margin-left",X+sd-170);
+        	   //alert(X+","+sd);
                $.ajax({
                   type:'POST',
                   dataType:'JSON',

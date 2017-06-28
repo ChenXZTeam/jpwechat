@@ -43,9 +43,20 @@ public class SellDateService {
 	private GenericDao gDao;
 	
 	public List<userOrderInfo> find(String ltime,String TTime){
+		String hql="";
 		String ctime=ltime+" "+"00:00:00";
-		String dtime=TTime+" "+"24:59:59";
-		String hql="FROM userOrderInfo WHERE createTime >='"+ctime+"' and createTime <='"+dtime+"'";
+		String dtime=TTime+" "+"23:59:59";
+		
+		if(("".equals(TTime)||TTime==null)&&("".equals(ltime)||ltime==null)){
+			hql="FROM userOrderInfo";
+		}else if("".equals(ltime)||ltime==null){
+			hql="FROM userOrderInfo WHERE createTime <='"+dtime+"'";
+		}else if("".equals(TTime)||TTime==null){
+			hql="FROM userOrderInfo WHERE createTime >='"+ctime+"'";
+		}else{
+			hql="FROM userOrderInfo WHERE createTime <='"+dtime+"' AND createTime >='"+ctime+"'";
+		}
+		
 		List<userOrderInfo> Orders=this.gDao.find(hql);
 		return Orders;
 	}
