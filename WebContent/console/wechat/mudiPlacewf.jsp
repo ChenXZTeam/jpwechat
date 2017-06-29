@@ -222,7 +222,7 @@ function signTekt(onefd,twofd){
 function tekNum(date){
 	if(date=="A"){
 		date=9;
-	}else if(date=="L"||date=="Q"||date=="S"||date=="C"||date=="X"||date=="Z"){
+	}else if(date=="L"||date=="Q"||date=="S"||date=="C"||date=="X"||date=="Z"||date=="null"||date==""||date==null){
 		date="";
 	}else if(date!=""){
 		date=date;

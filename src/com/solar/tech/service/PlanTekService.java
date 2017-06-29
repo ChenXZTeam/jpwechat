@@ -24,10 +24,14 @@ import com.solar.tech.bean.entity.FlightMessage;
 import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.bean.entity.SeatInfoData;
+import com.solar.tech.bean.entity.SeatInfoDataWF;
 import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.dao.GenericDao;
 import com.travelsky.sbeclient.obe.request.PataFareInfo;
+import com.travelsky.sbeclient.obe.response.AVDoubleItem;
+import com.travelsky.sbeclient.obe.response.AVDoubleResponse;
+import com.travelsky.sbeclient.obe.response.AVDoubleSegment;
 import com.travelsky.sbeclient.obe.response.AvSegment;
 import com.travelsky.sbeclient.obe.response.FDItem;
 import com.travelsky.sbeclient.obe.response.PataFarePriceInfo;
@@ -126,6 +130,71 @@ public class PlanTekService {
 		}
 		
 		return spd;
+	}
+	
+	public List<AVDoubleItem> reAvfilght(String orgCity, String dstCity, String orgDate, String retDate){
+		AVDoubleResponse list = new ECUtils().roundtripAv(orgCity, dstCity, orgDate, retDate, "", null);
+		List<SeatInfoDataWF> desFilgInfo = new ArrayList<SeatInfoDataWF>();
+		List<AVDoubleItem> ygDesFilg = list.getDepartAvItems();
+		for(AVDoubleItem avdItem : ygDesFilg){
+			List<AVDoubleSegment> AVDoubs = avdItem.getSegments();
+			for(AVDoubleSegment avdbles : AVDoubs){
+				if(seatInfoIsNull(avdbles)){ //座位不为空
+					SeatInfoDataWF sidate = new SeatInfoDataWF();
+					sidate.setAirline(avdbles.getAirline());
+					sidate.setArriTerm(avdbles.getArriTerm());
+					sidate.setArriTime(avdbles.getArriTime());
+					sidate.setArriveDate(avdbles.getArriveDate().substring(0,10));
+					sidate.setArriveTimeModify(avdbles.getArriveTimeModify());
+					sidate.setDepDate(avdbles.getDepDate());
+					sidate.setDepTerm(avdbles.getDepTerm());
+					sidate.setDepTime(avdbles.getDepTime());
+					sidate.setDeptimemodify(avdbles.getDeptimemodify());
+					sidate.setDstcity(avdbles.getDstcity());
+					sidate.setFlyTime(avdbles.getFlyTime());
+					sidate.setMeal(avdbles.getMeal());
+					sidate.setOrgcity(avdbles.getOrgcity());
+					sidate.setPlanestyle(avdbles.getPlanestyle());
+					sidate.setCreateTime(new Timestamp(new Date().getTime()));
+					sidate.setDwOrgCity(avdbles.getOrgcity());
+					sidate.setDwDstCity(avdbles.getDstcity());
+					long juliDay = pointTime(avdbles.getArriveDate().substring(0,10));
+					String dayNum = "";
+					if(juliDay==0){dayNum = "1";}else if(juliDay>0&&juliDay<=3){dayNum = "2";}else if(juliDay>3&&juliDay<=7){dayNum = "3";}else if(juliDay>7&&juliDay<=15){dayNum = "4";}else if(juliDay>15&&juliDay<=30){dayNum = "5";}else if(juliDay>30){dayNum = "6";}
+					sidate.setDayNum(dayNum);
+					UUID uuid = UUID.randomUUID();
+					sidate.setSignFilghtNum(uuid.toString());
+					
+					//把舱位数变成字符串存到数据库中
+					String[] cangData = avdbles.getCangwei_data(); 
+					String sd = "";
+					for(String ss : cangData){
+						sd+=ss+",";
+					}
+					sidate.setCangwei_data(sd.substring(0,sd.length()-1));
+					//把舱位数的下标变成字符串存到数据库中
+					char[] astr = avdbles.getCangwei_index();
+					String b = "";
+					for(char a : astr){
+						String s = String.valueOf(a); 
+						b+=s+",";
+					}
+					sidate.setCangwei_index(b.substring(0,b.length()-1));
+					desFilgInfo.add(sidate);
+				}
+				
+			}
+		}
+		System.out.println(desFilgInfo.size()); 
+		return ygDesFilg;
+	}
+	
+	public boolean seatInfoIsNull(AVDoubleSegment avd){
+		if(avd.getCangwei_data()==null||"".equals(avd.getCangwei_data())){
+			return false;
+		}
+		System.out.println("不为空的航班："+avd.getAirline());
+		return true;
 	}
 	
 	/**

@@ -33,7 +33,7 @@
 <script src="<%=basePath %>scripts/common/weui/js/zepto.min.js"></script>
 <script src="<%=basePath %>console/js/airCodeVScity.js?time=11"></script>
 <style>
-	body{-webkit-text-size-adjust:none;}
+	body{-webkit-text-size-adjust:none; padding-bottom:30px;}
 	.ChoosClassBox{width:80.5%; height:0px; overflow:hidden; border:1px solid #e1e1e1; position:absolute; top:400px; left:20px; background-color:#FFFFFF; padding:5px 10px; display:none; z-index:1;}
 	.ChoosClassBox .ChoosSmallBox{padding:5px; border-bottom:1px solid #e1e1e1;}
 	.checkboxA{ border:#C9C9C9 1px solid; background-color:#fff; width:16px; height:16px; display:block; z-index:-1; float:left; border-radius:8px; margin-top:7px;}
@@ -118,6 +118,7 @@ $(function(){
 	var username="<%=username%>";
 	<%-- var jin = "<%=jin%>" --%>
 	if(username==""||username=="null"||username==null){
+		$("#touMbackground").css("min-height","700px");
 		$("#touMbackground").css("display","block");
 	}else{
 		<%-- getcode("<%=jin%>"); --%>
@@ -316,6 +317,12 @@ $(function(){
 							$("body").css("height","100%");
 							$("body").css("overflow","hidden");
 						}
+						var heiScr = window.screen.height;
+						if(heiScr<850){
+							$("#ydresuletBox").css("min-height",850);
+						}else{
+							$("#ydresuletBox").css("height",heiScr);
+						}
 						$("#ydresuletBox").css("display","block");
 					},
 					error:function(result){
@@ -499,8 +506,8 @@ $(function(){
 		});
 		
 		var heightscr = window.screen.height;
-		if(heightscr<700){
-			$(".moveBox").css("min-height",700);
+		if(heightscr<850){
+			$(".moveBox").css("min-height",850);
 		}else{
 			$(".moveBox").css("min-height",heightscr);
 		}
@@ -679,6 +686,10 @@ function ageFunc(strBirthday,goDate){
     }  
     return returnAge;//返回周岁年龄  
 }
+
+function LookOrderFunc(){
+	window.location.href="<%=basePath%>console/wechat/myPlaneTickek.jsp";
+}
 	
 //计算历经多长时间到达
 function cuntTime(depTime,isDept,arrTime,isArrt){
@@ -849,7 +860,7 @@ function cuntTime(depTime,isDept,arrTime,isArrt){
 	</div>
 	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
 </div>
-<div id="ydresuletBox" style="position:absolute; width:100%; height:100%; background:rgba(51,51,51,0.7); top:0px; left:0px; z-index:99; display:none;">
+<div id="ydresuletBox" style="position:absolute; width:100%; background:rgba(51,51,51,0.7); top:0px; left:0px; z-index:99; display:none;">
 	<div style="margin:60% auto; width:300px; border-radius:5px; background:#fff;">
 		<div style="text-align:center; color:#666; font-size:18px; line-height:45px;">座位锁定结果</div>
 		<table id="resBoxTables" border="0" style="margin-left:20px; width:85%; height:55px;"></table>

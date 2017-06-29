@@ -40,7 +40,6 @@ private static Logger log = Logger.getLogger(InitListener.class);
 	private TaskTimer5 uTask5; //15~30天内航班的缓存定时器
 	@Autowired
 	private TaskTimer6 uTask6; //30天以上航班的缓存定时器
-	
 	@Autowired
 	private PriceTaskTimer pykTime; //运价的定时器
 	
@@ -51,13 +50,13 @@ private static Logger log = Logger.getLogger(InitListener.class);
 		if(event.getApplicationContext().getParent() == null){
 			log.info("========================spring容易初始化完毕============================");
 			/** 定时器，处理订单超过一个时间，归档历史表 */
-			uTask.startTask("====当天出发的航班缓存开始执行====");
+			/*uTask.startTask("====当天出发的航班缓存开始执行====");
 			uTask2.startTask("=====1~3天出发的航班缓存开始执行===");
 			uTask3.startTask("=====3~7天出发的航班缓存开始执行===");
 			uTask4.startTask("=====7~15天出发的航班缓存开始执行==="); 
 			uTask5.startTask("=====15~30天出发的航班缓存开始执行==="); 
 			uTask6.startTask("=====30天以上出发的航班缓存开始执行==="); 
-			pykTime.startTask("====启动运价过期任务定时器====");
+			pykTime.startTask("====启动运价过期任务定时器====");*/
 			
 			/** 系统启动检查自定义菜单是否已经配置自定义菜单 **/
 			uMenuManger = new MenuManger();

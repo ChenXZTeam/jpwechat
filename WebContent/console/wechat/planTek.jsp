@@ -11,7 +11,7 @@
 <title>机票预订</title>
 <link rel="stylesheet" href="<%=basePath %>console/css/planTek.css"/>
 <link type="text/css" rel="stylesheet" href="<%=basePath %>console/css/swiper.min.css?time=223"/>
-<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=124"/>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>console/css/cityChoose.css?time=124123312as1"/>
 <link href="<%=basePath%>scripts/common/sui/css/sm.min.css" type="text/css" rel="stylesheet" />
 <script type='text/javascript' src='<%=basePath%>scripts/common/sui/js/zepto.min.js?bsadl=1232' charset='utf-8'></script>
 <script type="text/javascript"  src="<%=basePath%>console/js/jquery-1.8.3.min.js?yine=20151sdsdsd"></script>
@@ -98,7 +98,7 @@ $(function(){
 	   <!--时间-->
 	   <div class="ziDiv gotime">
 	   		<div class="goDay" style="font-size:13px;">出发日期</div>
-			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" readonly="readonly" placeholder="选择日期" data-toggle='date'/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
+			<div class="goTimeDiv"><input type="text" class="jcDate jcD01" id="dcDate" readonly="readonly" placeholder="选择日期" data-toggle='date'/><span id="houtian" style="color:#6CA5FE; margin-left:10px; font-size:12px;"></span></div>
 			<div style="clear:both;"></div>
 	   </div>
 	   <!--舱位-->
@@ -122,15 +122,15 @@ $(function(){
        <div class="ziDiv mudiplace">
 	   		<div class="shi">
 				<span>国内/国际出发城市</span>
-				<span id="shif02" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">深圳</span>
-				<span id="shif03">宝安机场T3</span>
-				<span id="shif04" style="display:none;">SZX</span>
+				<span id="shif02" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">广州</span>
+				<span id="shif03">广州新白云国际机场</span>
+				<span id="shif04" style="display:none;">CAN</span>
 			</div>
 			<div class="to fangcheng" style="padding-top:5px; padding-bottom:7px;" onclick="fangcheng()"><img src="<%=basePath %>console/images/wangfan.gif" width="35"/></div>
 			<div class="zhong">
 				<span>国内/国际到达城市</span>
 				<span id="zhongf02" class="CityChoose" style="font-size:20px; color:#666666; font-family:Microsoft YaHei;">北京</span>
-				<span id="zhongf03">首都机场T3</span>
+				<span id="zhongf03">北京首都国际机场</span>
 				<span id="zhongf04" style="display:none;">PEK</span>			
 			</div>
 			<div style="clear:both;"></div>
@@ -362,8 +362,8 @@ $(function(){
 					</ul>
 				</div>
 			</div>
-			<!---右边字母查找部分--->
-			<div class="zimuListImgDiv"><img src="<%=basePath %>console/images/cityPoint.png" /></div>
+			<!---右边字母查找部分
+			<div class="zimuListImgDiv"><img src="console/images/cityPoint.png" /></div>
 			<div class="zimuList">
 				<div class="zimuOne"><a href="#A-a">A</a></div>
 				<div class="zimuOne"><a href="#B-b">B</a></div>
@@ -391,7 +391,7 @@ $(function(){
 				<div class="zimuOne"><a href="#X-x">X</a></div>
 				<div class="zimuOne"><a href="#Y-y">Y</a></div>
 				<div class="zimuOne"><a href="#Z-z">Z</a></div>
-			</div>
+			</div>--->
 	    </div>
 	    <!--案例2：国际-->
 	    <div class="product1">
@@ -553,8 +553,8 @@ $(function(){
 					</ul>
 				</div>
 			</div>
-			<!---右边字母查找部分--->
-			<div class="zimuListImgDiv"><img src="<%=basePath %>console/images/cityPoint.png" /></div>
+			<!---右边字母查找部分
+			<div class="zimuListImgDiv"><img src="console/images/cityPoint.png" /></div>
 			<div class="zimuList">
 				<div class="zimuOne"><a href="#a-A">A</a></div>
 				<div class="zimuOne"><a href="#b-B">B</a></div>
@@ -583,6 +583,7 @@ $(function(){
 				<div class="zimuOne"><a href="#y-Y">Y</a></div>
 				<div class="zimuOne"><a href="#z-Z">Z</a></div>
 			</div>
+			--->
 	    </div>
 	   </div>
 	</div>	
@@ -631,7 +632,7 @@ $(function(){
 		$("#zhongf03").text(shif03);
 		$("#zhongf04").text(shif04);
 	}
-	
+	var dcflas = true;
 	function aa(){
 		var chufCity= $("#shi001").text();
 		var daodCity = $("#zhong001").text();
@@ -646,9 +647,14 @@ $(function(){
 			alert("请选择出发日期");
 			return false;	
 		}
-		window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode;
+		
+		if(dcflas==true){
+			dcflas = false;
+			window.location.href="<%=basePath%>wechatController/page/mudiPlace.action?cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode;
+		}
 	}
 	
+	var wfcflas = true;
 	function bb(){
 		var cangW = $(".cang1.on").text();
 		var dateTime = $(".jcD02").val(); 
@@ -661,7 +667,10 @@ $(function(){
 			alert("请选择日期");
 			return false;
 		}
-		window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime+"&cangW="+cangW;
+		if(wfcflas==true){
+			wfcflas = false;
+			window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime+"&cangW="+cangW;
+		}
 	}
 </script>
 <script type="text/javascript">
@@ -681,6 +690,20 @@ $(function(){
 	var d_d = d1.getDate();
 	d_d = d_d > 10?d_d:"0"+d_d;
 	var str1 = y_y+"-"+m_m+"-"+d_d;
+	
+	var d2 = new Date(str);
+	d2.setDate(d2.getDate() + 1);
+	var y_y1 = d2.getFullYear();
+	var m_m1 = d2.getMonth()+1;
+	m_m1 = m_m1 > 10?m_m1:"0"+m_m1;
+	var d_d1 = d2.getDate();
+	d_d1 = d_d1 > 10?d_d1:"0"+d_d1;
+	var str2 = y_y1+"-"+m_m1+"-"+d_d1;
+	
+	$("#dcDate").val(str);
+	$("#gofaTime").val(str);
+	$("#fancDate").val(str2);
+
 	$$(".jcDate").calendar({
 	    value: [str],
 		minDate:str1

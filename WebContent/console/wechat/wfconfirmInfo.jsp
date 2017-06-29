@@ -233,6 +233,7 @@ $(function(){
 	var username="<%=username%>";
 	<%-- var jin = "<%=jin%>" --%>
 	if(username==""||username=="null"||username==null){
+		$("#touMbackground").css("min-height","700px");
 		$("#touMbackground").css("display","block");
 	}else{
 		<%-- getcode("<%=jin%>"); --%>
@@ -444,6 +445,12 @@ $(function(){
 							}
 						}
 					}
+					var heiScr = window.screen.height;
+					if(heiScr<850){
+						$("#ydresuletBox").css("min-height",850);
+					}else{
+						$("#ydresuletBox").css("height",heiScr);
+					}
 					$("#ydresuletBox").css("display","block");
 				},
 				error:function(result){
@@ -618,8 +625,8 @@ $(function(){
 	});
 	
 	var heightscr = window.screen.height;
-	if(heightscr<700){
-		$(".moveBox").css("min-height",700);
+	if(heightscr<850){
+		$(".moveBox").css("min-height",850);
 	}else{
 		$(".moveBox").css("min-height",heightscr);
 	}
@@ -1064,7 +1071,7 @@ function getcode(inc){
 			</ul>
 		</div>
 	</div>
-	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
+	<div class="truePayBtn" style="width:90%; margin-left:auto; margin-right:auto; margin-top:10px;"><span style="display:block; padding:10px; background-color:#007AFF; color:#FFFFFF; font-size:15px; text-align:center; line-height:20px; border-radius:5px;">确认付款</span></div>
 </div>
 
 <!--用户登录-->
