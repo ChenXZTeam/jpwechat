@@ -24,7 +24,7 @@ import com.solar.tech.bean.entity.FlightMessage;
 import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.SeatInfo;
 import com.solar.tech.bean.entity.SeatInfoData;
-import com.solar.tech.bean.entity.SeatInfoDataWF;
+//import com.solar.tech.bean.entity.SeatInfoDataWF;
 import com.solar.tech.bean.entity.SeatPriceData;
 import com.solar.tech.bean.entity.kdCost;
 import com.solar.tech.dao.GenericDao;
@@ -132,7 +132,7 @@ public class PlanTekService {
 		return spd;
 	}
 	
-	public List<AVDoubleItem> reAvfilght(String orgCity, String dstCity, String orgDate, String retDate){
+	/*public List<AVDoubleItem> reAvfilght(String orgCity, String dstCity, String orgDate, String retDate){
 		AVDoubleResponse list = new ECUtils().roundtripAv(orgCity, dstCity, orgDate, retDate, "", null);
 		List<SeatInfoDataWF> desFilgInfo = new ArrayList<SeatInfoDataWF>();
 		List<AVDoubleItem> ygDesFilg = list.getDepartAvItems();
@@ -187,7 +187,7 @@ public class PlanTekService {
 		}
 		System.out.println(desFilgInfo.size()); 
 		return ygDesFilg;
-	}
+	}*/
 	
 	public boolean seatInfoIsNull(AVDoubleSegment avd){
 		if(avd.getCangwei_data()==null||"".equals(avd.getCangwei_data())){

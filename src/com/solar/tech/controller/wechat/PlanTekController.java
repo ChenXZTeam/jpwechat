@@ -173,7 +173,7 @@ public class PlanTekController {
 		return map;
 	}
 	
-	//查询往返的机票（另一种方法）
+	/*//查询往返的机票（另一种方法）
 	@RequestMapping("/find/planTekToRe.action")
 	@ResponseBody
 	public Map<String, Object> planTekToRe(String org, String dst, String date, String retDate){
@@ -182,7 +182,7 @@ public class PlanTekController {
 		map.put("departAv", PlanTekServ.reAvfilght(org,dst,date,retDate));
 		map.put("returnAv", "");
 		return map;
-	}
+	}*/
 
 	//支付前得确认是否还有空座位
 	@RequestMapping("/confirmCabin/seatInfo.action")
