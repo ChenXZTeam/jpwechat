@@ -31,7 +31,7 @@
 <script src="<%=basePath %>console/js/mobiscroll.js"></script> 
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>scripts/common/weui/js/zepto.min.js"></script>
-<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
+<script src="<%=basePath %>console/js/airCodeVScity.js?time=11"></script>
 <style>
 	body{-webkit-text-size-adjust:none;}
 	.ChoosClassBox{width:80.5%; height:0px; overflow:hidden; border:1px solid #e1e1e1; position:absolute; top:400px; left:20px; background-color:#FFFFFF; padding:5px 10px; display:none; z-index:1;}

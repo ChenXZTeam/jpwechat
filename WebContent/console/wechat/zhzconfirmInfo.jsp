@@ -32,7 +32,7 @@ String dateTime = request.getParameter("dateTime");
 <script src="<%=basePath %>console/js/mobiscroll.js"></script>
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>scripts/common/weui/js/zepto.min.js"></script>
-<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
+<script src="<%=basePath %>console/js/airCodeVScity.js?name=11"></script>
 <style>
 	body{ background-color:#e5e5e5;}
 	.fildBox{padding:12px; margin-left:auto; margin-right:auto; border-radius:5px; font-size:15px; font-family:Arial, Helvetica, sans-serif; background-color:#FFFFFF;}

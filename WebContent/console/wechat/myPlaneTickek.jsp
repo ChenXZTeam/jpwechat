@@ -18,7 +18,7 @@
 <script type="text/javascript"  src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/planDD.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=basePath %>console/js/jquery-weui.js"></script>
-<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
+<script src="<%=basePath %>console/js/airCodeVScity.js?name=11"></script>
 
 <style>
 	body{background-color:#e1e1e1; font-family:Microsoft YaHei; font-size:14px;}

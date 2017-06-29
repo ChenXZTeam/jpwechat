@@ -24,7 +24,7 @@
 	<link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
 	<script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
 	<script src="<%=basePath %>console/js/jquery-weui.js"></script>
-	<script src="<%=basePath %>console/js/airCodeVScity.js"></script>
+	<script src="<%=basePath %>console/js/airCodeVScity.js?name=11"></script>
 	<script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
 	<script src="<%=basePath %>console/js/mobiscroll.js"></script>
 	<style>
