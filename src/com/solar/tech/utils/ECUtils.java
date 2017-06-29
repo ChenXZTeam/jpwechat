@@ -280,7 +280,7 @@ public class ECUtils {
 			request.setDst(dst);	// 抵达城市
 			request.setDepartDate(date);	// 查询日期，格式 yyy-MM-dd
 			request.setReturnDate(returnDate);   // 返回日期，格式 yyy-MM-dd
-			if(!"".equals(airline)){
+			if(!"".equals(airline)){ 
 				request.setAirline(airline);	// 航空公司（可选）
 			}
 			if(page != null){
