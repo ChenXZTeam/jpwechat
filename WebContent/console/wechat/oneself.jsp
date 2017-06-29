@@ -26,7 +26,6 @@
 		} */
 		 $("#bigTable").append("<tr class='cententTR'><td class='cententTD' onclick='myorder()'>机票订单</td></tr>");
 		 $("#bigTable").append("<tr class='cententTR'><td class='cententTD' onclick='myVisa()'>签证订单</td></tr>");
-		 $("#bigTable").append("<tr class='cententTR'><td class='cententTD' onclick='myDiscount()'>我的优惠</td></tr>");
 		 $("#bigTable").append("<tr class='cententTR'><td class='cententTD' onclick='my()'>常用联系人管理</td></tr>");
 	});  
 	function myorder(){
@@ -35,9 +34,7 @@
 	function myVisa(){
 		window.location.href="<%=basePath %>console/wechat/visaOrder.jsp";
 	}
-	function myDiscount(){
-		window.location.href="<%=basePath %>console/wechat/mydiscount.jsp";
-	}
+	
 	function my(){
 		window.location.href="<%=basePath %>console/wechat/linkman.jsp";
 	}
