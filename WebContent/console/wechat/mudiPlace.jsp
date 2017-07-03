@@ -11,8 +11,8 @@
 	String daodCityCode=new String(request.getParameter("daodCityCode").getBytes("ISO-8859-1"),"utf-8");
 	String chufPlan=new String(request.getParameter("chufPlan").getBytes("ISO-8859-1"),"utf-8");
 	String daodPlan=new String(request.getParameter("daodPlan").getBytes("ISO-8859-1"),"utf-8");
-	String dateTime=request.getParameter("dateTime"); */
-	session.setAttribute("token", "LXQSYSNORESQUEST");
+	String dateTime=request.getParameter("dateTime");
+	session.setAttribute("token", "LXQSYSNORESQUEST"); */
 	String cangW = request.getParameter("cangW");
 	String chufCityCode = request.getParameter("chufCityCode");
 	String daodCityCode = request.getParameter("daodCityCode");
@@ -123,31 +123,33 @@
 </style>
 
 <script>
+var chufCityCode="<%=chufCityCode %>";
+var daodCityCode="<%=daodCityCode %>";
+var cangW="<%=cangW %>";
 $(function(){ 
-	var chufCityCode="<%=chufCityCode %>";
-	var daodCityCode="<%=daodCityCode %>";
-	var cangW="<%=cangW %>";
-	var dateTime="<%=dateTime%>";
+	var dateTime=$("#dateTimeID").text();
+	console.log(dateTime);
 	conterCONTime(dateTime);//显示在中间的时间
-	$("#dateTimeID").text(dateTime);
 	ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
 	
 	$(".prevDate").click(function(){		
 		var newDate = prevTime($("#dateTimeID").text());
-		conterCONTime(newDate);
+		location.href="<%=basePath%>wechatController/page/mudiPlace.action?cangW="+cangW+"&dateTime="+newDate+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode;
+		/* conterCONTime(newDate);
 		$(".notTjTicket").remove();
 		$(".zhzLiBox").remove(); //移除原来的中转航班
 		ajax(chufCityCode, daodCityCode, cangW, newDate); //执行数据加载ajax		
-		$("#dateTimeID").text(newDate);
+		$("#dateTimeID").text(newDate); */
 	});
 	
 	$(".nextDate").click(function(){		
 		var newDate = nextTime($("#dateTimeID").text());//获取加上一天的日期
-		conterCONTime(newDate);//把这个日期格式转换一个放在中间的标签中
+		location.href="<%=basePath%>wechatController/page/mudiPlace.action?cangW="+cangW+"&dateTime="+newDate+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode;
+		/* conterCONTime(newDate);//把这个日期格式转换一个放在中间的标签中
 		$(".notTjTicket").remove();//移除原来加载的数据
 		$(".zhzLiBox").remove(); //移除原来的中转航班
 		ajax(chufCityCode, daodCityCode, cangW, newDate); //执行数据加载ajax		
-		$("#dateTimeID").text(newDate);//把这个值重新赋值一下，当做下一此点击时再一次调用
+		$("#dateTimeID").text(newDate);//把这个值重新赋值一下，当做下一此点击时再一次调用 */
 	});
 	
 	$(".mmddWeek").click(function(){
@@ -172,8 +174,8 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 		complete:function(){$("#loading").css("display","none");},
 		success:function(data){
 			if(data.msg==1){
-				/*console.log(data.listDate);
-				console.log(data.zzListDate); */
+				console.log(data.listDate);
+				/*console.log(data.zzListDate); */
 				var getDate = data.listDate;//直达
 				var zhzDate = data.zzListDate;//中转
 				for(var i=0;i<getDate.length;i++){
@@ -287,11 +289,12 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 				}
 				loadjs();//加载js外部文件
 			}else{
-				if(data.msgPosti=="0"||data.msgPosti==0){
-					$.alert("请求用时过长，请10s后重新刷新！(待解决)");
-				}else{
-					$.alert("没有查找到该航班的信息");
-				}
+				$.alert("没有查找到所需要的班次");
+			}
+			var listHb = $(".notTjTicket").length;
+			var listzHb = $(".zhzLiBox").length;
+			if(listHb=="0"&&listzHb=="0"){
+				$.alert("没有查找到所需要的班次");
 			}
 		},error:function(){
 		}
@@ -473,13 +476,14 @@ function chax(){
            $.alert("日期选择错误");
            return false;
     }
-	var chufCityCode="<%=chufCityCode %>";
+    location.href="<%=basePath%>wechatController/page/mudiPlace.action?cangW="+cangW+"&dateTime="+dateTime+"&chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode;
+	<%-- var chufCityCode="<%=chufCityCode %>";
 	var daodCityCode="<%=daodCityCode %>";
 	var cangW="<%=cangW %>";
 	ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
 	$("#dateTimeID").text(dateTime);
 	conterCONTime(dateTime);//显示在中间的时间
-	$(".panel").slideToggle("fast");
+	$(".panel").slideToggle("fast"); --%>
 }
 
 //
@@ -504,7 +508,7 @@ function chax(){
 				<span style="clear:both;"></span>
 			</div>
 		</div>
-		<div id="dateTimeID"  style="display:none;"></div> 
+		<div id="dateTimeID"  style="display:none;"><%=dateTime%></div> 
 		<%-- <div id="chufCityID" style="display:none;"><%=chufCity %></div>
 		<div id="daodCityID" style="display:none;"><%=daodCity %></div> --%>
 		<!-- <div class="timeDiv" style="float:left; width:15%; text-align:left;">明天▼</div> -->

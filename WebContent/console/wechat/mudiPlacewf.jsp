@@ -129,6 +129,9 @@
 <script>
 var deTimeDate = '<%=dateTime%>';
 var reTimeDate = '<%=returnTime%>';
+var cangW = "<%=cangW%>";
+var chufCityCode = "<%=chufCity%>";
+var daodCityCode = "<%=daodCity%>";
 $(function(){
 	chax(deTimeDate,reTimeDate);
 	$("#ahtherBtn").click(function(){
@@ -158,15 +161,16 @@ $(function(){
 	    }
 	    var now = new Date();
 	    now.setDate(now.getDate()-1);
-	    if (chknow < now) {
-	           $.alert("去程时间不能在今天之前");
-	           return false;
+	    if (chknow < now){
+	        $.alert("去程时间不能在今天之前");
+	        return false;
 	    }
 	    if (rechknow < now) {
-	           $.alert("返程时间不能在今天之前");
-	           return false;
+	        $.alert("返程时间不能在今天之前");
+	        return false;
 	    }
-		chax(dateTime,returnTime);
+	    window.location.href="<%=basePath%>wechatController/page/mudiPlacewf.action?chufCityCode="+chufCityCode+"&daodCityCode="+daodCityCode+"&dateTime="+dateTime+"&returnTime="+returnTime+"&cangW="+cangW;
+		//chax(dateTime,returnTime);
 	});
 });
 
@@ -265,9 +269,6 @@ function trueBtnYd(uuid1,uuid2,canbin1,canbin2,gdate,rdate){
 function chax(dateTime,returnTime){
 	//alert(document.getElementById("d11").value);
 	//alert(document.getElementById("d12").value);
-	var cangW = "<%=cangW%>";
-	var chufCityCode = "<%=chufCity%>";
-	var daodCityCode = "<%=daodCity%>";
 	//var dateTime=document.getElementById("d11").value;
 	conterCONTime(dateTime,returnTime);//显示在中间的时间
 	//var returnTime =document.getElementById("d12").value; 
@@ -286,8 +287,10 @@ function chax(dateTime,returnTime){
 			success:function(data){
 				var depart = data.departAv; //去程的航班
 				var returnf = data.returnAv; //回程的航班
+				console.log(depart);
 				var countDivNum = 0; //计数器
-				for(var i=0; i<depart.length; i++){
+				if(depart.length>0&&returnf.length>0){
+					for(var i=0; i<depart.length; i++){
 						var depCity = findByCity(depart[i].orgCity); //第一航段的出发城市
 						var arrCity = findByCity(depart[i].dstCity); //第一航段的到达城市
 						var depTime = changeType(depart[i].depTime); //出发时间
@@ -364,8 +367,15 @@ function chax(dateTime,returnTime){
 										}
 										countDivNum++;
 								}
+						}
 					}
-					}
+				}else{
+					$.alert("没有查找到所需要的班次");
+				}
+				var listHb = $(".zhzLiBox").length;
+				if(listHb=="0"||listHb==0){
+					$.alert("没有查找到所需要的班次");
+				}
 			},error:function(){
 						
 			}
