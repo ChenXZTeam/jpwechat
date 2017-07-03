@@ -31,10 +31,10 @@
 		body{padding:0px; margin:0px;}
 		ul{list-style-type:none; margin:0px; padding:0px;}
 		.zhzLiBox{ margin:0px; font-size:15px; color:#666666; padding:8px 5px; font-family:Arial, Helvetica, sans-serif; border-bottom:#E0E0E0 solid 1px;}
-		.zhzLiBox .feiTimeBox{margin-left:6px; float:left; width:50px;}
+		.zhzLiBox .feiTimeBox{margin-left:2px; float:left; width:50px;}
 		.zhzLiBox .feiTimeBox .staTimeBox{text-align:left; padding-top:5px;}
 		.zhzLiBox .feiTimeBox .arrTimeBox{ margin-top:15px; color:#999999; text-align:left; font-size:13px;}
-		.zhzLiBox .flidNameBox{ float:left; margin-left:2%; padding-top:6px;}
+		.zhzLiBox .flidNameBox{ float:left; margin-left:1%; padding-top:6px;}
 		.zhzLiBox .flidNameBox .qishiPlanNa{ overflow:hidden; padding-top:2px;}
 		.zhzLiBox .flidNameBox .zhongPlanNa{ overflow:hidden; padding-top:10px;}
 		.zhzLiBox .flidNameBox .qishiPlanNa img{ display:block; float:left;}
@@ -286,8 +286,6 @@ function chax(dateTime,returnTime){
 			success:function(data){
 				var depart = data.departAv; //去程的航班
 				var returnf = data.returnAv; //回程的航班
-				console.log(depart);
-				console.log(returnf);
 				var countDivNum = 0; //计数器
 				for(var i=0; i<depart.length; i++){
 						var depCity = findByCity(depart[i].orgCity); //第一航段的出发城市
@@ -311,68 +309,66 @@ function chax(dateTime,returnTime){
 											cangType_bas = cnCang(returnse[h].basicCabin);
 											cangType_csw2 = departse[k].cangwei;
 											cangType_csw = returnse[h].cangwei;
-											
 											onePriceMoney = departse[k].onewayPrice;//第一航段的价钱
 											twoPriceMobey = returnse[h].onewayPrice;//第二航段的价格 
 											sumTemk += parseInt(signTekt(tekNum(departse[k].cangwei_data),tekNum(returnse[h].cangwei_data)));
 										}
+										
 									}
 								}
-								var liList='<li class="zhzLiBox"><div class="zhzChildBox" onclick="chooseLi(this)"><div class="feiTimeBox"><div class="staTimeBox">'+depTime+'</div><div class="arrTimeBox">'+depTimere+'</div></div><div class="flidNameBox"><div class="qishiPlanNa"><img src="<%=basePath %>console/images/depImg.png" style="width:18px;margin-top: 1px;"/><span class="qishiSpan">'+depCity+'</span><img src="<%=basePath %>console/images/zuopoinyer.png" style="margin-top:6px; margin-left:5px;"/><span class="zhongone" style="margin-left:5px;">'+arrCity+'</span><span class="fildNoClass">'+depart[i].flightNo+'</span><span style="clear:both;"></span></div><div class="zhongPlanNa"><img src="<%=basePath %>console/images/arrImg.png" style="width:18px;margin-top: 1px;"/><span class="zhzSpan">'+depCityre+'</span><img src="<%=basePath %>console/images/zuopoinyer.png" style="margin-top:7px; margin-left:5px;"/><span class="zhongtwo" style="margin-left:5px;">'+arrCityre+'</span><span class="fildNoClass">'+returnf[j].flightNo+'</span><span style="clear:both;"></span></div></div><div class="monAndtick"><div class="tickNum">往返总价</div><div class="moneyCPY"><span style="color:#FF8201;font-size:14px;">￥</span><span class="oneMoneyHouse">'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span></div><div class="tickNumZh">'+cnCang(cangW)+''+sumTemk+'张</div></div><div style="clear:both;"></div></div><div class="wfbanner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="tuijianImgBox"></div><div class="firstDiv"><span class="jjc">'+cangType_bas+'</span><a class="zhzaYuding" onclick="trueBtnYd(\''+depart[i].uuid+'\',\''+returnf[j].uuid+'\',\''+cangType_csw2+'\',\''+cangType_csw+'\',\''+deTimeDate+'\',\''+reTimeDate+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw2+'</span><span class="Eimg" style="margin-left:5px;">'+cangType_csw+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="wfpiaojia" onclick="othercang(this)">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';
-								$("#ulBox").append(liList);
-								if(sumTemk == 0||sumTemk == "0"){
-									$(".zhzLiBox:eq("+countDivNum+") .zhzaYuding").text("已售完");
-									$(".zhzLiBox:eq("+countDivNum+") .zhzaYuding").addClass("buyOver");
-									$(".zhzLiBox:eq("+countDivNum+") .buyOver").removeClass("zhzaYuding");
-									$(".zhzLiBox:eq("+countDivNum+") .buyOver").attr("href","javascript:void(0)");
-									$(".zhzLiBox:eq("+countDivNum+") .Eimg").text(cangW);
+								if(sumTemk==0||sumTemk=="0"){
+								  console.log(sumTemk);
 								}
-								//加载舱位
-								var depDate = []; //盛装符合第一航段舱位和座位不为空的数据
-								var depLastDate = []; //第一航段最终需要打印的数据
-								for(var k=0; k<departse.length; k++){
-									if(departse[k].basicCabin==cangW && tekNum(departse[k].cangwei_data)!=0){
-										depDate.push(departse[k]);
-									}
-								}
-								if(depDate.length>1){ //如果这些数据大于1
-									depLastDate.push(depDate[parseInt(depDate.length)-2]);
-									depLastDate.push(depDate[parseInt(depDate.length)-1]);
-								}else{
-									depLastDate = depDate;
-								}
-								
-								var retDate = []; //盛装符合第二航段舱位和座位不为空的数据
-								var retLastDate = []; //第二航段最终需要打印的数据
-								for(var h=0; h<returnse.length; h++){
-									if(returnse[h].basicCabin==cangW && tekNum(returnse[h].cangwei_data)!=0){
-										retDate.push(returnse[h]);
-									}
-								}
-								if(retDate.length>1){
-									retLastDate.push(retDate[parseInt(retDate.length)-2]);
-									retLastDate.push(retDate[parseInt(retDate.length)-1]);
-								}else{
-									retLastDate = retDate;
-								}
-								
-								for(var k=0; k<depLastDate.length; k++){
-									var GcangType = depLastDate[k].basicCabin;
-									var GcangPont = depLastDate[k].cangwei;
-									var depart_moneyCost = depLastDate[k].onewayPrice;
-									for(var h=0; h<retLastDate.length; h++){
-										var RcangType = retLastDate[h].basicCabin;
-										var RcangPont = retLastDate[h].cangwei;
-										var return_moneyCost = retLastDate[h].onewayPrice;
-										var dr_countPay = parseInt(depart_moneyCost)+parseInt(return_moneyCost);
-										if(tekNum(depLastDate[k].cangwei_data) != 0 && tekNum(retLastDate[h].cangwei_data) != 0 && retLastDate[h].basicCabin == cangW && depLastDate[k].basicCabin == cangW){
-											var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="zhzanotheryu" onclick="trueBtnYd(\''+depart[i].uuid+'\',\''+returnf[j].uuid+'\',\''+GcangPont+'\',\''+RcangPont+'\',\''+deTimeDate+'\',\''+reTimeDate+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+dr_countPay+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+GcangPont+'</span><span class="Eimg" style="margin-left:5px;">'+RcangPont+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span></div><div style="clear:both;"></div></div></div></div></div></div>';
-											$(".zhzLiBox:eq("+countDivNum+") .cangweiClass").append(listDiv);
+								else{
+										var liList='<li class="zhzLiBox"><div class="zhzChildBox" onclick="chooseLi(this)"><div class="feiTimeBox"><div class="staTimeBox">'+depTime+'</div><div class="arrTimeBox">'+depTimere+'</div></div><div class="flidNameBox" style="margin-left:5px;"><div class="qishiPlanNa"><img src="<%=basePath %>console/images/depImg.png" style="width:18px;margin-top: 1px;"/><span class="qishiSpan">'+depCity+'</span><img src="<%=basePath %>console/images/zuopoinyer.png" style="margin-top:6px; margin-left:5px;"/><span class="zhongone" style="margin-left:5px;">'+arrCity+'</span><span class="fildNoClass">'+depart[i].flightNo+'</span><span style="clear:both;"></span></div><div class="zhongPlanNa"><img src="<%=basePath %>console/images/arrImg.png" style="width:18px;margin-top: 1px;"/><span class="zhzSpan">'+depCityre+'</span><img src="<%=basePath %>console/images/zuopoinyer.png" style="margin-top:7px; margin-left:5px;"/><span class="zhongtwo" style="margin-left:5px;">'+arrCityre+'</span><span class="fildNoClass">'+returnf[j].flightNo+'</span><span style="clear:both;"></span></div></div><div class="monAndtick"><div class="tickNum">往返总价</div><div class="moneyCPY"><span style="color:#FF8201;font-size:14px;">￥</span><span class="oneMoneyHouse">'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span></div><div class="tickNumZh">'+cnCang(cangW)+''+sumTemk+'张</div></div><div style="clear:both;"></div></div><div class="wfbanner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="tuijianImgBox"></div><div class="firstDiv"><span class="jjc">'+cangType_bas+'</span><a class="zhzaYuding" onclick="trueBtnYd(\''+depart[i].uuid+'\',\''+returnf[j].uuid+'\',\''+cangType_csw2+'\',\''+cangType_csw+'\',\''+deTimeDate+'\',\''+reTimeDate+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw2+'</span><span class="Eimg" style="margin-left:5px;">'+cangType_csw+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="wfpiaojia" onclick="othercang(this)">对应舱位其他票价</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';
+										$("#ulBox").append(liList);
+										//加载舱位
+										var depDate = []; //盛装符合第一航段舱位和座位不为空的数据
+										var depLastDate = []; //第一航段最终需要打印的数据
+										for(var k=0; k<departse.length; k++){
+											if(departse[k].basicCabin==cangW && tekNum(departse[k].cangwei_data)!=0){
+												depDate.push(departse[k]);
+											}
 										}
-									}
-								}
-								countDivNum++;
+										if(depDate.length>1){ //如果这些数据大于1
+											depLastDate.push(depDate[parseInt(depDate.length)-2]);
+											depLastDate.push(depDate[parseInt(depDate.length)-1]);
+										}else{
+											depLastDate = depDate;
+										}
+										
+										var retDate = []; //盛装符合第二航段舱位和座位不为空的数据
+										var retLastDate = []; //第二航段最终需要打印的数据
+										for(var h=0; h<returnse.length; h++){
+											if(returnse[h].basicCabin==cangW && tekNum(returnse[h].cangwei_data)!=0){
+												retDate.push(returnse[h]);
+											}
+										}
+										if(retDate.length>1){
+											retLastDate.push(retDate[parseInt(retDate.length)-2]);
+											retLastDate.push(retDate[parseInt(retDate.length)-1]);
+										}else{
+											retLastDate = retDate;
+										}
+										
+										for(var k=0; k<depLastDate.length; k++){
+											var GcangType = depLastDate[k].basicCabin;
+											var GcangPont = depLastDate[k].cangwei;
+											var depart_moneyCost = depLastDate[k].onewayPrice;
+											for(var h=0; h<retLastDate.length; h++){
+												var RcangType = retLastDate[h].basicCabin;
+												var RcangPont = retLastDate[h].cangwei;
+												var return_moneyCost = retLastDate[h].onewayPrice;
+												var dr_countPay = parseInt(depart_moneyCost)+parseInt(return_moneyCost);
+												if(tekNum(depLastDate[k].cangwei_data) != 0 && tekNum(retLastDate[h].cangwei_data) != 0 && retLastDate[h].basicCabin == cangW && depLastDate[k].basicCabin == cangW){
+													var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="zhzanotheryu" onclick="trueBtnYd(\''+depart[i].uuid+'\',\''+returnf[j].uuid+'\',\''+GcangPont+'\',\''+RcangPont+'\',\''+deTimeDate+'\',\''+reTimeDate+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+dr_countPay+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+GcangPont+'</span><span class="Eimg" style="margin-left:5px;">'+RcangPont+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">使用条件</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span></div><div style="clear:both;"></div></div></div></div></div></div>';
+													$(".zhzLiBox:eq("+countDivNum+") .cangweiClass").append(listDiv);
+												}
+											}
+										}
+										countDivNum++;
 						}
+					}
 					}
 			},error:function(){
 						
