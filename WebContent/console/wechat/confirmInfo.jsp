@@ -84,8 +84,8 @@ $(function(){
 			$(".cangweiType").text(result.canbin);
 			$(".chufCityID").text(findByCity(vardate[0].orgcity));
 			$(".daodCityID").text(findByCity(vardate[0].dstcity));
-			$(".chufDate").text(vardate[0].depDate);
-			$(".arrDate").text(getArriDate(vardate[0].depDate,vardate[0].arriveTimeModify));
+			$(".chufDate").text(dateTime);
+			$(".arrDate").text(getArriDate(dateTime,vardate[0].arriveTimeModify));
 			for(var i=0; i<bxcodate.length; i++){
 				if(bxcodate[i].bxType==1||bxcodate[i].bxType=="1"){
 					$("#ywaicoid").text(bxcodate[i].cost);

@@ -1,6 +1,7 @@
 package com.solar.tech.service;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +55,11 @@ public class PlanTekService {
 		if(noStop.size()==0){  //如果数据库缓存的航班为空，则说明这个条件航班没有查找过记录，需要重新查找
 			//System.out.println("符合查找接口的条件");
 			noStop = upHcDate(org, dst, date, isWf); //封装了缓存的方法
-		}else{
+		}
+		
+		//还要再处理出发时间大于当前时间的2.5小时
+		noStop = flyTime(noStop);
+		/*else{
 			//因为有的信息需要公用航班数据，所以更新一下出发时间(这一段功能代码不应该写在这里，应该写在前台)
 			for(SeatInfoData sd : noStop){
 				//有些中转航班中的第二段航班起飞时间是明天起飞的。所以有必要更新起飞日期+1
@@ -88,7 +93,7 @@ public class PlanTekService {
 				}
 				
 			}
-		}
+		}*/
 		return noStop;
 	}
 	
@@ -320,6 +325,19 @@ public class PlanTekService {
 		
 		List<SeatInfoData> avs = gDao.find(hql);
 		return avs;
+	}
+	
+	//判断航班是否出发时间是否大于2.5小时
+	public List<SeatInfoData> flyTime(List<SeatInfoData> siflist){
+		List<SeatInfoData> seatList = new ArrayList<SeatInfoData>();
+		if(siflist.size()>0){
+			for(SeatInfoData sidate : siflist){
+				if(getDistanceDays(sidate.getDepTime())){ //如果这个方法为true 就说明这个航班的出发时间大于或者等于2.5小时，符合条件
+					seatList.add(sidate);
+				}
+			}
+		}
+		return seatList;
 	}
 	
 	//判断数据是否过期
@@ -785,7 +803,46 @@ public class PlanTekService {
 	    return sd;
 	}
 	
+	public static boolean getDistanceDays(String str2){  
+        DateFormat df = new SimpleDateFormat("HH:mm");  
+        Date one;  
+        Date two;  
+        long days=0;  
+        str2 = str2.substring(0,2)+":"+str2.substring(2,str2.length());
+        try {  
+            one = df.parse(df.format(new Date()));  
+            two = df.parse(str2);  
+            long time1 = one.getTime();  
+            long time2 = two.getTime();  
+            long diff ;  
+            if(time1<time2) {  
+                diff = time2 - time1;  
+            } else {  
+                diff = 0;  
+            }  
+            days = diff / (1000 * 60);  
+        } catch (ParseException e) {  
+            e.printStackTrace();  
+        }
+        if(days>=150){
+        	return true;
+        }
+        return false;  
+    } 
+	
 	public static void main(String[] args) {
+		/*try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MINUTE, +150);
+		Date date = c.getTime();
+		String pastTime = sdf.format(date);
+		System.out.println(pastTime);*/
 		//new PlanTekService().pastFlightMessageList("1");
 		/*PlanTekService sd = new PlanTekService();
 		long juliDay = sd.pointTime("2017-05-21");

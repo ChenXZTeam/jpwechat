@@ -172,7 +172,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 		complete:function(){$("#loading").css("display","none");},
 		success:function(data){
 			if(data.msg==1){
-				/* console.log(data.listDate);
+				/*console.log(data.listDate);
 				console.log(data.zzListDate); */
 				var getDate = data.listDate;//直达
 				var zhzDate = data.zzListDate;//中转
@@ -186,18 +186,12 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 							cangwei_type = getDate[i].seatList[j].cangwei;
 							onewayPrice = getDate[i].seatList[j].onewayPrice;
 							cangDate = getDate[i].seatList[j].cangwei_data;
-							sum += parseInt(tekNum(getDate[i].seatList[j].cangwei_data));
+							sum += parseInt(tekNum(cangDate));
 						}						
-					}  
-					var notTjList = '<li class="notTjTicket" style="position:relative;z-index:1;"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+changeType(getDate[i].depTime)+'</div><div class="EndTime lineHeight">'+changeType(getDate[i].arrTime)+'<span style="color:#ff0000;">'+formArray(getDate[i].arriveTimeModify)+'</span></div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.png" style="float:left;"/><span style="float:left;">'+findByplaneName(chufCityCode)+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.png" style="float:left;"><span style="float:left;">'+findByplaneName(daodCityCode)+'</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201; text-align:right;">￥'+parseInt(onewayPrice)+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cnCang(cangW)+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="tuijianImgBox"></div><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="aYuding" onclick="otherYdBtn(\''+getDate[i].uuid+'\',\''+cangwei_type+'\',\''+dateTime+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+parseInt(onewayPrice)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">退该政策</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="piaojia">更多舱位</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
-					$("#TicketList").append(notTjList);	
-					if(sum == 0||sum == "0"){
-						$(".notTjTicket:eq("+i+") .aYuding").text("已售完");
-						$(".notTjTicket:eq("+i+") .aYuding").addClass("buyOver");
-						$(".notTjTicket:eq("+i+") .buyOver").removeClass("aYuding");
-						$(".notTjTicket:eq("+i+") .buyOver").attr("onclick","javascript:$.alert('没票了')");
-						$(".notTjTicket:eq("+i+") .Eimg").text(cangwei_type);
-					}else{
+					}
+					if(sum==0||sum=="0"){}else{
+						var notTjList = '<li class="notTjTicket" style="position:relative;z-index:1;"><div class="notTjTicketDiv"><div class="StartTimeEnd"><div class="StartTime lineHeight">'+changeType(getDate[i].depTime)+'</div><div class="EndTime lineHeight">'+changeType(getDate[i].arrTime)+'<span style="color:#ff0000;">'+formArray(getDate[i].arriveTimeModify)+'</span></div></div><div class="StartAndEnd"><div class="StartJC lineHeight"><img src="<%=basePath %>console/images/shi.png" style="float:left;"/><span style="float:left;">'+findByplaneName(chufCityCode)+'</span></div><div style="clear:both;"></div><div class="EndTJC lineHeight"><img src="<%=basePath %>console/images/zhong.png" style="float:left;"><span style="float:left;">'+findByplaneName(daodCityCode)+'</span></div></div><div class="moneyAndTicket"><div class="money lineHeight" style="color:#FF8201; text-align:right;">￥'+parseInt(onewayPrice)+'</div><div class="zuowei lineHeight" style="font-size:12px;">'+cnCang(cangW)+''+sum+'张</div></div><div style="clear:both;"></div></div><div class="banner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="tuijianImgBox"></div><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="aYuding" onclick="otherYdBtn(\''+getDate[i].uuid+'\',\''+cangwei_type+'\',\''+dateTime+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+parseInt(onewayPrice)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangwei_type+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">退该政策</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="piaojia">更多舱位</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';              
+						$("#TicketList").append(notTjList);	
 						//动态加载针对该航班的其他舱位的信息
 						for(var j=0;j<getDate[i].seatList.length;j++){
 							if(getDate[i].seatList[j].basicCabin==cangW && tekNum(getDate[i].seatList[j].cangwei_data)!=0){
@@ -206,7 +200,6 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 							}						
 						}
 					}
-					
 				}
 				
 				//中转航班
@@ -216,8 +209,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 						//第一段的到达城市和第二段的起始城市相同、第一段的到达时间要小于第二段的起飞时间1个小时、第一段的起飞时间小于第一段的到达时间(防止出现)
 						if(zhzDate[i].dstCity==zhzDate[j].orgCity&&MathTime(zhzDate[i].arrTime,zhzDate[i].arriveTimeModify,zhzDate[j].depTime,zhzDate[j].deptimemodify)>9000){
 							/* console.log(zhzDate[i]);
-							console.log(zhzDate[j]);
-							console.log("==========================="); */
+							console.log(zhzDate[j]);*/
 							var rowseatInfo1 = zhzDate[i].seatList; //第一航段的座位
 							var rowseatInfo2 = zhzDate[j].seatList; //第一航段的座位
 							//自定义参数
@@ -240,16 +232,10 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 									}
 								}
 							}
-							var liBox = '<li class="zhzLiBox"><div class="zhzChildBox"><div class="feiTimeBox"><div class="staTimeBox">'+changeType(zhzDate[i].depTime)+'</div><div class="arrTimeBox">'+changeType(zhzDate[j].arrTime)+'<span style="color:#ff0000;">'+formArray(zhzDate[j].arriveTimeModify)+'</span></div></div><div class="flidNameBox"><div class="qishiPlanNa"><img src="<%=basePath %>console/images/shi.png" style="width:20px;"><span class="qishiSpan">'+findByplaneName(zhzDate[i].orgCity)+'</span><span style="clear:both;"></span></div><div class="zhongPlanNa"><img src="<%=basePath %>console/images/zhong.png" style="width:20px;"><span class="zhzSpan">'+findByplaneName(zhzDate[j].dstCity)+'</span><span style="clear:both;"></span></div></div><div class="zhzPlanName"><span class="zhuanICO">转</span><span class="zhuanName">'+findByCity(zhzDate[i].dstCity)+'</span></div><div class="monAndtick"><div class="moneyCPY"><span style="color:#FF8201;font-size:14px;">￥</span><span class="oneMoneyHouse">'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span></div>	<div class="tickNum">'+cnCang(cangW)+''+sumTemk+'张</div></div><div style="clear:both;"></div></div><div class="wfbanner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="tuijianImgBox"></div><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="zhzaYuding" onclick="another(\''+zhzDate[i].uuid+'\',\''+zhzDate[j].uuid+'\',\''+cangType_csw+'\',\''+dateTime+'\',\''+cangType_csw2+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw+'</span><span class="Eimg" style="margin-left:5px;">'+cangType_csw2+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">退该政策</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="wfpiaojia">更多舱位</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';
-							$("#TicketList").append(liBox);
-							if(sumTemk == 0||sumTemk == "0"){ //如果全体票价为空的话就显示“已售完”并且后面的其他舱位也不用加载了
-								$(".zhzLiBox:eq("+countDivNum+") .zhzaYuding").text("已售完");
-								$(".zhzLiBox:eq("+countDivNum+") .zhzaYuding").addClass("buyOver");
-								$(".zhzLiBox:eq("+countDivNum+") .buyOver").removeClass("zhzaYuding");
-								$(".zhzLiBox:eq("+countDivNum+") .buyOver").attr("onclick","javascript:$.alert('没票了')");
-								$(".zhzLiBox:eq("+countDivNum+") .buyOver").attr("href","javascript:void(0)");
-								$(".zhzLiBox:eq("+countDivNum+") .Eimg").text(cangW);
-							}else{
+							
+							if(sumTemk == 0||sumTemk == "0"){}else{
+								var liBox = '<li class="zhzLiBox"><div class="zhzChildBox"><div class="feiTimeBox"><div class="staTimeBox">'+changeType(zhzDate[i].depTime)+'</div><div class="arrTimeBox">'+changeType(zhzDate[j].arrTime)+'<span style="color:#ff0000;">'+formArray(zhzDate[j].arriveTimeModify)+'</span></div></div><div class="flidNameBox"><div class="qishiPlanNa"><img src="<%=basePath %>console/images/shi.png" style="width:20px;"><span class="qishiSpan">'+findByplaneName(zhzDate[i].orgCity)+'</span><span style="clear:both;"></span></div><div class="zhongPlanNa"><img src="<%=basePath %>console/images/zhong.png" style="width:20px;"><span class="zhzSpan">'+findByplaneName(zhzDate[j].dstCity)+'</span><span style="clear:both;"></span></div></div><div class="zhzPlanName"><span class="zhuanICO">转</span><span class="zhuanName">'+findByCity(zhzDate[i].dstCity)+'</span></div><div class="monAndtick"><div class="moneyCPY"><span style="color:#FF8201;font-size:14px;">￥</span><span class="oneMoneyHouse">'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span></div>	<div class="tickNum">'+cnCang(cangW)+''+sumTemk+'张</div></div><div style="clear:both;"></div></div><div class="wfbanner"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="tuijianImgBox"></div><div class="firstDiv"><span class="jjc">'+cnCang(cangW)+'</span><a class="zhzaYuding" onclick="another(\''+zhzDate[i].uuid+'\',\''+zhzDate[j].uuid+'\',\''+cangType_csw+'\',\''+dateTime+'\',\''+cangType_csw2+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseInt(onePriceMoney)+parseInt(twoPriceMobey))+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw+'</span><span class="Eimg" style="margin-left:5px;">'+cangType_csw2+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">退该政策</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="jiantou" style="float:right;"><img src="<%=basePath%>console/images/youpoit.png"></span><span class="wfpiaojia">更多舱位</span></div><div style="clear:both;"></div></div></div></div></div></div><div class="cangweiClass" style="height:auto;"></div></li>';
+								$("#TicketList").append(liBox);
 								//加载舱位
 								var depDate = []; //盛装符合第一航段舱位和座位不为空的数据
 								var depLastDate = []; //第一航段最终需要打印的数据
@@ -294,7 +280,6 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 									}
 								}
 							}
-							<%-- <div class="infoMessgBox"><div class="infoChBox" style="border-right:1px solid #ccc;">'+findByCode(zhzDate[i].airCode)+'</div><div class="infoChBox"><img src="<%=basePath%>console/images/TIMEiMG.png" style="width:13px;"/><span>'+cuntTime(zhzDate[i].depTime,zhzDate[j].arrTime)+'</span><span style="clear:both;"></span></div><div class="infoChBox"></div></div> --%>
 							countDivNum++;
 						}
 						

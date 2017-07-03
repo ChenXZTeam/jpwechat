@@ -169,7 +169,8 @@ $(function(){
 			$(".time").text(cuntTime(filgNum1.depTime,filgNum1.deptimemodify,filgNum2.arriTime,filgNum2.arriveTimeModify));
 			$(".firstair").text(filgNum1.airline.substring(0,2));
 			$(".scondair").text(filgNum2.airline.substring(0,2));
-			$(".depTimefirst").html(changeType(filgNum1.depTime,filgNum1.deptimemodify));	
+			$(".depTimefirst").text(changeType(filgNum1.depTime,""));
+			$(".DaodTimetwo").html(changeType(filgNum1.depTime,""));	
 			$(".depTimesecond").html(changeType(filgNum1.arriTime,filgNum1.arriveTimeModify));
 			$(".depAirPlanfirst").text(findByplaneName(filgNum1.orgcity));
 			$(".depAirPlansecond").text(findByplaneName(filgNum1.dstcity));
@@ -209,9 +210,9 @@ $(function(){
 			$("#fildNumflyone").text(filgNum1.airline);
 			$("#CountTimeone").text($(".lishiTime").text());
 			$("#ChufDateone").text(dateTime);
-			$("#ChufDateone_one").text(filgNum1.arriveDate);
-			$("#ChufTimeone").html(changeType(filgNum1.depTime,filgNum1.deptimemodify));
-			$("#DaodTimeone").html(changeType(filgNum1.arriTime,filgNum1.arriveTimeModify));
+			$("#ChufDateone_one").text(getArriDate(dateTime,filgNum1.arriveTimeModify));
+			$("#ChufTimeone").html(changeType(filgNum1.depTime,""));
+			$("#DaodTimeone").html(changeType(filgNum1.arriTime,""));
 			
 			$("#ChufCitytwo").text(findByCity(filgNum2.orgcity));
 			$("#DaodCitytwo").text(findByCity(filgNum2.dstcity));
@@ -220,9 +221,9 @@ $(function(){
 			$("#fildNumflytwo").text(filgNum2.airline);
 			$("#CountTimetwo").text($(".lishiTime_two").text());
 			$("#ChufDatetwo").text(seconDay(dateTime,filgNum2.deptimemodify));
-			$("#ChufDatetwo_two").text(filgNum2.arriveDate);
-			$("#ChufTimetwo").html(changeType(filgNum2.depTime,filgNum2.deptimemodify));
-			$("#DaodTimetwo").html(changeType(filgNum2.arriTime,filgNum2.arriveTimeModify));
+			$("#ChufDatetwo_two").text(seconDay(dateTime,filgNum2.arriveTimeModify));
+			$("#ChufTimetwo").html(changeType(filgNum2.depTime,""));
+			$("#DaodTimetwo").html(changeType(filgNum2.arriTime,""));
 		},
 		error: function() {
 
@@ -685,6 +686,26 @@ function findbb(airline1,canbin1,org1,dst1,dateTime1,airline2,canbin2,org2,dst2,
 
 function addLink(){
 	$(".moveBox").css("display","block");
+}
+
+//根据出发时间和是否+1的天数推算出到达时间
+function getArriDate(depDate,isJiaOne){
+	var dedat = new Date(depDate);
+	if(isJiaOne=="+1"){
+		dedat.setDate(dedat.getDate() + 1);
+	 	var yy = dedat.getFullYear();
+	 	var mm = dedat.getMonth()+1;
+	 	var dd = dedat.getDate();
+	 	if(mm < 10){
+	 		mm = "0"+mm;
+	 	}
+	 	if(dd<10){
+	 		dd = "0"+dd;
+	 	}
+	 	return yy+"-"+mm+"-"+dd;
+	}else{
+		return depDate;
+	}
 }
 
 //改变出发时间和到达时间的类型
