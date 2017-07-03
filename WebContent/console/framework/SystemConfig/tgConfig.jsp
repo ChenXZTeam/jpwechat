@@ -38,9 +38,9 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'airCode', title: '航空公司', width: '15%' ,formatter:findByCode},
-	        { field: 'commit', title: '退改政策', width: '35%' },
-	        { field: 'upTime', title: '更新时间',align:'center', width: '10%',formatter:fotmateDate}
+	        { field: 'airCode', title: '航空公司', width: '30%' ,formatter:findByCode},
+	        { field: 'commit', title: '退改政策', width: '40%' },
+	        { field: 'upTime', title: '更新时间',align:'center', width: '28%',formatter:fotmateDate}
 	    ]]
 	});
 	

@@ -37,7 +37,7 @@ $(function(){
 		rownumbers:true,
 	    columns: [[
 	        { field: 'ck', checkbox: true },
-	        { field: 'bxType', title: '保险类型',align:'center', width: '5%' ,
+	        { field: 'bxType', title: '保险类型',align:'center', width: '15%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
 	               	 	return "意外险";
@@ -46,9 +46,9 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'cost', title: '价格/元',align:'center', width: '5%' },
+	        { field: 'cost', title: '价格/元',align:'center', width: '15%' },
 	        { field: 'commit', title: '内容描述', width: '50%'},
-	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
+	        { field: 'createTime', title: '创建时间',align:'center', width: '18%',formatter:fotmateDate}
 	    ]]
 	});
 });

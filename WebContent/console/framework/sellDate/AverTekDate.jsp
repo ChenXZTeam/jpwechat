@@ -45,7 +45,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//默认加载当月的方法
 		$.post("<%=basePath%>framework/atdcontroller/morenList.action",{},function(res){
 			var date = JSON.parse(res);
+			console.log(date.length);
+			if(date.length==0||date.length=="0"){
+			  $.messager.alert('操作提示',"目前没有订单!","warning");
+			  
+			 }
 			doDate(date,"当月的平均乘机率","");
+			
 		});
 		
 		//加载航空公司的二字码信息到下拉框

@@ -39,8 +39,8 @@ $(function(){
 	    columns: [[
 	        { field: 'ck', checkbox: true },
 	        { field: 'orgCity', title: '出发城市', width: '15%' ,formatter:findByCity},
-	        { field: 'dstCity', title: '到达城市', width: '15%' ,formatter:findByCity},
-	        { field: 'hcType', title: '缓存时间分类',align:'center', width: '10%' ,
+	        { field: 'dstCity', title: '到达城市', width: '10%' ,formatter:findByCity},
+	        { field: 'hcType', title: '缓存时间分类',align:'center', width: '15%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
 	               	 	return "出发当天";
@@ -57,9 +57,9 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'createTime', title: '缓存创建时间',align:'center', width: '10%' ,formatter:fotmateDate},
-	        { field: 'overTime', title: '缓存过期时间',align:'center', width: '10%' ,formatter:fotmateDate},
-	        { field: 'isOver', title: '是否过期',align:'center', width: '10%',
+	        { field: 'createTime', title: '缓存创建时间',align:'center', width: '15%' ,formatter:fotmateDate},
+	        { field: 'overTime', title: '缓存过期时间',align:'center', width: '15%' ,formatter:fotmateDate},
+	        { field: 'isOver', title: '是否过期',align:'center', width: '13%',
 	        	formatter:function(value,rec,index){  
 	                if(value=="0"){
 	               	 	return "已过期";
@@ -68,7 +68,7 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'handUpTime', title: '管理员更新时间',align:'center', width: '10%' ,formatter:fotmateDate}
+	        { field: 'handUpTime', title: '管理员更新时间',align:'center', width: '15%' ,formatter:fotmateDate}
 	    ]]
 	});
 	

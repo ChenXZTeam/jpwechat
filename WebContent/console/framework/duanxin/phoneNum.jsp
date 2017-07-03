@@ -73,7 +73,7 @@
 	<div class="seachBox">
 		<ul>
 			<li><span></span><input type="text" id="phoneNumber" placeholder="请输入手机号码" style="border-radius:5px;"/></li>
-			<li><a href="javascript:void(0)" class="easyui-linkbutton" style="width:120px; height:28px; outline:none;" onclick="query()">搜索</a></li>
+			<li><a href="javascript:void(0)" class="easyui-linkbutton" style="width:120px; height:28px; outline:none;background:#31C1F3;color:white;border:none;" onclick="query()">搜索</a></li>
 		</ul>
 	</div>
 	<div id="grideBox" style="width:100%;">
@@ -177,8 +177,8 @@ $(function(){
 	        { field: 'linkName',title: '联系用户',width: '25%'},
 	        { field: 'phoneNumber', title: '手机号码', width: '25%' },
 	        { field: 'fzName', title: '所属分组', width: '15%' },
-	        { field: 'userName', title: '用户名', width: '22.5%' },
-	        { field: 'createTime', title: '创建时间', width: '10%',formatter:fotmateDate}
+	        { field: 'userName', title: '用户名', width: '12%' },
+	        { field: 'createTime', title: '创建时间', width: '20%',formatter:fotmateDate}
 	       
 	    ]]
 	});
