@@ -57,8 +57,11 @@ public class PlanTekService {
 			noStop = upHcDate(org, dst, date, isWf); //封装了缓存的方法
 		}
 		
-		//还要再处理出发时间大于当前时间的2.5小时
-		noStop = flyTime(noStop);
+		//还要再处理出发时间大于当前时间的2.5小时(只有当天出发的航班才筛选，不是当天的航班不筛选)
+		if(pointTime(date)==0){
+			noStop = flyTime(noStop);
+		}
+		
 		/*else{
 			//因为有的信息需要公用航班数据，所以更新一下出发时间(这一段功能代码不应该写在这里，应该写在前台)
 			for(SeatInfoData sd : noStop){
