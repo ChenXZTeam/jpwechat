@@ -95,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</tr>
 	<tr>
 		<td colspan="2">
-			<div style="color:#EF290E; font-size:12px;">【注】:修改新的优惠码时，系统会自动回复“未启动”状态，请记得重启</div>
+			<div style="color:#EF290E; font-size:12px;">【注】:修改新的优惠码时，系统会自动恢复成“未启动”状态，请记得重启</div>
 		</td>
 	</tr>
 </table>

@@ -12,7 +12,7 @@
 	String chufPlan=new String(request.getParameter("chufPlan").getBytes("ISO-8859-1"),"utf-8");
 	String daodPlan=new String(request.getParameter("daodPlan").getBytes("ISO-8859-1"),"utf-8");
 	String dateTime=request.getParameter("dateTime"); */
-	
+	session.setAttribute("token", "LXQSYSNORESQUEST");
 	String cangW = request.getParameter("cangW");
 	String chufCityCode = request.getParameter("chufCityCode");
 	String daodCityCode = request.getParameter("daodCityCode");
@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll.css"/>
 <link rel="stylesheet" href="<%=basePath %>console/css/mobiscroll_date.css"/>
 <link rel="stylesheet" type="text/css"  href="<%=basePath%>console/css/loading.css" />
-<script src="<%=basePath %>console/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath %>console/js/jquery-1.8.3.min.js?sd=1233"></script>
 <script src="<%=basePath %>console/js/jquery-weui.js"></script>
 <script src="<%=basePath %>console/js/airCodeVScity.js?yim=2010000"></script>
 <script src="<%=basePath %>console/js/mobiscroll_date.js"></script> 
@@ -123,7 +123,6 @@
 </style>
 
 <script>
-var dcfalse = true;
 $(function(){ 
 	var chufCityCode="<%=chufCityCode %>";
 	var daodCityCode="<%=daodCityCode %>";
@@ -131,10 +130,7 @@ $(function(){
 	var dateTime="<%=dateTime%>";
 	conterCONTime(dateTime);//显示在中间的时间
 	$("#dateTimeID").text(dateTime);
-	if(dcfalse == true){
-		dcfalse = false;
-		ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
-	}
+	ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
 	
 	$(".prevDate").click(function(){		
 		var newDate = prevTime($("#dateTimeID").text());
@@ -172,9 +168,7 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 		type:"POST",
 		data:{"chufCity":chufCityCode,"daodCity":daodCityCode,"dateTime":dateTime},
 		dataType:"json",
-		beforeSend:function(){
-			$("#loading").css("display","block");
-		},
+		beforeSend:function(){$("#loading").css("display","block");},
 		complete:function(){$("#loading").css("display","none");},
 		success:function(data){
 			if(data.msg==1){
@@ -192,7 +186,6 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 							cangwei_type = getDate[i].seatList[j].cangwei;
 							onewayPrice = getDate[i].seatList[j].onewayPrice;
 							cangDate = getDate[i].seatList[j].cangwei_data;
-							console.log(tekNum(getDate[i].seatList[j].cangwei_data));
 							sum += parseInt(tekNum(getDate[i].seatList[j].cangwei_data));
 						}						
 					}  
@@ -258,14 +251,43 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 								$(".zhzLiBox:eq("+countDivNum+") .Eimg").text(cangW);
 							}else{
 								//加载舱位
+								var depDate = []; //盛装符合第一航段舱位和座位不为空的数据
+								var depLastDate = []; //第一航段最终需要打印的数据
 								for(var k=0; k<rowseatInfo1.length; k++){
-									for(var h=0; h<rowseatInfo2.length; h++){
-										if(rowseatInfo1[k].basicCabin==cangW && rowseatInfo2[h].basicCabin==cangW && tekNum(rowseatInfo1[k].cangwei_data)!=0 && tekNum(rowseatInfo2[h].cangwei_data)!=0){ 
-											var cangType_csw = rowseatInfo1[k].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
-											var cangType_csw2 = rowseatInfo2[h].cangwei;
-											var cangType_bas = cnCang(rowseatInfo2[h].basicCabin);
-											onewayPrice = rowseatInfo1[k].onewayPrice; //价钱第一航班信息
-											twowayPrice = rowseatInfo2[h].onewayPrice; //价钱第二航班信息
+									if(rowseatInfo1[k].basicCabin==cangW && tekNum(rowseatInfo1[k].cangwei_data)!=0){
+										depDate.push(rowseatInfo1[k]);
+									}
+								}
+								if(depDate.length>1){ //如果这些数据大于1
+									depLastDate.push(depDate[parseInt(depDate.length)-2]);
+									depLastDate.push(depDate[parseInt(depDate.length)-1]);
+								}else{
+									depLastDate = depDate;
+								}
+								
+								var retDate = []; //盛装符合第二航段舱位和座位不为空的数据
+								var retLastDate = []; //第二航段最终需要打印的数据
+								for(var h=0; h<rowseatInfo2.length; h++){
+									if(rowseatInfo2[h].basicCabin==cangW && tekNum(rowseatInfo2[h].cangwei_data)!=0){
+										retDate.push(rowseatInfo2[h]);
+									}
+								}
+								if(retDate.length>1){
+									retLastDate.push(retDate[parseInt(retDate.length)-2]);
+									retLastDate.push(retDate[parseInt(retDate.length)-1]);
+								}else{
+									retLastDate = retDate;
+								}
+								
+								//加载舱位
+								for(var k=0; k<depLastDate.length; k++){
+									for(var h=0; h<retLastDate.length; h++){
+										if(depLastDate[k].basicCabin==cangW && retLastDate[h].basicCabin==cangW && tekNum(depLastDate[k].cangwei_data)!=0 && tekNum(retLastDate[h].cangwei_data)!=0){ 
+											var cangType_csw = depLastDate[k].cangwei; //舱位的类型如(L、U、E...等)，类型不同价钱也不一样
+											var cangType_csw2 = retLastDate[h].cangwei;
+											var cangType_bas = cnCang(retLastDate[h].basicCabin);
+											onewayPrice = depLastDate[k].onewayPrice; //价钱第一航班信息
+											twowayPrice = retLastDate[h].onewayPrice; //价钱第二航班信息
 											var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cangType_bas+'</span><a class="zhzanotheryu" onclick="another(\''+zhzDate[i].uuid+'\',\''+zhzDate[j].uuid+'\',\''+cangType_csw+'\',\''+dateTime+'\',\''+cangType_csw2+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+(parseInt(onewayPrice)+parseInt(twowayPrice))+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+cangType_csw+'</span><span class="Eimg" style="margin-left:5px;">'+cangType_csw2+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">退该政策</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span></div><div style="clear:both;"></div></div></div></div></div></div>';
 											$(".zhzLiBox:eq("+countDivNum+") .cangweiClass").append(listDiv);
 										}
@@ -280,7 +302,11 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 				}
 				loadjs();//加载js外部文件
 			}else{
-				$.alert("没有查找到该航班的信息");
+				if(data.msgPosti=="0"||data.msgPosti==0){
+					$.alert("请求用时过长，请10s后重新刷新！(待解决)");
+				}else{
+					$.alert("没有查找到该航班的信息");
+				}
 			}
 		},error:function(){
 		}

@@ -42,35 +42,50 @@ public class PlanTekController {
 	@RequestMapping("/find/OtherQuery.action")
 	@ResponseBody
 	public Map<String, Object> otherFindPek(String chufCity,String daodCity,String dateTime, HttpSession session){
-		session.setAttribute("qishiPlanCode", chufCity);
-		session.setAttribute("daodPlanCode", daodCity);
-		System.out.println("开始查询（出发城市："+chufCity+", 到达城市："+daodCity+", 出发时间："+dateTime+"）");
-		Map<String, Object> map = new HashMap<String, Object>();
-		//开始查找航班
-		List<SeatInfoData> avList = PlanTekServ.SreachSeat(chufCity,daodCity,dateTime,0);
-		List<FlightInfo> flightInfo = PlanTekServ.priceInfo(avList, dateTime); //将航班信息和座位信息整合
+		List<FlightInfo> flightInfo = new ArrayList<FlightInfo>();
 		//把整理好的数据分成中转和直达
 		List<FlightInfo> zdList = new ArrayList<FlightInfo>(); //直达
 		List<FlightInfo> zzList = new ArrayList<FlightInfo>(); //中转
-		if(flightInfo.size()==0){
-			map.put("msg", "0");
-			map.put("listDate", zdList);
-			map.put("zzListDate", zzList);
-		}else{
-			for(FlightInfo finfo : flightInfo){
-				if(chufCity.equals(finfo.getOrgCity())&&daodCity.equals(finfo.getDstCity())){
-					zdList.add(finfo);
-				}else{
-					zzList.add(finfo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("token:"+(String)session.getAttribute("token"));
+		if("LXQSYSNORESQUEST".equals((String)session.getAttribute("token"))){
+			session.setAttribute("token", "");
+			session.setAttribute("qishiPlanCode", chufCity);
+			session.setAttribute("daodPlanCode", daodCity);
+			System.out.println("开始查询（出发城市："+chufCity+", 到达城市："+daodCity+", 出发时间："+dateTime+"）");
+			//开始查找航班
+			List<SeatInfoData> avList = PlanTekServ.SreachSeat(chufCity,daodCity,dateTime,0);
+			flightInfo = PlanTekServ.priceInfo(avList, dateTime); //将航班信息和座位信息整合
+			if(flightInfo.size()==0){
+				map.put("msg", "0");
+				map.put("listDate", zdList);
+				map.put("zzListDate", zzList);
+				return map;
+			}else{
+				for(FlightInfo finfo : flightInfo){
+					if(chufCity.equals(finfo.getOrgCity())&&daodCity.equals(finfo.getDstCity())){
+						zdList.add(finfo);
+					}else{
+						zzList.add(finfo);
+					}
 				}
+				map.put("msg", "1");
+				map.put("listDate", zdList);
+				map.put("zzListDate", zzList);
+				System.out.println("直达："+zdList.size());
+				System.out.println("中转："+zzList.size());
+				return map;
 			}
-			map.put("msg", "1");
+			
+		}else{
+			map.put("msg", "0");
+			map.put("msgPosti", "0");
 			map.put("listDate", zdList);
 			map.put("zzListDate", zzList);
+			return map;
 		}
-		System.out.println("直达："+zdList.size());
-		System.out.println("中转："+zzList.size());
-		return map;
+		
+		
 	}
 	
 	//根据uuid获取到航班的数据
