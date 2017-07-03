@@ -51,6 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </div>
       </div>
       <script type="text/javascript">
+           var ss="";
            $(function(){
         	   var X = $('#tuImgPot').offset().left
         	   var sd = $('#tuImgPot').width();
@@ -63,6 +64,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   data:{},
                   success:function(data){
                       ss=data.state;
+                      if(ss==" "){
+                        $.messager.alert('提示', "目前无订单", 'warning');
+                        return false;
+                       
+                      }
                       console.log(ss);
                       canvas();
                   }
@@ -86,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 offline=[];
                 for(var i=0; i<ss.length;i++){
                     var status=ss[i].orderStatus;
-                    var a=ss[i].hangbanNum.substr(0, 2);
+                    var a=ss[i].hangbanNum.substring(0, 2);
                     var b=findByCode(a)+"("+a+")";
                     //console.log("截取之后的b:"+b)
                     var Money=ss[i].costMoney;
@@ -136,6 +142,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   },
                   xAxis:{
                       type:'value',
+                     
                   },
                   yAxis:{
                       type:'category',
@@ -265,7 +272,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    data:{"ltime":ltime,"TTime":TTime},
                    success:function(data){
                        aa=data.state;
-                       ywtype();
+                       ywtype(aa);
                    }
                    
                })
@@ -279,7 +286,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                  location.href="<%=basePath%>framework/SellDate/exportSellDate.action?lTime="+lTime+"&TTime="+TTime+"&airCode="+airCode;
            }
           
-           function ywtype(){
+           function ywtype(aa){
                var air = $("#airCode").combobox("getValue").trim();
                var List=[];
                var dateList=[];
@@ -290,7 +297,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   for(var i=0; i<aa.length;i++){
 	                    
 		                    var status=aa[i].orderStatus;
-		                    var a=aa[i].hangbanNum.substr(0, 2);
+		                    var a=aa[i].hangbanNum.substring(0, 2);
 		                    var b=findByCode(a)+"("+a+")";
 		                    //console.log("截取之后的b:"+b);
 		                    var Money=aa[i].costMoney;

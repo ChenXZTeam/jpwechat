@@ -39,7 +39,7 @@ $(function(){
 	        { field: 'ck', checkbox: true },
 	        { field: 'orderNum', title: '机票订单号', width: '15%' }, 
 	        { field: 'customer', title: '客户名称',align:'center', width: '7%'},
-	        { field: 'idCard', title: '客户证件',align:'center', width: '7%'},
+	        { field: 'idCard', title: '客户证件',align:'center', width: '17%'},
 	        { field: 'yiwaiBX', title: '航意险',align:'center', width: '15%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
@@ -49,7 +49,7 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'yiwaiNum', title: '航意险单号',align:'center', width: '7%'},
+	        { field: 'yiwaiNum', title: '航意险单号',align:'center', width: '17%'},
 	        { field: 'yanwuBX', title: '延误险',align:'center', width: '15%' ,
 	        	formatter:function(value,rec,index){  
 	                if(value=="1"){
@@ -59,7 +59,7 @@ $(function(){
 	                }
           	  	}
 	        },
-	        { field: 'yanwuNum', title: '延误险单号',align:'center', width: '7%'},
+	        { field: 'yanwuNum', title: '延误险单号',align:'center', width: '17%'},
 	        { field: 'bxMoney', title: '价格/元',align:'center', width: '5%' },
 	        { field: 'createTime', title: '创建时间',align:'center', width: '10%',formatter:fotmateDate}
 	    ]]
