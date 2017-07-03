@@ -263,7 +263,6 @@ function pointNum(){
 		$.messager.alert('操作提示', "请选择一条数据！", 'warning');
 		return false;
 	}
-	console.log(rows[0]);
 	$('#lvkeInfoForm2').form('load',rows[0]);
 	$('#lvkeInfoBox2').dialog('open').dialog('setTitle','打印并分配单号');
 	
@@ -386,7 +385,7 @@ Date.prototype.format = function (format) {
 		<table cellspacing="10">
 			<tr style="display:none;">
 				<td><input name="uuid" class="easyui-textbox"/></td>
-				<td></td>
+				<td><input name="orderNum" class="easyui-textbox"/></td>
 			</tr>
 			<tr>
 				<td>快递单号：</td>

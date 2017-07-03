@@ -37,6 +37,7 @@ public class TravItineraryController {
 	@ResponseBody
 	public Map<String,Object> getreload(int page, int rows){
 		try {
+			tts.delAll();
 			tts.getOrderDate();
 		} catch (Exception e) {
 			e.toString();
@@ -82,9 +83,9 @@ public class TravItineraryController {
 	
 	@RequestMapping("/fenpeiInfo.action")
 	@ResponseBody
-	public int fenpeiInfo(String uuid,String kdOrderNum,String kdCompany,String consoleStutas){
+	public int fenpeiInfo(String uuid,String kdOrderNum,String kdCompany,String consoleStutas,String orderNum){
 		try {
-			tts.disBution(uuid,kdOrderNum,kdCompany,consoleStutas);
+			tts.disBution(uuid,kdOrderNum,kdCompany,consoleStutas,orderNum); 
 			return 1;
 		} catch (Exception e) {
 			return 0;

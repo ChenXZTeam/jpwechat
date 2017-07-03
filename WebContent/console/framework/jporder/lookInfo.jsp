@@ -85,6 +85,20 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 		<td colspan="3" id="yiwaiBX"></td>
 	</tr>
 	<tr>
+		<td class="titleClass">延误保险单号：</td>
+		<td id="yanwuNum"></td>
+		<td class="titleClass">意外保险单号：</td>
+		<td colspan="3" id="yiwaiNum"></td>
+	</tr>
+	<tr>
+		<td class="titleClass">行程单：</td>
+		<td id="isConsole"></td>
+		<td class="titleClass">快递公司：</td>
+		<td id="kdCompany"></td>
+		<td class="titleClass">行程单号：</td>
+		<td id="kdOrderNum"></td>
+	</tr>
+	<tr>
 		<td class="titleClass">航空公司：</td>
 		<td id="airCode"></td>
 		<td class="titleClass">乘客类型：</td>
@@ -120,7 +134,6 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 		$.post("<%=basePath%>framework/order/findBy.action",{a:n},function(res){
 			var obj = JSON.parse(res);
 			var s = obj.dateStr[0];
-			console.log(s);
 			$("#id").text(s.id);
 			$("#telNum").text(s.telNum);
 			$("#pnrNum").text(s.pnr);
@@ -140,6 +153,11 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 			$("#daodPlane").text(findByplaneName(s.daodCity));
 			$("#yanwuBX").text(farom(s.yanwuBX));
 			$("#yiwaiBX").text(farom(s.yiwaiBX));
+			$("#yanwuNum").text(formNum(s.yanwuNum,s.yanwuBX));
+			$("#yiwaiNum").text(formNum(s.yiwaiNum,s.yiwaiBX));
+			$("#isConsole").text(faromIsConsole(s.isConsole));
+			$("#kdCompany").text(formNum(s.kdCompany,s.isConsole));
+			$("#kdOrderNum").text(formNum(s.kdOrderNum,s.isConsole));
 			$("#airCode").text(findByCode(s.hangbanNum.substring(0,2)));
 			$("#psgType").text(faromPstMan(s.psgType));
 			$("#userName").text(s.userName);
@@ -165,6 +183,10 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 		return fr==1?"购买":"不购买";
 	}
 	
+	function faromIsConsole(fr){
+		return fr==1?"打印":"不打印";
+	}
+	
 	function faromStatuas(fr){
 		return fr==1?"已支付":"未支付";
 	}
@@ -176,6 +198,18 @@ String uuid = new String(request.getParameter("numds").getBytes("ISO-8859-1"),"u
 			return "儿童";
 		}else if(fr=="INF"){
 			return "婴儿";
+		}
+	}
+	
+	function formNum(str,num){
+		if(num=="1"||num==1){
+			if(str==""||str=="null"||str==null){
+				return "未处理";
+			}else{
+				return str;
+			}
+		}else{
+			return "";
 		}
 	}
 	

@@ -59,19 +59,19 @@ public class TravItineraryService {
 	}
 	
 	public void getOrderDate(){
-		List<userOrderInfo> consoleOrderDate = this.gDao.find("FROM userOrderInfo WHERE isConsole = '1' AND consoleStatus = '0'"); //拿订单表中的数据
-		List<TravItinerary> soleDate = this.gDao.find("FROM TravItinerary"); //拿原来存在打印表中的数据（这样做是为了防止：插入重复的数据）
+		List<userOrderInfo> consoleOrderDate = this.gDao.find("FROM userOrderInfo WHERE stutisPay = '1' AND tpStatus = '0' AND isConsole = '1' AND consoleStatus = '0'"); //拿订单表中的数据
+		//List<TravItinerary> soleDate = this.gDao.find("FROM TravItinerary WHERE consoleStutas = '1'"); //拿出已经处理过的信息
 		List<TravItinerary> tempList = new ArrayList<TravItinerary>();
 		if(consoleOrderDate.size()>0){
 			for(userOrderInfo uInfo : consoleOrderDate){
-				boolean isAdd = true;
+				/*boolean isAdd = true;
 				for(TravItinerary tt : soleDate){
 					if(uInfo.getOrderNum().equals(tt.getOrderNum())){
 						isAdd = false;
 						break;
 					}
 				}
-				if(isAdd==true){
+				if(isAdd==true){*/
 					TravItinerary ttin = new TravItinerary();
 					ttin.setConsoleStutas("0");
 					ttin.setCreateTime(new Timestamp(new Date().getTime()));
@@ -82,8 +82,7 @@ public class TravItineraryService {
 					ttin.setSandAdd(uInfo.getSendAdd());
 					ttin.setTicketNum(uInfo.getTelNum());
 					tempList.add(ttin);
-				}
-				
+				//}
 			}
 			saveDate(tempList); //保存到需要打印的数据表中
 		}
@@ -92,6 +91,10 @@ public class TravItineraryService {
 	
 	public void upConStutas(String uuid,String stutas){
 		this.gDao.executeJDBCSql("UPDATE userorderinfo SET consoleStatus = '"+stutas+"' WHERE orderNum = '"+uuid+"'");
+	}
+	
+	public void delAll(){
+		this.gDao.executeJDBCSql("DELETE FROM fw_travitinerary");
 	}
 	
 	public void saveDate(List<TravItinerary> titra){
@@ -106,8 +109,9 @@ public class TravItineraryService {
 		this.gDao.delete(ttay);
 	}
 	
-	public void disBution(String uuid,String kdOrderNum,String kdCompany,String consoleStutas){
+	public void disBution(String uuid,String kdOrderNum,String kdCompany,String consoleStutas,String orderNum){
 		this.gDao.executeJDBCSql("UPDATE fw_travitinerary SET kdOrderNum = '"+kdOrderNum+"',kdCompany = '"+kdCompany+"',consoleStutas = '"+consoleStutas+"' WHERE uuid = '"+uuid+"'");
+		this.gDao.executeJDBCSql("UPDATE userorderinfo SET consoleStatus = '"+consoleStutas+"',kdCompany = '"+kdCompany+"',kdOrderNum = '"+kdOrderNum+"' WHERE orderNum = '"+orderNum+"'");
 	}
 	
 	public TravItinerary findOld(String uuid){

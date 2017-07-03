@@ -35,7 +35,6 @@ public class JP_orderService {
 			Long total = this.gDao.count(userOrderInfo.class,hql); //获取影响的行数，用于前台分页
 			map.put("rows", cList);
 			map.put("total", total);
-			System.out.println("总数据："+total);
 		}
 		return map;
 	}
