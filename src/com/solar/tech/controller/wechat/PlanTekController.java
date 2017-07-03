@@ -167,9 +167,11 @@ public class PlanTekController {
 		System.out.println("=================开始处理去程航班=====================");
 		List<SeatInfoData> wFilght = PlanTekServ.SreachSeat(org,dst,date,1);
 		List<FlightInfo> wFlightInfo = PlanTekServ.priceInfo(wFilght, date); //将航班信息和座位信息整合
+		wFlightInfo = PlanTekServ.doDateCity(wFlightInfo,org,dst);
 		System.out.println("=================开始处理回程航班=====================");
 		List<SeatInfoData> fFilght = PlanTekServ.SreachSeat(dst,org,retDate,1);
 		List<FlightInfo> fFlightInfo = PlanTekServ.priceInfo(fFilght, retDate); //将航班信息和座位信息整合
+		fFlightInfo = PlanTekServ.doDateCity(fFlightInfo,dst,org);
 		
 		map.put("departAv", wFlightInfo);
 		map.put("returnAv", fFlightInfo);

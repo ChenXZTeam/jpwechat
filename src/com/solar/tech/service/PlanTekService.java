@@ -428,6 +428,19 @@ public class PlanTekService {
 	}
 	
 	/**
+	 * 删除掉不是直达的航班
+	 */
+	public List<FlightInfo> doDateCity(List<FlightInfo> sd, String org, String dst){
+		List<FlightInfo> finfo = new ArrayList<FlightInfo>();
+		for(FlightInfo fi : sd){
+			if(org.equals(fi.getOrgCity())&&dst.equals(fi.getDstCity())){
+				finfo.add(fi);
+			}
+		}
+		return finfo;
+	}
+	
+	/**
 	 * 封装座位价格和航班信息的方法
 	 */
 	public List<FlightInfo> priceInfo(List<SeatInfoData> avList,String dateTime){
