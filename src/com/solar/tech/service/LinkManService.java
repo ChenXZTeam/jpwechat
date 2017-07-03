@@ -280,12 +280,25 @@ public class LinkManService {
 		 obj.put("passage", linkMan.getLinkman()); //乘机人
 		 obj.put("phonenumber",linkMan.getUserNamePhone());
 		 obj.put("birth", linkMan.getBirthday());
-		 obj.put("zjtype", linkMan.getCaseType());
+		 String bb=linkMan.getCaseType();
+		 if(bb.equals("PP")){
+			 obj.put("zjtype", "护照");
+		 }
+		 else if(bb.equals("ID")){
+			 obj.put("zjtype", "其他");
+			 
+		 }else{
+			 obj.put("zjtype", "身份证");
+		 }
 		 obj.put("zjnumber", linkMan.getBelongCtry());
-		 obj.put("lktype",linkMan.getPeopleType());
+		 String aa=linkMan.getPeopleType();
+		 if(aa=="ADT"){
+			 obj.put("lktype", "成人");
+		 }else{
+			 obj.put("lktype", "小孩");
+		 }
 		 obj.put("sex", linkMan.getSex());
 		 obj.put("guoji", linkMan.getBelongCtry());
-		 obj.put("wxID",linkMan.getOpenID());
 	     return obj;
 		 
 	 }

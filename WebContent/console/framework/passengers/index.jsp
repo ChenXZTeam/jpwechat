@@ -368,7 +368,7 @@ $(document).ready(function(){
           console.log(obj);
           if(obj.state==1){
              $("#importdlg").dialog('close');
-             history.go(0); //进行树欣当前的内容
+             history.go(0); //进行刷新当前的内容
              $.message.alert("操作提示","数据导入成功！");
           }else{
              $.message.alert('操作提示','导入excel文件失败!','warning');
