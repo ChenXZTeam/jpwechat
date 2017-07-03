@@ -171,14 +171,19 @@ $(function(){
 });
 
 function chooseLi(inc){
-	$(inc).siblings(".wfbanner").slideToggle("fast");
-	$(inc).siblings(".cangweiClass").slideUp("fast");
-	$(".panel").slideUp("fast");
+
+	$("body .banner").css("display","none");
+	$("body .wfbanner").css("display","none");
+	$("body .cangweiClass").css("display","none");
+	$(inc).siblings(".wfbanner").css("display","block");
+	$(".panel").css("display","none");
 }
 
 function othercang(inc){
-	$(inc).parents(".wfbanner").siblings(".cangweiClass").slideToggle("fast");
-	$(".panel").slideUp("fast");
+    
+		$("body.cangweiClass").css("display","none");
+		$(inc).parents(".wfbanner").next(".cangweiClass").css("display","block");
+		$(".panel").css("display","none");
 }
 
 //改变出发时间和到达时间的类型
@@ -298,6 +303,7 @@ function chax(dateTime,returnTime){
 								var twoPriceMobey = 0; //第二航段的价格
 								var cangType_bas = cnCang(cangW);
 								var cangType_csw = "";
+								var cangType_csw2 = "";
 								var sumTemk=0; //剩余的票
 								for(var k=0; k<departse.length; k++){
 									for(var h=0; h<returnse.length; h++){

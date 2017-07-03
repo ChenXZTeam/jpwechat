@@ -45,7 +45,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                            <option value="2">退票已完成</option>
                      </select>
                 </td>
-         		<td></td>
+         		<td>
+         		    <a href="javascript:void(0)" class="btn_reset" onclick="reset()" style="width:100px;text-align:center;background-color:#01B5E6;border:none;cursor:pointer;outline:none;margin-left:5px;color:#fff;display:block;float:left;line-height:30px;text-decoration:none;border-radius:5px;">
+						重置
+                    </a>
+         		</td>
          	</tr>
          </table>
          <div style="height:25px; background-color:#fff;">
@@ -306,6 +310,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  			var lastTime=GoTime.substring(2,GoTime.length);
  			return firstTime+":"+lastTime;
  		}
+ 	}
+ 	
+ 	//重置内容
+ 	function reset(){
+ 	  $("#person").textbox('setValue',"");
+ 	  $("#hangbannumber").textbox('setValue',"");
+ 	  $("#pnumber").textbox('setValue',"");
+ 	  $("#pnr").textbox('setValue',"");
+ 	  $("#telNumber").textbox('setValue',"");
+ 	  $("#tpstatus").combobox('select',"");
  	}
    
  	//格式化时间

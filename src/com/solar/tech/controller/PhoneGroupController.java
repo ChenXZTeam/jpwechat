@@ -1,5 +1,6 @@
 package com.solar.tech.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,22 +40,28 @@ public class PhoneGroupController {
 	
 	/**
 	 * 新增分组
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/newFz.action")
 	@ResponseBody
-	public Map<String,Object> newFz(PhoneGroup pg){
+	public Map<String,Object> newFz(PhoneGroup pg) throws UnsupportedEncodingException{
 		Map<String,Object> map=new HashMap<String,Object>();
+		String ss=pg.getFzName();
+		pg.setFzName(new String(ss.getBytes("ISO-8859-1"), "utf-8"));
 		PGroupService.saveFz(pg);
 		map.put("state",1);
 		return map;
 	  }
 	/**
 	 * 修改分组的保存功能
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/upFenZu.action")
 	@ResponseBody
-	public Map<String, Object> updatefzName(PhoneGroup pg){
+	public Map<String, Object> updatefzName(PhoneGroup pg) throws UnsupportedEncodingException{
 		Map<String,Object> map=new HashMap<String,Object>();
+		String ss=pg.getFzName();
+		pg.setFzName(new String(ss.getBytes("ISO-8859-1"), "utf-8"));
 		PGroupService.updatefzName(pg);
 		map.put("state", 1);
 		return map;
