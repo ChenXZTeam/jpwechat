@@ -69,11 +69,11 @@ public class TpRecordsServices {
 		if(hangbanNum !=null&&hangbanNum !=""){
 			sql+=" AND hangbanNum='"+hangbanNum+"'";
 		}
-		if(telNumber !=null&&telNumber !=""){
-			sql+=" AND telNumber='"+telNumber+"'";
-		}
 		if(pnumber !=null&&pnumber !=""){
-			sql+=" AND pnumber='"+pnumber+"'";
+			sql+=" AND telNumber='"+pnumber+"'";
+		}
+		if(telNumber !=null&&telNumber !="" ){
+			sql+=" AND pnumber='"+telNumber+"'";
 		}
 		if(pnr !=null&&pnr !=""){
 			sql+=" AND pnr='"+pnr+"'";

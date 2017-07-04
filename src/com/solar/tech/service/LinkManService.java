@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import com.solar.tech.bean.PhoneNum;
 import com.solar.tech.bean.entity.LinkMan;
 import com.solar.tech.bean.entity.RD_wechatUser;
@@ -91,8 +92,22 @@ public class LinkManService {
 	
 	public Map<String,Object> findPage(int page,int rows,String cusAdmin,String custor,String chinaName,String phoneNum){
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<LinkMan> cList = this.gDao.findByPage("FROM LinkMan WHERE UserName LIKE '%"+cusAdmin+"%' AND linkman LIKE '%"+custor+"%' AND chinaName LIKE '%"+chinaName+"%' AND linkNumber LIKE '%"+phoneNum+"%' ORDER BY createTime DESC", Integer.valueOf(page), Integer.valueOf(rows));
-		Long total = this.gDao.count(LinkMan.class,"FROM LinkMan WHERE UserName LIKE '%"+cusAdmin+"%' AND linkman LIKE '%"+custor+"%' AND chinaName LIKE '%"+chinaName+"%' AND linkNumber LIKE '%"+phoneNum+"%' ORDER BY createTime DESC"); //获取影响的行数，用于前台分页
+		String sql="FROM LinkMan WHERE 1=1 ";
+		if(cusAdmin!=null&&cusAdmin!=""){
+			sql+="and UserName LIKE '%"+cusAdmin+"%'";
+		}
+		if(custor!=null&&custor!=""){
+			sql+="and linkman LIKE '%"+custor+"%'";
+		}
+		if(chinaName!=null&&chinaName!=""){
+			sql+="and chinaName LIKE '%"+chinaName+"%'";
+		}
+		if(phoneNum!=null&&phoneNum!=""){
+			sql+="and linkNumber LIKE '%"+phoneNum+"%'";
+		}
+		sql += " ORDER BY LinkMan, createTime DESC";
+		List<LinkMan> cList = this.gDao.findByPage(sql, Integer.valueOf(page), Integer.valueOf(rows));
+		Long total = this.gDao.count(LinkMan.class,sql); //获取影响的行数，用于前台分页
 		map.put("rows",cList);
 		map.put("total", total);
 		return map;
