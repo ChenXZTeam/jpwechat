@@ -103,9 +103,11 @@ public class ECUtils {
 	private String token; // 口令
 	
 	public ECUtils(){
-		hang(); 		// 挂起
-		activate();		// 激活
-		applyToken(); 	// 申请口令
+		synchronized(ECUtils.class){
+			hang(); 		// 挂起
+			activate();		// 激活
+			applyToken(); 	// 申请口令
+		}
 	}
 	
 	// 航班座位可利用显示
@@ -144,7 +146,10 @@ public class ECUtils {
 		
 		AVClient avClient=new AVClient(); // 新建客户端对象
 		try {
-			AVResponse avResponse=avClient.avForObe(avRequest); // 新建一个响应对象
+			AVResponse avResponse = null;
+			synchronized(ECUtils.class){
+				avResponse=avClient.avForObe(avRequest); // 新建一个响应对象
+			}
 			if(avResponse != null && avResponse.getResultCode() == 0){
 				
 				List<AvSegment> resultList = new ArrayList<AvSegment>();
@@ -159,6 +164,7 @@ public class ECUtils {
 				}
 				
 				if(resultList != null && resultList.size() > 0){
+					System.out.println("AV查询结果的长度："+resultList.size());
 					return resultList;
 				}
 			}
@@ -188,7 +194,10 @@ public class ECUtils {
 		
 		FDClient fdClient = new FDClient(); // 新建客户端对象
 		try {
-			FDResponse fdResponse = fdClient.fdForObe(fdRequest); // 新建一个响应对象
+			FDResponse fdResponse = null;
+			synchronized(ECUtils.class){
+				fdResponse = fdClient.fdForObe(fdRequest); // 新建一个响应对象
+			}
 			if(fdResponse != null && fdResponse.getResultCode() == 0){
 				return fdResponse.getFare().getSortedfares(); // 返回所有的运价信息
 			}

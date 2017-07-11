@@ -128,7 +128,6 @@ var daodCityCode="<%=daodCityCode %>";
 var cangW="<%=cangW %>";
 $(function(){ 
 	var dateTime=$("#dateTimeID").text();
-	console.log(dateTime);
 	conterCONTime(dateTime);//显示在中间的时间
 	ajax(chufCityCode, daodCityCode, cangW, dateTime); //执行数据加载ajax
 	
@@ -165,19 +164,24 @@ $(function(){
 //封装ajax方法
 function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 	//开始通过传递过来的几个参数进行后台查询之后加载查询结果
+	var uuidStr = generateUUID();
+	console.log(uuidStr);
 	$.ajax({
 		url:"<%=basePath%>wechatController/find/OtherQuery.action",
 		type:"POST",
-		data:{"chufCity":chufCityCode,"daodCity":daodCityCode,"dateTime":dateTime},
+		/* timeout:9500, */
+		data:{"chufCity":chufCityCode,"daodCity":daodCityCode,"dateTime":dateTime,"uuid":uuidStr},
 		dataType:"json",
 		beforeSend:function(){$("#loading").css("display","block");},
 		complete:function(){$("#loading").css("display","none");},
 		success:function(data){
-			if(data.msg==1){
-				console.log(data.listDate);
-				/*console.log(data.zzListDate); */
+			console.log(data);
+			if(data.msg==1||data.msg=="1"){
+				/*console.log(data.listDate);
+				console.log(data.zzListDate); */
 				var getDate = data.listDate;//直达
 				var zhzDate = data.zzListDate;//中转
+				var countDivNum = 0; //计数器
 				for(var i=0;i<getDate.length;i++){
 					var cangwei_type = "";
 					var onewayPrice = 0;//排在最后一个舱位的价格
@@ -198,9 +202,10 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 						for(var j=0;j<getDate[i].seatList.length;j++){
 							if(getDate[i].seatList[j].basicCabin==cangW && tekNum(getDate[i].seatList[j].cangwei_data)!=0){
 								var listDiv='<div class="banner1"><div class="b-img"><div class="runDiv"><div class="hangbanImform"><div class="neiImform"><div class="firstDiv"><span class="jjc">'+cnCang(getDate[i].seatList[j].basicCabin)+'</span><a class="anotherCW" onclick="otherYdBtn(\''+getDate[i].uuid+'\',\''+getDate[i].seatList[j].cangwei+'\',\''+dateTime+'\')">预定</a></div><div class="firstDiv" style="padding:10px 0px;"><span class="money">￥'+parseInt(getDate[i].seatList[j].onewayPrice)+'</span><span> / </span><span class="zhe">85折</span></div><div class="firstDiv" style="padding-bottom:5px;"><span class="Eimg">'+getDate[i].seatList[j].cangwei+'</span><span class="pointer">100%</span><span class="licheng">里程累计比例</span></div><div class="firstDiv fourDiv"><span class="shiyong">退该政策</span><span class="jiantou"><img src="<%=basePath%>console/images/youpoit.png"></span></div><div style="clear:both;"></div></div></div></div></div></div>';
-								$(".notTjTicket:eq("+i+") .cangweiClass").append(listDiv);
+								$(".notTjTicket:eq("+countDivNum+") .cangweiClass").append(listDiv);
 							}						
 						}
+						countDivNum++;
 					}
 				}
 				
@@ -281,25 +286,39 @@ function ajax(chufCityCode, daodCityCode, cangW, dateTime){
 										}
 									}
 								}
+								countDivNum++;
 							}
-							countDivNum++;
 						}
 						
 					}
 				}
 				loadjs();//加载js外部文件
+			}else if(data.msg==0||data.msg=="0"){
+				$.alert("没有查找到所需要的班次");
+			}else if(data.msg==2||data.msg=="2"){
+				$.alert("请求超时，请稍后再试");
 			}else{
-				$.alert("没有查找到所需要的班次");
-			}
-			var listHb = $(".notTjTicket").length;
-			var listzHb = $(".zhzLiBox").length;
-			if(listHb=="0"&&listzHb=="0"){
-				$.alert("没有查找到所需要的班次");
+				var listHb = $(".notTjTicket").length;
+				var listzHb = $(".zhzLiBox").length;
+				if(listHb=="0"&&listzHb=="0"){
+					$.alert("没有查找到所需要的班次");
+				}
 			}
 		},error:function(){
+			$.alert("请求错误，请稍后再试");
 		}
-});
+	});
 }
+
+function generateUUID() {
+	var d = new Date().getTime();
+	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	  var r = (d + Math.random()*16)%16 | 0;
+	  d = Math.floor(d/16);
+	  return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+	});
+	return uuid;
+};
 
 //计算剩余票价张数的方法
 function tekNum(date){

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.solar.tech.utils.ECUtils;
 import com.solar.tech.utils.OptimizeECUtils;
+import com.solar.tech.bean.CenterDate;
 import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.bean.entity.FlightMessage;
 import com.solar.tech.bean.entity.Insurance;
@@ -62,41 +63,6 @@ public class PlanTekService {
 			noStop = flyTime(noStop);
 		}
 		
-		/*else{
-			//因为有的信息需要公用航班数据，所以更新一下出发时间(这一段功能代码不应该写在这里，应该写在前台)
-			for(SeatInfoData sd : noStop){
-				//有些中转航班中的第二段航班起飞时间是明天起飞的。所以有必要更新起飞日期+1
-				if("+1".equals(sd.getDeptimemodify())){
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					Date dates = null;
-					try {
-						dates = sdf.parse(date);
-						String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
-						sd.setDepDate(sdssd);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}else{
-					sd.setDepDate(date);
-				}
-				
-				//有些中转航班中的第二段航班到达时间是明天的。所以有必要更新到达日期+1
-				if("+1".equals(sd.getArriveTimeModify())){
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					Date dates = null;
-					try {
-						dates = sdf.parse(date);
-						String sdssd = sdf.format(new Date(dates.getTime()+(long)1*24*60*60*1000));
-						sd.setArriveDate(sdssd);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}else{
-					sd.setArriveDate(date);
-				}
-				
-			}
-		}*/
 		return noStop;
 	}
 	
@@ -132,7 +98,6 @@ public class PlanTekService {
 					spd = spList; //把这些结果集给另一个结果集让他返回
 				}
 			} catch (Exception e) {
-				System.out.println("查询接口运价异常");
 				return spd;
 			}
 		}
@@ -502,8 +467,8 @@ public class PlanTekService {
 	}
 	
 	public List<SeatInfoData> upHcDate(String org, String dst,String date, int isWf){
-		System.out.println(org+","+dst+","+date);
 		List<SeatInfoData> noStop = new ArrayList<SeatInfoData>();
+		List<SeatInfoData> addSave = new ArrayList<SeatInfoData>();
 		String dayNum = "";
 		long juliDay = pointTime(date);
 		if(juliDay==0){dayNum = "1";}else if(juliDay>0&&juliDay<=3){dayNum = "2";}else if(juliDay>3&&juliDay<=7){dayNum = "3";}else if(juliDay>7&&juliDay<=15){dayNum = "4";}else if(juliDay>15&&juliDay<=30){dayNum = "5";}else if(juliDay>30){dayNum = "6";}
@@ -560,9 +525,10 @@ public class PlanTekService {
 			aidata.setPlanestyle(avs.getPlanestyle());
 			aidata.setMeal(avs.getMeal());
 			aidata.setCreateTime(new Timestamp(new Date().getTime()));
-			gDao.save(aidata);
+			addSave.add(aidata);
 			noStop.add(aidata);
 		}
+		gDao.save(addSave);
 		return noStop;
 	}
 	
@@ -575,6 +541,58 @@ public class PlanTekService {
 		String pastTime = sdf.format(date);
 		List<SeatPriceData> spd = gDao.find("FROM SeatPriceData WHERE ((orgCity = '"+org+"' AND dstCity = '"+dst+"') OR (dstCity = '"+org+"' AND orgCity = '"+dst+"')) AND airline = '"+airline+"' AND DATE_FORMAT(createTime,'%Y-%m-%d') > '"+pastTime+"'");
 		return spd;
+	}
+	
+	/**
+	 * 在控制器中用到，为了减少控制器的代码量（用于单程）
+	 * @param chufCity
+	 * @param daodCity
+	 * @param dateTime
+	 * @param isWf
+	 * @return
+	 */
+	public Map<String,Object> findFilght(String chufCity, String daodCity, String dateTime, int isWf){
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<FlightInfo> flightInfo = new ArrayList<FlightInfo>();
+		//把整理好的数据分成中转和直达
+		List<FlightInfo> zdList = new ArrayList<FlightInfo>(); //直达
+		List<FlightInfo> zzList = new ArrayList<FlightInfo>(); //中转
+		
+		List<SeatInfoData> avList = SreachSeat(chufCity,daodCity,dateTime,isWf);
+		flightInfo = priceInfo(avList, dateTime); //将航班信息和座位信息整合
+		if(flightInfo.size()==0){
+			map.put("msg", "0");
+			map.put("listDate", zdList);
+			map.put("zzListDate", zzList);
+		}else{
+			for(FlightInfo finfo : flightInfo){
+				if(chufCity.equals(finfo.getOrgCity())&&daodCity.equals(finfo.getDstCity())){
+					zdList.add(finfo);
+				}else{
+					zzList.add(finfo);
+				}
+			}
+			map.put("msg", "1");
+			map.put("listDate", zdList);
+			map.put("zzListDate", zzList);
+			System.out.println("直达航班："+zdList.size());
+			System.out.println("中转航班："+zzList.size());
+		}
+		return map;
+	}
+	
+	/**
+	 * 用于往返（减少控制器的代码量）
+	 * @param chufCity
+	 * @param daodCity
+	 * @param dateTime
+	 * @param isWf
+	 * @return
+	 */
+	public List<FlightInfo> findFilghtWf(String chufCity, String daodCity, String dateTime, int isWf){
+		List<SeatInfoData> avList = SreachSeat(chufCity,daodCity,dateTime,isWf);
+		List<FlightInfo> flightInfo = priceInfo(avList, dateTime); //将航班信息和座位信息整合
+		return flightInfo;
 	}
 	
 	//根据id从数据库中获取到数据
@@ -814,9 +832,30 @@ public class PlanTekService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-	        
 	    
 	    return sd;
+	}
+	
+	public void addCenterDate(String htmlUuid){
+		CenterDate cd = new CenterDate();
+		cd.setStatus("waiting...");
+		cd.setHtmlUuid(htmlUuid);
+		cd.setIsgetmap("No");
+		cd.setCreateTime(new Timestamp(new Date().getTime()));
+		this.gDao.save(cd);
+	}
+	
+	public void upCenterDate(String htmlUuid){
+		this.gDao.executeJDBCSql("UPDATE fw_centerdate SET status='overfinsh' WHERE htmlUuid = '"+htmlUuid+"'");
+	}
+	
+	public void upCenterDateSta(String htmlUuid){
+		this.gDao.executeJDBCSql("UPDATE fw_centerdate SET isgetmap='Yes' WHERE htmlUuid = '"+htmlUuid+"'");
+	}
+	
+	public CenterDate findCenterDate(String htmlUuid){
+		List<CenterDate> centerda = this.gDao.find("FROM CenterDate WHERE htmlUuid = '"+htmlUuid+"'");
+		return centerda.get(0);
 	}
 	
 	public static boolean getDistanceDays(String str2){  

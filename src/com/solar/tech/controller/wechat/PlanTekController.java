@@ -7,15 +7,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-
-
-
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.solar.tech.bean.CenterDate;
 import com.solar.tech.bean.entity.FlightInfo;
 import com.solar.tech.bean.entity.Insurance;
 import com.solar.tech.bean.entity.SeatInfo;
@@ -32,48 +31,187 @@ import com.travelsky.sbeclient.obe.response.PataFarePriceInfo;
 @Controller
 @RequestMapping("/wechatController")
 public class PlanTekController {
-	//private static Logger log = Logger.getLogger(PlanTekController.class);
+	private static Logger log = Logger.getLogger(PlanTekController.class);
+	private static List<String> uuidList = new ArrayList<String>();
+	private static List<String> uuidListwf = new ArrayList<String>();
 	@Autowired
 	private PlanTekService PlanTekServ;
 	@Autowired
 	private userOrderService OrderService;
 	
 	//查找航班的又一种方式
-	@RequestMapping("/find/OtherQuery.action")
+	@RequestMapping(value = {"/find/OtherQuery.action"}, method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> otherFindPek(String chufCity,String daodCity,String dateTime, HttpSession session){
-		List<FlightInfo> flightInfo = new ArrayList<FlightInfo>();
-		//把整理好的数据分成中转和直达
-		List<FlightInfo> zdList = new ArrayList<FlightInfo>(); //直达
-		List<FlightInfo> zzList = new ArrayList<FlightInfo>(); //中转
-		Map<String, Object> map = new HashMap<String, Object>();
+	public Map<String,Object> findTest(String chufCity, String daodCity, String dateTime,String uuid, HttpSession session){
+		log.info("开始查询（出发城市："+chufCity+", 到达城市："+daodCity+", 出发时间："+dateTime+"）");
 		session.setAttribute("qishiPlanCode", chufCity);
 		session.setAttribute("daodPlanCode", daodCity);
-		System.out.println("开始查询（出发城市："+chufCity+", 到达城市："+daodCity+", 出发时间："+dateTime+"）");
-		//开始查找航班
-		List<SeatInfoData> avList = PlanTekServ.SreachSeat(chufCity,daodCity,dateTime,0);
-		flightInfo = PlanTekServ.priceInfo(avList, dateTime); //将航班信息和座位信息整合
-		if(flightInfo.size()==0){
-			map.put("msg", "0");
-			map.put("listDate", zdList);
-			map.put("zzListDate", zzList);
-			return map;
-		}else{
-			for(FlightInfo finfo : flightInfo){
-				if(chufCity.equals(finfo.getOrgCity())&&daodCity.equals(finfo.getDstCity())){
-					zdList.add(finfo);
-				}else{
-					zzList.add(finfo);
-				}
+		Map<String,Object> map = new HashMap<String,Object>();
+		boolean isResAgain = true;
+		for(String uuidCh : uuidList){
+			if(uuid.equals(uuidCh)){
+				isResAgain = false;
+				break;
 			}
-			map.put("msg", "1");
-			map.put("listDate", zdList);
-			map.put("zzListDate", zzList);
-			System.out.println("直达："+zdList.size());
-			System.out.println("中转："+zzList.size());
-			return map;
+		}
+		//如果等于true的话就是第一次请求
+		if(isResAgain){
+			System.out.println("第一次请求");
+			PlanTekServ.addCenterDate(uuid);
+			synchronized(uuidList){
+				uuidList.add(uuid); //把生成的uuid放到uuid链表里面
+			}
+			//开始查找航班
+			map = PlanTekServ.findFilght(chufCity, daodCity, dateTime, 0);
+			PlanTekServ.upCenterDate(uuid);
+			CenterDate cted = PlanTekServ.findCenterDate(uuid);
+			if("Yes".equals(cted.getIsgetmap())){
+				map.clear(); //清空第一次请求的map
+			}
+		}else{
+			System.out.println("第二次请求");
+			PlanTekServ.upCenterDateSta(uuid);
+			CenterDate cted = PlanTekServ.findCenterDate(uuid);
+			if("waiting...".equals(cted.getStatus())){
+				System.out.println("等待10秒");
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				CenterDate cted2 = PlanTekServ.findCenterDate(uuid);
+				if("waiting...".equals(cted2.getStatus())){
+					System.out.println("真的等不了了，请求超时");
+					map.put("msg", "2");
+					map.put("listDate", null);
+					map.put("zzListDate", null);
+				}else if("overfinsh".equals(cted2.getStatus())){
+					map = PlanTekServ.findFilght(chufCity, daodCity, dateTime, 0);
+				}
+			}else if("overfinsh".equals(cted.getStatus())){
+				map = PlanTekServ.findFilght(chufCity, daodCity, dateTime, 0);
+			}
 		}
 		
+		synchronized(uuidList){
+			for(int j = 0; j<uuidList.size(); j++){
+		        if(uuid.equals(uuidList.get(j))){
+		        	uuidList.remove(j);
+		        	break;
+		        }
+		    }
+		}
+		
+		System.out.println("最后返回的map："+map.toString());
+		return map;
+	}
+	
+	//查询往返的机票
+	@RequestMapping("/find/planTekTo.action")
+	@ResponseBody
+	public Map<String, Object> planTekTo(String org, String dst, String date, String retDate, String uuidwf){
+		System.out.println("开始查找往返："+org+","+dst+","+date+","+retDate+","+uuidwf);
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean isResAgain = true;
+		for(String uuidCh : uuidListwf){
+			if(uuidwf.equals(uuidCh)){
+				isResAgain = false;
+				break;
+			}
+		}
+		if(isResAgain){
+			System.out.println("往返第一次请求");
+			//hcPropertiesDate.writeData(uuidwf+"_WF.properties", uuidwf, "waiting...");//创建临时存储文件
+			PlanTekServ.addCenterDate(uuidwf);
+			synchronized(uuidListwf){
+				uuidListwf.add(uuidwf); //把生成的uuid放到uuid链表里面
+			}
+			System.out.println("=================开始处理去程航班1=====================");
+			List<FlightInfo> wFlightInfo = PlanTekServ.findFilghtWf(org, dst, date, 1);
+			wFlightInfo = PlanTekServ.doDateCity(wFlightInfo,org,dst);
+			System.out.println("=================开始处理回程航班1=====================");
+			List<FlightInfo> fFlightInfo = PlanTekServ.findFilghtWf(dst, org, retDate, 1);
+			fFlightInfo = PlanTekServ.doDateCity(fFlightInfo,dst,org);
+			if(wFlightInfo.size()==0&&fFlightInfo.size()==0){
+				map.put("msg", "0");
+				map.put("departAv", wFlightInfo);
+				map.put("returnAv", fFlightInfo);
+			}else{
+				map.put("msg", "1");
+				map.put("departAv", wFlightInfo);
+				map.put("returnAv", fFlightInfo);
+			}
+			//hcPropertiesDate.writeData(uuidwf+"_WF.properties", uuidwf, "overfinsh");//修改properties文件的值为结束
+			PlanTekServ.upCenterDate(uuidwf);
+			CenterDate cted = PlanTekServ.findCenterDate(uuidwf);
+			if("Yes".equals(cted.getIsgetmap())){
+				map.clear(); //清空第一次请求的map
+			}
+			
+		}else{
+			System.out.println("往返第二次请求");
+			PlanTekServ.upCenterDateSta(uuidwf);
+			CenterDate cted = PlanTekServ.findCenterDate(uuidwf);
+			//String mapValue = hcPropertiesDate.jsonHc(uuidwf+"_WF.properties", uuidwf);
+			if("waiting...".equals(cted.getStatus())){
+				System.out.println("等待15秒：往返");
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				//String mapValue2 = hcPropertiesDate.jsonHc(uuidwf+"_WF.properties", uuidwf); //再次找一遍
+				CenterDate cted2 = PlanTekServ.findCenterDate(uuidwf);
+				if("waiting...".equals(cted2.getStatus())){
+					map.put("msg", "2");
+					map.put("departAv", null);
+					map.put("returnAv", null);
+				}else if("overfinsh".equals(cted2.getStatus())){
+					System.out.println("=================开始处理去程航班2=====================");
+					List<FlightInfo> wFlightInfo = PlanTekServ.findFilghtWf(org, dst, date, 1);
+					wFlightInfo = PlanTekServ.doDateCity(wFlightInfo,org,dst);
+					System.out.println("=================开始处理回程航班2=====================");
+					List<FlightInfo> fFlightInfo = PlanTekServ.findFilghtWf(dst, org, retDate, 1);
+					fFlightInfo = PlanTekServ.doDateCity(fFlightInfo,dst,org);
+					if(wFlightInfo.size()==0&&fFlightInfo.size()==0){
+						map.put("msg", "0");
+						map.put("departAv", wFlightInfo);
+						map.put("returnAv", fFlightInfo);
+					}else{
+						map.put("msg", "1");
+						map.put("departAv", wFlightInfo);
+						map.put("returnAv", fFlightInfo);
+					}
+				}
+			}else if("overfinsh".equals(cted.getStatus())){
+				System.out.println("=================开始处理去程航班3=====================");
+				List<FlightInfo> wFlightInfo = PlanTekServ.findFilghtWf(org, dst, date, 1);
+				wFlightInfo = PlanTekServ.doDateCity(wFlightInfo,org,dst);
+				System.out.println("=================开始处理回程航班3=====================");
+				List<FlightInfo> fFlightInfo = PlanTekServ.findFilghtWf(dst, org, retDate, 1);
+				fFlightInfo = PlanTekServ.doDateCity(fFlightInfo,dst,org);
+				if(wFlightInfo.size()==0&&fFlightInfo.size()==0){
+					map.put("msg", "0");
+					map.put("departAv", wFlightInfo);
+					map.put("returnAv", fFlightInfo);
+				}else{
+					map.put("msg", "1");
+					map.put("departAv", wFlightInfo);
+					map.put("returnAv", fFlightInfo);
+				}
+			}
+		}
+		
+		synchronized(uuidListwf){
+			for(int j = 0; j<uuidListwf.size(); j++){
+		        if(uuidwf.equals(uuidListwf.get(j))){
+		        	uuidListwf.remove(j);
+		        	break;
+		        }
+		     }
+		}
+		System.out.println("最终返回的数据："+map.toString());
+		return map;
 	}
 	
 	//根据uuid获取到航班的数据
@@ -155,26 +293,6 @@ public class PlanTekController {
 				map.put("dataObj2", sinfo);
 			}
 		}
-		return map;
-	}
-	
-	//查询往返的机票
-	@RequestMapping("/find/planTekTo.action")
-	@ResponseBody
-	public Map<String, Object> planTekTo(String org, String dst, String date, String retDate){
-		System.out.println(org+", "+dst+", "+date+", "+retDate); 
-		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println("=================开始处理去程航班=====================");
-		List<SeatInfoData> wFilght = PlanTekServ.SreachSeat(org,dst,date,1);
-		List<FlightInfo> wFlightInfo = PlanTekServ.priceInfo(wFilght, date); //将航班信息和座位信息整合
-		wFlightInfo = PlanTekServ.doDateCity(wFlightInfo,org,dst);
-		System.out.println("=================开始处理回程航班=====================");
-		List<SeatInfoData> fFilght = PlanTekServ.SreachSeat(dst,org,retDate,1);
-		List<FlightInfo> fFlightInfo = PlanTekServ.priceInfo(fFilght, retDate); //将航班信息和座位信息整合
-		fFlightInfo = PlanTekServ.doDateCity(fFlightInfo,dst,org);
-		
-		map.put("departAv", wFlightInfo);
-		map.put("returnAv", fFlightInfo);
 		return map;
 	}
 	
